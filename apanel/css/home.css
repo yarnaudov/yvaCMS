@@ -1,0 +1,39 @@
+
+.home_menu { 
+    background-color: #E7EFEF;
+    border: 1px solid #BBBBBB;
+    border-radius: 3px 3px 3px 3px;
+    padding: 10px;
+    min-height: 140px;
+}
+.home_menu .menu {
+    display: inline-block;
+    margin: 15px;
+}
+.home_menu .menu a{
+    display: block;
+    text-align: center;
+}
+
+.home_menu .menu a span{
+    display: block;
+}
+.home_menu .components {
+    border-bottom: 1px solid #BBBBBB;
+    margin: 10px 15px 0;
+    color: #666;
+    font-style: italic;
+    letter-spacing: 1px;
+    font-size: 15px;
+    font-family: "Myriad Pro It";
+}
+
+.home_info{
+    margin-top: -20px;
+    margin-left: 20px;
+}
+.home_info table caption{
+    padding: 3px;
+    text-align: left;
+    font-weight: bold;
+}

@@ -1,0 +1,13 @@
+.mceEditor{
+    display: block;
+    width: 100%;
+}
+.mceLayout{
+    border: none !important;
+}
+.mceStatusbar{
+    width: 100% !important;
+}
+.mceResize{
+    float: right !important;    
+}

@@ -1,0 +1,17 @@
+table.fields fieldset{
+    border: none;
+    border-top: 2px solid #aaa;
+    margin: 0px 0 10px 0;
+}
+table.fields fieldset legend{
+   padding: 0 10px;
+}
+table.fields fieldset div.button{
+    float: right;
+    margin-top: -16px;
+    padding: 0 0 0 2px;
+    background-color: #fff;
+}
+table.fields fieldset a{
+    padding: 0px 4px 1px 5px;   
+}

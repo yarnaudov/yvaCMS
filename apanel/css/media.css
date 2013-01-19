@@ -1,0 +1,129 @@
+
+.directory_navigation{
+    font-size: 16px;
+    display: inline-block;
+    padding: 4px 10px;
+}
+.directory_up{
+    margin-top: -2px;
+}
+
+#media_content{
+    height: 360px;
+    overflow-y: scroll;
+    margin-bottom: 20px;
+}
+
+.media_item{
+    float: left;
+    text-align: center;
+    margin: 5px 8px; 
+}
+.media_item a{
+    display: block;
+}
+.media_item a div{
+    height: 80px;
+    width: 80px;
+    border: 1px solid #eee;    
+    text-align: center;
+    vertical-align: middle;
+    display: table-cell;
+    padding: 2px;
+}
+.media_item a div img{
+    max-width: 78px;
+    max-height: 70px;
+    margin: 0;
+    padding: 0;
+}
+.media_item a span{
+    overflow: hidden;
+    width: 80px;
+    height: 30px;
+    display: block;
+}
+.media_item input{
+    position: relative;
+    float: left;
+    z-index: 1000;
+    top: -47px;
+    left: 68px;
+}
+
+.selected_file{
+    border-top: 1px solid #aaa;
+    overflow: auto;
+}
+.selected_file table{
+    width: 100%;
+    margin-top: 10px;
+}
+.selected_file table td{
+    width: 50%;
+}
+.selected_file div{
+    overflow: auto;
+    margin: 0;
+    padding: 5px 0;
+}
+.selected_file div.first{
+    border-right: 1px solid #aaa;
+}
+.selected_file div.second{
+    padding-left: 70px;
+}
+.selected_file div label,
+.selected_file div button,
+.selected_file div input{
+    float: left;
+}
+.selected_file div label{
+    padding: 2px 4px 1px 1px;
+    display: block;
+}
+.selected_file button{
+    font-size: 11px;
+    padding: 2px 5px !important;
+}
+
+.input_file{
+    float: left;
+    width: 280px;
+    height: 18px;
+    overflow: auto;
+    margin: 0;
+    padding: 5px 0;
+}
+.input_file input,
+.input_file button{
+    position: absolute;
+}
+.input_file .file{
+    opacity: 0;
+    filter: alpha(opacity = 0);
+    width: 260px;
+    margin-top: -6px;
+    z-index: 100;
+}
+.input_file .text{
+    margin-top: -5px;
+    width: 210px;
+    z-index: 2;
+}
+.input_file button{
+    margin-left: 213px;
+    margin-top: -5px;
+    z-index: 2;
+    font-size: 11px;
+    padding: 2px 5px !important;
+}
+
+@-moz-document url-prefix() {
+    .selected_file button{
+       padding: 1px 5px !important; 
+    }
+    .input_file button{
+       padding: 1px 5px !important;  
+    }
+}

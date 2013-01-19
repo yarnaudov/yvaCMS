@@ -1,0 +1,13 @@
+
+.gallery{
+    overflow: auto;
+    _height: 1%;
+}
+.gallery .image_small{
+    float: left;
+    margin: 2px 5px;
+}
+
+.gallery a.image img{
+    width: 600px;
+}

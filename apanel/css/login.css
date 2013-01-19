@@ -1,0 +1,77 @@
+
+div.login{
+    background-color: #E7EFEF;
+    border: 1px solid #CCCCCC;
+    height: 500px;
+    margin-top: 20px;
+    border-radius: 4px;   
+}
+div.login table{
+    width: 100%;
+}
+div.login table td{
+    vertical-align: top;
+}
+div.login div.login_intro{
+    padding: 20px;
+}
+div.login div.login_intro div.text{
+    height: 380px;
+    font-size: 13px;
+}
+div.login div.login_intro div.browsers span.header{
+    display: block;
+    font-size: 20px;
+}
+div.login div.login_intro div.browsers a{
+    display: inline-block;
+    margin: 5px;
+    text-align: center;
+}
+div.login div.login_intro div.browsers a span{
+    display: block;   
+}
+div.login div.login_form{
+    width: 420px;
+    height: 200px;    
+    margin: 50px;
+    padding: 25px 40px 40px;
+    border: 1px solid #AAAAAA;
+    background-color: #fff;
+    float: right;
+    text-align: right;
+    background-image: url('../img/iconUserControl.png');
+    background-repeat: no-repeat;
+    background-position: 20px 120px;
+    border-radius: 4px;    
+}
+div.login div.login_form div.error_msg{
+    margin: -10px 0 10px;
+    text-align: left; 
+}
+div.login div.login_form div.login_form_header{
+    font-size: 22px;
+    padding: 0 0 20px;
+}
+div.login div.login_form div input{
+    width: 250px;
+    height: 20px;
+    margin: 5px 0;
+}
+div.login div.login_form button{
+    margin-top: 20px;   
+}
+
+div.login div.login_intro div.text .logo{
+    overflow: auto;
+}
+div.login div.login_intro div.text .logo img{
+    float: left;
+}
+div.login div.login_intro div.text .logo span{
+    font-size: 26px;
+    font-family: "Myriad Pro It";
+    float: left;
+    display: inline-block;
+    padding: 3px 10px;
+}

@@ -1,0 +1,202 @@
+
+<form name="list" action="<?=current_url(true);?>" method="post" >
+        
+    <!-- start page header -->
+    <div id="page_header" >
+	
+        <div class="text" >
+            <img src="<?=base_url('img/iconSettings_25.png');?>" >
+            <span><?=lang('label_settings');?></span>
+        </div>
+	
+	<div class="actions" >
+	    
+            <button type="submit" name="save"     class="styled save"   ><?=lang('label_save');?></button>
+	    <button type="submit" name="apply"    class="styled apply"  ><?=lang('label_apply');?></button>
+	    <a href="<?=site_url('');?>"          class="styled cancel" ><?=lang('label_cancel');?></a>
+		
+	</div>
+        
+    </div>
+    <!-- end page header -->
+
+    <!-- start page content -->
+    <div id="sub_actions" >
+	<?php
+	        
+        $children_menus = $this->Adm_menu->getChildrenMenus(9, 1);
+                
+        $children_menu = array();
+        foreach($children_menus as $children_menu_d){
+            $menu[$children_menu_d['title_'.get_lang()]] = $children_menu_d['alias']; 
+        }
+        				
+        echo $this->menu_lib->create_menu($menu);
+          
+        ?>
+    </div>
+    <!-- start page content -->
+
+
+    <!-- start messages -->
+    <?php $good_msg = $this->session->userdata('good_msg');
+          $this->session->unset_userdata('good_msg');
+          if(!empty($good_msg)){ ?>
+          <div class="good_msg" >
+              <?=$good_msg;?>
+          </div>
+    <?php } ?>
+
+    <?php $error_msg = $this->session->userdata('error_msg');
+          $this->session->unset_userdata('error_msg');
+          if(!empty($error_msg)){ ?>
+          <div class="error_msg" >
+              <?=$error_msg;?>            
+          </div>
+    <?php } ?>
+    <!-- end messages -->
+
+
+    <!-- start page content -->
+    <div id="page_content" >
+		
+        <table class="add" cellpadding="0" cellspacing="0" >
+            
+            <tr>
+                
+                <!-- start left content  -->
+	        <td class="left" >
+	            
+                    <!-- mandatory information  -->
+	            <div class="box" >
+	      	      <span class="header" ><?=lang('label_general');?> <?=lang('label_information');?></span>
+	      	      
+                      <div class="box_content" >
+                        <table class="box_table" cellpadding="0" cellspacing="0" >
+
+                            <tr>
+                                <th><label class="multilang" ><?=lang('label_site_name');?>:</label></th>
+                                <td><input type="text" name="settings[site_name]" value="<?=set_value('settings[site_name]', isset($settings['site_name'][$this->trl]) ? $settings['site_name'][$this->trl] : "");?>" ></td>
+                            </tr>
+
+                            <tr><td colspan="2" class="empty_line" ></td></tr>
+                            
+                            <tr>
+                                <th></th>
+                                <td>                                    
+                                    <label style="display: inline;"><?=lang('label_site_name_in_title');?>:</label>
+                                    <select name="settings[site_name_in_title]" style="width: auto;" >
+                                        <?=create_options_array($this->config->item('yes_no'), set_value('settings[site_name_in_title]', isset($settings['site_name_in_title']) ? $settings['site_name_in_title']: ""));?>
+                                    </select>
+                                    <span>&nbsp;<?=lang('label_with_separator');?>&nbsp;</span>
+                                    <input type="text" style="width: 40px;" name="settings[site_name_in_title_separator]" value="<?=set_value('settings[site_name_in_title_separator]', isset($settings['site_name_in_title_separator']) ? $settings['site_name_in_title_separator'] : "");?>" >
+                                </td>
+                            </tr>
+                            
+                            <tr><td colspan="2" class="empty_line" ></td></tr>
+
+                            <tr>
+                                <th><label><?=lang('label_template');?>:</label></th>
+                                <td>
+                                    <?php $templates_dir = FCPATH.'/../templates/';
+                                          $handle = opendir($templates_dir);  ?>
+                                    <select name="settings[template]" style="width: auto;" >
+                                        <?php while (false !== ($entry = readdir($handle))) { 
+                                                if(substr($entry, 0, 1) == "." || !is_dir($templates_dir.$entry)){
+                                                  continue;                                                
+                                                }
+                                                $template = set_value('settings[template]', isset($settings['template']) ? $settings['template'] : ""); ?>
+                                        
+                                        <option value="<?=$entry;?>" <?=$template == $entry ? "selected" : "";?> ><?=$entry;?></option>
+                                        
+                                        <?php } ?>
+                                    </select>
+                                </td>
+                            </tr>
+
+                            <tr><td colspan="2" class="empty_line" ></td></tr>
+                            
+                            <tr>
+                                <th><label><?=lang('label_url_suffix');?>:</label></th>
+                                <td><input type="text" name="settings[url_suffix]" value="<?=set_value('settings[url_suffix]', isset($settings['url_suffix']) ? $settings['url_suffix'] : "");?>" ></td>
+                            </tr>
+                            
+                        </table>
+                      </div>
+	      	              
+                    </div>
+                    
+                    <div class="box" >
+	      	      <span class="header" ><?=lang('label_metadata');?></span>
+	      	      
+                      <div class="box_content" >
+                        <table class="box_table" cellpadding="0" cellspacing="0" >
+
+                            <tr>
+                                <th><label class="multilang" ><?=lang('label_description');?>:</label></th>
+                                <td><textarea name="settings[meta_description]" ><?=set_value('settings[meta_description]', isset($settings['meta_description'][$this->trl]) ? $settings['meta_description'][$this->trl] : "");?></textarea></td>
+                            </tr>
+
+                            <tr><td colspan="2" class="empty_line" ></td></tr>
+
+                            <tr>
+                                <th><label class="multilang" ><?=lang('label_keywords');?>:</label></th>
+                                <td><textarea name="settings[meta_keywords]" ><?=set_value('settings[meta_keywords]', isset($settings['meta_keywords'][$this->trl]) ? $settings['meta_keywords'][$this->trl] : "");?></textarea></td>
+                            </tr>
+
+                            <tr><td colspan="2" class="empty_line" ></td></tr>
+
+                            <tr>
+                                <th><label><?=lang('label_robots');?>:</label></th>
+                                <td>
+                                    <?php $robots_arr = array("" => "Index, Follow", "noindex, follow" => "No index, follow", "index, nofollow" => "Index, No follow", "noindex, nofollow" => "No index, no follow"); ?> 
+                                    <select name="settings[robots]" style="width: auto;" >
+                                        <?php foreach($robots_arr as $key => $robot){ 
+                                                $robots = set_value('settings[robots]', isset($settings['robots']) ? $settings['robots'] : ""); ?>
+                                        
+                                        <option value="<?=$key;?>" <?=$robots == $key ? "selected" : "";?> ><?=$robot;?></option>
+                                        
+                                        <?php } ?>
+                                    </select>
+                                </td>
+                            </tr>
+                            
+                        </table>
+                      </div>
+	      	              
+                    </div>
+                    
+                </td>
+                
+                <!-- start right content  -->
+	        <td class="right" >
+	      
+                    <div class="box" >
+                        <span class="header" ><?=lang('label_translation');?></span>
+                        
+                        <div class="box_content" >
+                            <table class="box_table" cellpadding="0" cellspacing="0" >
+
+                                <tr>
+                                    <td>
+                                        <select name="translation" >
+                                            <?=create_options('languages', 'abbreviation', 'title', $this->trl, array('status' => 'yes'));?>
+                                        </select>
+                                    </td>
+                                </tr>
+
+                            </table>
+                        </div>
+                        
+	            </div>
+                    
+                </td>
+                
+            </tr>
+            
+        </table>
+        	        
+    </div>
+    <!-- end page content -->
+
+</form>
