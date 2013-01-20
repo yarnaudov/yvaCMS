@@ -1,18 +1,26 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Article extends CI_Model {
+class Article extends MY_Model {
 
-    public function getDetails($article_id, $field = null)
+    public function getDetails($id, $field = null)
     {
 
-        $this->db->select('*');
-        $this->db->where('article_id', $article_id);
-
-        $article = $this->db->get('articles');  	
+        $query = "SELECT 
+                      *
+                    FROM
+                      articles a
+                      LEFT JOIN articles_data ad ON (a.id = ad.article_id AND ad.language_id = '".$this->trl."')
+                    WHERE
+                      a.id = '".$id."' ";
+        
+        $article = $this->db->query($query);  	
         $article = $article->result_array();
 
-        $article[0]['title'] = $article[0]['title_'.$this->trl];
-        $article[0]['text']  = $article[0]['text_'.$this->trl];
+        if(empty($article)){
+            return;
+        }
+        
+        $article[0] = array_merge($article[0], $this->Custom_field->getFieldsValues($id));
         
         if($field == null){
             return $article[0];
@@ -23,11 +31,11 @@ class Article extends CI_Model {
 
     }
     
-    public function getHistoryDetails($article_id, $updated_on, $field = null)
+    public function getHistoryDetails($id, $updated_on, $field = null)
     {
 
         $this->db->select('*');
-        $this->db->where('article_id', $article_id);
+        $this->db->where('id', $id);
         $this->db->where('updated_on', $updated_on);
 
         $article = $this->db->get('articles_history');  	
@@ -42,11 +50,11 @@ class Article extends CI_Model {
 
     }
     
-    public function getHistory($article_id)
+    public function getHistory($id)
     {
 
         $this->db->select('*');
-        $this->db->where('article_id', $article_id);
+        $this->db->where('id', $id);
         $this->db->order_by('updated_on DESC');
 
         $article = $this->db->get('articles_history');  	
@@ -95,11 +103,12 @@ class Article extends CI_Model {
         }
 
         $query = "SELECT 
-                        article_id
+                        *
                     FROM
-                        articles
+                        articles a
+                        LEFT JOIN articles_data ad ON (a.id = ad.article_id AND ad.language_id = ".$this->trl.")
                     WHERE
-                        article_id IS NOT NULL
+                        id IS NOT NULL
                         ".$filter."
                     ".($order_by != "" ? "ORDER BY ".$order_by : "")."
                     ".($limit    != "" ? "LIMIT ".$limit : "")."";
@@ -107,10 +116,6 @@ class Article extends CI_Model {
         //echo $query."<br/>";
 
         $articles = $this->db->query($query)->result_array();
-        
-        foreach($articles as $key => $article){
-            $articles[$key] = self::getDetails($article['article_id']);
-        }
         
         return $articles;
 
@@ -124,7 +129,7 @@ class Article extends CI_Model {
         $articles_arr = array();
         foreach($articles as $article){
             
-            $articles_arr[$this->Category->getDetails($article['category_id'], 'title_'.$this->Language->getDefault())][$article['article_id']] = $article['title_'.$this->Language->getDefault()];
+            $articles_arr[$this->Category->getDetails($article['category_id'], 'title_'.$this->Language->getDefault())][$article['id']] = $article['title_'.$this->Language->getDefault()];
             
         }
         
@@ -132,13 +137,11 @@ class Article extends CI_Model {
         
     }
     
-    public function getMaxOrder($category = "")
+    public function getMaxOrder($category_id)
     {
         
-        $category == "" ? $category = $this->input->post('category') : "";
-        
         $this->db->select_max("`order`");
-        $this->db->where("category_id", $category);
+        $this->db->where("category_id", $category_id);
         $max_order = $this->db->get('articles')->result_array();      
         $order = $max_order[0]['order'];
 
@@ -146,21 +149,15 @@ class Article extends CI_Model {
 
     }
     
-    public function count($category = "")
+    public function count($category_id)
     {
-        
-        $query = "SELECT 
-                        COUNT(*) as `count`
-                    FROM
-                        articles
-                    WHERE
-                        category_id = '".$category."'";
-         
-        //echo $query."<br/>";
 
-        $articles = $this->db->query($query)->result_array();    
+        $this->db->select('*');
+        $this->db->where('category_id', $category_id);
+        $this->db->from('articles');
+        $count = $this->db->count_all_results();  
 
-        return $articles[0]['count'];
+        return $count;
 
     }
   
@@ -168,39 +165,41 @@ class Article extends CI_Model {
     {
          
         $this->load->helper('alias');
+                
+        $data['articles_data']['title']       = $this->input->post('title');
+        $data['articles_data']['text']        = $this->input->post('text');
+        $data['articles_data']['language_id'] = $this->trl;
         
-        $data['title_'.$this->trl] = $this->input->post('title');
-        $data['alias']             = alias($this->input->post('alias'));
-        $data['text_'.$this->trl]  = $this->input->post('text');
+        $data['articles']['alias']            = alias($this->input->post('alias'));
+        $data['articles']['category_id']      = $this->input->post('category');
+        $data['articles']['status']           = $this->input->post('status');      
+        $data['articles']['show_in_language'] = $this->input->post('show_in_language');
+        $data['articles']['start_publishing'] = $this->input->post('start_publishing');
+        $data['articles']['end_publishing']   = $this->input->post('end_publishing');
 
-        $data['category_id']       = $this->input->post('category');
-        $data['status']            = $this->input->post('status');      
-        $data['language_id']       = $this->input->post('language');
-        $data['start_publishing']  = $this->input->post('start_publishing');
-        $data['end_publishing']    = $this->input->post('end_publishing');
-        $data['show_title']        = $this->input->post('show_title');
-
-        if($data['language_id'] == 'all'){
-            $data['language_id'] = NULL;
+        if($data['articles']['show_in_language'] == 'all'){
+            $data['articles']['show_in_language'] = NULL;
         }
-        if(empty($data['start_publishing'])){
-            $data['start_publishing'] = NULL;
+        if(empty($data['articles']['start_publishing'])){
+            $data['articles']['start_publishing'] = NULL;
         }
-        if(empty($data['end_publishing'])){
-            $data['end_publishing'] = NULL;
+        if(empty($data['articles']['end_publishing'])){
+            $data['articles']['end_publishing'] = NULL;
         }
 
         if($action == 'insert'){
-            $data['order'] =  self::getMaxOrder()+1;
-            $data['created_by'] =  $_SESSION['user_id'];
-            $data['created_on'] =  now();        
+            $data['articles']['order']      =  self::getMaxOrder($data['articles']['category_id'])+1;
+            $data['articles']['created_by'] =  $_SESSION['user_id'];
+            $data['articles']['created_on'] =  now();        
         }
         elseif($action == 'update'){
-            $data['updated_by'] =  $_SESSION['user_id'];
-            $data['updated_on'] =  now(); 
+            $data['articles']['updated_by'] =  $_SESSION['user_id'];
+            $data['articles']['updated_on'] =  now(); 
         }
 
         //echo print_r($data);
+        //exit;
+        
         return $data;
 
     }
@@ -210,58 +209,103 @@ class Article extends CI_Model {
 
         $data = self::prepareData('insert');
 
-        $query = $this->db->insert_string('articles', $data);
-        //echo $query;
+        $this->db->query('BEGIN');
+        
+        // save data in articles table
+        $query = $this->db->insert_string('articles', $data['articles']);
         $result = $this->db->query($query);
-
-        if($result == true){
-            $this->session->set_userdata('good_msg', lang('msg_save_article'));
-        }
-        else{
+        if($result != true){
             $this->session->set_userdata('error_msg', lang('msg_save_article_error'));
+            $this->db->query('ROLLBACK');
+            return;
         }
         
-        $article_id =$this->db->insert_id();
+        $id = $this->db->insert_id();
         
-        $this->Custom_field->saveFieldsValues($article_id);
+        // save data in articles_data table
+        $data['articles_data']['article_id'] = $id;
+        $query = $this->db->insert_string('articles_data', $data['articles_data']);
+        $result = $this->db->query($query);        
+        if($result != true){
+            $this->session->set_userdata('error_msg', lang('msg_save_article_error'));
+            $this->db->query('ROLLBACK');
+            return $id;
+        }
         
-        return $article_id;
+        // save custom fields data
+        $result = $this->Custom_field->saveFieldsValues($id);
+        if($result == false){
+            $this->session->set_userdata('error_msg', lang('msg_save_article_error'));
+            $this->db->query('ROLLBACK');
+            return $id;
+        }
+        
+        $this->session->set_userdata('good_msg', lang('msg_save_article'));
+        $this->db->query('COMMIT');
+        return $id;
 
     }
 
-    public function edit($article_id)
+    public function edit($id)
     {
-
+        
         $data = self::prepareData('update');
-        $where = "article_id = ".$article_id; 
-
-        $query = $this->db->update_string('articles', $data, $where);
-        //echo $query;
         
-        /*
-         * move old data to history table before update
-         */
-        $this->db->query("INSERT INTO articles_history SELECT * FROM articles WHERE article_id = ".$article_id);
-        $result = $this->db->query($query);
+        $this->db->query('BEGIN');
         
-        if($result == true){
-            $this->session->set_userdata('good_msg', lang('msg_save_article'));
-        }
-        else{
+        // save previous data in articles_history table
+        $result = self::_saveHistory($id);
+        if($result != true){
             $this->session->set_userdata('error_msg', lang('msg_save_article_error'));
+            $this->db->query('ROLLBACK');
+            return $id;
         }
         
-        $this->Custom_field->saveFieldsValues($article_id);
+        // save data in articles table
+        $where = "id = ".$id; 
+        $query = $this->db->update_string('articles', $data['articles'], $where);        
+        $result = $this->db->query($query);        
+        if($result != true){
+            $this->session->set_userdata('error_msg', lang('msg_save_article_error'));
+            $this->db->query('ROLLBACK');
+            return $id;
+        }
         
-        return $article_id;
+        // save data in articles_data table
+        if(parent::_dataExists('articles_data', 'article_id', $id) == 0){
+            $data['articles_data']['article_id'] = $id;
+            $query = $this->db->insert_string('articles_data', $data['articles_data']);
+        }
+        else{            
+            $where = "article_id = ".$id." AND language_id = ".$this->trl." ";
+            $query = $this->db->update_string('articles_data', $data['articles_data'], $where);            
+        }        
+        $this->db->query($query);
+        if($result != true){
+            $this->session->set_userdata('error_msg', lang('msg_save_article_error'));
+            $this->db->query('ROLLBACK');
+            return $id;
+        }
+        
+        // save custom fields data
+        $result = $this->Custom_field->saveFieldsValues($id);
+        if($result == false){
+            $this->session->set_userdata('error_msg', lang('msg_save_article_error'));
+            $this->db->query('ROLLBACK');
+            return $id;
+        }        
+        
+        $this->session->set_userdata('good_msg', lang('msg_save_article'));
+        $this->db->query('COMMIT');
+        return $id;
 
     }
-
-    public function changeStatus($article_id, $status)
+    
+    public function changeStatus($id, $status)
     {   
 
         $data['status'] = $status;
-        $where = "article_id = ".$article_id;
+        $where = "id = ".$id;
 
         $query = $this->db->update_string('articles', $data, $where);
         //echo $query;
@@ -276,11 +320,11 @@ class Article extends CI_Model {
 
     }
     
-    public function changeOrder($article_id, $order)
+    public function changeOrder($id, $order)
     {   
         
-        $old_order   = self::getDetails($article_id, 'order');
-        $category_id = self::getDetails($article_id, 'category_id');
+        $old_order   = self::getDetails($id, 'order');
+        $category_id = self::getDetails($id, 'category_id');
         
         if($order == 'up'){
             $new_order =  $old_order-1;        
@@ -296,7 +340,7 @@ class Article extends CI_Model {
         $result1 = $this->db->query($query1);
         
         $data2['order'] = $new_order;
-        $where2 = "article_id = ".$article_id;
+        $where2 = "id = ".$id;
         $query2 = $this->db->update_string('articles', $data2, $where2);
         //echo $query2;
         $result2 = $this->db->query($query2);
@@ -321,7 +365,7 @@ class Article extends CI_Model {
             $status = self::getDetails($article, 'status');
             
             if($status == 'trash'){
-                $result = $this->db->simple_query("DELETE FROM articles WHERE article_id = '".$article."'");
+                $result = $this->db->simple_query("DELETE FROM articles WHERE id = '".$article."'");
             }
             else{
                 $result = self::changeStatus($article, 'trash');
@@ -336,6 +380,38 @@ class Article extends CI_Model {
         
         $this->db->query("COMMIT");
         return true;
+        
+    }
+    
+    private function _saveHistory($id)
+    {
+       
+        $result = $this->db->query("INSERT 
+                                      INTO 
+                                        articles_history 
+                                      SELECT 
+                                         ad.article_id,
+                                         ad.language_id,
+                                         a.category_id,
+                                         a.alias,
+                                         a.show_in_language,
+                                         a.start_publishing,
+                                         a.end_publishing,
+                                         a.created_by,
+                                         a.created_on,
+                                         a.updated_by,
+                                         a.updated_on,
+                                         ad.title,
+                                         ad.text,
+                                         a.status,
+                                         a.`order`
+                                       FROM
+                                         articles a
+                                         JOIN articles_data ad ON (a.id = ad.article_id AND ad.language_id = ".$this->trl.")
+                                       WHERE
+                                         a.id = ".$id." ");
+        
+        return $result;
         
     }
     

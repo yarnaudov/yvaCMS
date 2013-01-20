@@ -83,7 +83,7 @@ class Menus extends MY_Controller {
                     $this->form_validation->set_rules('alias', lang('label_alias'), 'required|is_unique[menus.alias]');
                 }
                 elseif($method == 'edit'){
-                    $this->form_validation->set_rules('alias', lang('label_alias'), 'required|is_unique_edit[menus.alias.menu_id.'.$this->menu_id.']');
+                    $this->form_validation->set_rules('alias', lang('label_alias'), 'required|is_unique_edit[menus.alias.id.'.$this->menu_id.']');
                 }
                 
                 if ($this->form_validation->run() == TRUE){
@@ -208,9 +208,11 @@ class Menus extends MY_Controller {
                 
         // get menus
         $data = $filters;
-        $data['order']     = trim(str_replace('`', '', $order_by));
-        $data['limit']     = $limit;        
-        $data["menus"]     = $this->Menu->getMenus($filters, $order_by);
+        $data['order']      = trim(str_replace('`', '', $order_by));
+        $data['limit']      = $limit;        
+        $data["menus"]      = $this->Menu->getMenus($filters, $order_by);
+        
+        $data['categories'] = $this->Category->getForDropdown();
         
         /*
          * special way to set limit for menus 
@@ -240,23 +242,23 @@ class Menus extends MY_Controller {
 	
     public function add()
     {           
-        $data['custom_fields'] = $this->Custom_field->getCustomFields(array('status' => 'yes'), '`order`');
-        //$data['components']    = parceXMLfile(realpath(dirname(__FILE__).'/../../../').'/components/components.xml');
-        $data['components']    = $this->Adm_menu->getComponents();
         
-        $content["content"] = $this->load->view('menus/add', $data, true);		
-        $this->load->view('layouts/default', $content);
+        $data['categories']    = $this->Category->getForDropdown();
+        $data['menus']         = $this->Menu->getForDropdown(array('category_id' => set_value('category', key($data['categories']))));
+        $data['custom_fields'] = $this->Custom_field->getCustomFields(array('status' => 'yes'), '`order`');
+        
+        $content = $this->load->view('menus/add', $data, true);		
+        $this->load->view('layouts/default', compact('content'));
+        
     }
 	
     public function edit()      
     {
         
-        $data = $this->Menu->getDetails($this->menu_id);        
-        $data = @array_merge($data, $this->Custom_field->getFieldsValues($this->menu_id));        
-        $data['params'] = json_decode($data['params'], true);      
+        $data                  = $this->Menu->getDetails($this->menu_id);   
+        $data['categories']    = $this->Category->getForDropdown();
+        $data['menus']         = $this->Menu->getForDropdown(array('category_id' => set_value('category', isset($data['category_id']) ? $data['category_id'] : "")));
         $data['custom_fields'] = $this->Custom_field->getCustomFields(array('status' => 'yes'), '`order`');
-        //$data['components']    = parceXMLfile(realpath(dirname(__FILE__).'/../../../').'/components/components.xml');
-        $data['components']    = $this->Adm_menu->getComponents();
         
         //print_r($data);
 

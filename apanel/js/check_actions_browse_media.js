@@ -143,14 +143,14 @@ $(document).ready(function() {
             else{
                 var html = '<img src="'+media+'" >';
             }
-            
+           
             parent.tinyMCE.execCommand('mceInsertContent', false, html);
             
         }
-        
-        parent.$('#dialog-media-browser').dialog('close');
-        $('.checkbox:checked').removeAttr('checked'); 
+     ;
+        parent.$( '#jquery_ui' ).dialog( 'close' ); 
         return false;
+        
     });
     
     $('input.file').bind('change', function(){

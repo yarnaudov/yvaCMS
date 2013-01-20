@@ -105,10 +105,10 @@
             <tr class="row <?=$row_class;?>" >
                 <td><?=($numb+1);?></td>	
                 <td>
-                    <input type="checkbox" class="checkbox" name="languages[]" value="<?=$language['language_id'];?>" />
+                    <input type="checkbox" class="checkbox" name="languages[]" value="<?=$language['id'];?>" />
                 </td>
                 <td style="text-align: left;" >
-                    <a href="<?=site_url('languages/edit/'.$language['language_id']);?>" >
+                    <a href="<?=site_url('languages/edit/'.$language['id']);?>" >
                         <?=$language['title'];?>
                     </a>
                     <?php if(!empty($language['description'])){ ?>
@@ -156,7 +156,7 @@
                 </td>
                 <td><?=User::getDetails($language['created_by'], 'user');?></td>
                 <td><?=($language['created_on']);?></td>
-                <td><?=$language['language_id'];?></td>
+                <td><?=$language['id'];?></td>
             </tr>
 		
             <?php } ?>

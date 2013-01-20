@@ -79,7 +79,7 @@
 			
                 <select name="category" >
                     <option value="none" > - <?=lang('label_select');?> <?=lang('label_category');?> - </option>
-                    <?=create_options('categories', 'category_id', 'title_'.Language::getDefault(), isset($category) ? $category : "", array('extension' => 'menus', 'status' => 'yes') );?>
+                    <?=create_options_array($categories, isset($category) ? $category : "");?>
                 </select>
 
                 <select name="status" >
@@ -96,7 +96,7 @@
             <tr>
                 <th style="width:3%;"  >#</th>	
                 <th style="width:3%;"  >&nbsp;</th>
-                <th style="width:31%;" class="sortable" id="title_<?=Language::getDefault();?>" ><?=lang('label_title');?></th>
+                <th style="width:31%;" class="sortable" id="title"       ><?=lang('label_title');?></th>
                 <th style="width:10%;" class="sortable" id="type"        ><?=lang('label_type');?></th>
                 <th style="width:12%;" class="sortable" id="category_id" ><?=lang('label_category');?></th>
                 <th style="width:6%;"  class="sortable" id="default"     ><?=lang('label_default');?></th>
@@ -122,12 +122,12 @@
                         <span>|&mdash;</span>
                     <?php } ?>
                     <a href="<?=site_url('menus/edit/'.$menu['menu_id']);?>" >
-                        <?=$menu['title_'.Language::getDefault()];?>
+                        <?=$menu['title'];?>
                     </a>
                     <div class="description" >(<span class="head" ><?=lang('label_alias');?>:</span> <span class="content" ><?=$menu['alias'];?></span>)</div>
                 </td>
-                <td><?=lang('label_'.$menu['type']);?></td>
-                <td><?=$this->Category->getDetails($menu['category_id'], 'title_'.Language::getDefault());?></td>
+                <td><?=lang('label_'.$menu['params']['type']);?></td>
+                <td><?=$this->Category->getDetails($menu['category_id'], 'title');?></td>
                 <td>
                     <?php if($menu['default'] == 'yes'){ ?>             
                     <img src="<?=base_url('img/iconStar16.png');?>" >
@@ -175,7 +175,7 @@
 	    
             <?php if(count($menus) == 0){ ?>
             <tr>
-                <td colspan="9" ><?=lang('msg_no_results_found');?></td>
+                <td colspan="11" ><?=lang('msg_no_results_found');?></td>
             </tr>
             <?php } ?>
             

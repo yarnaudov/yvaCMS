@@ -7,10 +7,11 @@ class Home extends MY_Controller {
         
         $this->load->model('Article');
         
-        $data['articles'] = $this->Article->getArticles(array(), "updated_on DESC, created_on DESC", "0, 10");
+        $articles = $this->Article->getArticles(array(), "updated_on DESC, created_on DESC", "0, 10");
         
-        $content["content"] = $this->load->view('home', $data, true);		
-        $this->load->view('layouts/default', $content);
+        $content = $this->load->view('home', compact('articles'), true);		
+        $this->load->view('layouts/default', compact('content'));
+        
     }
     
     public function login()

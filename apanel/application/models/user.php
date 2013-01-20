@@ -7,15 +7,11 @@ class User extends CI_Model {
         parent::__construct();
     }
   
-    public function getDetails($user_id, $field = null)
+    public function getDetails($id, $field = null)
     {
-    
-        if($user_id == "" && isset($_SESSION['user_id'])){
-            $user_id = $_SESSION['user_id'];
-        }
 
         $this->db->select('*');
-        $this->db->where('user_id', $user_id);
+        $this->db->where('id', $id);
 
         $user = $this->db->get('users');  	
         $user = $user->result_array();
@@ -39,19 +35,12 @@ class User extends CI_Model {
         $user = $this->input->post('user');
         $pass = $this->input->post('pass');
 
-        $query = "SELECT
-                    *
-                    FROM
-                    users
-                    WHERE
-                    user = '".$user."'";
-
+        $query = "SELECT * FROM users WHERE user = '".$user."'";
 
         $user_d = $this->db->query($query)->result_array();
 
-        if(count($user_d) == 1 && $user_d[0]['pass'] == md5($pass)){          
-            $this->session->set_userdata('user_id', $user_d[0]['user_id']);
-            $_SESSION['user_id'] = $user_d[0]['user_id'];
+        if(count($user_d) == 1 && $user_d[0]['pass'] == md5($pass)){
+            $_SESSION['user_id'] = $user_d[0]['id'];
         }
         else{
             $this->session->set_userdata('login_error_msg', lang('msg_login_error'));          
@@ -110,13 +99,13 @@ class User extends CI_Model {
 
     }
     
-    public function getMaxOrder($group = "")
+    public function getMaxOrder($user_group = "")
     {
         
-        $group == "" ? $group = $this->input->post('group') : "";
+        $user_group == "" ? $group = $this->input->post('user_group') : "";
         
         $this->db->select_max("`order`");
-        $this->db->where("group_id", $group);
+        $this->db->where("user_group_id", $group);
         $max_order = $this->db->get('users')->result_array();      
         $order = $max_order[0]['order'];
 
@@ -124,7 +113,7 @@ class User extends CI_Model {
 
     }
     
-    public function count($group = "")
+    public function count($user_group = "")
     {
         
         $query = "SELECT 
@@ -132,7 +121,7 @@ class User extends CI_Model {
                     FROM
                         users
                     WHERE
-                        group_id = '".$group."'";
+                        user_group_id = '".$user_group."'";
          
         //echo $query."<br/>";
 
@@ -157,7 +146,7 @@ class User extends CI_Model {
         }
         
         $data['description']       = $this->input->post('description');
-        $data['group_id']          = $this->input->post('group');
+        $data['user_group_id']     = $this->input->post('user_group');
         $data['status']            = $this->input->post('status');
                         
         if($action == 'insert'){
@@ -191,19 +180,19 @@ class User extends CI_Model {
             $this->session->set_userdata('error_msg', lang('msg_save_user_error'));
         }
         
-        $user_id =$this->db->insert_id();
+        $id =$this->db->insert_id();
         
-        $this->Custom_field->saveFieldsValues($user_id);
+        $this->Custom_field->saveFieldsValues($id);
         
-        return $user_id;
+        return $id;
 
     }
 
-    public function edit($user_id)
+    public function edit($id)
     {
 
         $data = self::prepareData('update');
-        $where = "user_id = ".$user_id; 
+        $where = "id = ".$id; 
 
         $query = $this->db->update_string('users', $data, $where);
         //echo $query;
@@ -216,17 +205,17 @@ class User extends CI_Model {
             $this->session->set_userdata('error_msg', lang('msg_save_user_error'));
         }
         
-        $this->Custom_field->saveFieldsValues($user_id);
+        $this->Custom_field->saveFieldsValues($id);
         
-        return $user_id;
+        return $id;
 
     }    
     
-    public function changeStatus($user_id, $status)
+    public function changeStatus($id, $status)
     {   
 
         $data['status'] = $status;
-        $where = "user_id = ".$user_id;
+        $where = "id = ".$id;
 
         $query = $this->db->update_string('users', $data, $where);
         //echo $query;
@@ -241,11 +230,11 @@ class User extends CI_Model {
 
     }
     
-    public function changeOrder($user_id, $order)
+    public function changeOrder($id, $order)
     {   
         
-        $old_order   = self::getDetails($user_id, 'order');
-        $group_id = self::getDetails($user_id, 'group_id');
+        $old_order     = self::getDetails($id, 'order');
+        $user_group_id = self::getDetails($id, 'user_group_id');
         
         if($order == 'up'){
             $new_order =  $old_order-1;        
@@ -255,13 +244,13 @@ class User extends CI_Model {
         }
         
         $data1['order'] = $old_order;
-        $where1 = "`order` = ".$new_order." AND group_id = '".$group_id."'";
+        $where1 = "`order` = ".$new_order." AND user_group_id = '".$user_group_id."'";
         $query1 = $this->db->update_string('users', $data1, $where1);
         //echo $query1;
         $result1 = $this->db->query($query1);
         
         $data2['order'] = $new_order;
-        $where2 = "user_id = ".$user_id;
+        $where2 = "id = ".$id;
         $query2 = $this->db->update_string('users', $data2, $where2);
         //echo $query2;
         $result2 = $this->db->query($query2);

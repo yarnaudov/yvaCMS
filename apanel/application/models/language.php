@@ -4,25 +4,29 @@ class Language extends CI_Model {
 
     function __construct()
     {
-    parent::__construct();
+        parent::__construct();
     }
   
     public function getDefault()
     {
-        $language = $this->db->query("SELECT abbreviation FROM languages WHERE `default` = 'yes'")->result_array();
-        return $language[0]['abbreviation'];
+        $language = $this->db->query("SELECT id FROM languages WHERE `default` = 'yes'")->result_array();
+        return $language[0]['id'];
 
     }
   
-    public function getDetails($language_id, $field = null)
+    public function getDetails($id, $field = null)
     {
 
         $this->db->select('*');
-        $this->db->where('language_id', $language_id);
+        $this->db->where('id', $id);
 
         $language = $this->db->get('languages');  	
         $language = $language->result_array();
 
+        if(empty($language)){
+            return;
+        }
+        
         if($field == null){
             return $language[0];
         }
@@ -59,7 +63,7 @@ class Language extends CI_Model {
                     FROM
                         languages
                     WHERE
-                        language_id IS NOT NULL
+                        id IS NOT NULL
                         ".$filter."
                     ".($order_by != "" ? "ORDER BY ".$order_by : "")."
                     ".($limit    != "" ? "LIMIT ".$limit : "")."";
@@ -125,19 +129,18 @@ class Language extends CI_Model {
         $result = $this->db->query($query);
         
         if($result == true){
-            $language_id = $this->db->insert_id();
-            self::alterTables('insert', $data['abbreviation']);
+            $id = $this->db->insert_id();
             $this->session->set_userdata('good_msg', lang('msg_save_language'));
         }
         else{
             $this->session->set_userdata('error_msg', lang('msg_save_language_error'));
         }
         
-        return $language_id;
+        return $id;
 
     }
 
-    public function edit($language_id)
+    public function edit($id)
     {
 
         $data = self::prepareData('update');
@@ -147,33 +150,30 @@ class Language extends CI_Model {
             $this->db->query($query);
         }
         
-        $where = "language_id = ".$language_id; 
+        $where = "id = ".$id; 
         $query = $this->db->update_string('languages', $data, $where);
         //echo $query;
         
-        $old_abbr = self::getDetails($language_id, 'abbreviation');
+        $old_abbr = self::getDetails($id, 'abbreviation');
         
         $result = $this->db->query($query);
 
         if($result == true){
-            if($data['abbreviation'] != $old_abbr){
-                self::alterTables('update', $data['abbreviation'], $old_abbr);
-            }
             $this->session->set_userdata('good_msg', lang('msg_save_language'));
         }
         else{
             $this->session->set_userdata('error_msg', lang('msg_save_language_error'));
         }
 
-        return $language_id;
+        return $id;
 
     }
     
-    public function changeStatus($language_id, $status)
+    public function changeStatus($id, $status)
     {   
 
         $data['status'] = $status;
-        $where = "language_id = ".$language_id;
+        $where = "id = ".$id;
 
         $query = $this->db->update_string('languages', $data, $where);
         //echo $query;
@@ -188,10 +188,10 @@ class Language extends CI_Model {
 
     }
     
-    public function changeOrder($language_id, $order)
+    public function changeOrder($id, $order)
     {   
         
-        $old_order   = self::getDetails($language_id, 'order');
+        $old_order   = self::getDetails($id, 'order');
         
         if($order == 'up'){
             $new_order =  $old_order-1;        
@@ -207,7 +207,7 @@ class Language extends CI_Model {
         $result1 = $this->db->query($query1);
         
         $data2['order'] = $new_order;
-        $where2 = "language_id = ".$language_id;
+        $where2 = "id = ".$id;
         $query2 = $this->db->update_string('languages', $data2, $where2);
         //echo $query2;
         $result2 = $this->db->query($query2);
@@ -229,13 +229,12 @@ class Language extends CI_Model {
         $languages = $this->input->post('languages');     
         foreach($languages as $language){
             
-            $status       = self::getDetails($language, 'status');
-            $abbreviation = self::getDetails($language, 'abbreviation');
+            $status = self::getDetails($language, 'status');
             
             if($status == 'trash'){
-                $result = $this->db->simple_query("DELETE FROM languages WHERE language_id = '".$language."'");
+                $result = $this->db->simple_query("DELETE FROM languages WHERE id = '".$language."'");
                 if($result == true){                                        
-                    $result = self::alterTables('delete', $abbreviation);
+                    //$result = self::alterTables('delete', $abbreviation);
                 }
             }
             else{

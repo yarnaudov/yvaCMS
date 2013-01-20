@@ -83,14 +83,7 @@
 
                             <tr>
                                 <th><label class="multilang" ><?=lang('label_title');?>:</label></th>
-                                <td><input type="text" name="title" value="<?=set_value('title', isset(${'title_'.$this->trl}) ? ${'title_'.$this->trl} : "");?>" ></td>
-                            </tr>
-
-                            <tr><td colspan="2" class="empty_line" ></td></tr>
-
-                            <tr>
-                                <th><label><?=lang('label_alias');?>:</label></th>
-                                <td><input type="text" name="alias" value="<?=set_value('alias', isset($alias) ? $alias : "");?>" ></td>
+                                <td><input type="text" name="title" value="<?=set_value('title', isset($title) ? $title : "");?>" ></td>
                             </tr>
 
                         </table>
@@ -103,7 +96,7 @@
                     <div class="box" >
 	      	        <span class="header multilang" ><?=lang('label_description');?></span>
                         <div class="editor_div" >
-                          <textarea name="description" class="editor" ><?=set_value('description', isset(${'description_'.$this->trl}) ? ${'description_'.$this->trl} : "");?></textarea>
+                          <textarea name="description" class="editor" ><?=set_value('description', isset($description) ? $description : "");?></textarea>
                         </div>
 	            </div>
 	      
@@ -123,7 +116,7 @@
                                 <tr>
                                     <td>
                                         <select name="translation" >
-                                            <?=create_options('languages', 'abbreviation', 'title', $this->trl, array('status' => 'yes'));?>
+                                            <?=create_options('languages', 'id', 'title', $this->trl, array('status' => 'yes'));?>
                                         </select>
                                     </td>
                                 </tr>

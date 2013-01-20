@@ -17,13 +17,10 @@
             <?php } ?>
             
             <span>&nbsp;»&nbsp;</span>
-            <!--
-	    <img src="<?=base_url('img/iconCategories.png');?>" >
-            -->
             <span><?=lang('label_custom_fields');?></span>
             <span>&nbsp;»&nbsp;</span>
             <span>
-              <?php if(isset($custom_field_id)){
+              <?php if(isset($id)){
                       echo lang('label_edit');
                     }
                     else{

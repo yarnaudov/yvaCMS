@@ -21,8 +21,7 @@ class Languages extends MY_Controller {
     
     public function _remap($method)
     {
-        if ($method == 'add' || $method == 'edit')
-        {
+        if ($method == 'add' || $method == 'edit'){
             
             $this->jquery_ext->add_plugin("tinymce");
             $this->jquery_ext->add_library("tinymce.js");
@@ -38,7 +37,7 @@ class Languages extends MY_Controller {
                     $this->form_validation->set_rules('abbreviation', lang('label_abbreviation'), 'required|is_unique[languages.abbreviation]');
                 }
                 elseif($method == 'edit'){
-                    $this->form_validation->set_rules('abbreviation', lang('label_abbreviation'), 'required|is_unique_edit[languages.abbreviation.language_id.'.$this->language_id.']');
+                    $this->form_validation->set_rules('abbreviation', lang('label_abbreviation'), 'required|is_unique_edit[languages.abbreviation.id.'.$this->language_id.']');
                 }
             
                 if ($this->form_validation->run() == TRUE){
@@ -49,7 +48,7 @@ class Languages extends MY_Controller {
                         redirect('languages');
                         exit();
                     }
-                    elseif(isset($_POST['apply'])){                        
+                    elseif(isset($_POST['apply'])){                   
                         redirect('languages/edit/'.$language_id);
                         exit();
                     }

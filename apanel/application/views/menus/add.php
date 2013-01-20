@@ -78,7 +78,7 @@
 
                             <tr>
                                 <th><label class="multilang" ><?=lang('label_title');?>:</label></th>
-                                <td><input type="text" name="title" value="<?=set_value('title', isset(${'title_'.$this->trl}) ? ${'title_'.$this->trl} : "");?>" ></td>
+                                <td><input type="text" name="title" value="<?=set_value('title', isset($title) ? $title : "");?>" ></td>
                             </tr>
 
                             <tr><td colspan="2" class="empty_line" ></td></tr>
@@ -94,203 +94,7 @@
                     </div>
 	            <!-- mandatory information  -->
                     
-	            
-                    <div class="box" >
-	      	        <span class="header multilang" ><?=lang('label_description');?></span>
-                        <div class="editor_div" >
-                          <textarea name="description" class="editor" ><?=set_value('description', isset(${'description_'.$this->trl}) ? ${'description_'.$this->trl} : "");?></textarea>
-                        </div>
-                        
-                        <div style="margin: 6px 6px 0 6px;height: 20px;" >
-                            <?php $description_as_page_title = set_value('params[description_as_page_title]', isset($params['description_as_page_title']) ? $params['description_as_page_title']: ""); ?>
-                            <input style="width: 16px;float: left;" type="checkbox" value="yes" name="params[description_as_page_title]" id="description_as_page_title" <?=$description_as_page_title == 'yes' ? 'checked' : ''; ?> >
-                            <label style="display: inline;width: auto;float: left;margin:0 0 0 2px;" for="description_as_page_title" ><?=lang('label_description_as_page_title');?></label>    
-                        </div>
-                                                
-	            </div>
-	      
-                </td>
-                <!-- end left content  -->
-	        
-                
-                <!-- start right content  -->
-	        <td class="right" >
-	      
-                    <div class="box" >
-                        <span class="header" ><?=lang('label_translation');?></span>
-                        
-                        <div class="box_content" >
-                            <table class="box_table" cellpadding="0" cellspacing="0" >
-
-                                <tr>
-                                    <td>
-                                        <select name="translation" >
-                                            <?=create_options('languages', 'abbreviation', 'title', $this->trl, array('status' => 'yes'));?>
-                                        </select>
-                                    </td>
-                                </tr>
-
-                            </table>
-                        </div>
-                        
-	            </div>
-                    
-	      
 	            <div class="box" >
-	      	        <span class="header" ><?=lang('label_options');?></span>
-	                
-                        <div class="box_content" >
-                            <table class="box_table" cellpadding="0" cellspacing="0" >
-
-                                <tr>	      			
-                                    <th><label><?=lang('label_category');?>:</label></th>
-                                    <td>
-                                        <select name="category" >
-                                            <?=create_options('categories', 'category_id', 'title_'.Language::getDefault(), set_value('category', isset($category_id) ? $category_id : ""), array('extension' => 'menus', 'status' => 'yes') );?>
-                                        </select>
-                                    </td>
-                                </tr>
-
-                                <tr><td colspan="2" class="empty_line" ></td></tr>
-
-                                <tr>	      			
-                                    <th><label><?=lang('label_status');?>:</label></th>
-                                    <td>
-                                        <select name="status" >
-                                            <?=create_options_array($this->config->item('statuses'), set_value('status', isset($status) ? $status : ""));?>
-                                        </select>
-                                    </td>
-                                </tr>
-                                
-                                <tr><td colspan="2" class="empty_line" ></td></tr>
-                                
-                                <tr>	      			
-                                    <th><label><?=lang('label_default');?>:</label></th>
-                                    <td>
-                                        <?php if(!isset($default)){$default = 'no';} ?>
-                                        <select name="default" <?=$default == 'yes' ? 'disabled' : '';?> >
-                                            <?=create_options_array($this->config->item('yes_no'), set_value('default', isset($default) ? $default : ""));?>
-                                        </select>
-                                    </td>
-                                </tr>
-
-                                <tr><td colspan="2" class="empty_line" ></td></tr>
-
-                                <tr>	      			
-                                    <th><label><?=lang('label_language');?>:</label></th>
-                                    <td>
-                                        <select name="language" >
-                                            <option value="all" ><?=lang('label_all');?></option>
-                                            <?=create_options('languages', 'language_id', 'title', set_value('translation', isset($language_id) ? $language_id : ""), array('status' => 'yes') );?>
-                                        </select>
-                                    </td>
-                                </tr>
-                                
-                                <tr><td colspan="2" class="empty_line" ></td></tr>
-                                
-                                <tr>	      			
-                                    <th><label><?=lang('label_access');?>:</label></th>
-                                    <td>
-                                        <select name="access" >
-                                            <?=create_options_array($this->config->item('accesses'), set_value('access', isset($access) ? $access : "") );?>
-                                        </select>
-                                    </td>
-                                </tr>
-                                
-                                <tr><td colspan="2" class="empty_line" ></td></tr>
-                                
-                                <tr>	      			
-                                    <th><label><?=lang('label_open_in');?>:</label></th>
-                                    <td>
-                                        <select name="target" >
-                                            <?=create_options_array($this->config->item('menu_targets'), set_value('target', isset($target) ? $target : "") );?>
-                                        </select>
-                                    </td>
-                                </tr>
-                                
-                                <tr><td colspan="2" class="empty_line" ></td></tr>
-
-                                <tr>	      			
-                                    <th><label><?=lang('label_parent');?>:</label></th>
-                                    <td>
-                                        <?php
-                                        $category_id = set_value('category', isset($category_id) ? $category_id : "");
-                                        $menus = $this->Menu->getMenus(array('category_id' => $category_id), '`order`');
-                                        $menus = $this->Menu->dropdownListArrray($menus);
-                                        ?>                                        
-                                        <select name="parent" class="combobox" >
-                                            <option value="none" >- - -</option>
-                                            <?=create_options_array($menus, set_value('parent', isset($parent_id) ? $parent_id : "") );?>
-                                        </select>
-                                    </td>
-                                </tr>
-                                                                
-                                <tr><td colspan="2" class="empty_line" ></td></tr>                               
-                                
-                                <tr>	      			
-                                    <th><label><?=lang('label_image');?>:</label></th>
-                                    <td>
-                                        <input class="image" type="text" readonly name="params[image]" id="media" value="<?=set_value('params[image]', isset($params['image']) ? $params['image'] : "");?>" style="width: 58%">
-                                       
-                                        <a href="<?=site_url('images');?>" 
-                                           class = "load_jquery_ui_iframe" 
-                                           lang  = "dialog-media-browser" ><?=lang('label_select');?></a>&nbsp;|&nbsp;<a href  = "#"
-                                                                                                                         class = "clear_jquery_ui_inputs"
-                                                                                                                         lang  = "image" ><?=lang('label_clear');?></a>
-                                        
-                                        <!-- start jquery UI -->
-                                        <div id="dialog-media-browser"
-                                             class = "jquery_ui_iframe"
-                                             title="<?=lang('label_browse').' '.lang('label_media');?>" 
-                                             lang="<?=site_url('home/media/simple_ajax');?>" ></div>
-                                                                                
-                                    </td>
-                                </tr>
-                                                                
-                                <tr><td colspan="2" class="empty_line" ></td></tr>
-                                
-                                <tr>	      			
-                                    <th><label><?=lang('label_template');?>:</label></th>
-                                    <td>
-                                        <?php $templates_dir = FCPATH.'/../templates/';
-                                              $handle = opendir($templates_dir);  ?>
-                                        <select name="params[template]" >
-                                            <option value="default" ><?=lang('label_default');?></option>
-                                            <?php while (false !== ($entry = readdir($handle))) { 
-                                                    if(substr($entry, 0, 1) == "." || !is_dir($templates_dir.$entry)){
-                                                      continue;                                                
-                                                    }
-                                                    $template = set_value('params[template]', isset($params['template']) ? $params['template'] : ""); ?>
-
-                                            <option value="<?=$entry;?>" <?=$template == $entry ? "selected" : "";?> ><?=$entry;?></option>
-
-                                            <?php } ?>
-                                        </select>
-                                    </td>
-                                </tr>
-                                
-                                <?php if(count($custom_fields) > 0){ ?>
-                                <tr><td colspan="2" class="empty_line" ></td></tr>
-                                <tr>
-                                    <td colspan="2" class="empty_line" >
-                                        <fieldset style="border:none;border-top: 1px solid #aaa;padding-left: 10px;">
-                                            <legend style="font-weight: bold;padding: 0 5px;" ><?=lang('label_custom_fields');?></legend>
-                                        </fieldset>
-                                    </td>
-                                </tr>
-                                
-                                <?php $this->load->view('custom_fields/load_fields'); ?>
-                                
-                                <?php } ?>
-                                
-                                
-                            </table>
-                        </div>
-                            
-                    </div>
-                    
-                    
-                    <div class="box" >
 	      	        <span class="header" ><?=lang('label_advanced');?> <?=lang('label_options');?></span>
 	                
                         <div class="box_content" >
@@ -299,13 +103,19 @@
                                 <tr>	      			
                                     <th><label><?=lang('label_type');?>:</label></th>
                                     <td>
-                                        <select name="type" >
-                                            <?=create_options_array($this->config->item('menu_types'), set_value('type', isset($type) ? $type : "") );?>
+                                        <a href  = "<?=site_url('menus/types');?>"
+                                           class = "load_jquery_ui_iframe"
+                                           title = "<?=lang('label_select')." ".lang('label_menu')." ".lang('label_type');?>"
+                                           lang  = "menu_types" >
+                                            <?=lang('label_select');?>
+                                        </a>
+                                        <select name="params[type]" >
+                                            <?=create_options_array($this->config->item('menu_types'), set_value('params[type]', isset($params['type']) ? $params['type'] : "") );?>
                                         </select>
                                     </td>
                                 </tr>
                                 
-                                <?php $type = set_value('type', isset($type) ? $type : ""); 
+                                <?php $type = set_value('params[type]', isset($params['type']) ? $params['type'] : ""); 
                                       if($type == 'article' || $type == ""){ ?>
                                 
                                 <tr><td colspan="2" class="empty_line" ></td></tr>
@@ -382,10 +192,10 @@
                                     <td>
                                         <?php $params['component'] = set_value('params[component]', isset($params['component']) ? $params['component'] : ""); ?>
                                         <select name="params[component]" class="component" >
-                                            <?php foreach($components as $component_type => $component){ 
+                                            <?php foreach($this->components as $component_type => $component){ 
                                                     $component['alias'] = str_replace("components/", "", $component['alias']); ?>
-                                            <option <?=$component['alias'] == $params['component'] ? "selected" : "";?> 
-                                                    value="<?=$component['alias'];?>" ><?=$component['title_'.get_lang()];?></option>
+                                            <option <?=$component_type == $params['component'] ? "selected" : "";?> 
+                                                    value="<?=$component_type;?>" ><?=$component_type;?></option>
                                             <?php } ?>
                                         </select>
                                     </td>
@@ -426,6 +236,189 @@
                         </div>
                     </div>
                     
+                    <div class="box" >
+	      	        <span class="header multilang" ><?=lang('label_description');?></span>
+                        <div class="editor_div" >
+                          <textarea name="description" class="editor" ><?=set_value('description', isset($description) ? $description : "");?></textarea>
+                        </div>
+                        
+                        <div id="menu_description_as_page_title" >
+                            <?php $description_as_page_title = set_value('description_as_page_title', isset($description_as_page_title) ? $description_as_page_title : ""); ?>
+                            <input type="checkbox" value="yes" name="description_as_page_title" id="description_as_page_title" <?=$description_as_page_title == 'yes' ? 'checked' : ''; ?> >
+                            <label for="description_as_page_title" ><?=lang('label_description_as_page_title');?></label>    
+                        </div>
+                                                
+	            </div>
+	      
+                </td>
+                <!-- end left content  -->
+	        
+                
+                <!-- start right content  -->
+	        <td class="right" >
+	      
+                    <div class="box" >
+                        <span class="header" ><?=lang('label_translation');?></span>
+                        
+                        <div class="box_content" >
+                            <table class="box_table" cellpadding="0" cellspacing="0" >
+
+                                <tr>
+                                    <td>
+                                        <select name="translation" >
+                                            <?=create_options('languages', 'id', 'title', $this->trl, array('status' => 'yes'));?>
+                                        </select>
+                                    </td>
+                                </tr>
+
+                            </table>
+                        </div>
+                        
+	            </div>
+                    
+	      
+	            <div class="box" >
+	      	        <span class="header" ><?=lang('label_options');?></span>
+	                
+                        <div class="box_content" >
+                            <table class="box_table" cellpadding="0" cellspacing="0" >
+
+                                <tr>	      			
+                                    <th><label><?=lang('label_category');?>:</label></th>
+                                    <td>
+                                        <select name="category" >
+                                            <?=create_options_array($categories, set_value('category', isset($category_id) ? $category_id : ""));?>
+                                        </select>
+                                    </td>
+                                </tr>
+
+                                <tr><td colspan="2" class="empty_line" ></td></tr>
+
+                                <tr>	      			
+                                    <th><label><?=lang('label_status');?>:</label></th>
+                                    <td>
+                                        <select name="status" >
+                                            <?=create_options_array($this->config->item('statuses'), set_value('status', isset($status) ? $status : ""));?>
+                                        </select>
+                                    </td>
+                                </tr>
+                                
+                                <tr><td colspan="2" class="empty_line" ></td></tr>
+                                
+                                <tr>	      			
+                                    <th><label><?=lang('label_default');?>:</label></th>
+                                    <td>
+                                        <?php if(!isset($default)){$default = 'no';} ?>
+                                        <select name="default" <?=$default == 'yes' ? 'disabled' : '';?> >
+                                            <?=create_options_array($this->config->item('yes_no'), set_value('default', isset($default) ? $default : ""));?>
+                                        </select>
+                                    </td>
+                                </tr>
+
+                                <tr><td colspan="2" class="empty_line" ></td></tr>
+
+                                <tr>	      			
+                                    <th><label><?=lang('label_language');?>:</label></th>
+                                    <td>
+                                        <select name="show_in_language" >
+                                            <option value="all" ><?=lang('label_all');?></option>
+                                            <?=create_options('languages', 'id', 'title', set_value('show_in_language', isset($show_in_language) ? $show_in_language : ""), array('status' => 'yes') );?>
+                                        </select>
+                                    </td>
+                                </tr>
+                                
+                                <tr><td colspan="2" class="empty_line" ></td></tr>
+                                
+                                <tr>	      			
+                                    <th><label><?=lang('label_access');?>:</label></th>
+                                    <td>
+                                        <select name="access" >
+                                            <?=create_options_array($this->config->item('accesses'), set_value('access', isset($access) ? $access : "") );?>
+                                        </select>
+                                    </td>
+                                </tr>
+                                
+                                <tr><td colspan="2" class="empty_line" ></td></tr>
+                                
+                                <tr>	      			
+                                    <th><label><?=lang('label_open_in');?>:</label></th>
+                                    <td>
+                                        <select name="target" >
+                                            <?=create_options_array($this->config->item('menu_targets'), set_value('target', isset($target) ? $target : "") );?>
+                                        </select>
+                                    </td>
+                                </tr>
+                                
+                                <tr><td colspan="2" class="empty_line" ></td></tr>
+
+                                <tr>	      			
+                                    <th><label><?=lang('label_parent');?>:</label></th>
+                                    <td>                                      
+                                        <select name="parent" class="combobox" >
+                                            <option value="none" >- - -</option>
+                                            <?=create_options_array($menus, set_value('parent', isset($parent_id) ? $parent_id : "") );?>
+                                        </select>
+                                    </td>
+                                </tr>
+                                                                
+                                <tr><td colspan="2" class="empty_line" ></td></tr>                               
+                                
+                                <tr>	      			
+                                    <th><label><?=lang('label_image');?>:</label></th>
+                                    <td>
+                                        <input class="image" type="text" readonly name="image" id="media" value="<?=set_value('image', isset($image) ? $image : "");?>" style="width: 58%">
+                                       
+                                        <a href="<?=site_url('home/media');?>" 
+                                           class = "load_jquery_ui_iframe"
+                                           title="<?=lang('label_browse').' '.lang('label_media');?>"
+                                           lang  = "dialog-media-browser" ><?=lang('label_select');?></a>&nbsp;|&nbsp;<a href  = "#"
+                                                                                                                         class = "clear_jquery_ui_inputs"
+                                                                                                                         lang  = "image" ><?=lang('label_clear');?></a>
+                                                                                
+                                    </td>
+                                </tr>
+                                                                
+                                <tr><td colspan="2" class="empty_line" ></td></tr>
+                                
+                                <tr>	      			
+                                    <th><label><?=lang('label_template');?>:</label></th>
+                                    <td>
+                                        <?php $templates_dir = FCPATH.'/../templates/';
+                                              $handle = opendir($templates_dir);  ?>
+                                        <select name="template" >
+                                            <option value="default" ><?=lang('label_default');?></option>
+                                            <?php while (false !== ($entry = readdir($handle))) { 
+                                                    if(substr($entry, 0, 1) == "." || !is_dir($templates_dir.$entry)){
+                                                      continue;                                                
+                                                    }
+                                                    $template = set_value('template', isset($template) ? $template : ""); ?>
+
+                                            <option value="<?=$entry;?>" <?=$template == $entry ? "selected" : "";?> ><?=$entry;?></option>
+
+                                            <?php } ?>
+                                        </select>
+                                    </td>
+                                </tr>
+                                
+                                <?php if(count($custom_fields) > 0){ ?>
+                                <tr><td colspan="2" class="empty_line" ></td></tr>
+                                <tr>
+                                    <td colspan="2" class="empty_line" >
+                                        <fieldset style="border:none;border-top: 1px solid #aaa;padding-left: 10px;">
+                                            <legend style="font-weight: bold;padding: 0 5px;" ><?=lang('label_custom_fields');?></legend>
+                                        </fieldset>
+                                    </td>
+                                </tr>
+                                
+                                <?php $this->load->view('custom_fields/load_fields'); ?>
+                                
+                                <?php } ?>
+                                
+                                
+                            </table>
+                        </div>
+                            
+                    </div>                  
                     
                     <div class="box" >
 	      	        <span class="header" ><?=lang('label_metadata');?></span>
@@ -436,7 +429,7 @@
                                 <tr>	      			
                                     <th><label class="multilang" ><?=lang('label_keywords');?>:</label></th>
                                     <td>
-                                        <textarea name="meta_keywords" ><?=set_value('meta_keywords', isset(${'meta_keywords_'.$this->trl}) ? ${'meta_keywords_'.$this->trl} : "");?></textarea>                                            
+                                        <textarea name="meta_keywords" ><?=set_value('meta_keywords', isset($meta_keywords) ? $meta_keywords : "");?></textarea> 
                                     </td>
                                 </tr>
 
@@ -445,7 +438,7 @@
                                 <tr>	      			
                                     <th><label class="multilang" ><?=lang('label_description');?>:</label></th>
                                     <td>
-                                        <textarea name="meta_description" ><?=set_value('meta_description', isset(${'meta_description_'.$this->trl}) ? ${'meta_description_'.$this->trl} : "");?></textarea>                                            
+                                        <textarea name="meta_description" ><?=set_value('meta_description', isset($meta_description) ? $meta_description : "");?></textarea>                                            
                                     </td>
                                 </tr>
                                 

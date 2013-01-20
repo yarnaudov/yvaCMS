@@ -1,14 +1,14 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Group extends CI_Model {
+class User_group extends CI_Model {
 
-    public function getDetails($group_id, $field = null)
+    public function getDetails($id, $field = null)
     {
 
         $this->db->select('*');
-        $this->db->where('group_id', $group_id);
+        $this->db->where('id', $id);
 
-        $group = $this->db->get('groups');  	
+        $group = $this->db->get('users_groups');  	
         $group = $group->result_array();
 
         if(empty($group)){
@@ -16,7 +16,7 @@ class Group extends CI_Model {
         }
         
         if($field == null){
-                return $group[0];
+            return $group[0];
         }
         else{  	
             return $group[0][$field];
@@ -49,9 +49,9 @@ class Group extends CI_Model {
         $query = "SELECT 
                         *
                     FROM
-                        groups
+                        users_groups
                     WHERE
-                        group_id IS NOT NULL
+                        id IS NOT NULL
                         ".$filter."
                     ".($order_by != "" ? "ORDER BY ".$order_by : "")."
                     ".($limit    != "" ? "LIMIT ".$limit : "")."";
@@ -68,28 +68,10 @@ class Group extends CI_Model {
     {
         
         $this->db->select_max("`order`");
-        $max_order = $this->db->get('groups')->result_array();      
+        $max_order = $this->db->get('users_groups')->result_array();      
         $order = $max_order[0]['order'];
 
         return $order;
-
-    }
-    
-    public function count($category = "")
-    {
-        
-        $query = "SELECT 
-                        COUNT(*) as `count`
-                    FROM
-                        groups
-                    WHERE
-                        category_id = '".$category."'";
-         
-        //echo $query."<br/>";
-
-        $groups = $this->db->query($query)->result_array();    
-
-        return $groups[0]['count'];
 
     }
   
@@ -124,7 +106,7 @@ class Group extends CI_Model {
 
         $data = self::prepareData('insert');
 
-        $query = $this->db->insert_string('groups', $data);
+        $query = $this->db->insert_string('users_groups', $data);
         //echo $query;
         $result = $this->db->query($query);
 
@@ -135,21 +117,19 @@ class Group extends CI_Model {
             $this->session->set_userdata('error_msg', lang('msg_save_group_error'));
         }
         
-        $group_id =$this->db->insert_id();
+        $id =$this->db->insert_id();
         
-        $this->Custom_field->saveFieldsValues($group_id);
-        
-        return $group_id;
+        return $id;
 
     }
 
-    public function edit($group_id)
+    public function edit($id)
     {
 
         $data = self::prepareData('update');
-        $where = "group_id = ".$group_id; 
+        $where = "id = ".$id; 
 
-        $query = $this->db->update_string('groups', $data, $where);
+        $query = $this->db->update_string('users_groups', $data, $where);
         //echo $query;
         $result = $this->db->query($query);
 
@@ -159,20 +139,18 @@ class Group extends CI_Model {
         else{
             $this->session->set_userdata('error_msg', lang('msg_save_group_error'));
         }
-        
-        $this->Custom_field->saveFieldsValues($group_id);
-        
-        return $group_id;
+                
+        return $id;
 
     }
 
-    public function changeStatus($group_id, $status)
+    public function changeStatus($id, $status)
     {   
 
         $data['status'] = $status;
-        $where = "group_id = ".$group_id;
+        $where = "id = ".$id;
 
-        $query = $this->db->update_string('groups', $data, $where);
+        $query = $this->db->update_string('users_groups', $data, $where);
         //echo $query;
         $result = $this->db->query($query);
 
@@ -185,10 +163,10 @@ class Group extends CI_Model {
 
     }
     
-    public function changeOrder($group_id, $order)
+    public function changeOrder($id, $order)
     {   
         
-        $old_order   = self::getDetails($group_id, 'order');
+        $old_order   = self::getDetails($id, 'order');
         
         if($order == 'up'){
             $new_order =  $old_order-1;        
@@ -199,13 +177,13 @@ class Group extends CI_Model {
         
         $data1['order'] = $old_order;
         $where1 = "`order` = ".$new_order;
-        $query1 = $this->db->update_string('groups', $data1, $where1);
+        $query1 = $this->db->update_string('users_groups', $data1, $where1);
         //echo $query1;
         $result1 = $this->db->query($query1);
         
         $data2['order'] = $new_order;
-        $where2 = "group_id = ".$group_id;
-        $query2 = $this->db->update_string('groups', $data2, $where2);
+        $where2 = "id = ".$id;
+        $query2 = $this->db->update_string('users_groups', $data2, $where2);
         //echo $query2;
         $result2 = $this->db->query($query2);
         
@@ -223,13 +201,13 @@ class Group extends CI_Model {
         
         $this->db->query("BEGIN");
         
-        $groups = $this->input->post('groups');     
+        $groups = $this->input->post('users_groups');     
         foreach($groups as $group){
             
             $status = self::getDetails($group, 'status');
             
             if($status == 'trash'){
-                $result = $this->db->simple_query("DELETE FROM groups WHERE group_id = '".$group."'");
+                $result = $this->db->simple_query("DELETE FROM users_groups WHERE id = '".$group."'");
             }
             else{
                 $result = self::changeStatus($group, 'trash');

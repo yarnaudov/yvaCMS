@@ -130,10 +130,10 @@ if(empty($menu_id)){
             <tr class="row <?=$row_class;?>" >
                 <td><?=($numb+1);?></td>	
                 <td>
-                    <input type="checkbox" class="checkbox" name="custom_fields[]" value="<?=$custom_field['custom_field_id'];?>" />
+                    <input type="checkbox" class="checkbox" name="custom_fields[]" value="<?=$custom_field['id'];?>" />
                 </td>
                 <td style="text-align: left;" >
-                    <a href="<?=site_url('custom_fields/edit/'.$custom_field['custom_field_id'].'/'.$this->extension);?>" >
+                    <a href="<?=site_url('custom_fields/edit/'.$custom_field['id'].'/'.$this->extension);?>" >
                         <?=$custom_field['title'];?>
                     </a>
                     <?php if(!empty($custom_field['description'])){ ?>
@@ -172,7 +172,7 @@ if(empty($menu_id)){
                 </td>
                 <td><?=User::getDetails($custom_field['created_by'], 'user');?></td>
                 <td><?=($custom_field['created_on']);?></td>
-                <td><?=$custom_field['custom_field_id'];?></td>
+                <td><?=$custom_field['id'];?></td>
             </tr>
 		
             <?php } ?>

@@ -2,11 +2,11 @@
 
 class Custom_field extends CI_Model {
   
-    public function getDetails($custom_field_id, $field = null)
+    public function getDetails($id, $field = null)
     {
 
         $this->db->select('*');
-        $this->db->where('custom_field_id', $custom_field_id);
+        $this->db->where('id', $id);
 
         $custom_field = $this->db->get('custom_fields');  	
         $custom_field = $custom_field->result_array();
@@ -120,11 +120,11 @@ class Custom_field extends CI_Model {
 
     }
 
-    public function edit($custom_field_id)
+    public function edit($id)
     {
 
         $data = self::prepareData('update');
-        $where = "custom_field_id = ".$custom_field_id; 
+        $where = "id = ".$id; 
 
         $query = $this->db->update_string('custom_fields', $data, $where);
         //echo $query;
@@ -137,7 +137,7 @@ class Custom_field extends CI_Model {
             $this->session->set_userdata('error_msg', lang('msg_save_custom_field_error'));
         }
 
-        return $custom_field_id;
+        return $id;
 
     }
     
@@ -152,9 +152,9 @@ class Custom_field extends CI_Model {
             $status = self::getDetails($custom_field, 'status');
             
             if($status == 'trash'){
-                $result = $this->db->simple_query("DELETE FROM custom_fields WHERE custom_field_id = '".$custom_field."'");
+                $result = $this->db->simple_query("DELETE FROM custom_fields WHERE id = '".$custom_field."'");
                 if($result == true){
-                  $result = $this->db->simple_query("DELETE FROM custom_fields_values WHERE custom_field_id = '".$custom_field."'");
+                  $result = $this->db->simple_query("DELETE FROM custom_fields_values WHERE id = '".$custom_field."'");
                 }
             }
             else{
@@ -173,11 +173,11 @@ class Custom_field extends CI_Model {
         
     }
     
-    public function changeStatus($custom_field_id, $status)
+    public function changeStatus($id, $status)
     {   
 
         $data['status'] = $status;
-        $where = "custom_field_id = ".$custom_field_id;
+        $where = "id = ".$id;
 
         $query = $this->db->update_string('custom_fields', $data, $where);
         //echo $query;
@@ -192,10 +192,10 @@ class Custom_field extends CI_Model {
 
     }
     
-    public function changeOrder($custom_field_id, $order)
+    public function changeOrder($id, $order)
     {   
         
-        $old_order   = self::getDetails($custom_field_id, 'order');
+        $old_order   = self::getDetails($id, 'order');
         
         if($order == 'up'){
             $new_order =  $old_order-1;        
@@ -211,7 +211,7 @@ class Custom_field extends CI_Model {
         $result1 = $this->db->query($query1);
         
         $data2['order'] = $new_order;
-        $where2 = "custom_field_id = ".$custom_field_id;
+        $where2 = "id = ".$id;
         $query2 = $this->db->update_string('custom_fields', $data2, $where2);
         //echo $query2;
         $result2 = $this->db->query($query2);
@@ -230,22 +230,18 @@ class Custom_field extends CI_Model {
                
         $custom_fields = $this->Custom_field->getCustomFields(array('status' => 'yes'), '`order`');
         
-        if(count($custom_fields) == 0){
-            return array();
-        }
-        
         foreach($custom_fields as $custom_field){
             
-            $data['translation'] = $custom_field['multilang'] == "yes" ? $this->trl : NULL;            
-            $data['value']       = $this->input->post('field'.$custom_field['custom_field_id']);
+            $data['language_id'] = $custom_field['multilang'] == "yes" ? $this->trl : NULL;            
+            $data['value']       = $this->input->post('field'.$custom_field['id']);
             
-            $where_translation = $data['translation'] == NULL ? "translation IS NULL" : "translation = '".$data['translation']."'";
+            $where_language_id = $data['language_id'] == NULL ? "language_id IS NULL" : "language_id = '".$data['language_id']."'";
             
-            $where = "custom_field_id = ".$custom_field['custom_field_id']." 
+            $where = "custom_field_id = ".$custom_field['id']." 
                      AND 
                       element_id = ".$element_id."
                      AND
-                      ".$where_translation." "; 
+                      ".$where_language_id." "; 
             
             $query = "SELECT 
                           COUNT(*) as `count`
@@ -260,21 +256,26 @@ class Custom_field extends CI_Model {
             $count = $this->db->query($query)->result_array();    
 
             if($count[0]['count'] == 1){
+                
                 $query = $this->db->update_string('custom_fields_values', $data, $where);
-                //echo $query;
-                $this->db->query($query);
+                
             }
             else{
-                $data['custom_field_id'] = $custom_field['custom_field_id'];
-                $data['element_id']      = $element_id;
-            
+                
+                $data['custom_field_id'] = $custom_field['id'];
+                $data['element_id']      = $element_id;            
                 $query = $this->db->insert_string('custom_fields_values', $data);
-                //echo $query;
-                $this->db->query($query);
+                
             }   
             
+            $result = $this->db->query($query);
+            if($result != true){
+                return false;
+            }
             
         }
+        
+        return true;
         
     }
     
@@ -288,7 +289,7 @@ class Custom_field extends CI_Model {
         }
         
         foreach($custom_fields as $custom_field){
-            $custom_fields_ids[] = $custom_field['custom_field_id'];
+            $custom_fields_ids[] = $custom_field['id'];
         }
         
         $query = "SELECT 
@@ -300,7 +301,7 @@ class Custom_field extends CI_Model {
                      AND
                       custom_field_id IN (".implode(',', $custom_fields_ids).")
                      AND
-                      (translation = '".$this->trl."' || translation IS NULL)";
+                      (language_id = '".$this->trl."' || language_id IS NULL)";
         
         $custom_fields = $this->db->query($query)->result_array();
         
@@ -308,7 +309,7 @@ class Custom_field extends CI_Model {
         
         foreach($custom_fields as $custom_field){
                        
-            $data['field'.$custom_field['custom_field_id']]  = $custom_field['value'];
+            $data['field'.$custom_field['custom_field_id']] = $custom_field['value'];
                   
             
         }

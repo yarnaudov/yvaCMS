@@ -36,13 +36,12 @@
             <span><?=lang('label_logged_in_as');?>:</span>
             <img src="<?=base_url('img/iconUser2.png');?>" >
             
-            <?php $user = $this->User->getDetails(''); ?>
             <span>
-                <a href="<?=site_url('/users/edit/'.$user['user_id']);?>" >
-                    <strong><?=$user['user'];?></strong>
+                <a href="<?=site_url('/users/edit/'.$this->user['id']);?>" >
+                    <strong><?=$this->user['user'];?></strong>
                 </a>
                 <span>(</span>
-                <a href="<?=site_url('/groups/edit/'.$user['group_id'].'/users');?>" ><?=$this->Group->getDetails($user['group_id'], 'title');?></a>
+                <a href="<?=site_url('/groups/edit/'.$this->user['user_group_id'].'/users');?>" ><?=$this->user['user_group_title'];?></a>
                 <span>), </span>
             </span>
             

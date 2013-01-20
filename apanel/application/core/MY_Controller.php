@@ -2,17 +2,40 @@
 
 class MY_Controller extends CI_Controller{
     
+    // active translation language_id
+    public $trl;
+    
+    // user access
     public $access;
+    
+    // all information about current user
+    public $user;
+    
+    // all information about installed components
+    public $components = array();
     
     public function __construct()
     {
 
         parent::__construct();
         
-        $this->load->library('Lang_lib');
+        $this->load->library('Lang_lib');        
+        
+        // load system languages
+        $this->load->language('apanel_labels');
+        $this->load->language('apanel_msg');
         
         $this->load->model('Adm_menu');
-         
+        
+        // set translation to default language
+        $this->trl = $this->Language->getDefault();
+        
+        // load components data
+        $this->components = $this->_loadComponetsData();
+        
+        /*
+         * check if user is logged in
+         */
         if(!isset($_SESSION['user_id'])){            
             
             if(preg_match('/_ajax{1}$/', current_url())){                
@@ -22,8 +45,11 @@ class MY_Controller extends CI_Controller{
         }
         else{
         	  
-            $group_id = $this->User->getDetails('', 'group_id');
-            $access   = $this->Group->getDetails($group_id, 'access');
+            $this->user = $this->User->getDetails($_SESSION['user_id']);
+            $user_group = $this->User_group->getDetails($this->user['user_group_id']);
+            
+            $this->user['user_group_title'] = $user_group['title'];
+            $access = $user_group['access'];
         	  
             if($access == '*'){        	  	
                 $this->access = $this->Adm_menu->getAllMenus();
@@ -103,6 +129,26 @@ class MY_Controller extends CI_Controller{
                 
         $this->jquery_ext->add_script($script);
                
+    }
+    
+    private function _loadComponetsData()
+    {
+        
+        $components = array();
+
+        $components_dir = FCPATH.'components/';
+        $handle = opendir($components_dir);
+        while (false !== ($entry = readdir($handle))) { 
+            if(substr($entry, 0, 1) == "." || !is_dir($components_dir.$entry)){
+                continue;
+            }  
+           
+            $components[$entry] = "";
+                                                         
+        }
+        //print_r($components);
+        return $components;
+        
     }
 
 }

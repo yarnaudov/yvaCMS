@@ -63,12 +63,6 @@ class Categories extends MY_Controller {
             if(isset($_POST['save']) || isset($_POST['apply'])){  
                 
                 $this->form_validation->set_rules('title', lang('label_title'), 'required');
-                if($method == 'add'){
-                    $this->form_validation->set_rules('alias', lang('label_alias'), 'required|is_unique_custom[categories.alias.extension.'.$this->extension.']');
-                }
-                elseif($method == 'edit'){
-                    $this->form_validation->set_rules('alias', lang('label_alias'), 'required|is_unique_custom_edit[categories.alias.extension.'.$this->extension.'.category_id.'.$this->category_id.']');
-                }
                 
                 if ($this->form_validation->run() == TRUE){
                     

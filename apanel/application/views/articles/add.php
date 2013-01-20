@@ -102,42 +102,29 @@
                           
                             <div class="editor_options" >
 
-
-                                <a href = "<?=site_url('articles');?>" class = "load_jquery_ui_iframe" lang = "dialog-select-article" >
+                                <a href  = "<?=site_url('articles/index/simple_ajax');?>"
+                                   class = "load_jquery_ui_iframe"
+                                   title = "<?=lang('label_select').' '.lang('label_article');?>"
+                                   lang  = "dialog-select-article" >
                                     <img src="<?=base_url('img/article.png');?>" >
                                     <span><?=lang('label_article');?></span>
                                 </a>
 
-                                <!-- start jquery UI -->
-                                <div id    = "dialog-select-article"
-                                     class = "jquery_ui_iframe"
-                                     title = "<?=lang('label_select').' '.lang('label_article');?>" 
-                                     lang  = "<?=site_url('articles/index/simple_ajax');?>" ></div>
-
-
-                                <a href = "#" class = "load_jquery_ui_iframe" lang = "dialog-media-browser" >
+                                <a href = "<?=site_url('home/media/simple_ajax');?>"
+                                   class = "load_jquery_ui_iframe"
+                                   title = "<?=lang('label_browse').' '.lang('label_media');?>"
+                                   lang = "dialog-media-browser" >
                                     <img src="<?=base_url('img/image.png');?>" >
                                     <span><?=lang('label_image');?> / <?=lang('label_video');?></span>
-                                </a>                               
+                                </a>
                                 
-                                <!-- start jquery UI -->
-                                <div id    = "dialog-media-browser"
-                                     class = "jquery_ui_iframe"
-                                     title = "<?=lang('label_browse').' '.lang('label_media');?>" 
-                                     lang  = "<?=site_url('home/media/simple_ajax');?>" ></div>
-
-                                
-                                <a href = "#" class = "load_jquery_ui_iframe" lang = "dialog-select-module" >
+                                <a href = "<?=site_url('home/modules');?>"
+                                   class = "load_jquery_ui_iframe"
+                                   title = "<?=lang('label_select');?> <?=lang('label_module');?>"
+                                   lang = "dialog-select-module" >
                                     <img src="<?=base_url('img/module.png');?>" >
                                     <span><?=lang('label_module');?></span>
                                 </a>                               
-                                
-                                <!-- start jquery UI -->
-                                <div id    = "dialog-select-module"
-                                     class = "jquery_ui_iframe"
-                                     title = "<?=lang('label_select');?> <?=lang('label_module');?>" 
-                                     lang  = "<?=site_url('home/modules');?>" ></div>
-                                
                                 
                                 <a href="#" onclick="tinyMCE.execCommand('mceInsertContent', false, '<hr class=pagebreak />');return false;" >
                                     <img src="<?=base_url('img/page_break.png');?>" >
@@ -172,7 +159,7 @@
                                 <tr>
                                     <td>
                                         <select name="translation" >
-                                            <?=create_options('languages', 'abbreviation', 'title', $this->trl, array('status' => 'yes'));?>
+                                            <?=create_options('languages', 'id', 'title', $this->trl, array('status' => 'yes'));?>
                                         </select>
                                     </td>
                                 </tr>
@@ -193,7 +180,7 @@
                                     <th><label><?=lang('label_category');?>:</label></th>
                                     <td>
                                         <select name="category" >
-                                            <?=create_options('categories', 'category_id', 'title_'.Language::getDefault(), set_value('category', isset($category_id) ? $category_id : ""), array('extension' => 'articles', 'status' => 'yes') );?>
+                                            <?=create_options_array($categories, set_value('category', isset($category_id) ? $category_id : ""));?>
                                         </select>
                                     </td>
                                 </tr>
@@ -214,9 +201,9 @@
                                 <tr>	      			
                                     <th><label><?=lang('label_language');?>:</label></th>
                                     <td>
-                                        <select name="language" >
+                                        <select name="show_in_language" >
                                             <option value="all" ><?=lang('label_all');?></option>
-                                            <?=create_options('languages', 'language_id', 'title', set_value('language', isset($language_id) ? $language_id : ""), array('status' => 'yes') );?>
+                                            <?=create_options('languages', 'id', 'title', set_value('language', isset($show_in_language) ? $show_in_language : ""), array('status' => 'yes') );?>
                                         </select>
                                     </td>
                                 </tr>
@@ -236,18 +223,6 @@
                                     <th><label><?=lang('label_end_date');?>:</label></th>
                                     <td>
                                         <input type="text" class="datepicker" name="end_publishing" value="<?=set_value('end_publishing', isset($end_publishing) ? $end_publishing : "");?>" >
-                                    </td>
-                                </tr>
-                                
-                                <tr><td colspan="2" class="empty_line" ></td></tr>
-                                
-                                <tr>	      			
-                                    <th><label><?=lang('label_display');?>&nbsp;<?=lang('label_title');?>:</label></th>
-                                    <td>
-                                        <?php if(!isset($show_title)){$show_title = 'yes';} ?>
-                                        <select name="show_title" >
-                                            <?=create_options_array($this->config->item('yes_no'), set_value('show_title', isset($show_title) ? $show_title : ""));?>
-                                        </select>
                                     </td>
                                 </tr>
                                 
@@ -308,46 +283,17 @@
                                     </td>
                                 </tr>
                                 <?php } ?>
-
-                            </table>
-                        </div>
-                        
-                    </div>
-                    <?php } ?>
-	            
-                     <?php if(isset($article_history) && count($article_history) > 0){ ?>
-                    <div class="box" >
-	      	        <span class="header" ><?=lang('label_history');?></span>
-                        
-                        <div class="box_content" >
-                            <table class="box_table" cellpadding="0" cellspacing="0" >
-
+                                
                                 <tr>
-                                    <td>
-                                        <div class="history_list" >
-                                            
-                                            <?php if($this->uri->segment(4) == 'history'){
-                                                      $article = $this->Article->getDetails($article_id); ?>
-                                            <div>
-                                                <a href="<?=site_url('articles/edit/'.$article_id);?>" ><?=$article['updated_on'];?></a>
-                                                - <?=isset($article['updated_by']) ? User::getDetails($article['updated_by'], 'user') : "";?>
-                                                (<strong><?=lang('label_last');?></strong>)
-                                            </div><br/>
-                                            <?php } ?>
-                                            
-                                            <?php foreach($article_history as $history){ ?>
-                                            <div <?=$history['updated_on'] == urldecode($this->uri->segment(5)) ? 'class="current"' : '';?> >
-                                                <a href="<?=site_url('articles/edit/'.$article_id.'/history/'.$history['updated_on']);?>" ><?=$history['updated_on'];?></a>
-                                                - <?=isset($history['updated_by']) ? User::getDetails($history['updated_by'], 'user') : "";?>
-                                            </div>
-                                            <?php } ?>
-                                        </div>
+                                    <th></th>
+                                    <td style="text-align: right;">
+                                        <a href="<?=site_url('/articles/show_history/'.$id);?>" >Show full history</a>
                                     </td>
                                 </tr>
                                 
                             </table>
                         </div>
-                        
+                                            
                     </div>
                     <?php } ?>
                     

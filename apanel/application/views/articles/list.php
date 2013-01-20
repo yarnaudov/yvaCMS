@@ -83,7 +83,7 @@
 			
                 <select name="category" >
                     <option value="none" > - <?=lang('label_select');?> <?=lang('label_category');?> - </option>
-                    <?=create_options('categories', 'category_id', 'title_'.$this->trl, isset($category) ? $category : "", array('extension' => 'articles', 'status' => 'yes') );?>
+                    <?=create_options_array($categories, isset($category) ? $category : "");?>
                 </select>
 
                 <select name="status" >
@@ -104,16 +104,16 @@
                 <th style="width:3%;"  >&nbsp;</th>
                 <?php } ?>
                 
-                <th style="width:41%;" class="sortable" id="title_<?=$this->trl;?>" ><?=lang('label_title');?></th>
-                <th style="width:12%;" class="sortable" id="category_id"            ><?=lang('label_category');?></th>
+                <th style="width:41%;" class="sortable" id="title"       ><?=lang('label_title');?></th>
+                <th style="width:12%;" class="sortable" id="category_id" ><?=lang('label_category');?></th>
                 
                 <?php if($this->layout != 'simple_ajax'){ ?>
-                <th style="width:6%;"  class="sortable" id="status"                 ><?=lang('label_status');?></th>
-                <th style="width:8%;"  class="sortable" id="order"                  ><?=lang('label_order');?></th>
+                <th style="width:6%;"  class="sortable" id="status"      ><?=lang('label_status');?></th>
+                <th style="width:8%;"  class="sortable" id="order"       ><?=lang('label_order');?></th>
                 <?php } ?>
                 
-                <th style="width:8%;"  class="sortable" id="created_by"             ><?=lang('label_author');?></th>
-                <th style="width:12%;" class="sortable" id="created_on"             ><?=lang('label_date');?></th>
+                <th style="width:8%;"  class="sortable" id="created_by"  ><?=lang('label_author');?></th>
+                <th style="width:12%;" class="sortable" id="created_on"  ><?=lang('label_date');?></th>
                 <th style="width:5%;"  >ID</th>
             </tr>
 		

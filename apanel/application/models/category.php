@@ -1,33 +1,67 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Category extends CI_Model {
+class Category extends MY_Model {
 
     function __construct()
     {
         parent::__construct();
     }
   
-    public function getDetails($category_id, $field = null)
+    public function getDetails($id, $field = null)
     {
 
-        $this->db->select('*');
-        $this->db->where('category_id', $category_id);
-
-        $category = $this->db->get('categories');  	
+        $query = "SELECT 
+                      *
+                    FROM
+                      categories c
+                      LEFT JOIN categories_data cd ON (c.id = cd.category_id AND cd.language_id = '".$this->trl."')
+                    WHERE
+                      c.id = '".$id."' ";
+        
+        $category = $this->db->query($query);  	
         $category = $category->result_array();
-
-        $category[0]['title']        = $category[0]['title_'.$this->trl];
-        $category[0]['description']  = $category[0]['description_'.$this->trl];
+        
+        if(empty($category)){
+            return;
+        }
         
         if($field == null){
-                return $category[0];
+            return $category[0];
         }
         else{  	
             return $category[0][$field];
         }
 
     }
-  
+    
+    public function getForDropdown()
+    {
+        
+        $query = "SELECT 
+                      c.id,
+                      cd.title
+                    FROM
+                      categories c
+                      JOIN categories_data cd ON (c.id = cd.category_id)
+                    WHERE
+                      c.extension = '".$this->extension."'
+                     AND
+                      cd.language_id = ".$this->trl."
+                     AND 
+                      c.status = 'yes'
+                    ORDER BY c.`order`";
+    
+        $categories = $this->db->query($query)->result_array();
+        
+        $categories_arr = array();
+        foreach($categories as $category){
+            $categories_arr[$category['id']] = $category['title'];
+        }
+        
+        return $categories_arr;
+        
+    }
+    
     public function getCategories($filters = array(), $order_by = "", $limit = "")
     {
         
@@ -62,7 +96,8 @@ class Category extends CI_Model {
         $query = "SELECT 
                         *
                     FROM
-                        categories
+                        categories c
+                        LEFT JOIN categories_data cd ON (c.id = cd.category_id AND cd.language_id = ".$this->trl.")
                     WHERE
                         extension = '".$this->extension."'
                         ".$filter."
@@ -91,25 +126,22 @@ class Category extends CI_Model {
     
     public function prepareData($action)
     {
-         
-        $this->load->helper('alias');
+                 
+        $data['categories_data']['title']       = $this->input->post('title');
+        $data['categories_data']['description'] = $this->input->post('description');
+        $data['categories_data']['language_id'] = $this->trl;
         
-        $data['title_'.$this->trl]       = $this->input->post('title');
-        $data['alias']                   = alias($this->input->post('alias'));
-        $data['description_'.$this->trl] = $this->input->post('description');
-
         if($action == 'insert'){
-            $data['extension']  = $this->extension;
-            $data['order']      =  self::getMaxOrder()+1;
-            $data['created_by'] =  $_SESSION['user_id'];
-            $data['created_on'] =  now();        
+            $data['categories']['extension']    = $this->extension;
+            $data['categories']['order']        =  self::getMaxOrder()+1;
+            $data['categories']['created_by']   =  $_SESSION['user_id'];
+            $data['categories']['created_on']   =  now();        
         }
         elseif($action == 'update'){
-            $data['updated_by'] =  $_SESSION['user_id'];
-            $data['updated_on'] =  now(); 
+            $data['categories']['updated_by']   =  $_SESSION['user_id'];
+            $data['categories']['updated_on']   =  now(); 
         }
 
-        //echo print_r($data);
         return $data;
 
     }
@@ -118,66 +150,97 @@ class Category extends CI_Model {
     {
 
         $data = self::prepareData('insert');
-
-        $query = $this->db->insert_string('categories', $data);
-        //echo $query;
-        $result = $this->db->query($query);
         
-        if($result == true){
-            $this->session->set_userdata('good_msg', lang('msg_save_category'));
-        }
-        else{
+        $this->db->query('BEGIN');
+        
+        // save data in categories table
+        $query = $this->db->insert_string('categories', $data['categories']);
+        $result = $this->db->query($query);        
+        if($result != true){
             $this->session->set_userdata('error_msg', lang('msg_save_category_error'));
+            $this->db->query('ROLLBACK');
+            return;
         }
         
+        $id = $this->db->insert_id();
+        
+        // save data in categories_data table
+        $data['categories_data']['category_id'] = $id;
+        $query = $this->db->insert_string('categories_data', $data['categories_data']);
+        $result = $this->db->query($query);        
+        if($result != true){
+            $this->session->set_userdata('error_msg', lang('msg_save_category_error'));
+            $this->db->query('ROLLBACK');
+            return $id;
+        }
+        
+        $this->session->set_userdata('good_msg', lang('msg_save_category'));
+        $this->db->query('COMMIT');
         return $this->db->insert_id();
 
     }
 
-    public function edit($category_id)
+    public function edit($id)
     {
 
         $data = self::prepareData('update');
-        $where = "category_id = ".$category_id; 
-
-        $query = $this->db->update_string('categories', $data, $where);
-        //echo $query;
+                
+        $this->db->query('BEGIN');
+        
+        // save data in categories table
+        $where = "id = ".$id; 
+        $query = $this->db->update_string('categories', $data['categories'], $where);
         $result = $this->db->query($query);
-
-        if($result == true){
-            $this->session->set_userdata('good_msg', lang('msg_save_category'));
-        }
-        else{
+        if($result != true){
             $this->session->set_userdata('error_msg', lang('msg_save_category_error'));
+            $this->db->query('ROLLBACK');
+            return $id;
         }
 
-        return $category_id;
+        // save data in categories_data table
+        if(parent::_dataExists('categories_data', 'category_id', $id) == 0){
+            $data['categories_data']['category_id'] = $id;
+            $query = $this->db->insert_string('categories_data', $data['categories_data']);
+        }
+        else{            
+            $where = "category_id = ".$id." AND language_id = ".$this->trl." ";
+            $query = $this->db->update_string('categories_data', $data['categories_data'], $where);            
+        }        
+        $this->db->query($query);
+        if($result != true){
+            $this->session->set_userdata('error_msg', lang('msg_save_category_error'));
+            $this->db->query('ROLLBACK');
+            return $id;
+        }
+        
+        $this->session->set_userdata('good_msg', lang('msg_save_category'));
+        $this->db->query('COMMIT');
+        return $id;
 
     }
     
-    public function changeStatus($category_id, $status)
+    public function changeStatus($id, $status)
     {   
 
         $data['status'] = $status;
-        $where = "category_id = ".$category_id;
+        $where = "id = ".$id;
 
         $query = $this->db->update_string('categories', $data, $where);
-        //echo $query;
         $result = $this->db->query($query);
-
-        if($result == true){
-            return true; 
-        }
-        else{
+        if($result != true){
             $this->session->set_userdata('error_msg', lang('msg_status_error'));
         }
 
+        return true;
+        
     }
     
-    public function changeOrder($category_id, $order)
+    public function changeOrder($id, $order)
     {   
         
-        $old_order   = self::getDetails($category_id, 'order');
+        $this->db->query('BEGIN');
+        
+        $old_order = self::getDetails($id, 'order');
         
         if($order == 'up'){
             $new_order =  $old_order-1;        
@@ -187,23 +250,27 @@ class Category extends CI_Model {
         }
         
         $data1['order'] = $old_order;
-        $where1 = "`order` = ".$new_order." AND extension = '".$this->extension."'";
-        $query1 = $this->db->update_string('categories', $data1, $where1);
-        //echo $query1;
+        $where1  = "`order` = ".$new_order." AND extension = '".$this->extension."'";
+        $query1  = $this->db->update_string('categories', $data1, $where1);
         $result1 = $this->db->query($query1);
+        if($result1 != true){
+            $this->session->set_userdata('error_msg', lang('msg_order_error'));
+            $this->db->query('ROLLBACK');
+            return;
+        }        
         
         $data2['order'] = $new_order;
-        $where2 = "category_id = ".$category_id;
-        $query2 = $this->db->update_string('categories', $data2, $where2);
-        //echo $query2;
+        $where2  = "category_id = ".$category_id;
+        $query2  = $this->db->update_string('categories', $data2, $where2);
         $result2 = $this->db->query($query2);
-        
-        if($result1 == true && $result2 == true){
-            return true; 
-        }
-        else{
+        if($result2 != true){
             $this->session->set_userdata('error_msg', lang('msg_order_error'));
+            $this->db->query('ROLLBACK');
+            return $id; 
         }
+
+        $this->db->query('COMMIT');
+        return true;
 
     }
     

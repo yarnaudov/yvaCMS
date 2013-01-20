@@ -1,20 +1,32 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Menu extends CI_Model {
+class Menu extends MY_Model {
     
     private $menus;
 
-    public function getDetails($menu_id, $field = null)
+    public function getDetails($id, $field = null)
     {
 
-        $this->db->select('*');
-        $this->db->where('menu_id', $menu_id);
-
-        $menu = $this->db->get('menus');  	
+        $query = "SELECT 
+                      *
+                    FROM
+                      menus m
+                      LEFT JOIN menus_data md ON (m.id = md.menu_id AND md.language_id = '".$this->trl."')
+                    WHERE
+                      m.id = '".$id."' ";
+        
+        $menu = $this->db->query($query);  	
         $menu = $menu->result_array();
 
+        if(empty($menu)){
+            return;
+        }
+        
+        $menu[0]['params'] = json_decode($menu[0]['params'], true);   
+        $menu[0]           = array_merge($menu[0], $this->Custom_field->getFieldsValues($id));
+
         if($field == null){
-                return $menu[0];
+            return $menu[0];
         }
         else{  	
             return $menu[0][$field];
@@ -64,15 +76,15 @@ class Menu extends CI_Model {
         
     }
     
-    public function checkChildren($menu_id)
+    public function checkChildren($id)
     {
         
         $query = "SELECT 
-                        *
+                      *
                     FROM
-                        menus
+                      menus
                     WHERE
-                        parent_id = '".$menu_id."' ";
+                      parent_id = '".$id."' ";
          
         //echo $query."<br/>";
 
@@ -87,38 +99,40 @@ class Menu extends CI_Model {
         
     }
     
-    public function getChildren($menu_id, $lavel, $filters = array(), $order_by = "")
+    public function getChildren($id, $lavel, $filters = array(), $order_by = "`order`")
     {
         
         $filter_arr = self::setFilters($filters, $order_by);
         
         $query = "SELECT 
-                        *
+                      *
                     FROM
-                        menus
+                      menus m
+                      LEFT JOIN menus_data md ON (m.id = md.menu_id AND md.language_id = '".$this->trl."')
                     WHERE
-                        parent_id = '".$menu_id."'                      
-                        ".$filter_arr['filter']."
+                      m.parent_id = '".$id."'                      
+                      ".$filter_arr['filter']."
                     ORDER BY
-                        ".$filter_arr['order_by']."";
+                      ".$filter_arr['order_by']."";
          
         //echo $query."<br/>";
 
         $menus = $this->db->query($query)->result_array();
         foreach($menus as $menu){
             
-            $menu['lavel'] = $lavel;
-            $this->menus[] = $menu;
+            $menu['lavel']  = $lavel;
+            $menu['params'] = json_decode($menu['params'], true);
+            $this->menus[]  = $menu;
             
-            if(self::checkChildren($menu['menu_id']) == true){
-                self::getChildren($menu['menu_id'], ($lavel+1), $filters, $order_by);
+            if(self::checkChildren($menu['id']) == true){
+                self::getChildren($menu['id'], ($lavel+1), $filters, $order_by);
             }
             
         }
         
     }
     
-    public function getMenus($filters = array(), $order_by = "")
+    public function getMenus($filters = array(), $order_by = "`order`")
     {
         
         $this->menus = array();
@@ -128,9 +142,10 @@ class Menu extends CI_Model {
         $query = "SELECT 
                         *
                     FROM
-                        menus
+                        menus m
+                        LEFT JOIN menus_data md ON (m.id = md.menu_id AND md.language_id = '".$this->trl."')
                     WHERE
-                        parent_id IS NULL
+                        m.parent_id IS NULL
                         ".$filter_arr['filter']."
                     ORDER BY
                         ".$filter_arr['order_by']."";
@@ -141,11 +156,12 @@ class Menu extends CI_Model {
         
         foreach($menus as $menu){
             
-            $menu['lavel'] = 1;
-            $this->menus[] = $menu;
+            $menu['lavel']  = 1;
+            $menu['params'] = json_decode($menu['params'], true);
+            $this->menus[]  = $menu;
             
-            if(self::checkChildren($menu['menu_id']) == true){
-                self::getChildren($menu['menu_id'], 2, $filters, $order_by);
+            if(self::checkChildren($menu['id']) == true){
+                self::getChildren($menu['id'], 2, $filters, $order_by);
             }
             
         }
@@ -154,7 +170,7 @@ class Menu extends CI_Model {
 
     }
     
-    public function getMenusByCategory($filters = array(), $order_by = "")
+    public function getMenusByCategory($filters = array(), $order_by = "`order`")
     {
         
         $menus = self::getMenus($filters, $order_by);
@@ -166,7 +182,7 @@ class Menu extends CI_Model {
                 $lavel .= "- ";
             }
             
-            $menus_arr[$this->Category->getDetails($menu['category_id'], 'title_'.$this->Language->getDefault())][$menu['menu_id']] = $lavel.$menu['title_'.$this->Language->getDefault()];
+            $menus_arr[$this->Category->getDetails($menu['category_id'], 'title_'.$this->Language->getDefault())][$menu['id']] = $lavel.$menu['title_'.$this->Language->getDefault()];
             
         }
         
@@ -174,8 +190,10 @@ class Menu extends CI_Model {
         
     }
     
-    public function dropdownListArrray($menus)
+    public function getForDropdown($filters = array(), $order_by = "`order`")
     {
+        
+        $menus = self::getMenus($filters, $order_by);
         
         $menus_arr = array();
         
@@ -184,24 +202,21 @@ class Menu extends CI_Model {
             for($i = 1; $i < $menu['lavel']; $i++){
                 $lavel .= "- ";
             }
-            $menus_arr[$menu['menu_id']] = $lavel.$menu['title_'.Language::getDefault()];
+            $menus_arr[$menu['id']] = $lavel.$menu['title'];
         }
         
         return $menus_arr;
         
     }
     
-    public function getMaxOrder($category = "", $parent = "")
+    public function getMaxOrder($category_id, $parent_id)
     {
         
-        $category == "" ? $category = $this->input->post('category') : "";
-        $parent   == "" ? $parent   = $this->input->post('parent') : "";
-        
-        if($parent == "none"){
+        if($parent_id == "none"){
             $parent = "parent_id IS NULL";
         }
         else{
-            $parent = "parent_id = '".$parent."'";
+            $parent = "parent_id = '".$parent_id."'";
         }
         
         $query = "SELECT 
@@ -209,7 +224,7 @@ class Menu extends CI_Model {
                     FROM
                         menus
                     WHERE
-                        category_id = '".$category."'
+                        category_id = '".$category_id."'
                       AND
                         ".$parent."";
          
@@ -221,14 +236,14 @@ class Menu extends CI_Model {
 
     }
     
-    public function count($category = "", $parent = "")
+    public function count($category_id, $parent_id)
     {
     
-        if($parent == NULL){
+        if($parent_id == NULL){
             $parent = "parent_id IS NULL";
         }
         else{
-            $parent = "parent_id = '".$parent."'";
+            $parent = "parent_id = '".$parent_id."'";
         }
         
         $query = "SELECT 
@@ -236,7 +251,7 @@ class Menu extends CI_Model {
                     FROM
                         menus
                     WHERE
-                        category_id = '".$category."'
+                        category_id = '".$category_id."'
                       AND
                         ".$parent."";
          
@@ -253,45 +268,50 @@ class Menu extends CI_Model {
          
         $this->load->helper('alias');
         
-        $data['title_'.$this->trl]            = $this->input->post('title');
-        $data['alias']                        = alias($this->input->post('alias'));
-        $data['description_'.$this->trl]      = $this->input->post('description');
-        $data['meta_description_'.$this->trl] = $this->input->post('meta_description');
-        $data['meta_keywords_'.$this->trl]    = $this->input->post('meta_keywords');
+        $data['menus_data']['title']                = $this->input->post('title');
+        $data['menus_data']['description']          = $this->input->post('description');
+        $data['menus_data']['meta_description']     = $this->input->post('meta_description');
+        $data['menus_data']['meta_keywords']        = $this->input->post('meta_keywords');
+        $data['menus_data']['language_id']          = $this->trl;
 
-        $data['category_id']       = $this->input->post('category');
-        $data['status']            = $this->input->post('status');      
-        $data['language_id']       = $this->input->post('language');
-        $data['access']            = $this->input->post('access');
-        $data['target']            = $this->input->post('target');
-        $data['parent_id']         = $this->input->post('parent');
-        $data['type']              = $this->input->post('type');
-        $data['params']            = json_encode($this->input->post('params'));
+        $data['menus']['alias']                     = alias($this->input->post('alias'));        
+        $data['menus']['category_id']               = $this->input->post('category');
+        $data['menus']['status']                    = $this->input->post('status');      
+        $data['menus']['show_in_language']          = $this->input->post('show_in_language');
+        $data['menus']['access']                    = $this->input->post('access');
+        $data['menus']['target']                    = $this->input->post('target');
+        $data['menus']['parent_id']                 = $this->input->post('parent');
+        $data['menus']['image']                     = $this->input->post('image');
+        $data['menus']['template']                  = $this->input->post('template');    
+        $data['menus']['default']                   = $this->input->post('default');
+        $data['menus']['description_as_page_title'] = $this->input->post('description_as_page_title');
+        $data['menus']['params']                    = json_encode($this->input->post('params'));
         
-        $data['default']           = $this->input->post('default');
-        if($data['default'] == ""){
-            unset($data['default']);
+        if($data['menus']['default'] == ""){
+            unset($data['menus']['default']);
         }
 
-        if($data['language_id'] == 'all'){
-            $data['language_id'] = NULL;
+        if($data['menus']['show_in_language'] == 'all'){
+            $data['menus']['show_in_language'] = NULL;
         }
         
-        if($data['parent_id'] == 'none'){
-            $data['parent_id'] = NULL;
+        if($data['menus']['parent_id'] == 'none'){
+            $data['menus']['parent_id'] = NULL;
         }
 
         if($action == 'insert'){
-            $data['order']      =  self::getMaxOrder()+1;
-            $data['created_by'] =  $_SESSION['user_id'];
-            $data['created_on'] =  now();        
+            $data['menus']['order']      =  self::getMaxOrder($data['menus']['category_id'], $data['menus']['parent_id'])+1;
+            $data['menus']['created_by'] =  $_SESSION['user_id'];
+            $data['menus']['created_on'] =  now();        
         }
         elseif($action == 'update'){
-            $data['updated_by'] =  $_SESSION['user_id'];
-            $data['updated_on'] =  now(); 
+            $data['menus']['updated_by'] =  $_SESSION['user_id'];
+            $data['menus']['updated_on'] =  now(); 
         }
 
-        //echo print_r($data);
+        //print_r($data);
+        //exit;
+        
         return $data;
 
     }
@@ -301,56 +321,96 @@ class Menu extends CI_Model {
 
         $data = self::prepareData('insert');
         
-        if($data['default'] == 'yes'){
+        $this->db->query('BEGIN');
+        
+        if($data['menus']['default'] == 'yes'){
             $query = $this->db->update_string('menus', array('default' => 'no'), "`default` = 'yes'");
             $this->db->query($query);
         }
         
-        $query = $this->db->insert_string('menus', $data);
-        //echo $query;
-        $result = $this->db->query($query);
-        
-        if($result == true){
-            $this->session->set_userdata('good_msg', lang('msg_save_menu'));
-        }
-        else{
+        // save data in menus table
+        $query = $this->db->insert_string('menus', $data['menus']);
+        $result = $this->db->query($query);        
+        if($result != true){
             $this->session->set_userdata('error_msg', lang('msg_save_menu_error'));
+            $this->db->query('ROLLBACK');
+            return;
         }
         
-        $menu_id = $this->db->insert_id();
+        $id = $this->db->insert_id();
         
-        $this->Custom_field->saveFieldsValues($menu_id, $this->trl);
+        // save data in menus_data table
+        $data['menus_data']['menu_id'] = $id;
+        $query = $this->db->insert_string('menus_data', $data['menus_data']);
+        $result = $this->db->query($query);        
+        if($result != true){
+            $this->session->set_userdata('error_msg', lang('msg_save_menu_error'));
+            $this->db->query('ROLLBACK');
+            return $id;
+        }
+
+        // save custom fields data
+        $result = $this->Custom_field->saveFieldsValues($id);
+        if($result == false){
+            $this->session->set_userdata('error_msg', lang('msg_save_menu_error'));
+            $this->db->query('ROLLBACK');
+            return $id;
+        }
         
-        return $menu_id;
+        $this->session->set_userdata('good_msg', lang('msg_save_menu'));
+        $this->db->query('COMMIT');
+        return $id;
 
     }
 
-    public function edit($menu_id)
+    public function edit($id)
     {
    
         $data = self::prepareData('update');
+        
+        $this->db->query('BEGIN');
         
         if(isset($data['default']) && $data['default'] == 'yes'){
             $query = $this->db->update_string('menus', array('default' => 'no'), "`default` = 'yes'");
             $this->db->query($query);
         }
         
-        $where = "menu_id = ".$menu_id; 
-
-        $query = $this->db->update_string('menus', $data, $where);
-        //echo $query;
+        $where = "id = ".$id;
+        $query = $this->db->update_string('menus', $data['menus'], $where);
         $result = $this->db->query($query);
-
-        if($result == true){
-            $this->session->set_userdata('good_msg', lang('msg_save_menu'));
-        }
-        else{
-            $this->session->set_userdata('error_msg', lang('msg_save_menu_error'));
+        if($result != true){
+            $this->session->set_userdata('error_msg', lang('msg_save_menu_error')."1");
+            $this->db->query('ROLLBACK');
+            return $id;
         }
         
-        $this->Custom_field->saveFieldsValues($menu_id);
+        // save data in menus_data table
+        if(parent::_dataExists('menus_data', 'menu_id', $id) == 0){
+            $data['menus_data']['menu_id'] = $id;
+            $query = $this->db->insert_string('menus_data', $data['menus_data']);
+        }
+        else{            
+            $where = "menu_id = ".$id." AND language_id = ".$this->trl." ";
+            $query = $this->db->update_string('menus_data', $data['menus_data'], $where);            
+        }        
+        $this->db->query($query);
+        if($result != true){
+            $this->session->set_userdata('error_msg', lang('msg_save_menu_error')."2");
+            $this->db->query('ROLLBACK');
+            return $id;
+        }
         
-        return $menu_id;
+        // save custom fields data
+        $result = $this->Custom_field->saveFieldsValues($id);
+        if($result == false){
+            $this->session->set_userdata('error_msg', lang('msg_save_menu_error')."3");
+            $this->db->query('ROLLBACK');
+            return $id;
+        }
+        
+        $this->session->set_userdata('good_msg', lang('msg_save_menu'));
+        $this->db->query('COMMIT');
+        return $id;
 
     }
     
@@ -365,7 +425,7 @@ class Menu extends CI_Model {
             $status = self::getDetails($menu, 'status');
             
             if($status == 'trash'){
-                $result = $this->db->simple_query("DELETE FROM menus WHERE menu_id = '".$menu."'");
+                $result = $this->db->simple_query("DELETE FROM menus WHERE id = '".$menu."'");
             }
             else{
                 $result = self::changeStatus($menu, 'trash');
@@ -383,11 +443,11 @@ class Menu extends CI_Model {
         
     }
     
-    public function changeStatus($menu_id, $status)
+    public function changeStatus($id, $status)
     {   
 
         $data['status'] = $status;
-        $where = "menu_id = ".$menu_id;
+        $where = "id = ".$id;
 
         $query = $this->db->update_string('menus', $data, $where);
         //echo $query;
@@ -402,12 +462,12 @@ class Menu extends CI_Model {
 
     }
     
-    public function changeOrder($menu_id, $order)
+    public function changeOrder($id, $order)
     {   
         
-        $old_order   = self::getDetails($menu_id, 'order');
-        $category_id = self::getDetails($menu_id, 'category_id');
-        $parent_id   = self::getDetails($menu_id, 'parent_id');
+        $old_order   = self::getDetails($id, 'order');
+        $category_id = self::getDetails($id, 'category_id');
+        $parent_id   = self::getDetails($id, 'parent_id');
         
         $parent = $parent_id == NULL ? "parent_id IS NULL" : "parent_id = '".$parent_id."'";
         
@@ -425,7 +485,7 @@ class Menu extends CI_Model {
         $result1 = $this->db->query($query1);
         
         $data2['order'] = $new_order;
-        $where2 = "menu_id = ".$menu_id;
+        $where2 = "id = ".$id;
         $query2 = $this->db->update_string('menus', $data2, $where2);
         //echo $query2;
         $result2 = $this->db->query($query2);

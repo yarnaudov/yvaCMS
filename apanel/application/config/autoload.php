@@ -96,7 +96,7 @@ $autoload['config'] = array('custom');
 |
 */
 
-$autoload['language'] = array('labels', 'msg');
+$autoload['language'] = array();
 
 
 /*
@@ -109,7 +109,7 @@ $autoload['language'] = array('labels', 'msg');
 |
 */
 
-$autoload['model'] = array('User', 'Category', 'Custom_field', 'Language', 'Group', 'Setting');
+$autoload['model'] = array('User', 'User_group', 'Category', 'Custom_field', 'Language', 'Setting');
 
 
 /* End of file autoload.php */

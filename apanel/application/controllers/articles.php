@@ -2,7 +2,6 @@
 
 class Articles extends MY_Controller {
     
-    public  $trl;
     public  $extension = 'articles';
     public  $page;
     public  $layout;
@@ -19,7 +18,7 @@ class Articles extends MY_Controller {
          * get current translation
          */
         $this->trl = $this->session->userdata('trl') == "" ? Language::getDefault() : $this->session->userdata('trl');
-        $this->session->unset_userdata('trl');
+        //$this->session->unset_userdata('trl');
         if(isset($_POST['translation'])){         
             $this->trl = $_POST['translation'];
             if(isset($_POST['uset_posts'])){                
@@ -36,8 +35,7 @@ class Articles extends MY_Controller {
     
     public function _remap($method)
     {
-        if ($method == 'add' || $method == 'edit')
-        {
+        if ($method == 'add' || $method == 'edit'){
             
             $this->jquery_ext->add_library("check_actions_add_edit.js");
             
@@ -76,7 +74,7 @@ class Articles extends MY_Controller {
                     $this->form_validation->set_rules('alias', lang('label_alias'), 'required|is_unique[articles.alias]');
                 }
                 elseif($method == 'edit'){
-                    $this->form_validation->set_rules('alias', lang('label_alias'), 'required|is_unique_edit[articles.alias.article_id.'.$this->article_id.']');
+                    $this->form_validation->set_rules('alias', lang('label_alias'), 'required|is_unique_edit[articles.alias.id.'.$this->article_id.']');
                 }
             
                 if ($this->form_validation->run() == TRUE){
@@ -139,7 +137,7 @@ class Articles extends MY_Controller {
                                parent.tinyMCE.execCommand('mceInsertContent', false, '<a href=\"article:'+article_alias+'\" >'+article_name+'</a>');
                            }
 
-                           parent.$('#dialog-select-article').dialog('close');
+                           parent.$( '#jquery_ui' ).dialog( 'close' );
                            
                            return false;
                            
@@ -239,11 +237,13 @@ class Articles extends MY_Controller {
         $limit_str = $limit == 'all' ? '' : ($this->page-1)*$limit.', '.$limit;
         
         // get articles
-        $data              = $filters;
-        $data['order']     = trim(str_replace('`', '', $order_by));
-        $data['limit']     = $limit;
-        $data['max_pages'] = $limit == 'all' ? 0 : ceil(count($this->Article->getArticles($filters))/$limit);
-        $data["articles"]  = $this->Article->getArticles($filters, $order_by, $limit_str);
+        $data               = $filters;
+        $data['order']      = trim(str_replace('`', '', $order_by));
+        $data['limit']      = $limit;
+        $data['max_pages']  = $limit == 'all' ? 0 : ceil(count($this->Article->getArticles($filters))/$limit);
+        $data["articles"]   = $this->Article->getArticles($filters, $order_by, $limit_str);
+        
+        $data['categories'] = $this->Category->getForDropdown();
         
         // set css class on sorted element
         $elm_id = trim(str_replace(array('`','DESC'), '', $order_by));
@@ -261,14 +261,18 @@ class Articles extends MY_Controller {
 	
     public function add()
     {   
-        $data['custom_fields'] = $this->Custom_field->getCustomFields(array('status' => 'yes'), '`order`');
+        
+        $categories    = $this->Category->getForDropdown();
+        $custom_fields = $this->Custom_field->getCustomFields(array('status' => 'yes'), '`order`');
 
-        $content["content"] = $this->load->view('articles/add', $data, true);		
-        $this->load->view('layouts/default', $content);
+        $content = $this->load->view('articles/add', compact('categories', 'custom_fields'), true);		
+        $this->load->view('layouts/default', compact('content'));
+        
     }
 	
     public function edit()      
     {
+                
         if($this->uri->segment(4) == 'history'){
             $data = $this->Article->getHistoryDetails($this->article_id, urldecode($this->uri->segment(5)) );             
         }
@@ -276,13 +280,9 @@ class Articles extends MY_Controller {
             $data = $this->Article->getDetails($this->article_id);
         }
         
-        $data = @array_merge($data, $this->Custom_field->getFieldsValues($this->article_id));        
+        $data['categories'] = $this->Category->getForDropdown();
+               
         $data['custom_fields'] = $this->Custom_field->getCustomFields(array('status' => 'yes'), '`order`');
-        
-        $data['article_history'] = $this->Article->getHistory($this->article_id);
-        
-        
-        //print_r($data);
 
         $content["content"] = $this->load->view('articles/add', $data, true);		
         $this->load->view('layouts/default', $content);

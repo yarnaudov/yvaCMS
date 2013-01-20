@@ -88,11 +88,11 @@
             <tr>
                 <th style="width:3%;"  >#</th>	
                 <th style="width:3%;"  >&nbsp;</th>
-                <th style="width:41%;" class="sortable" id="title_<?=Language::getDefault();?>" ><?=lang('label_title');?></th>
-                <th style="width:6%;"  class="sortable" id="status"      ><?=lang('label_status');?></th>
-                <th style="width:8%;"  class="sortable" id="order"       ><?=lang('label_order');?></th>
-                <th style="width:8%;"  class="sortable" id="created_by"  ><?=lang('label_author');?></th>
-                <th style="width:12%;" class="sortable" id="created_on"  ><?=lang('label_date');?></th>
+                <th style="width:41%;" class="sortable" id="title"      ><?=lang('label_title');?></th>
+                <th style="width:6%;"  class="sortable" id="status"     ><?=lang('label_status');?></th>
+                <th style="width:8%;"  class="sortable" id="order"      ><?=lang('label_order');?></th>
+                <th style="width:8%;"  class="sortable" id="created_by" ><?=lang('label_author');?></th>
+                <th style="width:12%;" class="sortable" id="created_on" ><?=lang('label_date');?></th>
                 <th style="width:5%;"  >ID</th>
             </tr>
 		
@@ -102,14 +102,14 @@
             <tr class="row <?=$row_class;?>" >
                 <td><?=($numb+1);?></td>	
                 <td>
-                    <input type="checkbox" class="checkbox" name="categories[]" value="<?=$category['category_id'];?>" />
+                    <input type="checkbox" class="checkbox" name="categories[]" value="<?=$category['id'];?>" />
                 </td>
                 <td style="text-align: left;" >
-                    <a href="<?=site_url('categories/edit/'.$category['category_id'].'/'.$this->extension);?>" >
-                        <?=$category['title_'.Language::getDefault()];?>
+                    <a href="<?=site_url('categories/edit/'.$category['id'].'/'.$this->extension);?>" >
+                        <?=$category['title'];?>
                     </a>
-                    <?php if(!empty($category['description_'.Language::getDefault()])){ ?>
-                    <div class="description" >(<span class="head" ><?=lang('label_description');?>:</span> <span class="content" ><?=strip_tags($category['description_'.Language::getDefault()]);?></span>)</div>
+                    <?php if(!empty($category['description'])){ ?>
+                    <div class="description" >(<span class="head" ><?=lang('label_description');?>:</span> <span class="content" ><?=strip_tags($category['description']);?></span>)</div>
                     <?php } ?>
                 </td>
                 <td>
@@ -143,7 +143,7 @@
                 </td>
                 <td><?=User::getDetails($category['created_by'], 'user');?></td>
                 <td><?=($category['created_on']);?></td>
-                <td><?=$category['category_id'];?></td>
+                <td><?=$category['id'];?></td>
             </tr>
 		
             <?php } ?>

@@ -37,7 +37,7 @@ class Setting extends CI_Model {
             if(isJson($setting['value'])){
                 $setting['value'] = json_decode($setting['value'], true);  
             }
-            $settings_arr[$setting['type']] = $setting['value'];
+            $settings_arr[$setting['name']] = $setting['value'];
         }
         
         return $settings_arr;
@@ -46,7 +46,7 @@ class Setting extends CI_Model {
     
     public function getTemplate()
     {    
-    	  $settings = self::getSettings();    
+    	$settings = self::getSettings();    
         return $settings['template']; 
     }
     

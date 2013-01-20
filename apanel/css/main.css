@@ -18,7 +18,7 @@ textarea{
     border: 1px solid #888;
 }
 input{
-    padding: 1px 2px;
+    padding: 1px 0px;
 } 
 
 img{
@@ -506,6 +506,8 @@ a.rename{
 
 .left .box label{
     width: 90px;
+    text-align: right;
+    padding-top: 2px;
 }
 .right .box label{
     width: 110px;
@@ -745,4 +747,20 @@ table.modules_list .title{
 }
 .modules_params_form input[type=text]{
     width: 184px;
+}
+
+#menu_description_as_page_title{
+    margin: 6px 6px 0 6px;
+    height: 20px;
+}
+#menu_description_as_page_title input{
+    width: 16px;
+    float: left;
+}
+#menu_description_as_page_title label{
+    display: inline;
+    width: auto;
+    float: left;
+    margin-left: 2px;
+    padding: 0;
 }

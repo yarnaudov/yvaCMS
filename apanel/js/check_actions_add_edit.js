@@ -1,38 +1,36 @@
 $(document).ready(function() {
-    
-    $( '#dialog:ui-dialog' ).dialog( 'destroy' );
+        
+    $('.load_jquery_ui_iframe').bind('click', function(event) {    
+        
+        event.preventDefault();
+        
+        var title = $(this).attr('title');     
+        var src   = $(this).attr('href');
                         
-    $( '.jquery_ui_iframe' ).dialog({
-        autoOpen: false,
-        resizable: true,
-        modal: true,
-        position: ['top', 50],
-        width: 'auto',
-        close: function(event, ui){
-            $('#jquery_ui_iframe').remove();
-        }
-    });
-    
-    $('.load_jquery_ui_iframe').bind('click', function() {    
+        var div = document.createElement("div");
+        $(div).attr('title', title);
+        $(div).attr('id', 'jquery_ui');
+
+        var iframe = document.createElement("iframe");
+        $(iframe).attr('src', src);
+        $(iframe).attr('frameBorder', 0);
+        $(iframe).attr('scrolling', 'no');
+        $(iframe).attr('class', $(this).attr('lang'));
+        $(iframe).attr('id', 'jquery_ui_iframe');
+
+        $(div).append(iframe);            
+        $('body').append(div);
         
-        var id = $(this).attr('lang');
-     
-        var src = $( '#'+id ).attr('lang');
-        
-        if(src != undefined){
-            
-            var iframe = document.createElement("iframe");
-            $(iframe).attr('src', src);
-            $(iframe).attr('frameBorder', 0);
-            $(iframe).attr('scrolling', 'no');
-            $(iframe).attr('class', $(this).attr('lang'));
-            $(iframe).attr('id', 'jquery_ui_iframe');
-            $( '#'+id ).append(iframe);
-            
-        }
-        
-        $( '#'+id ).dialog( "open" );
-        return false;
+        $(div).dialog({
+            autoOpen: true,
+            resizable: true,
+            modal: true,
+            position: ['top', 50],
+            width: 'auto',
+            close: function(event, ui){
+               $(div).remove();
+            }
+        });
         
     });
     
