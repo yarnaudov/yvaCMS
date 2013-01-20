@@ -764,3 +764,32 @@ table.modules_list .title{
     margin-left: 2px;
     padding: 0;
 }
+
+/*
+ * select menu type
+ */
+.dialog-select-menu-type{
+    width: 540px !important;
+    min-height: 250px !important;
+}
+table.menu_types{
+    width: 500px;
+    margin-top: 10px;
+}
+table.menu_types th{
+    width: 48%;
+    border-bottom: 1px solid;
+}
+table.menu_types td{
+    vertical-align: top;
+}
+table.menu_types td ul{
+    list-style: none;
+    margin-top: 10px;
+}
+table.menu_types td ul li{
+    padding: 2px 0;
+}
+table.menu_types td ul ul{
+    margin: 0 0 0 10px;   
+}

@@ -1,5 +1,8 @@
 <?php
 
+// component name
+$lang['com_contact_forms'] = 'Форми за контакт';
+
 $lang['label_form_fields']   = 'Полета на формата';
 
 $lang['label_contact_form']  = 'Формa за контакт';

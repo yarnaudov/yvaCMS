@@ -142,12 +142,24 @@ class MY_Controller extends CI_Controller{
             if(substr($entry, 0, 1) == "." || !is_dir($components_dir.$entry)){
                 continue;
             }  
-           
-            $components[$entry] = "";
+            
+            unset($component);
+            include_once $components_dir.$entry.'/settings.php';
+            
+            $components[$entry] = $component;
                                                          
         }
         //print_r($components);
         return $components;
+        
+    }
+    
+    function _loadComponetLanguages($component)
+    {
+                
+        foreach($this->components[$component]['languages'] as $language){
+            $this->load->language('components/'.$language);
+        }
         
     }
 

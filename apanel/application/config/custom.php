@@ -7,7 +7,9 @@ $config['no_login']           = array('',
                                       'home/modules',
                                       'home/components',
                                       'no_access',
-                                      'modules/types');
+                                      'modules/types',
+                                      'home/ajax',
+                                      'menus/types');
 
 $config['yes_no']             = array('yes'             => 'label_yes', 
                                       'no'              => 'label_no');
@@ -25,8 +27,7 @@ $config['menu_targets']       = array('_parent'         => 'label_parent_window'
 $config['menu_types']         = array('article'         => 'label_article',    
                                       'articles_list'   => 'label_articles_list',
                                       'menu'            => 'label_menu',
-                                      'external_url'    => 'label_external_url',
-                                      'component'       => 'label_component');
+                                      'external_url'    => 'label_external_url');
 
 $config['custom_field_types'] = array('text'            => 'label_text',    
                                       'textarea'        => 'label_textarea',

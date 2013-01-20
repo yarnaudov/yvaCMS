@@ -106,7 +106,7 @@
                                         <a href  = "<?=site_url('menus/types');?>"
                                            class = "load_jquery_ui_iframe"
                                            title = "<?=lang('label_select')." ".lang('label_menu')." ".lang('label_type');?>"
-                                           lang  = "menu_types" >
+                                           lang  = "dialog-select-menu-type" >
                                             <?=lang('label_select');?>
                                         </a>
                                         <select name="params[type]" >

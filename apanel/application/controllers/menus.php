@@ -43,16 +43,24 @@ class Menus extends MY_Controller {
             $this->jquery_ext->add_library("check_actions_add_edit.js");  
                                  
             $script = "$('select[name=category]').bind('change', function(){
-                           $('form').submit();
-                       });
-                        
-                        $('select[name=type]').bind('change', function(){
-                            $('form').submit();
-                        });
-                        
-                        $('select.component').bind('change', function(){
-                            $('form').submit();
-                        });";
+                
+                           var src = '".site_url('home/ajax/get_menus')."?menu=".$this->menu_id."&category='+$(this).val();
+                           $.get(src, function(data){
+                           
+                               data = JSON.parse(data);
+                               
+                               $('select[name=parent] option').each(function(index){
+                                   if(index > 0){
+                                       $(this).remove();
+                                   }
+                               });
+
+                               $(data).each(function(index){
+                                   $('select[name=parent]').append(new Option(this['text'], this['value']));
+                               });
+
+                           });
+                       }); ";
             
             if ($method == 'add'){
                
@@ -267,4 +275,28 @@ class Menus extends MY_Controller {
         
     }
 
+    public function types()
+    {
+        
+        $script = "$('a.type').live('click', function(event){
+            
+                       event.preventDefault();
+                       
+                       parent.$('input[name=type]').val($(this).attr('href'));
+                       parent.$('form').submit();
+                       
+                   });";
+        $this->jquery_ext->add_script($script, 'general');
+        
+        foreach($this->components as $component => $data){
+            parent::_loadComponetLanguages($component);
+        }
+        
+        $data['menus'] = $this->config->item('menu_types');
+        
+        $content["content"] = $this->load->view('menus/types', $data, true);
+        $this->load->view('layouts/simple_ajax', $content);
+        
+    }
+    
 }

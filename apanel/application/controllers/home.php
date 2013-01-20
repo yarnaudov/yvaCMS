@@ -44,21 +44,25 @@ class Home extends MY_Controller {
         
     }
     
-    public function ajax($action, $id)
+    public function ajax($action)
     {
         
         switch($action){
             case "get_menus":
+                
                 $this->load->model('Menu');
-                $menus = $this->Menu->getMenus(array('category_id' => $id), '`order`');
+                $menus = $this->Menu->getMenus(array('category_id' => $this->input->get('category')));
+                
+                $menus_arr = array();
                 foreach($menus as $menu){
                     $lavel = "";
                     for($i = 1; $i < $menu['lavel']; $i++){
                         $lavel .= "- ";
                     }
-                    $menus_arr[] = array('value' => $menu['menu_id'], 'text' => $lavel.$menu['title_'.Language::getDefault()]);
+                    $menus_arr[] = array('value' => $menu['id'], 'text' => $lavel.$menu['title']);
                 }
                 echo json_encode($menus_arr);
+                
             break;
         }
         

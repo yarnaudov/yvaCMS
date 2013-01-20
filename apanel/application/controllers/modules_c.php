@@ -292,12 +292,12 @@ class Modules_c extends MY_Controller {
     public function types()      
     {
     	
-    	  $script = "$('a.type').live('click', function(){
+    	  $script = "$('a.type').live('click', function(event){
                        
-    	                 parent.$('input[name=type]').val($(this).attr('href'));
+                       event.preventDefault();
+
+    	               parent.$('input[name=type]').val($(this).attr('href'));
                        parent.$('form').submit();
-                       
-                       return false;
                        
                    });";
                    

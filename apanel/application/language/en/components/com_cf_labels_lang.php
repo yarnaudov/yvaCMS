@@ -1,5 +1,8 @@
 <?php
 
+// component name
+$lang['com_contact_forms'] = 'Contact forms';
+
 $lang['label_form_fields']   = 'Form fields';
 
 $lang['label_contact_form']  = 'Contact form';
