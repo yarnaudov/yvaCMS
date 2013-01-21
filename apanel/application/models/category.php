@@ -34,8 +34,10 @@ class Category extends MY_Model {
 
     }
     
-    public function getForDropdown()
+    public function getForDropdown($extension = null)
     {
+        
+        $extension == null ? $extension = $this->extension : '';
         
         $query = "SELECT 
                       c.id,
@@ -44,7 +46,7 @@ class Category extends MY_Model {
                       categories c
                       JOIN categories_data cd ON (c.id = cd.category_id)
                     WHERE
-                      c.extension = '".$this->extension."'
+                      c.extension = '".$extension."'
                      AND
                       cd.language_id = ".$this->trl."
                      AND 

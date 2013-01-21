@@ -147,7 +147,7 @@ $(document).ready(function() {
             parent.tinyMCE.execCommand('mceInsertContent', false, html);
             
         }
-     ;
+     
         parent.$( '#jquery_ui' ).dialog( 'close' ); 
         return false;
         

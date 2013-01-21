@@ -4,7 +4,7 @@ $(document).ready(function() {
         var tmce_height = '500';
     }
     else{
-        var tmce_height = '280';
+        var tmce_height = '150';
     }
     
     tinyMCE.init({

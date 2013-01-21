@@ -1,6 +1,6 @@
 $(document).ready(function() {
         
-    $('.load_jquery_ui_iframe').bind('click', function(event) {    
+    $('.load_jquery_ui_iframe').live('click', function(event) {    
         
         event.preventDefault();
         
@@ -34,7 +34,7 @@ $(document).ready(function() {
         
     });
     
-    $('.clear_jquery_ui_inputs').bind('click', function(){
+    $('.clear_jquery_ui_inputs').live('click', function(){
         $('.'+$(this).attr('lang')).val('');
         return false;
     });

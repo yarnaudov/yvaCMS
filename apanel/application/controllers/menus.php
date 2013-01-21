@@ -2,7 +2,6 @@
 
 class Menus extends MY_Controller {
 
-    public  $trl;
     public  $extension = 'menus';
     public  $page;
     private $menu_id;
@@ -282,7 +281,7 @@ class Menus extends MY_Controller {
             
                        event.preventDefault();
                        
-                       parent.$('input[name=type]').val($(this).attr('href'));
+                       parent.$('input.type').val($(this).attr('href'));
                        parent.$('form').submit();
                        
                    });";

@@ -1,6 +1,6 @@
 
 <?php 
-$this->load->language('pulls/com_pulls_labels');
+$this->load->language('components/com_pulls_labels');
 $this->load->model('pulls/Pull');
 $pulls = $this->Pull->getPulls();
 ?>

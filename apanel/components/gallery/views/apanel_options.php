@@ -1,6 +1,7 @@
 
 <?php 
-$this->load->language('gallery/com_gallery_labels');
+echo $param;
+$this->load->language('components/com_gallery_labels');
 $this->load->model('gallery/Album');
 $albums_arr = $this->Album->getAlbums();
 

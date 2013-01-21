@@ -62,8 +62,8 @@
                     <tr class="<?=$row_class;?>" >
                         <td><?=($numb+1);?></td>
                         <td style="text-align: left;" >
-                            <a href="<?=site_url('articles/edit/'.$article['article_id']);?>" >
-                              <?=$article['title_'.Language::getDefault()];?>
+                            <a href="<?=site_url('articles/edit/'.$article['id']);?>" >
+                              <?=$article['title'];?>
                             </a>
                         </td>
                         <td>

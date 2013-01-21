@@ -1,6 +1,6 @@
 
 <?php 
-$this->load->language('contact_forms/com_cf_labels');
+$this->load->language('components/com_cf_labels');
 $this->load->model('contact_forms/Contact_form');
 $contact_forms = $this->Contact_form->getContactForms();
 ?>

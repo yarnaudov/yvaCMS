@@ -182,7 +182,7 @@ class Menu extends MY_Model {
                 $lavel .= "- ";
             }
             
-            $menus_arr[$this->Category->getDetails($menu['category_id'], 'title_'.$this->Language->getDefault())][$menu['id']] = $lavel.$menu['title_'.$this->Language->getDefault()];
+            $menus_arr[$this->Category->getDetails($menu['category_id'], 'title')][$menu['id']] = $lavel.$menu['title'];
             
         }
         

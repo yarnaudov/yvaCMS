@@ -103,133 +103,52 @@
                                 <tr>	      			
                                     <th><label><?=lang('label_type');?>:</label></th>
                                     <td>
+                                        
+                                        <?php 
+                                        
+                                        $type = set_value('params[type]', isset($params['type']) ? $params['type'] : "");
+                                        
+                                        if(preg_match('/^components{1}/', $type)){
+                                            
+                                            $type_arr = explode('/', $type);
+                                            
+                                            $controller = & get_instance();
+                                            $controller->_loadComponetLanguages($type_arr[1]);
+                                            
+                                            $options_file = '../../'.$type_arr[0].'/'.$type_arr[1].'/views/apanel_options';
+                                            
+                                            if(count($type_arr) > 2){                                                
+                                                $param      = $type_arr[2];
+                                                $type_label = lang($this->components[$type_arr[1]]['menus'][$type_arr[2]]);
+                                            }
+                                            else{                                                
+                                                $type_label = lang($this->components[$type_arr[1]]['menus'][$type_arr[1]]);
+                                            }
+              
+                                        }elseif(!empty($type)){ 
+                                            $options_file = 'menus/'.$type;
+                                            $type_label   = lang('label_'.$type);
+                                        } 
+                                        ?>
+
+                                        <?php if(isset($type_label)){ ?>
+                                        <strong><?=$type_label;?></strong> -
+                                        <?php } ?>
+                                        
+                                        <input type="hidden" class="type" name="params[type]" value="<?=$type;?>" >
+                                                   
                                         <a href  = "<?=site_url('menus/types');?>"
                                            class = "load_jquery_ui_iframe"
                                            title = "<?=lang('label_select')." ".lang('label_menu')." ".lang('label_type');?>"
                                            lang  = "dialog-select-menu-type" >
                                             <?=lang('label_select');?>
                                         </a>
-                                        <select name="params[type]" >
-                                            <?=create_options_array($this->config->item('menu_types'), set_value('params[type]', isset($params['type']) ? $params['type'] : "") );?>
-                                        </select>
                                     </td>
                                 </tr>
                                 
-                                <?php $type = set_value('params[type]', isset($params['type']) ? $params['type'] : ""); 
-                                      if($type == 'article' || $type == ""){ ?>
-                                
-                                <tr><td colspan="2" class="empty_line" ></td></tr>
-                                
-                                <tr>	      			
-                                    <th><label><?=lang('label_article');?>:</label></th>
-                                    <td>                                        
-                                        <?php $article_id = set_value('params[article_id]', isset($params['article_id']) ? $params['article_id'] : "");
-                                              $article = $article_id != "" ? $this->Article->getDetails($article_id, 'title_'.Language::getDefault()) : ""; ?>
-                                        <input class="article" type="hidden" name="params[article_id]" id="article"  value="<?=$article_id;?>" >
-                                        <input class="article" type="text" readonly id="article_name" value="<?=$article;?>" style="width: 58%">
-                                        <a href  = "<?=site_url('articles');?>" 
-                                           class = "load_jquery_ui_iframe" 
-                                           lang  = "dialog-select-article" ><?=lang('label_select');?></a>&nbsp;|&nbsp;<a href  = "#"
-                                                                                                                          class = "clear_jquery_ui_inputs"
-                                                                                                                          lang  = "article" ><?=lang('label_clear');?></a>
-                                        
-                                        <!-- start jquery UI -->
-                                        <div id    = "dialog-select-article"
-                                             class = "jquery_ui_iframe"
-                                             title = "<?=lang('label_select').' '.lang('label_article');?>" 
-                                             lang = "<?=site_url('articles/index/simple_ajax');?>" ></div>
-                                        
-                                    </td>
-                                </tr>
-                                
-                                <?php }elseif($type == 'articles_list'){ ?>
-                                
-                                <tr><td colspan="2" class="empty_line" ></td></tr>
-                                
-                                <tr>	      			
-                                    <th><label><?=lang('label_category');?>:</label></th>
-                                    <td>
-                                        <select name="params[category_id]" >
-                                            <option value="none" >- - -</option>
-                                            <?=create_options('categories', 'category_id', 'title_'.$this->Language->getDefault(), set_value('params[category_id]', isset($params['category_id']) ? $params['category_id'] : ""), array('extension' => 'articles'));?>
-                                        </select>
-                                    </td>
-                                </tr>
-                                
-                                <?php }elseif($type == 'menu'){ ?>
-                                
-                                <tr><td colspan="2" class="empty_line" ></td></tr>
-                                
-                                <tr>	      			
-                                    <th><label><?=lang('label_menu');?>:</label></th>
-                                    <td>
-                                        <?php $menus = $this->Menu->getMenusByCategory(array(), "`order`"); ?>
-                                        <select name="params[menu_id]" >
-                                            <option value="none" >- - -</option>
-                                            <?=create_options_array($menus, set_value('params[menu_id]', isset($params['menu_id']) ? $params['menu_id'] : ""));?>
-                                        </select>
-                                    </td>
-                                </tr>
-                                
-                                <?php }elseif($type == 'external_url'){ ?>
-                                
-                                <tr><td colspan="2" class="empty_line" ></td></tr>
-                                
-                                <tr>	      			
-                                    <th><label><?=lang('label_external_url');?>:</label></th>
-                                    <td>
-                                        <?php $menus = $this->Menu->getMenusByCategory(array(), "`order`"); ?>
-                                        <input type="text" name="params[url]" value="<?=set_value('params[url]', isset($params['url']) ? $params['url'] : "");?>" >
-                                    </td>
-                                </tr>
-                                
-                                <?php }elseif($type == 'component'){ ?>
-                                
-                                <tr><td colspan="2" class="empty_line" ></td></tr>
-                                
-                                <tr>	      			
-                                    <th><label><?=lang('label_component');?>:</label></th>
-                                    <td>
-                                        <?php $params['component'] = set_value('params[component]', isset($params['component']) ? $params['component'] : ""); ?>
-                                        <select name="params[component]" class="component" >
-                                            <?php foreach($this->components as $component_type => $component){ 
-                                                    $component['alias'] = str_replace("components/", "", $component['alias']); ?>
-                                            <option <?=$component_type == $params['component'] ? "selected" : "";?> 
-                                                    value="<?=$component_type;?>" ><?=$component_type;?></option>
-                                            <?php } ?>
-                                        </select>
-                                    </td>
-                                </tr>
-                                
-                                <?php if(file_exists('components/' . $params['component'] . '/views/apanel_options.php')){
-                                        $this->load->view($params['component'] . '/apanel_options');
+                                <?php if(isset($options_file)){
+                                          $this->load->view($options_file, compact('param', isset($param) ? $param : ''));
                                       } ?>
-                                
-                                <tr><td colspan="2" class="empty_line" ></td></tr>
-                                
-                                <tr>	      			
-                                    <th><label><?=lang('label_article');?>:</label></th>
-                                    <td>                                        
-                                        <?php $article_id = set_value('params[article_id]', isset($params['article_id']) ? $params['article_id'] : "");
-                                              $article = $article_id != "" ? $this->Article->getDetails($article_id, 'title_'.Language::getDefault()) : ""; ?>
-                                        <input class="article" type="hidden" name="params[article_id]" id="article"  value="<?=$article_id;?>" >
-                                        <input class="article" type="text" readonly id="article_name" value="<?=$article;?>" style="width: 58%">
-                                        <a href  = "#" 
-                                           class = "load_jquery_ui_iframe" 
-                                           lang  = "dialog-select-article" ><?=lang('label_select');?></a>&nbsp;|&nbsp;<a href  = "#"
-                                                                                                                          class = "clear_jquery_ui_inputs"
-                                                                                                                          lang  = "article" ><?=lang('label_clear');?></a>
-                                        
-                                        <!-- start jquery UI -->
-                                        <div id    = "dialog-select-article"
-                                             class = "jquery_ui_iframe"
-                                             title = "<?=lang('label_select').' '.lang('label_article');?>" 
-                                             lang = "<?=site_url('articles/index/simple_ajax');?>" ></div>
-                                        
-                                    </td>
-                                </tr>
-                                
-                                <?php } ?>                     
                                                                 
                             </table>
                             
@@ -249,6 +168,33 @@
                         </div>
                                                 
 	            </div>
+                    
+                    <div class="box" >
+	      	        <span class="header" ><?=lang('label_metadata');?></span>
+	                
+                        <div class="box_content" >
+                            <table class="box_table" cellpadding="0" cellspacing="0" >
+
+                                <tr>	      			
+                                    <th><label class="multilang" ><?=lang('label_keywords');?>:</label></th>
+                                    <td>
+                                        <textarea name="meta_keywords" ><?=set_value('meta_keywords', isset($meta_keywords) ? $meta_keywords : "");?></textarea> 
+                                    </td>
+                                </tr>
+
+                                <tr><td colspan="2" class="empty_line" ></td></tr>
+                                
+                                <tr>	      			
+                                    <th><label class="multilang" ><?=lang('label_description');?>:</label></th>
+                                    <td>
+                                        <textarea name="meta_description" ><?=set_value('meta_description', isset($meta_description) ? $meta_description : "");?></textarea>                                            
+                                    </td>
+                                </tr>
+                                
+                            </table>
+                                
+                        </div>
+                    </div>
 	      
                 </td>
                 <!-- end left content  -->
@@ -419,33 +365,6 @@
                         </div>
                             
                     </div>                  
-                    
-                    <div class="box" >
-	      	        <span class="header" ><?=lang('label_metadata');?></span>
-	                
-                        <div class="box_content" >
-                            <table class="box_table" cellpadding="0" cellspacing="0" >
-
-                                <tr>	      			
-                                    <th><label class="multilang" ><?=lang('label_keywords');?>:</label></th>
-                                    <td>
-                                        <textarea name="meta_keywords" ><?=set_value('meta_keywords', isset($meta_keywords) ? $meta_keywords : "");?></textarea> 
-                                    </td>
-                                </tr>
-
-                                <tr><td colspan="2" class="empty_line" ></td></tr>
-                                
-                                <tr>	      			
-                                    <th><label class="multilang" ><?=lang('label_description');?>:</label></th>
-                                    <td>
-                                        <textarea name="meta_description" ><?=set_value('meta_description', isset($meta_description) ? $meta_description : "");?></textarea>                                            
-                                    </td>
-                                </tr>
-                                
-                            </table>
-                                
-                        </div>
-                    </div>
                     
                     <?php if(isset($created_by)){ ?>
                     <div class="box" >

@@ -64,6 +64,7 @@ class Home extends MY_Controller {
                 echo json_encode($menus_arr);
                 
             break;
+            
         }
         
     }

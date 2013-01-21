@@ -12,7 +12,7 @@
             <ul>
                 <?php foreach($menus as $type => $menu){ ?>
                 <li>
-                    <a href="<?=$type;?>" ><?=lang($menu);?></a>
+                    <a href="<?=$type;?>" class="type" ><?=lang($menu);?></a>
                 </li>
                 <?php } ?>
             </ul>
@@ -27,7 +27,7 @@
                 
                     <?php if(count($data['menus']) == 1){ ?>
                     <li>
-                        <a href="<?=$component;?>" class="type" ><?=lang('com_'.$component);?></a>
+                        <a href="components/<?=$component;?>" class="type" ><?=lang('com_'.$component);?></a>
                     </li>
                     <?php }else{ ?>
                     <li>
@@ -35,7 +35,7 @@
                         <ul>
                             <?php foreach($data['menus'] as $menu => $text){ ?>
                             <li>
-                                - <a href="<?=$menu;?>" class="type" ><?=lang($text);?></a>
+                                - <a href="components/<?=$component;?>/<?=$menu;?>" class="type" ><?=lang($text);?></a>
                             </li>
                             <?php } ?>
                         </ul>
