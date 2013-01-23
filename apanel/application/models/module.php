@@ -103,6 +103,23 @@ class Module extends MY_Model {
         
     }
     
+    public function getModulesPositions($positions = array())
+    {
+        
+        $query = "SELECT position FROM modules WHERE `status` != 'trash'; ";
+        
+        $modules = $this->db->query($query)->result_array();
+
+        foreach($modules as $key => $module){
+            if(!in_array($module['position'], $positions)){
+                $positions[$module['position']] = $module['position'];
+            }
+        }
+        
+        return $positions;
+        
+    }
+    
     public function getMaxOrder($position)
     {
         

@@ -6,6 +6,8 @@ class Modules_c extends MY_Controller {
     public  $extension = 'modules';
     public  $page;
     public  $layout;
+    public  $positions;
+    
     private $module_id;
     
     function __construct()
@@ -39,10 +41,16 @@ class Modules_c extends MY_Controller {
            $this->_loadModuleLanguage($module);                                                                   
         }
         
+        /*
+         * get positions
+         */        
+        $this->positions = $this->Module->getModulesPositions(parent::_parseTemplateFile('modules'));
+        
     }
     
     public function _remap($method)
     {
+        
         if ($method == 'add' || $method == 'edit')
         {
             
@@ -50,8 +58,23 @@ class Modules_c extends MY_Controller {
             $this->load->model('Menu');
             $this->jquery_ext->add_library("check_actions_add_edit.js");
             
-            $script = "$('select[name=type]').bind('change', function(){
-                           $('form').submit();
+            $script = "$('select[name=position]').bind('change', function(){
+                           if($(this).val() == 'value'){
+                             $(this).css('display', 'none');
+                             $(this).attr('disabled', true);
+                             $('input[name=position]').css('display', 'inline');
+                             $('input[name=position]').attr('disabled', false);
+                             $('input[name=position]').focus();
+                           }
+                       });
+                       $('input[name=position]').blur(function(){
+                           if($(this).val() == ''){
+                             $(this).css('display', 'none');
+                             $(this).attr('disabled', true);
+                             $('select[name=position]').css('display', 'inline');
+                             $('select[name=position]').attr('disabled', false);
+                             $('select[name=position]').val('');
+                           }
                        });";
             
             if ($method == 'add'){
@@ -186,8 +209,8 @@ class Modules_c extends MY_Controller {
             if(isset($_POST['search_v']) && !empty($_POST['search_v'])){
                 $filters['search_v'] = $_POST['search_v'];
             }
-            if(isset($_POST['category']) && $_POST['category'] != "none"){
-                $filters['category'] = $_POST['category'];
+            if(isset($_POST['position']) && $_POST['position'] != "none"){
+                $filters['position'] = $_POST['position'];
             }
             if(isset($_POST['status']) && $_POST['status'] != "none"){
                 $filters['status'] = $_POST['status'];
@@ -240,7 +263,8 @@ class Modules_c extends MY_Controller {
         $data['order']     = trim(str_replace('`', '', $order_by));
         $data['limit']     = $limit;
         $data['max_pages'] = $limit == 'all' ? 0 : ceil(count($this->Module->getModules($filters))/$limit);
-        $data["modules"]  = $this->Module->getModules($filters, $order_by, $limit_str);
+        $data["modules"]   = $this->Module->getModules($filters, $order_by, $limit_str);
+        $data['positions'] = $this->positions;
         
         // set css class on sorted element
         $elm_id = trim(str_replace(array('`','DESC'), '', $order_by));
@@ -259,6 +283,7 @@ class Modules_c extends MY_Controller {
     public function add()
     {   
         $data['custom_fields'] = $this->Custom_field->getCustomFields(array('status' => 'yes'), '`order`');
+        $data['positions']     = $this->positions;
 
         $content["content"] = $this->load->view('modules/add', $data, true);		
         $this->load->view('layouts/default', $content);
@@ -266,10 +291,11 @@ class Modules_c extends MY_Controller {
 	
     public function edit()      
     {
-        
-        $data = $this->Module->getDetails($this->module_id);
+                
+        $data                  = $this->Module->getDetails($this->module_id);
         $data['custom_fields'] = $this->Custom_field->getCustomFields(array('status' => 'yes'), '`order`');
-
+        $data['positions']     = $this->positions;
+        
         $content["content"] = $this->load->view('modules/add', $data, true);		
         $this->load->view('layouts/default', $content);
         

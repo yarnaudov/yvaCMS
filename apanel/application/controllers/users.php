@@ -109,7 +109,7 @@ class Users extends MY_Controller {
         
         $page = "";
         
-        $this->load->model('Group');
+        $this->load->model('User_group');
         
         // delete users
         if(isset($_POST['delete'])){

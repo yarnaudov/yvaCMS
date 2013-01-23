@@ -11,7 +11,7 @@ class Groups extends MY_Controller {
   	
         parent::__construct();    
         
-        $this->load->model('Group');
+        $this->load->model('User_group');
                 
         $this->page = isset($_GET['page']) ? $_GET['page'] : 1;
                 
@@ -70,7 +70,7 @@ class Groups extends MY_Controller {
             
                 if ($this->form_validation->run() == TRUE){
                                                        
-                    $group_id = $this->Group->$method($this->group_id);                         
+                    $group_id = $this->User_group->$method($this->group_id);                         
 
                     if(isset($_POST['save'])){
                         redirect('groups/users');
@@ -98,7 +98,7 @@ class Groups extends MY_Controller {
                     
         // delete groups
         if(isset($_POST['delete'])){
-            $result = $this->Group->delete();
+            $result = $this->User_group->delete();
             if($result == true){
                 if($this->page > 1){
                     $page = "?page=".$this->page;
@@ -110,7 +110,7 @@ class Groups extends MY_Controller {
         
         // change status
         if(isset($_POST['change_status'])){
-            $result = $this->Group->changeStatus($_POST['element_id'], $_POST['change_status']);
+            $result = $this->User_group->changeStatus($_POST['element_id'], $_POST['change_status']);
             if($result == true){
                 if($this->page > 1){
                     $page = "?page=".$this->page;
@@ -122,7 +122,7 @@ class Groups extends MY_Controller {
         
         // change order
         if(isset($_POST['change_order'])){
-            $result = $this->Group->changeOrder($_POST['element_id'], $_POST['change_order']);
+            $result = $this->User_group->changeOrder($_POST['element_id'], $_POST['change_order']);
             if($result == true){
                 redirect('groups/users');
                 exit();
@@ -188,8 +188,8 @@ class Groups extends MY_Controller {
         $data              = $filters;
         $data['order']     = trim(str_replace('`', '', $order_by));
         $data['limit']     = $limit;
-        $data['max_pages'] = $limit == 'all' ? 0 : ceil(count($this->Group->getGroups($filters))/$limit);
-        $data["groups"]  = $this->Group->getGroups($filters, $order_by, $limit_str);
+        $data['max_pages'] = $limit == 'all' ? 0 : ceil(count($this->User_group->getGroups($filters))/$limit);
+        $data["groups"]  = $this->User_group->getGroups($filters, $order_by, $limit_str);
         
         // set css class on sorted element
         $elm_id = trim(str_replace(array('`','DESC'), '', $order_by));
@@ -214,7 +214,7 @@ class Groups extends MY_Controller {
     public function edit()      
     {
         
-        $data = $this->Group->getDetails($this->group_id);
+        $data = $this->User_group->getDetails($this->group_id);
         
         //print_r($data);
 

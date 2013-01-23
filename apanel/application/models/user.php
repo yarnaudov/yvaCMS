@@ -35,7 +35,7 @@ class User extends CI_Model {
         $user = $this->input->post('user');
         $pass = $this->input->post('pass');
 
-        $query = "SELECT * FROM users WHERE user = '".$user."'";
+        $query = "SELECT * FROM users WHERE user = '".$user."' AND status = 'yes'";
 
         $user_d = $this->db->query($query)->result_array();
 
@@ -64,7 +64,7 @@ class User extends CI_Model {
         }
         
         if(substr_count($order_by, 'order')){
-            $order_by = "group_id, ".$order_by;
+            $order_by = "user_group_id, ".$order_by;
         }      
                     
         foreach($filters as $key => $value){
@@ -73,7 +73,7 @@ class User extends CI_Model {
                 $filter .= " AND name LIKE '%".$value."%'";                
             }
             elseif($key == 'group'){
-                $filter .= " AND group_id = '".$value."' ";
+                $filter .= " AND user_group_id = '".$value."' ";
             }
             else{
                 $filter .= " AND `".$key."` = '".$value."' ";
@@ -86,7 +86,7 @@ class User extends CI_Model {
                     FROM
                         users
                     WHERE
-                        user_id IS NOT NULL
+                        id IS NOT NULL
                         ".$filter."
                     ".($order_by != "" ? "ORDER BY ".$order_by : "")."
                     ".($limit    != "" ? "LIMIT ".$limit : "")."";
@@ -158,8 +158,7 @@ class User extends CI_Model {
             $data['updated_by'] =  $_SESSION['user_id'];
             $data['updated_on'] =  now(); 
         }
-
-        //echo print_r($data);
+        
         return $data;
 
     }
@@ -169,21 +168,29 @@ class User extends CI_Model {
 
         $data = self::prepareData('insert');
 
+        $this->db->query('BEGIN');
+        
+        // save data in users table
         $query = $this->db->insert_string('users', $data);
-        //echo $query;
         $result = $this->db->query($query);
-
-        if($result == true){
-            $this->session->set_userdata('good_msg', lang('msg_save_user'));
-        }
-        else{
+        if($result != true){
             $this->session->set_userdata('error_msg', lang('msg_save_user_error'));
+            $this->db->query('ROLLBACK');
+            return;
         }
         
-        $id =$this->db->insert_id();
+        $id = $this->db->insert_id();
         
-        $this->Custom_field->saveFieldsValues($id);
+        // save custom fields data
+        $result = $this->Custom_field->saveFieldsValues($id);
+        if($result == false){
+            $this->session->set_userdata('error_msg', lang('msg_save_user_error'));
+            $this->db->query('ROLLBACK');
+            return $id;
+        }
         
+        $this->session->set_userdata('good_msg', lang('msg_save_user'));
+        $this->db->query('COMMIT');
         return $id;
 
     }
@@ -192,21 +199,28 @@ class User extends CI_Model {
     {
 
         $data = self::prepareData('update');
+        
+        $this->db->query('BEGIN');
+        
         $where = "id = ".$id; 
-
         $query = $this->db->update_string('users', $data, $where);
-        //echo $query;
         $result = $this->db->query($query);
-
         if($result == true){
-            $this->session->set_userdata('good_msg', lang('msg_save_user'));
-        }
-        else{
             $this->session->set_userdata('error_msg', lang('msg_save_user_error'));
+            $this->db->query('ROLLBACK');
+            return $id;
         }
         
-        $this->Custom_field->saveFieldsValues($id);
+        // save custom fields data
+        $result = $this->Custom_field->saveFieldsValues($id);
+        if($result == false){
+            $this->session->set_userdata('error_msg', lang('msg_save_user_error'));
+            $this->db->query('ROLLBACK');
+            return $id;
+        }
         
+        $this->session->set_userdata('good_msg', lang('msg_save_user'));
+        $this->db->query('COMMIT');
         return $id;
 
     }    
@@ -220,13 +234,11 @@ class User extends CI_Model {
         $query = $this->db->update_string('users', $data, $where);
         //echo $query;
         $result = $this->db->query($query);
-
-        if($result == true){
-            return true; 
-        }
-        else{
+        if($result != true){
             $this->session->set_userdata('error_msg', lang('msg_status_error'));
         }
+        
+        return true;
 
     }
     
@@ -255,13 +267,41 @@ class User extends CI_Model {
         //echo $query2;
         $result2 = $this->db->query($query2);
         
-        if($result1 == true && $result2 == true){
-            return true; 
-        }
-        else{
+        if($result1 != true && $result2 != true){
             $this->session->set_userdata('error_msg', lang('msg_order_error'));
         }
 
+        return true;
+        
+    }
+    
+    public function delete()
+    {
+        
+        $this->db->query("BEGIN");
+        
+        $users = $this->input->post('users');     
+        foreach($users as $user){
+            
+            $status = self::getDetails($user, 'status');
+            
+            if($status == 'trash'){
+                $result = $this->db->simple_query("DELETE FROM users WHERE id = '".$user."'");
+            }
+            else{
+                $result = self::changeStatus($user, 'trash');
+            }
+            
+            if($result != true){
+                $this->db->query("ROLLBACK");
+                return false;
+            }
+            
+        }
+        
+        $this->db->query("COMMIT");
+        return true;
+        
     }
     
 }

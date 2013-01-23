@@ -15,7 +15,7 @@
             <span><?=lang('label_groups');?></span>
             <span>&nbsp;»&nbsp;</span>
             <span>
-              <?php if(isset($group_id)){
+              <?php if(isset($user_group_id)){
                       echo lang('label_edit');
                     }
                     else{
@@ -110,11 +110,11 @@
                                 <?php
                                 
                                 $access       = @json_decode($access, true);                                
-                                $group_id     = $this->User->getDetails('', 'group_id');
-                                $group_access = $this->Group->getDetails($group_id, 'access');
+                                $user_group_id     = $this->User->getDetails('', 'user_group_id');
+                                $group_access = $this->User_group->getDetails($user_group_id, 'access');
 
                                 $no_access_flag = false;
-                                if( (count(@array_diff_key($access, $this->access)) > 0 && $group_access != '*') || $group_id == $this->uri->segment(3)){
+                                if( (count(@array_diff_key($access, $this->access)) > 0 && $group_access != '*') || $user_group_id == $this->uri->segment(3)){
                                 	
                                     echo '<tr>';
                                     echo '  <td>';

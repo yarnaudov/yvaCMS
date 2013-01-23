@@ -29,12 +29,14 @@
             
             <div id="header_top" >
                 
-                 <div id="search">
+                <div id="search">
                     <?=$this->Module->load('search');?>
+                    <include type="module" name="search" />
                 </div>
 
                 <div id="language_switch" >
                     <?=$this->Module->load('language_switch');?>
+                    <include type="module" name="language_switch" />
                 </div>
                 
             </div>
@@ -43,6 +45,7 @@
                 <h1>
                     <a href="<?=site_url();?>">
                         <?=$this->Module->load('logo');?>
+                        <include type="module" name="logo" />
                     </a>
                 </h1>               
             </div>

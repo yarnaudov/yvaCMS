@@ -91,8 +91,6 @@
                 <th style="width:41%;" class="sortable" id="title"       ><?=lang('label_title');?></th>
                 <th style="width:6%;"  class="sortable" id="status"      ><?=lang('label_status');?></th>
                 <th style="width:8%;"  class="sortable" id="order"       ><?=lang('label_order');?></th>
-                <th style="width:8%;"  class="sortable" id="created_by"  ><?=lang('label_author');?></th>
-                <th style="width:12%;" class="sortable" id="created_on"  ><?=lang('label_date');?></th>
                 <th style="width:5%;"  >ID</th>
             </tr>
 		
@@ -102,10 +100,10 @@
             <tr class="row <?=$row_class;?>" >
                 <td><?=($numb+1);?></td>	
                 <td>
-                    <input type="checkbox" class="checkbox" name="groups[]" value="<?=$group['group_id'];?>" />
+                    <input type="checkbox" class="checkbox" name="groups[]" value="<?=$group['id'];?>" />
                 </td>
                 <td style="text-align: left;" >
-                    <a href="<?=site_url('groups/edit/'.$group['group_id']);?>/users" >
+                    <a href="<?=site_url('groups/edit/'.$group['id']);?>/users" >
                         <?=$group['title'];?>
                     </a>
                     <?php if(!empty($group['description'])){ ?>
@@ -141,9 +139,7 @@
                     <?=$group['order'];?>
                     </span>
                 </td>
-                <td><?=User::getDetails($group['created_by'], 'user');?></td>
-                <td><?=($group['created_on']);?></td>
-                <td><?=$group['group_id'];?></td>
+                <td><?=$group['id'];?></td>
             </tr>
 		
             <?php } ?>

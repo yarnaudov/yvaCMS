@@ -83,17 +83,14 @@ class User_group extends CI_Model {
         $data['status']       = $this->input->post('status');
         
         if(!$this->input->post('no_access')){
-        		$data['access']   = json_encode($this->input->post('access'));
+            $data['access']   = json_encode($this->input->post('access'));
         }
         
         if($action == 'insert'){
-            $data['order']      =  self::getMaxOrder()+1;
-            $data['created_by'] =  $_SESSION['user_id'];
-            $data['created_on'] =  now();        
+            $data['order'] =  self::getMaxOrder()+1;        
         }
         elseif($action == 'update'){
-            $data['updated_by'] =  $_SESSION['user_id'];
-            $data['updated_on'] =  now(); 
+            
         }
 
         //echo print_r($data);
@@ -107,18 +104,13 @@ class User_group extends CI_Model {
         $data = self::prepareData('insert');
 
         $query = $this->db->insert_string('users_groups', $data);
-        //echo $query;
         $result = $this->db->query($query);
-
-        if($result == true){
-            $this->session->set_userdata('good_msg', lang('msg_save_group'));
-        }
-        else{
+        if($result != true){
             $this->session->set_userdata('error_msg', lang('msg_save_group_error'));
         }
         
-        $id =$this->db->insert_id();
-        
+        $id = $this->db->insert_id();
+        $this->session->set_userdata('good_msg', lang('msg_save_group'));
         return $id;
 
     }
@@ -127,19 +119,15 @@ class User_group extends CI_Model {
     {
 
         $data = self::prepareData('update');
+        
         $where = "id = ".$id; 
-
         $query = $this->db->update_string('users_groups', $data, $where);
-        //echo $query;
         $result = $this->db->query($query);
-
-        if($result == true){
-            $this->session->set_userdata('good_msg', lang('msg_save_group'));
-        }
-        else{
+        if($result != true){
             $this->session->set_userdata('error_msg', lang('msg_save_group_error'));
         }
                 
+        $this->session->set_userdata('good_msg', lang('msg_save_group'));
         return $id;
 
     }
@@ -148,31 +136,29 @@ class User_group extends CI_Model {
     {   
 
         $data['status'] = $status;
+        
         $where = "id = ".$id;
-
         $query = $this->db->update_string('users_groups', $data, $where);
-        //echo $query;
         $result = $this->db->query($query);
 
-        if($result == true){
-            return true; 
-        }
-        else{
+        if($result != true){
             $this->session->set_userdata('error_msg', lang('msg_status_error'));
         }
+        
+        return true;
 
     }
     
     public function changeOrder($id, $order)
     {   
         
-        $old_order   = self::getDetails($id, 'order');
+        $old_order = self::getDetails($id, 'order');
         
         if($order == 'up'){
             $new_order =  $old_order-1;        
         }
         else{
-           $new_order =  $old_order+1;           
+           $new_order =  $old_order+1;
         }
         
         $data1['order'] = $old_order;
@@ -187,12 +173,11 @@ class User_group extends CI_Model {
         //echo $query2;
         $result2 = $this->db->query($query2);
         
-        if($result1 == true && $result2 == true){
-            return true; 
-        }
-        else{
+        if($result1 != true && $result2 != true){
             $this->session->set_userdata('error_msg', lang('msg_order_error'));
         }
+        
+        return true;
 
     }
     
@@ -201,7 +186,7 @@ class User_group extends CI_Model {
         
         $this->db->query("BEGIN");
         
-        $groups = $this->input->post('users_groups');     
+        $groups = $this->input->post('groups');     
         foreach($groups as $group){
             
             $status = self::getDetails($group, 'status');

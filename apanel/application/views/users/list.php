@@ -75,9 +75,9 @@
 		
             <div class="filter" >
 			
-                <select name="group" >
+                <select name="user_group" >
                     <option value="none" > - <?=lang('label_select');?> <?=lang('label_group');?> - </option>
-                    <?=create_options('groups', 'group_id', 'title', isset($group) ? $group : "", array('status' => 'yes') );?>
+                    <?=create_options('users_groups', 'id', 'title', isset($user_group) ? $user_group : "", array('status' => 'yes') );?>
                 </select>
 
                 <select name="status" >
@@ -94,12 +94,12 @@
             <tr>
                 <th style="width:3%;"  >#</th>
                 <th style="width:3%;"  >&nbsp;</th>                
-                <th style="width:41%;" class="sortable" id="name"        ><?=lang('label_title');?></th>
-                <th style="width:12%;" class="sortable" id="group_id"    ><?=lang('label_group');?></th>
-                <th style="width:6%;"  class="sortable" id="status"      ><?=lang('label_status');?></th>
-                <th style="width:8%;"  class="sortable" id="order"       ><?=lang('label_order');?></th>
-                <th style="width:8%;"  class="sortable" id="created_by"  ><?=lang('label_author');?></th>
-                <th style="width:12%;" class="sortable" id="created_on"  ><?=lang('label_date');?></th>
+                <th style="width:41%;" class="sortable" id="name"          ><?=lang('label_title');?></th>
+                <th style="width:12%;" class="sortable" id="user_group_id" ><?=lang('label_group');?></th>
+                <th style="width:6%;"  class="sortable" id="status"        ><?=lang('label_status');?></th>
+                <th style="width:8%;"  class="sortable" id="order"         ><?=lang('label_order');?></th>
+                <th style="width:8%;"  class="sortable" id="created_by"    ><?=lang('label_author');?></th>
+                <th style="width:12%;" class="sortable" id="created_on"    ><?=lang('label_date');?></th>
                 <th style="width:5%;"  >ID</th>
             </tr>
 		
@@ -109,17 +109,17 @@
             <tr class="row <?=$row_class;?>" >
                 <td><?=($numb+1);?></td>
                 <td>
-                    <input type="checkbox" class="checkbox" name="users[]" value="<?=$user['user_id'];?>" />
+                    <input type="checkbox" class="checkbox" name="users[]" value="<?=$user['id'];?>" />
                 </td>
                 <td style="text-align: left;" >
-                    <a href="<?=site_url('users/edit/'.$user['user_id']);?>" >
+                    <a href="<?=site_url('users/edit/'.$user['id']);?>" >
                         <?=$user['name'];?>
                     </a>
                     <?php if(!empty($user['description'])){ ?>
                     <div class="description" >(<span class="head" ><?=lang('label_description');?>:</span> <span class="content" ><?=strip_tags($user['description']);?></span>)</div>
                     <?php } ?>
                 </td>
-                <td><?=$this->Group->getDetails($user['group_id'], 'title');?></td>
+                <td><?=$this->User_group->getDetails($user['user_group_id'], 'title');?></td>
                 <td>
                     <?php if($user['status'] == 'yes'){ ?>
                     <img class="status_img" alt="no"  src="<?=base_url('img/iconActive.png');?>" >
@@ -140,7 +140,7 @@
                     </span>
                     
                     <span class="order_span" >
-                        <?php $max_order = $this->User->count($user['group_id']);
+                        <?php $max_order = $this->User->count($user['user_group_id']);
                             if($user['order'] < $max_order){ ?>
                         <img class="order_img" alt="down" src="<?=base_url('img/iconArrowDown.png');?>" >
                         <?php }else{ ?>
@@ -156,7 +156,7 @@
                 
                 <td><?=User::getDetails($user['created_by'], 'user');?></td>
                 <td><?=($user['created_on']);?></td>
-                <td><?=$user['user_id'];?></td>
+                <td><?=$user['id'];?></td>
             </tr>
             
             <?php } ?>

@@ -149,14 +149,14 @@
                                 <tr>	      			
                                     <th><label><?=lang('label_group');?>:</label></th>
                                     <td>
-                                        <?php if($this->user_id == $this->session->userdata('user_id')){ ?>
-                                        <input type="hidden" name="group" value="<?=$group_id;?>" >
+                                        <?php if($this->user_id == $_SESSION['user_id']){ ?>
+                                        <input type="hidden" name="user_group" value="<?=$user_group_id;?>" >
                                         <select disabled >
-                                            <?=create_options('groups', 'group_id', 'title', set_value('group', isset($group_id) ? $group_id : ""), array('status' => 'yes'));?>
+                                            <?=create_options('users_groups', 'id', 'title', set_value('group', isset($user_group_id) ? $user_group_id : ""), array('status' => 'yes'));?>
                                         </select>
                                         <?php }else{ ?>
-                                        <select name="group" >
-                                            <?=create_options('groups', 'group_id', 'title', set_value('group', isset($group_id) ? $group_id : ""), array('status' => 'yes'));?>
+                                        <select name="user_group" >
+                                            <?=create_options('users_groups', 'id', 'title', set_value('group', isset($user_group_id) ? $user_group_id : ""), array('status' => 'yes'));?>
                                         </select>
                                         <?php } ?>
                                     </td>
@@ -164,6 +164,7 @@
                                 
                                 <?php if(count($custom_fields) > 0){ ?>
                                 <tr><td colspan="2" class="empty_line" ></td></tr>
+                                
                                 <tr>
                                     <td colspan="2" class="empty_line" >
                                         <fieldset style="border:none;border-top: 1px solid #aaa;padding-left: 10px;">
