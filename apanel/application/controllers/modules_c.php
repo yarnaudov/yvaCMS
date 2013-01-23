@@ -7,7 +7,6 @@ class Modules_c extends MY_Controller {
     public  $page;
     public  $layout;
     private $module_id;
-    private $modules = array();
     
     function __construct()
     {
@@ -34,19 +33,10 @@ class Modules_c extends MY_Controller {
         $this->module_id = $this->uri->segment(3);
         
         /*
-         * get modules
+         * load modules languages
          */
-        $modules_dir = FCPATH.'modules/';
-        $handle = opendir($modules_dir);
-        while (false !== ($entry = readdir($handle))) { 
-            if(substr($entry, 0, 1) == "." || !is_dir($modules_dir.$entry)){
-                continue;
-           }  
-           
-           $this->load->language($entry);
-            
-           $this->modules[] = $entry;
-                                                         
+        foreach($this->modules as $module){
+           $this->_loadModuleLanguage($module);                                                                   
         }
         
     }
@@ -278,11 +268,7 @@ class Modules_c extends MY_Controller {
     {
         
         $data = $this->Module->getDetails($this->module_id);
-        $data = @array_merge($data, $this->Custom_field->getFieldsValues($this->module_id));
-        $data['params'] = json_decode($data['params'], true);
         $data['custom_fields'] = $this->Custom_field->getCustomFields(array('status' => 'yes'), '`order`');
-        
-        //print_r($data);
 
         $content["content"] = $this->load->view('modules/add', $data, true);		
         $this->load->view('layouts/default', $content);
@@ -296,7 +282,7 @@ class Modules_c extends MY_Controller {
                        
                        event.preventDefault();
 
-    	               parent.$('input[name=type]').val($(this).attr('href'));
+    	               parent.$('input.type').val($(this).attr('href'));
                        parent.$('form').submit();
                        
                    });";

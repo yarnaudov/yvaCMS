@@ -68,7 +68,7 @@ $(document).ready(function() {
             }
         });
     });
-    $('select[name=display_in]').bind('change', function(){
+    $('select.display_in').bind('change', function(){
         if($(this).val() == 'all'){
             $('.display_menus').attr('checked', true).attr('disabled', true);
         }
@@ -79,6 +79,6 @@ $(document).ready(function() {
             $('.display_menus').removeAttr('disabled');
         }
     });
-    $('select[name=display_in]').trigger('change');
+    $('select.display_in').trigger('change');
     
 });

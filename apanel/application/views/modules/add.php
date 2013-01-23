@@ -78,7 +78,7 @@
 
                             <tr>
                                 <th><label class="multilang" ><?=lang('label_title');?>:</label></th>
-                                <td><input type="text" name="title" value="<?=set_value('title', isset(${'title_'.$this->trl}) ? ${'title_'.$this->trl} : "");?>" ></td>
+                                <td><input type="text" name="title" value="<?=set_value('title', isset($title) ? $title : "");?>" ></td>
                             </tr>
 
                         </table>
@@ -87,11 +87,46 @@
                     </div>
 	            <!-- mandatory information  -->
                     
+                    <div class="box" >
+	      	        <span class="header" ><?=lang('label_advanced');?> <?=lang('label_options');?></span>
+	                
+                        <div class="box_content" >
+                            <table class="box_table" cellpadding="0" cellspacing="0" >
+
+                                <tr>	      			
+                                    <th><label><?=lang('label_type');?>:</label></th>
+                                    <td style="padding: 2px 0 0 1px;" >
+                                        <?php $type = set_value('params[type]', isset($params['type']) ? $params['type'] : "");
+                                              if(!empty($type)){
+                                              	  $this->load->language('modules/'.$type);
+                                              } ?>
+                                        <input type="hidden" class="type" name="params[type]" value="<?=$type;?>" >
+                                        
+                                        <?php if(!empty($type)){ ?>
+                                        <strong><?=lang('label_'.$type);?></strong> - 
+                                        <?php } ?>
+                                        
+                                        <a href  = "<?=site_url('modules/types');?>" 
+                                           class = "load_jquery_ui_iframe" 
+                                           title = "<?=lang('label_select').' '.lang('label_type');?>"
+                                           lang  = "dialog-select-module-type" ><?=lang('label_select');?></a>
+                                        
+                                    </td>
+                                </tr>
+                                
+                                <?php if(file_exists('modules/' . $type . '/views/apanel_options.php')){
+                                	      include_once 'modules/' . $type . '/views/apanel_options.php';
+                                      } ?>
+                               
+                            </table>
+                            
+                        </div>
+                    </div>
 	            
                     <div class="box" >
 	      	        <span class="header multilang" ><?=lang('label_description');?></span>
                         <div class="editor_div" >
-                          <textarea name="description" class="editor" ><?=set_value('description', isset(${'description_'.$this->trl}) ? ${'description_'.$this->trl} : "");?></textarea>
+                          <textarea name="description" class="editor" ><?=set_value('description', isset($description) ? $description : "");?></textarea>
                         </div>
 	            </div>
                     
@@ -100,17 +135,15 @@
 	      	      
                       <div class="box_content" >
                         
-                          <select name="display_in" style="width: 280px;">
-                              <?=create_options_array($this->config->item('module_display'), set_value('display_in', isset($display_in) ? $display_in : "") );?>
+                          <select name="params[display_in]" class="display_in" style="width: 280px;">
+                              <?=create_options_array($this->config->item('module_display'), set_value('params[display_in]', isset($params['display_in']) ? $params['display_in'] : "") );?>
                           </select>
                           <button class="styled toggle" type="button" >Toggle selection</button>
                           
                           <div id="tabs">
 
                               <?php 
-                              $menus_by_category = $this->Menu->getMenusByCategory(array(), "`order`");
-                              //print_r($menus);
-                              //$menus = array();
+                              $menus_by_category = $this->Menu->getMenusByCategory(array());
                               $tabs     = "";
                               $contents = "";
                               $tab_numb = 0;
@@ -146,7 +179,7 @@
                             ?>    	  	
 
                             <ul>
-                                    <?php echo $tabs; ?>
+                                <?php echo $tabs; ?>
                             </ul>
                             <?php echo $contents; ?>
 
@@ -172,7 +205,7 @@
                                 <tr>
                                     <td>
                                         <select name="translation" >
-                                            <?=create_options('languages', 'abbreviation', 'title', $this->trl, array('status' => 'yes'));?>
+                                            <?=create_options('languages', 'id', 'title', $this->trl, array('status' => 'yes'));?>
                                         </select>
                                     </td>
                                 </tr>
@@ -190,11 +223,14 @@
                             <table class="box_table" cellpadding="0" cellspacing="0" >
 
                                 <tr>	      			
-                                    <th><label><?=lang('label_category');?>:</label></th>
+                                    <th><label><?=lang('label_position');?>:</label></th>
                                     <td>
+                                        <input type="text" name="position" value="<?=set_value('position', isset($position) ? $position : "");?>" >
+                                        <!--
                                         <select name="category" >
                                             <?=create_options('categories', 'category_id', 'title_'.Language::getDefault(), set_value('category', isset($category_id) ? $category_id : ""), array('extension' => 'modules', 'status' => 'yes') );?>
                                         </select>
+                                        -->
                                     </td>
                                 </tr>
 
@@ -214,9 +250,9 @@
                                 <tr>	      			
                                     <th><label><?=lang('label_language');?>:</label></th>
                                     <td>
-                                        <select name="language" >
+                                        <select name="show_in_language" >
                                             <option value="all" ><?=lang('label_all');?></option>
-                                            <?=create_options('languages', 'language_id', 'title', set_value('language', isset($language_id) ? $language_id : ""), array('status' => 'yes') );?>
+                                            <?=create_options('languages', 'id', 'title', set_value('show_in_language', isset($show_in_language) ? $show_in_language : ""), array('status' => 'yes') );?>
                                         </select>
                                     </td>
                                 </tr>
@@ -253,21 +289,9 @@
                                 <tr><td colspan="2" class="empty_line" ></td></tr>
                                 
                                 <tr>	      			
-                                    <th><label><?=lang('label_display');?>&nbsp;<?=lang('label_title');?>:</label></th>
-                                    <td>
-                                        <?php if(!isset($show_title)){$show_title = 'yes';} ?>
-                                        <select name="show_title" >
-                                            <?=create_options_array($this->config->item('yes_no'), set_value('show_title', isset($show_title) ? $show_title : ""));?>
-                                        </select>
-                                    </td>
-                                </tr>
-                                
-                                <tr><td colspan="2" class="empty_line" ></td></tr>
-                                
-                                <tr>	      			
                                     <th><label><?=lang('label_css_class_suffix');?>:</label></th>
                                     <td>
-                                        <input type="text" name="params[css_class]" value="<?=set_value('params[css_class]', isset($params['css_class']) ? $params['css_class'] : "");?>"  >
+                                        <input type="text" name="css_class_sufix" value="<?=set_value('css_class_sufix', isset($css_class_sufix) ? $css_class_sufix : "");?>"  >
                                     </td>
                                 </tr>
                                 
@@ -289,48 +313,6 @@
                         </div>
                             
                     </div>
-                    
-                    
-                    <div class="box" >
-	      	        <span class="header" ><?=lang('label_advanced');?> <?=lang('label_options');?></span>
-	                
-                        <div class="box_content" >
-                            <table class="box_table" cellpadding="0" cellspacing="0" >
-
-                                <tr>	      			
-                                    <th><label><?=lang('label_type');?>:</label></th>
-                                    <td>
-                                        <?php $type = set_value('type', isset($type) ? $type : "");
-                                              if(!empty($type)){
-                                              	  $this->load->language($type);
-                                              } ?>
-                                        <input type="hidden" name="type" value="<?=$type;?>" >
-                                        
-                                        <?php if(!empty($type)){ ?>
-                                        <strong><?=lang('label_'.$type);?></strong> - 
-                                        <?php } ?>
-                                        
-                                        <a href  = "<?=site_url('articles');?>" 
-                                           class = "load_jquery_ui_iframe" 
-                                           lang  = "dialog-select-module-type" ><?=lang('label_select');?></a>
-                                        
-                                        <!-- start jquery UI -->
-                                        <div id    = "dialog-select-module-type"
-                                             class = "jquery_ui_iframe"
-                                             title = "<?=lang('label_select').' '.lang('label_type');?>" 
-                                             lang  = "<?=site_url('modules/types');?>" ></div>
-                                    </td>
-                                </tr>
-                                
-                                <?php if(file_exists('modules/' . $type . '/views/apanel_options.php')){
-                                	      include_once 'modules/' . $type . '/views/apanel_options.php';
-                                      } ?>
-                               
-                            </table>
-                            
-                        </div>
-                    </div>
-                    
                     
                     <?php if(isset($created_by)){ ?>
                     <div class="box" >

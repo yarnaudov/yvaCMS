@@ -79,9 +79,9 @@
 		
             <div class="filter" >
 			
-                <select name="category" >
-                    <option value="none" > - <?=lang('label_select');?> <?=lang('label_category');?> - </option>
-                    <?=create_options('categories', 'category_id', 'title_'.Language::getDefault(), isset($category) ? $category : "", array('extension' => 'modules', 'status' => 'yes') );?>
+                <select name="position" >
+                    <option value="none" > - <?=lang('label_select');?> <?=lang('label_position');?> - </option>
+                    <?=create_options_array($positions, isset($position) ? $position : "" );?>
                 </select>
 
                 <select name="status" >
@@ -101,17 +101,17 @@
                 <th style="width:3%;"  >&nbsp;</th>
                 
                 
-                <th style="width:39%;" class="sortable" id="title_<?=Language::getDefault();?>" ><?=lang('label_title');?></th>
-                <th style="width:10%;" class="sortable" id="type"        ><?=lang('label_type');?></th>
-                <th style="width:12%;" class="sortable" id="category_id" ><?=lang('label_category');?></th>
+                <th style="width:39%;" class="sortable" id="title"     ><?=lang('label_title');?></th>
+                <th style="width:10%;" class="sortable" id="type"      ><?=lang('label_type');?></th>
+                <th style="width:12%;" class="sortable" id="position"  ><?=lang('label_position');?></th>
                 
                 <?php if($this->layout != 'simple_ajax'){ ?>
-                <th style="width:6%;"  class="sortable" id="status"      ><?=lang('label_status');?></th>
-                <th style="width:8%;"  class="sortable" id="order"       ><?=lang('label_order');?></th>
+                <th style="width:6%;"  class="sortable" id="status"     ><?=lang('label_status');?></th>
+                <th style="width:8%;"  class="sortable" id="order"      ><?=lang('label_order');?></th>
                 <?php } ?>
                 
-                <th style="width:8%;"  class="sortable" id="created_by"  ><?=lang('label_author');?></th>
-                <th style="width:12%;" class="sortable" id="created_on"  ><?=lang('label_date');?></th>
+                <th style="width:8%;"  class="sortable" id="created_by" ><?=lang('label_author');?></th>
+                <th style="width:12%;" class="sortable" id="created_on" ><?=lang('label_date');?></th>
                 <th style="width:5%;"  >ID</th>
             </tr>
 		
@@ -122,18 +122,18 @@
                 <td><?=($numb+1);?></td>
                 
                 <td>
-                    <input type="checkbox" class="checkbox" name="modules[]" value="<?=$module['module_id'];?>" />
+                    <input type="checkbox" class="checkbox" name="modules[]" value="<?=$module['id'];?>" />
                 </td>                                
                 <td style="text-align: left;" >
-                    <a href="<?=site_url('modules/edit/'.$module['module_id']);?>" >
-                        <?=$module['title_'.Language::getDefault()];?>
+                    <a href="<?=site_url('modules/edit/'.$module['id']);?>" >
+                        <?=$module['title'];?>
                     </a>
-                    <?php if(!empty($module['description_'.Language::getDefault()])){ ?>
-                    <div class="description" >(<span class="head" ><?=lang('label_description');?>:</span> <span class="content" ><?=strip_tags($module['description_'.Language::getDefault()]);?></span>)</div>
+                    <?php if(!empty($module['description'])){ ?>
+                    <div class="description" >(<span class="head" ><?=lang('label_description');?>:</span> <span class="content" ><?=strip_tags($module['description']);?></span>)</div>
                     <?php } ?>
                 </td>
-                <td><?=lang('label_'.$module['type']);?></td>
-                <td><?=$this->Category->getDetails($module['category_id'], 'title_'.Language::getDefault());?></td>
+                <td><?=lang('label_'.$module['params']['type']);?></td>
+                <td><?=$module['position'];?></td>
                 <td>
                     <?php if($module['status'] == 'yes'){ ?>
                     <img class="status_img" alt="no"  src="<?=base_url('img/iconActive.png');?>" >
@@ -154,7 +154,7 @@
                     </span>
                     
                     <span class="order_span" >
-                        <?php $max_order = $this->Module->count($module['category_id']);
+                        <?php $max_order = $this->Module->count($module['position']);
                             if($module['order'] < $max_order){ ?>
                         <img class="order_img" alt="down" src="<?=base_url('img/iconArrowDown.png');?>" >
                         <?php }else{ ?>
@@ -169,7 +169,7 @@
                 </td>                
                 <td><?=User::getDetails($module['created_by'], 'user');?></td>
                 <td><?=($module['created_on']);?></td>
-                <td><?=$module['module_id'];?></td>
+                <td><?=$module['id'];?></td>
             </tr>
 		
             <?php } ?>

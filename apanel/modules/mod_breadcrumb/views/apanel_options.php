@@ -3,7 +3,7 @@
 <tr>	      			
     <th><label class="multilang" ><?=lang('label_text');?>:</label></th>
     <td>
-        <input name="params[text_<?=$this->trl;?>]" value="<?=set_value('params[text_'.$this->trl.']', isset($params['text_'.$this->trl]) ? $params['text_'.$this->trl] : "");?>" >
+        <input name="params[text][<?=$this->trl;?>]" value="<?=set_value('params[text]['.$this->trl.']', isset($params['text'][$this->trl]) ? $params['text'][$this->trl] : "");?>" >
     </td>
 </tr>
 

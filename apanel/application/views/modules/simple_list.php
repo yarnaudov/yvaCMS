@@ -18,12 +18,12 @@
             <?php foreach($modules as $numb => $module){ ?>
             <tr>
                 <td style="width: 1%;">
-                    <input id="module<?=$module['module_id'];?>" type="radio" value="<?=$module['module_id'];?>" name="modules" style="width:16px;">
+                    <input id="module<?=$module['id'];?>" type="radio" value="<?=$module['id'];?>" name="modules" style="width:16px;">
                 </td>
                 <td>
-                    <label for="module<?=$module['module_id'];?>" >
-                      <span class="title" ><?=$module['title_'.Language::getDefault()];?></span>
-                      <span class="type"  ><?=lang('label_'.$module['type']);?></span>
+                    <label for="module<?=$module['id'];?>" >
+                      <span class="title" ><?=$module['title'];?></span>
+                      <span class="type"  ><?=lang('label_'.$module['params']['type']);?></span>
                     </label>
                 </td>
             </tr>    
@@ -74,7 +74,7 @@ if(module){
     for(var i in params){
         var param = params[i].split('=');
 
-        if(param[0] == 'module_id'){
+        if(param[0] == 'id'){
             $('input[id=module'+param[1]+']').attr('checked', true);
             scrollIntoView($('input[id=module'+param[1]+']').parent().parent()[0], $('div.modules_list'));
         }
@@ -98,7 +98,7 @@ if(module){
 $('.cancel').click(function(){
     //parent.tinyMCE.activeEditor.selection.select(parent.tinyMCE.activeEditor.dom.select('p')[0]);
     parent.tinyMCE.activeEditor.selection.collapse(false);
-    parent.$( '#dialog-select-module' ).dialog( "close" );
+    parent.$( '#jquery_ui' ).dialog( "close" );
 });
 
 $('.save').click(function(){
@@ -107,7 +107,7 @@ $('.save').click(function(){
     var title = $('input[name=modules]:checked').parent().parent().find('.type').html();
     var type  = $('select[name=type]').val();
     
-    var params = 'module_id='+id+';type='+type;
+    var params = 'id='+id+';type='+type;
  
     if(type != 'normal'){
     
@@ -119,7 +119,7 @@ $('.save').click(function(){
     }
     
     parent.tinyMCE.execCommand('mceInsertContent', false, '<img src=\"apanel/img/module.png\" alt=\"'+params+'\" class=\"module\" title=\"'+title+'\" >');
-    parent.$('#dialog-select-module').dialog('close');
+    parent.$('#jquery_ui').dialog('close');
 
     return false;
     

@@ -1,18 +1,29 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Module extends CI_Model {
+class Module extends MY_Model {
 
-    public function getDetails($module_id, $field = null)
+    public function getDetails($id, $field = null)
     {
 
-        $this->db->select('*');
-        $this->db->where('module_id', $module_id);
-
-        $module = $this->db->get('modules');  	
+        $query = "SELECT 
+                      *
+                    FROM
+                      modules m
+                      LEFT JOIN modules_data md ON (m.id = md.module_id AND md.language_id = '".$this->trl."')
+                    WHERE
+                      m.id = '".$id."' ";
+        
+        $module = $this->db->query($query);  	
         $module = $module->result_array();
 
+        $module[0]['params'] = json_decode($module[0]['params'], true); 
+        
+        if(empty($module)){
+            return;
+        }
+
         if($field == null){
-                return $module[0];
+            return $module[0];
         }
         else{  	
             return $module[0][$field];
@@ -20,18 +31,14 @@ class Module extends CI_Model {
 
     }
   
-    public function getModules($filters = array(), $order_by = "", $limit = "")
+    public function getModules($filters = array(), $order_by = "`order`", $limit = "")
     {
         
         $filter = ''; 
         if(!isset($filters['status'])){
             $filter = " AND status != 'trash'"; 
         }
-        
-        if(substr_count($order_by, 'order')){
-            $order_by = "category_id, ".$order_by;
-        }      
-                    
+                            
         foreach($filters as $key => $value){
             
             if($key == 'search_v'){
@@ -61,9 +68,10 @@ class Module extends CI_Model {
         $query = "SELECT 
                         *
                     FROM
-                        modules
+                        modules m
+                        LEFT JOIN modules_data md ON (m.id = md.module_id AND md.language_id = ".$this->trl.")
                     WHERE
-                        module_id IS NOT NULL
+                        m.id IS NOT NULL
                         ".$filter."
                     ".($order_by != "" ? "ORDER BY ".$order_by : "")."
                     ".($limit    != "" ? "LIMIT ".$limit : "")."";
@@ -72,6 +80,10 @@ class Module extends CI_Model {
 
         $modules = $this->db->query($query)->result_array();
 
+        foreach($modules as $key => $module){
+            $modules[$key]['params'] = json_decode($module['params'], true);
+        }
+        
         return $modules;
 
     }
@@ -83,7 +95,7 @@ class Module extends CI_Model {
         
         foreach($modules as $module){
             
-            $modules_arr[$this->Category->getDetails($module['category_id'], 'title_'.$this->Language->getDefault())][$module['module_id']] = $module['title_'.$this->Language->getDefault()];
+            $modules_arr[$this->Category->getDetails($module['category_id'], 'title_'.$this->Language->getDefault())][$module['id']] = $module['title_'.$this->Language->getDefault()];
             
         }
         
@@ -91,13 +103,11 @@ class Module extends CI_Model {
         
     }
     
-    public function getMaxOrder($category = "")
+    public function getMaxOrder($position)
     {
         
-        $category == "" ? $category = $this->input->post('category') : "";
-        
         $this->db->select_max("`order`");
-        $this->db->where("category_id", $category);
+        $this->db->where("position", $position);
         $max_order = $this->db->get('modules')->result_array();      
         $order = $max_order[0]['order'];
 
@@ -105,7 +115,7 @@ class Module extends CI_Model {
 
     }
     
-    public function count($category = "")
+    public function count($position)
     {
         
         $query = "SELECT 
@@ -113,7 +123,7 @@ class Module extends CI_Model {
                     FROM
                         modules
                     WHERE
-                        category_id = '".$category."'";
+                        position = '".$position."'";
          
         //echo $query."<br/>";
 
@@ -123,70 +133,66 @@ class Module extends CI_Model {
 
     }
   
-    public function prepareData($module_id, $action)
+    public function prepareData($id, $action)
     {
         
-        $data['title_'.$this->trl]       = $this->input->post('title');
-        $data['description_'.$this->trl] = $this->input->post('description');
+        $data['modules_data']['title']       = $this->input->post('title');
+        $data['modules_data']['description'] = $this->input->post('description');
+        $data['modules_data']['language_id'] = $this->trl;
 
-        $data['category_id']             = $this->input->post('category');
-        $data['status']                  = $this->input->post('status');      
-        $data['language_id']             = $this->input->post('language');
-        $data['start_publishing']        = $this->input->post('start_publishing');
-        $data['end_publishing']          = $this->input->post('end_publishing');
-        $data['access']                  = $this->input->post('access');
-        $data['show_title']              = $this->input->post('show_title');
-        $data['type']                    = $this->input->post('type');
-        $data['display_in']              = $this->input->post('display_in');
-        $data['params']                  = $this->input->post('params');
+        $data['modules']['position']         = $this->input->post('position');
+        $data['modules']['status']           = $this->input->post('status');      
+        $data['modules']['show_in_language'] = $this->input->post('show_in_language');
+        $data['modules']['start_publishing'] = $this->input->post('start_publishing');
+        $data['modules']['end_publishing']   = $this->input->post('end_publishing');
+        $data['modules']['access']           = $this->input->post('access');
+        $data['modules']['css_class_sufix']  = $this->input->post('css_class_sufix');
+        $data['modules']['params']           = $this->input->post('params');
 
-        if($data['language_id'] == 'all'){
-            $data['language_id'] = NULL;
+        if($data['modules']['show_in_language'] == 'all'){
+            $data['modules']['show_in_language'] = NULL;
         }
-        if(empty($data['start_publishing'])){
-            $data['start_publishing'] = NULL;
+        if(empty($data['modules']['start_publishing'])){
+            $data['modules']['start_publishing'] = NULL;
         }
-        if(empty($data['end_publishing'])){
-            $data['end_publishing'] = NULL;
+        if(empty($data['modules']['end_publishing'])){
+            $data['modules']['end_publishing'] = NULL;
         }
 
         if($action == 'insert'){
-            $data['order'] =  self::getMaxOrder()+1;
-            $data['created_by'] =  $_SESSION['user_id'];
-            $data['created_on'] =  now();        
+            $data['modules']['order']      =  self::getMaxOrder($data['modules']['position'])+1;
+            $data['modules']['created_by'] =  $_SESSION['user_id'];
+            $data['modules']['created_on'] =  now();        
         }
         elseif($action == 'update'){
             
-            if($data['type'] == 'search_form'){
-                $params = json_decode(self::getDetails($module_id, 'params'), true);
-                $languages = Language::getLanguages();
-                foreach($languages as $key => $language){
-                    if($this->trl == $language['abbreviation']){
-                        continue;
+            $params = self::getDetails($id, 'params');
+            if($params['type'] == $data['modules']['params']['type']){
+                foreach($data['modules']['params'] as $key1 => $value1){
+                    if(!is_array($value1) || $key1 == 'display_menus'){
+                        $params[$key1] = $value1;
                     }
-                    $data['params']['label_'.$language['abbreviation']]       = $params['label_'.$language['abbreviation']];
-                    $data['params']['field_text_'.$language['abbreviation']]  = $params['field_text_'.$language['abbreviation']];
-                    $data['params']['button_text_'.$language['abbreviation']] = $params['button_text_'.$language['abbreviation']];
+                    else{
+                        foreach($value1 as $key2 => $value2){
+                            $params[$key1][$key2] = $value2;
+                        }
+                    }                    
                 }
-            }
-            elseif($data['type'] == 'breadcrumb'){
-                $params = json_decode(self::getDetails($module_id, 'params'), true);
-                $languages = Language::getLanguages();
-                foreach($languages as $key => $language){
-                    if($this->trl == $language['abbreviation']){
-                        continue;
-                    }
-                    $data['params']['text_'.$language['abbreviation']]  = $params['text_'.$language['abbreviation']];
-                }
+                
+                $data['modules']['params'] = $params;
+                
             }
             
-            $data['updated_by'] =  $_SESSION['user_id'];
-            $data['updated_on'] =  now(); 
+            $data['modules']['updated_by'] =  $_SESSION['user_id'];
+            $data['modules']['updated_on'] =  now(); 
         }
         
-        $data['params'] = json_encode($data['params']);
+        $data['modules']['params'] = json_encode($data['modules']['params']);
         
+        //print_r($this->input->post('params'));
         //echo print_r($data);
+        //exit;
+        
         return $data;
 
     }
@@ -196,53 +202,95 @@ class Module extends CI_Model {
 
         $data = self::prepareData('', 'insert');
 
-        $query = $this->db->insert_string('modules', $data);
-        //echo $query;
+        $this->db->query('BEGIN');
+        
+        // save data in modules table
+        $query = $this->db->insert_string('modules', $data['modules']);
         $result = $this->db->query($query);
-
-        if($result == true){
-            $this->session->set_userdata('good_msg', lang('msg_save_module'));
-        }
-        else{
+        if($result != true){
             $this->session->set_userdata('error_msg', lang('msg_save_module_error'));
+            $this->db->query('ROLLBACK');
+            return;
         }
         
-        $module_id =$this->db->insert_id();
+        $id = $this->db->insert_id();
         
-        $this->Custom_field->saveFieldsValues($module_id);
+        // save data in modules_data table
+        $data['modules_data']['module_id'] = $id;
+        $query = $this->db->insert_string('modules_data', $data['modules_data']);
+        $result = $this->db->query($query);        
+        if($result != true){
+            $this->session->set_userdata('error_msg', lang('msg_save_module_error'));
+            $this->db->query('ROLLBACK');
+            return $id;
+        }
         
-        return $module_id;
+        // save custom fields data
+        $result = $this->Custom_field->saveFieldsValues($id);
+        if($result == false){
+            $this->session->set_userdata('error_msg', lang('msg_save_module_error'));
+            $this->db->query('ROLLBACK');
+            return $id;
+        }
+        
+        $this->session->set_userdata('good_msg', lang('msg_save_module'));
+        $this->db->query('COMMIT');
+        return $id;
 
     }
 
-    public function edit($module_id)
+    public function edit($id)
     {
 
-        $data = self::prepareData($module_id, 'update');
-        $where = "module_id = ".$module_id; 
-
-        $query = $this->db->update_string('modules', $data, $where);
-        //echo $query;
-        $result = $this->db->query($query);
-
-        if($result == true){
-            $this->session->set_userdata('good_msg', lang('msg_save_module'));
-        }
-        else{
+        $data = self::prepareData($id, 'update');
+        
+        $this->db->query('BEGIN');
+        
+        // save data in modules table
+        $where = "id = ".$id; 
+        $query = $this->db->update_string('modules', $data['modules'], $where);        
+        $result = $this->db->query($query);        
+        if($result != true){
             $this->session->set_userdata('error_msg', lang('msg_save_module_error'));
+            $this->db->query('ROLLBACK');
+            return $id;
         }
         
-        $this->Custom_field->saveFieldsValues($module_id);
+        // save data in modules_data table
+        if(parent::_dataExists('modules_data', 'module_id', $id) == 0){
+            $data['modules_data']['module_id'] = $id;
+            $query = $this->db->insert_string('modules_data', $data['modules_data']);
+        }
+        else{            
+            $where = "module_id = ".$id." AND language_id = ".$this->trl." ";
+            $query = $this->db->update_string('modules_data', $data['modules_data'], $where);            
+        }        
+        $this->db->query($query);
+        if($result != true){
+            $this->session->set_userdata('error_msg', lang('msg_save_module_error'));
+            $this->db->query('ROLLBACK');
+            return $id;
+        }
         
-        return $module_id;
-
+        // save custom fields data
+        $result = $this->Custom_field->saveFieldsValues($id);
+        if($result == false){
+            $this->session->set_userdata('error_msg', lang('msg_save_module_error'));
+            $this->db->query('ROLLBACK');
+            return $id;
+        }        
+        
+        $this->session->set_userdata('good_msg', lang('msg_save_module'));
+        $this->db->query('COMMIT');
+        return $id;
+        
     }
 
-    public function changeStatus($module_id, $status)
+    public function changeStatus($id, $status)
     {   
 
         $data['status'] = $status;
-        $where = "module_id = ".$module_id;
+        $where = "id = ".$id;
 
         $query = $this->db->update_string('modules', $data, $where);
         //echo $query;
@@ -257,11 +305,11 @@ class Module extends CI_Model {
 
     }
     
-    public function changeOrder($module_id, $order)
+    public function changeOrder($id, $order)
     {   
         
-        $old_order   = self::getDetails($module_id, 'order');
-        $category_id = self::getDetails($module_id, 'category_id');
+        $old_order = self::getDetails($id, 'order');
+        $position  = self::getDetails($id, 'position');
         
         if($order == 'up'){
             $new_order =  $old_order-1;        
@@ -271,13 +319,13 @@ class Module extends CI_Model {
         }
         
         $data1['order'] = $old_order;
-        $where1 = "`order` = ".$new_order." AND category_id = '".$category_id."'";
+        $where1 = "`order` = ".$new_order." AND position = '".$position."'";
         $query1 = $this->db->update_string('modules', $data1, $where1);
         //echo $query1;
         $result1 = $this->db->query($query1);
         
         $data2['order'] = $new_order;
-        $where2 = "module_id = ".$module_id;
+        $where2 = "id = ".$id;
         $query2 = $this->db->update_string('modules', $data2, $where2);
         //echo $query2;
         $result2 = $this->db->query($query2);
@@ -302,7 +350,7 @@ class Module extends CI_Model {
             $status = self::getDetails($module, 'status');
             
             if($status == 'trash'){
-                $result = $this->db->simple_query("DELETE FROM modules WHERE module_id = '".$module."'");
+                $result = $this->db->simple_query("DELETE FROM modules WHERE id = '".$module."'");
             }
             else{
                 $result = self::changeStatus($module, 'trash');

@@ -14,6 +14,9 @@ class MY_Controller extends CI_Controller{
     // all information about installed components
     public $components = array();
     
+    // all information about installed modules
+    public $modules = array();
+    
     public function __construct()
     {
 
@@ -32,6 +35,9 @@ class MY_Controller extends CI_Controller{
         
         // load components data
         $this->components = $this->_loadComponetsData();
+        
+        // load modules
+        $this->modules = $this->_loadModulesData();
         
         /*
          * check if user is logged in
@@ -162,5 +168,34 @@ class MY_Controller extends CI_Controller{
         }
         
     }
+    
+    private function _loadModulesData()
+    {
+        
+        $modules = array();
 
+        $modules_dir = FCPATH.'modules/';
+        $handle = opendir($modules_dir);
+        while (false !== ($entry = readdir($handle))) { 
+            if(substr($entry, 0, 1) == "." || !is_dir($modules_dir.$entry)){
+                continue;
+            }  
+
+            $modules[$entry] = $entry;
+                                                         
+        }
+
+        return $modules;
+        
+    }
+
+    function _loadModuleLanguage($module)
+    {
+        
+        if(file_exists(FCPATH.APPPATH.'language/'.get_lang().'/modules/'.$module.'_lang.php')){
+            $this->load->language('modules/'.$module);
+        }
+        
+    }
+    
 }

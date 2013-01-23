@@ -176,15 +176,8 @@ class Home extends MY_Controller {
         /*
          * load modules languages
          */
-        $modules_dir = FCPATH.'modules/';
-        $handle = opendir($modules_dir);
-        while (false !== ($entry = readdir($handle))) { 
-            if(substr($entry, 0, 1) == "." || !is_dir($modules_dir.$entry)){
-                continue;
-           }  
-           
-           $this->load->language($entry);          
-                                                         
+        foreach($this->modules as $module){
+           $this->_loadModuleLanguage($module);                                                                   
         }
         
         $content["content"] = $this->load->view('modules/simple_list', $data, true);

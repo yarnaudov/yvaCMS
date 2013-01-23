@@ -37,6 +37,7 @@ $lang['label_author']        = 'Автор';
 $lang['label_date']          = 'Дата';
 $lang['label_abbreviation']  = 'Съкращение';
 $lang['label_default']       = 'Основен';
+$lang['label_position']      = 'Позиция';
 
 
 $lang['label_mandatory']     = 'Задължителна';
