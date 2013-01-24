@@ -3,6 +3,6 @@
 <tr>	      			
     <th><label><?=lang('label_html');?>:</label></th>
     <td>
-        <textarea style="height: 100px;" name="params[html]" ><?=set_value('params[html]', isset($params['html']) ? $params['html'] : "");?></textarea>
+        <textarea id="code" style="height: 100px;" name="params[html]" ><?=set_value('params[html]', isset($params['html']) ? $params['html'] : "");?></textarea>
     </td>
 </tr>

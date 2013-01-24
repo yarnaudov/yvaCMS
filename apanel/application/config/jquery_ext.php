@@ -73,6 +73,15 @@ $config['jquery_ext']['libraries']['lightbox']           = array("path"  => 'lig
                                                                                   'lightbox.css')
                                                                  );
 
+$config['jquery_ext']['libraries']['codemirror']         = array("path"  => 'codemirror/',
+                                                                 "files" => array('lib/codemirror.js',
+                                                                                  'mode/javascript/javascript.js',
+                                                                                  'mode/css/css.js',
+                                                                                  'mode/xml/xml.js',
+                                                                                  'mode/htmlmixed/htmlmixed.js',
+                                                                                  'lib/codemirror.css')
+                                                                 );
+
 /*
 |------------------------------------------------------------------------------
 | Autoload libraries

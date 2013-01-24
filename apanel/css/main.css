@@ -793,3 +793,10 @@ table.menu_types td ul li{
 table.menu_types td ul ul{
     margin: 0 0 0 10px;   
 }
+
+/*
+ * module html editor
+ */
+ .cm-s-default{
+     border: 1px solid #ccc;
+ }
