@@ -2,17 +2,20 @@
 
 class Banner extends CI_Model {
 
-    public function getDetails($banner_id, $field = null)
+    public function getDetails($id, $field = null)
     {
 
         $this->db->select('*');
-        $this->db->where('banner_id', $banner_id);
+        $this->db->where('id', $id);
 
         $banner = $this->db->get('banners');  	
         $banner = $banner->result_array();
-
+        
+        $banner[0]['params'] = json_decode($banner[0]['params'], true);
+        $banner[0]           = array_merge($banner[0], $this->Custom_field->getFieldsValues($id));
+        
         if($field == null){
-                return $banner[0];
+            return $banner[0];
         }
         else{  	
             return $banner[0][$field];
@@ -29,7 +32,7 @@ class Banner extends CI_Model {
         }
         
         if(substr_count($order_by, 'order')){
-            $order_by = "category_id, ".$order_by;
+            $order_by = "position, ".$order_by;
         }      
                     
         foreach($filters as $key => $value){
@@ -37,8 +40,8 @@ class Banner extends CI_Model {
             if($key == 'search_v'){
                 $filter .= " AND (title like '%".$value."%' OR description like '%".$value."%')";
             }
-            elseif($key == 'category'){
-                $filter .= " AND category_id = '".$value."' ";
+            elseif($key == 'position'){
+                $filter .= " AND position = '".$value."' ";
             }
             else{
                 $filter .= " AND `".$key."` = '".$value."' ";
@@ -51,7 +54,7 @@ class Banner extends CI_Model {
                     FROM
                         banners
                     WHERE
-                        banner_id IS NOT NULL
+                        id IS NOT NULL
                         ".$filter."
                     ".($order_by != "" ? "ORDER BY ".$order_by : "")."
                     ".($limit    != "" ? "LIMIT ".$limit : "")."";
@@ -60,32 +63,37 @@ class Banner extends CI_Model {
 
         $banners = $this->db->query($query)->result_array();
 
+        foreach($banners as $key => $banner){
+            $banners[$key]['params'] = json_decode($banner['params'], true);
+            $banners[$key]           = array_merge($banners[$key], $this->Custom_field->getFieldsValues($banner['id']));
+        }
+        
         return $banners;
 
     }
     
-    public function getBannersByCategory($filters = array(), $order_by = "")
+    public function getPositions($positions = array())
     {
         
-        $banners = self::getBanners($filters, $order_by);
+        $query = "SELECT position FROM banners WHERE `status` != 'trash'; ";
         
-        foreach($banners as $banner){
-            
-            $banners_arr[$this->Category->getDetails($banner['category_id'], 'title_'.$this->Language->getDefault())][$banner['banner_id']] = $banner['title_'.$this->Language->getDefault()];
-            
+        $banners = $this->db->query($query)->result_array();
+
+        foreach($banners as $key => $banner){
+            if(!in_array($banner['position'], $positions)){
+                $positions[$banner['position']] = $banner['position'];
+            }
         }
         
-        return $banners_arr;
+        return $positions;
         
     }
     
-    public function getMaxOrder($category = "")
+    public function getMaxOrder($position)
     {
-        
-        $category == "" ? $category = $this->input->post('category') : "";
-        
+                
         $this->db->select_max("`order`");
-        $this->db->where("category_id", $category);
+        $this->db->where("position", $position);
         $max_order = $this->db->get('banners')->result_array();      
         $order = $max_order[0]['order'];
 
@@ -93,7 +101,7 @@ class Banner extends CI_Model {
 
     }
     
-    public function count($category = "")
+    public function count($position)
     {
         
         $query = "SELECT 
@@ -101,7 +109,7 @@ class Banner extends CI_Model {
                     FROM
                         banners
                     WHERE
-                        category_id = '".$category."'";
+                        position = '".$position."'";
          
         //echo $query."<br/>";
 
@@ -117,18 +125,16 @@ class Banner extends CI_Model {
         $data['title']            = $this->input->post('title');
         $data['description']      = $this->input->post('description');
 
-        $data['category_id']      = $this->input->post('category');
+        $data['position']         = $this->input->post('position');
         $data['status']           = $this->input->post('status');      
-        $data['language_id']      = $this->input->post('language');
+        $data['show_in_language'] = $this->input->post('show_in_language');
         $data['start_publishing'] = $this->input->post('start_publishing');
         $data['end_publishing']   = $this->input->post('end_publishing');
-        $data['show_title']       = $this->input->post('show_title');
-        $data['type']             = $this->input->post('type');
-        $data['display_in']       = $this->input->post('display_in');
+        $data['css_class_sufix']  = $this->input->post('css_class_sufix');
         $data['params']           = json_encode($this->input->post('params'));
 
-        if($data['language_id'] == 'all'){
-            $data['language_id'] = NULL;
+        if($data['show_in_language'] == 'all'){
+            $data['show_in_language'] = NULL;
         }
         if(empty($data['start_publishing'])){
             $data['start_publishing'] = NULL;
@@ -138,7 +144,7 @@ class Banner extends CI_Model {
         }
 
         if($action == 'insert'){
-            $data['order'] =  self::getMaxOrder()+1;
+            $data['order']      =  self::getMaxOrder($data['position'])+1;
             $data['created_by'] =  $_SESSION['user_id'];
             $data['created_on'] =  now();        
         }
@@ -147,7 +153,6 @@ class Banner extends CI_Model {
             $data['updated_on'] =  now(); 
         }
 
-        //echo print_r($data);
         return $data;
 
     }
@@ -157,78 +162,92 @@ class Banner extends CI_Model {
 
         $data = self::prepareData('insert');
 
+        $this->db->query('BEGIN');
+        
+        // save data in banners table
         $query = $this->db->insert_string('banners', $data);
-        //echo $query;
         $result = $this->db->query($query);
-
-        if($result == true){
-            $this->session->set_userdata('good_msg', lang('msg_save_banner'));
-        }
-        else{
+        if($result != true){
             $this->session->set_userdata('error_msg', lang('msg_save_banner_error'));
+            $this->db->query('ROLLBACK');
+            return;
         }
         
-        $banner_id = $this->db->insert_id();
+        $id = $this->db->insert_id();
         
-        $this->Custom_field->saveFieldsValues($banner_id);
+        // save custom fields data
+        $result = $this->Custom_field->saveFieldsValues($id);
+        if($result == false){
+            $this->session->set_userdata('error_msg', lang('msg_save_banner_error'));
+            $this->db->query('ROLLBACK');
+            return $id;
+        }
         
-        return $banner_id;
+        $this->session->set_userdata('good_msg', lang('msg_save_banner'));
+        $this->db->query('COMMIT');
+        return $id;
 
     }
 
-    public function edit($banner_id)
+    public function edit($id)
     {
 
         $data = self::prepareData('update');
-        $where = "banner_id = ".$banner_id; 
-
+        
+        $this->db->query('BEGIN');
+        
+        $where = "id = ".$id; 
         $query = $this->db->update_string('banners', $data, $where);
-        //echo $query;
         $result = $this->db->query($query);
-
-        if($result == true){
-            $this->session->set_userdata('good_msg', lang('msg_save_banner'));
-        }
-        else{
+        if($result != true){
             $this->session->set_userdata('error_msg', lang('msg_save_banner_error'));
+            $this->db->query('ROLLBACK');
+            return;
         }
         
-        $this->Custom_field->saveFieldsValues($banner_id);
+        // save custom fields data
+        $result = $this->Custom_field->saveFieldsValues($id);
+        if($result == false){
+            $this->session->set_userdata('error_msg', lang('msg_save_banner_error'));
+            $this->db->query('ROLLBACK');
+            return $id;
+        }
         
-        return $banner_id;
+        $this->session->set_userdata('good_msg', lang('msg_save_banner'));
+        $this->db->query('COMMIT');
+        return $id;
 
     }
 
-    public function changeStatus($banner_id, $status)
+    public function changeStatus($id, $status)
     {   
 
         $data['status'] = $status;
-        $where = "banner_id = ".$banner_id;
+        $where = "id = ".$id;
 
         $query = $this->db->update_string('banners', $data, $where);
-        //echo $query;
         $result = $this->db->query($query);
 
-        if($result == true){
-            return true; 
-        }
-        else{
+        if($result != true){
             $this->session->set_userdata('error_msg', lang('msg_status_error'));
+            return;
         }
+        
+        return true;
 
     }
     
-    public function changeOrder($banner_id, $order)
+    public function changeOrder($id, $order)
     {   
         
-        $old_order   = self::getDetails($banner_id, 'order');
-        $category_id = self::getDetails($banner_id, 'category_id');
+        $old_order = self::getDetails($id, 'order');
+        $position  = self::getDetails($id, 'position');
         
         if($order == 'up'){
             $new_order =  $old_order-1;        
         }
         else{
-           $new_order =  $old_order+1;           
+            $new_order =  $old_order+1;           
         }
         
         $data1['order'] = $old_order;
@@ -238,17 +257,17 @@ class Banner extends CI_Model {
         $result1 = $this->db->query($query1);
         
         $data2['order'] = $new_order;
-        $where2 = "banner_id = ".$banner_id;
+        $where2 = "id = ".$id;
         $query2 = $this->db->update_string('banners', $data2, $where2);
         //echo $query2;
         $result2 = $this->db->query($query2);
         
-        if($result1 == true && $result2 == true){
-            return true; 
-        }
-        else{
+        if($result1 != true && $result2 != true){
             $this->session->set_userdata('error_msg', lang('msg_order_error'));
+            return;
         }
+        
+        return true; 
 
     }
     
@@ -263,7 +282,7 @@ class Banner extends CI_Model {
             $status = self::getDetails($banner, 'status');
             
             if($status == 'trash'){
-                $result = $this->db->simple_query("DELETE FROM banners WHERE banner_id = '".$banner."'");
+                $result = $this->db->simple_query("DELETE FROM banners WHERE id = '".$banner."'");
             }
             else{
                 $result = self::changeStatus($banner, 'trash');

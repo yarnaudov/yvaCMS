@@ -84,6 +84,7 @@
 
                         <?php if($sidebar_modules){ ?>
                         <div id="sidebar" class="column column-240 column-right">
+                            <include type="banner" name="sidebar" />
                             <?=$sidebar_modules?>
                         </div>
                         <?php } ?>

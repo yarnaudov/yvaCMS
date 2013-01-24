@@ -212,6 +212,9 @@ class MY_Controller extends CI_Controller{
             if($include->type == 'module'){
                 $data['modules'][$include->name] = $include->name;
             }
+            elseif($include->type == 'banner'){
+                $data['banners'][$include->name] = $include->name;
+            }
         }
         
         if($type != null){

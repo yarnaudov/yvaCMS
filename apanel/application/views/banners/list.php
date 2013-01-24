@@ -71,9 +71,14 @@
                 <input type="text" name="search_v" value="<?=isset($search_v) ? $search_v : "";?>" >
                 <button class="styled" type="submit" name="search" ><?=lang('label_search');?></button>
                 <button class="styled" type="submit" name="clear"  ><?=lang('label_clear');?></button>
-            </div class="search" >
+            </div>
 		
             <div class="filter" >
+                
+                <select name="position" >
+                    <option value="none" > - <?=lang('label_select');?> <?=lang('label_position');?> - </option>
+                    <?=create_options_array($positions, isset($position) ? $position : "" );?>
+                </select>
                 
                 <select name="status" >
                     <option value="none" > - <?=lang('label_select');?> <?=lang('label_status');?> - </option>
@@ -91,7 +96,7 @@
                 <th style="width:3%;"  >&nbsp;</th>
                 <th style="width:31%;" class="sortable" id="title"       ><?=lang('label_title');?></th>
                 <th style="width:8%;"  class="sortable" id="prefix"      ><?=lang('label_type');?></th>
-                <th style="width:12%;" class="sortable" id="category_id" ><?=lang('label_category');?></th>                
+                <th style="width:12%;" class="sortable" id="position"    ><?=lang('label_position');?></th>
                 <th style="width:6%;"  class="sortable" id="status"      ><?=lang('label_status');?></th>
                 <th style="width:8%;"  class="sortable" id="order"       ><?=lang('label_order');?></th>
                 <th style="width:8%;"  class="sortable" id="created_by"  ><?=lang('label_author');?></th>
@@ -105,18 +110,18 @@
             <tr class="row <?=$row_class;?>" >
                 <td><?=($numb+1);?></td>	
                 <td>
-                    <input type="checkbox" class="checkbox" name="banners[]" value="<?=$banner['banner_id'];?>" />
+                    <input type="checkbox" class="checkbox" name="banners[]" value="<?=$banner['id'];?>" />
                 </td>
                 <td style="text-align: left;" >
-                    <a href="<?=site_url('banners/edit/'.$banner['banner_id']);?>" >
+                    <a href="<?=site_url('banners/edit/'.$banner['id']);?>" >
                         <?=$banner['title'];?>
                     </a>
                     <?php if(!empty($banner['description'])){ ?>
                     <div class="description" >(<span class="head" ><?=lang('label_description');?>:</span> <span class="content" ><?=strip_tags($banner['description']);?></span>)</div>
                     <?php } ?>
                 </td>                
-                <td><?=$banner['type'];?></td>
-                <td><?=$this->Category->getDetails($banner['category_id'], 'title_'.Language::getDefault());?></td>
+                <td><?=lang('label_'.$banner['params']['type']);?></td>
+                <td><?=$banner['position'];?></td>
                 <td>
                     <?php if($banner['status'] == 'yes'){ ?>
                     <img class="status_img" alt="no"  src="<?=base_url('img/iconActive.png');?>" >
@@ -152,7 +157,7 @@
                 </td>
                 <td><?=User::getDetails($banner['created_by'], 'user');?></td>
                 <td><?=($banner['created_on']);?></td>
-                <td><?=$banner['banner_id'];?></td>
+                <td><?=$banner['id'];?></td>
             </tr>
 		
             <?php } ?>

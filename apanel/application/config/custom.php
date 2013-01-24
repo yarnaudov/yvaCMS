@@ -9,7 +9,8 @@ $config['no_login']           = array('',
                                       'no_access',
                                       'modules/types',
                                       'home/ajax',
-                                      'menus/types');
+                                      'menus/types',
+                                      'banners/types');
 
 $config['yes_no']             = array('yes'             => 'label_yes', 
                                       'no'              => 'label_no');
@@ -29,11 +30,11 @@ $config['menu_types']         = array('article'         => 'label_article',
                                       'menu'            => 'label_menu',
                                       'external_url'    => 'label_external_url');
 
-$config['custom_field_types'] = array('text'            => 'label_text',    
-                                      'textarea'        => 'label_textarea',
-                                      'dropdown'        => 'label_dropdown',
-                                      'checkbox'        => 'label_checkbox',
-                                      'date'            => 'label_date');
+$config['custom_field_types'] = array('text'            => 'label_text_field',    
+                                      'textarea'        => 'label_textarea_field',
+                                      'dropdown'        => 'label_dropdown_field',
+                                      'checkbox'        => 'label_checkbox_field',
+                                      'date'            => 'label_date_field');
 
 $config['module_display']     = array('all'                 => 'label_all_pages', 
                                       'on_selected'         => 'label_on_selected',

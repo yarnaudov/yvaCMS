@@ -109,11 +109,11 @@ $lang['label_external_url']  = 'External URL';
 $lang['label_component']     = 'Component';
 
 // custom field types
-$lang['label_text']     = 'Text field';
-$lang['label_textarea'] = 'Textarea';
-$lang['label_dropdown'] = 'Dropdown list';
-$lang['label_checkbox'] = 'Checkbox';
-$lang['label_date']     = 'Date field';
+$lang['label_text_field']     = 'Text field';
+$lang['label_textarea_field'] = 'Textarea';
+$lang['label_dropdown_field'] = 'Dropdown list';
+$lang['label_checkbox_field'] = 'Checkbox';
+$lang['label_date_field']     = 'Date field';
 
 $lang['label_all']           = 'All';
 

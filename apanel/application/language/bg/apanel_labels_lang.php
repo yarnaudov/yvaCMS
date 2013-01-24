@@ -109,11 +109,11 @@ $lang['label_external_url']  = 'Външен линк';
 $lang['label_component']     = 'Компонент';
 
 // custom field types
-$lang['label_text']     = 'Текстово поле';
-$lang['label_textarea'] = 'Текстова област';
-$lang['label_dropdown'] = 'Падащо меню';
-$lang['label_checkbox'] = 'Отметката';
-$lang['label_date']     = 'Избор на дата';
+$lang['label_text_field']     = 'Текстово поле';
+$lang['label_textarea_field'] = 'Текстова област';
+$lang['label_dropdown_field'] = 'Падащо меню';
+$lang['label_checkbox_field'] = 'Отметката';
+$lang['label_date_field']     = 'Избор на дата';
 
 
 $lang['label_all']           = 'Всички';

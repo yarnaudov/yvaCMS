@@ -152,20 +152,30 @@ class Custom_field extends CI_Model {
             $status = self::getDetails($custom_field, 'status');
             
             if($status == 'trash'){
-                $result = $this->db->simple_query("DELETE FROM custom_fields WHERE id = '".$custom_field."'");
-                if($result == true){
-                  $result = $this->db->simple_query("DELETE FROM custom_fields_values WHERE id = '".$custom_field."'");
+                
+                $result = $this->db->simple_query("DELETE FROM custom_fields_values WHERE custom_field_id = '".$custom_field."'");
+                if($result != true){
+                    $this->db->query("ROLLBACK");
+                    return false;
                 }
+                
+                $result = $this->db->simple_query("DELETE FROM custom_fields WHERE id = '".$custom_field."'");
+                if($result != true){
+                    $this->db->query("ROLLBACK");
+                    return false;
+                }
+                
             }
             else{
+                
                 $result = self::changeStatus($custom_field, 'trash');
+                if($result != true){
+                    $this->db->query("ROLLBACK");
+                    return false;
+                }
+                
             }
-            
-            if($result != true){
-                $this->db->query("ROLLBACK");
-                return false;
-            }
-            
+  
         }
         
         $this->db->query("COMMIT");

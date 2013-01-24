@@ -44,7 +44,7 @@ class Modules_c extends MY_Controller {
         /*
          * get positions
          */        
-        $this->positions = $this->Module->getModulesPositions(parent::_parseTemplateFile('modules'));
+        $this->positions = $this->Module->getPositions(parent::_parseTemplateFile('modules'));
         
     }
     
@@ -60,7 +60,11 @@ class Modules_c extends MY_Controller {
             $this->jquery_ext->add_library("check_actions_add_edit.js");
             $this->jquery_ext->add_plugin("codemirror");
             
-            $script = "var editor = CodeMirror.fromTextArea(document.getElementById('code'), {mode: 'text/html', tabMode: 'indent', lineNumbers: true});
+            $script = "try{
+                         var editor = CodeMirror.fromTextArea(document.getElementById('code'), {mode: 'text/html', tabMode: 'indent', lineNumbers: true});
+                       }
+                       catch(err){}
+                       
                        $('select[name=position]').bind('change', function(){
                            if($(this).val() == 'value'){
                              $(this).css('display', 'none');

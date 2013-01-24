@@ -17,6 +17,7 @@ class Module extends MY_Model {
         $module = $module->result_array();
 
         $module[0]['params'] = json_decode($module[0]['params'], true); 
+        $module[0]           = array_merge($module[0], $this->Custom_field->getFieldsValues($id));
         
         if(empty($module)){
             return;
@@ -82,6 +83,7 @@ class Module extends MY_Model {
 
         foreach($modules as $key => $module){
             $modules[$key]['params'] = json_decode($module['params'], true);
+            $modules[$key]           = array_merge($modules[$key], $this->Custom_field->getFieldsValues($module['id']));
         }
         
         return $modules;
@@ -103,7 +105,7 @@ class Module extends MY_Model {
         
     }
     
-    public function getModulesPositions($positions = array())
+    public function getPositions($positions = array())
     {
         
         $query = "SELECT position FROM modules WHERE `status` != 'trash'; ";

@@ -4,6 +4,8 @@ class Banners extends MY_Controller {
     
     public  $extension = 'banners';
     public  $page;
+    public  $positions;
+    
     private $banner_id;
     
     function __construct()
@@ -17,6 +19,11 @@ class Banners extends MY_Controller {
                 
         $this->banner_id = $this->uri->segment(3);
         
+        /*
+         * get positions
+         */        
+        $this->positions = $this->Banner->getPositions(parent::_parseTemplateFile('banners'));
+
     }
     
     public function _remap($method)
@@ -27,9 +34,32 @@ class Banners extends MY_Controller {
             $this->load->model('Menu');
             $this->jquery_ext->add_library("check_actions_add_edit.js");
             
-            $script = "$('select[name=type]').bind('change', function(){
-                            $('form').submit();
-                        });";
+            $this->jquery_ext->add_plugin("codemirror");
+            
+            $script = "try{
+                         var editor = CodeMirror.fromTextArea(document.getElementById('code'), {mode: 'text/html', tabMode: 'indent', lineNumbers: true});
+                       }
+                       catch(err){}
+                       
+                       $('select[name=position]').bind('change', function(){
+                           if($(this).val() == 'value'){
+                             $(this).css('display', 'none');
+                             $(this).attr('disabled', true);
+                             $('input[name=position]').css('display', 'inline');
+                             $('input[name=position]').attr('disabled', false);
+                             $('input[name=position]').focus();
+                           }
+                       });
+                       $('input[name=position]').blur(function(){
+                           if($(this).val() == ''){
+                             $(this).css('display', 'none');
+                             $(this).attr('disabled', true);
+                             $('select[name=position]').css('display', 'inline');
+                             $('select[name=position]').attr('disabled', false);
+                             $('select[name=position]').val('');
+                           }
+                       });";
+            
             $script .= "$('.datepicker').datepicker({
                             showOn: 'button',
                             dateFormat: 'yy-mm-dd',
@@ -113,8 +143,8 @@ class Banners extends MY_Controller {
             if(isset($_POST['search_v']) && !empty($_POST['search_v'])){
                 $filters['search_v'] = $_POST['search_v'];
             }
-            if(isset($_POST['category']) && $_POST['category'] != "none"){
-                $filters['category'] = $_POST['category'];
+            if(isset($_POST['position']) && $_POST['position'] != "none"){
+                $filters['position'] = $_POST['position'];
             }
             if(isset($_POST['status']) && $_POST['status'] != "none"){
                 $filters['status'] = $_POST['status'];
@@ -167,7 +197,8 @@ class Banners extends MY_Controller {
         $data['order']     = trim(str_replace('`', '', $order_by));
         $data['limit']     = $limit;
         $data['max_pages'] = $limit == 'all' ? 0 : ceil(count($this->Banner->getbanners($filters))/$limit);
-        $data["banners"]  = $this->Banner->getbanners($filters, $order_by, $limit_str);
+        $data["banners"]   = $this->Banner->getbanners($filters, $order_by, $limit_str);
+        $data['positions'] = $this->positions;
         
         // set css class on sorted element
         $elm_id = trim(str_replace(array('`','DESC'), '', $order_by));
@@ -187,6 +218,7 @@ class Banners extends MY_Controller {
     {                 
         
         $data['custom_fields'] = $this->Custom_field->getCustomFields(array('status' => 'yes'), '`order`');
+        $data['positions']     = $this->positions;
 
         $content["content"] = $this->load->view('banners/add', $data, true);		
         $this->load->view('layouts/default', $content);
@@ -195,15 +227,33 @@ class Banners extends MY_Controller {
     public function edit()      
     {
         
-        $data = $this->Banner->getDetails($this->banner_id);
-        $data = @array_merge($data, $this->Custom_field->getFieldsValues($this->banner_id));
-        $data['params'] = json_decode($data['params'], true); 
+        $data                  = $this->Banner->getDetails($this->banner_id);
         $data['custom_fields'] = $this->Custom_field->getCustomFields(array('status' => 'yes'), '`order`');
+        $data['positions']     = $this->positions;
         
-        //print_r($data);
-
         $content["content"] = $this->load->view('banners/add', $data, true);		
         $this->load->view('layouts/default', $content);
+        
+    }
+    
+    public function types()      
+    {
+    	
+    	$script = "$('a.type').live('click', function(event){
+                       
+                       event.preventDefault();
+
+    	               parent.$('input.type').val($(this).attr('href'));
+                       parent.$('form').submit();
+                       
+                   });";
+                   
+        $this->jquery_ext->add_script($script, 'general');
+    	  
+    	$banner_types = $this->config->item('banner_types');
+    	  
+        $content["content"] = $this->load->view('banners/types', compact('banner_types'), true);		
+        $this->load->view('layouts/simple_ajax', $content);
         
     }
     
