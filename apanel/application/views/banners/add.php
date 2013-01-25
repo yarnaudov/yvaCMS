@@ -112,7 +112,9 @@
                                     </td>
                                 </tr>
                                 
-                                <?php $this->load->view('banners/'.$type); ?>
+                                <?php if(!empty($type)){
+                                          $this->load->view('banners/'.$type);
+                                      } ?>
                                                                                                            
                             </table>
                             
@@ -233,7 +235,9 @@
                         </div>
                         
 	            </div>
-                                        
+                       
+                    <?php $this->load->view('display_rules'); ?>
+                    
                     <?php if(isset($created_by)){ ?>
                     <div class="box" >
 	      	        <span class="header" ><?=lang('label_information');?></span>

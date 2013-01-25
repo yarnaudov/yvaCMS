@@ -245,6 +245,20 @@ button.styled{
 button.styled{
     padding: 2px 8px;
 }
+
+a.styled_small,
+button.styled_small{
+    padding: 1px 8px;
+    font-size: 11px;
+    padding: 2px 5px;
+}
+@-moz-document url-prefix() {
+    a.styled_small,
+    button.styled_small{
+       padding: 1px 5px; 
+    }
+}
+
 #page_header .actions a:hover,
 a.styled:hover,
 button.styled:hover{
@@ -253,10 +267,10 @@ button.styled:hover{
     cursor: pointer;
 }
 a.styled{
-    padding-left: 23px;
+    padding-left: 23px !important;
 }
 button.styled{
-    padding-left: 20px;
+    padding-left: 20px !important;
 }
 
 button.login{
@@ -556,8 +570,7 @@ a.rename{
 #filter_content .search{
     float: left;
 }
-#filter_content .search button,
-button.toggle{
+#filter_content .search button{
     float: left;
     font-size: 11px;
     padding: 2px 5px !important;
@@ -565,15 +578,15 @@ button.toggle{
 
 }
 @-moz-document url-prefix() {
-    #filter_content .search button,
-    button.toggle{
+    #filter_content .search button{
        padding: 1px 5px !important; 
     }
 }
-button.toggle{
-    float: none !important;
-}
 
+button.toggle{
+    float: left;
+    margin-left: 4px;
+}
 
 #filter_content .search input{
     float: left;
@@ -800,3 +813,26 @@ table.menu_types td ul ul{
  .cm-s-default{
      border: 1px solid #ccc;
  }
+
+ /*
+  * display rules
+  */
+  
+  ol.rules{
+      margin-top: 4px;
+      padding-left: 20px;
+  }
+  ol.rules li{
+      padding: 4px;
+  }
+  ol.rules li span{
+      _float: left;
+      margin-top: 3px;
+      width: 85%;
+      display: inline-block;
+  }
+  ol.rules li a{
+      padding: 2px 0px;
+      width: 0px;
+      float: right;
+  }

@@ -269,6 +269,8 @@
                             
                     </div>
                     
+                    <?php $this->load->view('display_rules'); ?>
+                    
                     <?php if(isset($created_by)){ ?>
                     <div class="box" >
 	      	        <span class="header" ><?=lang('label_information');?></span>

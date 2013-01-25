@@ -1,7 +1,9 @@
-<select name="params[display_in]" class="display_in" style="width: 280px;">
-    <?=create_options_array($this->config->item('module_display'), set_value('params[display_in]', isset($params['display_in']) ? $params['display_in'] : "") );?>
-</select>
-<button class="styled toggle" type="button" >Toggle selection</button>
+<div style="overflow: auto;" >
+    <select name="params[display_in]" class="display_in" style="width: 280px;float: left;">
+        <?=create_options_array($this->config->item('module_display'), set_value('params[display_in]', isset($params['display_in']) ? $params['display_in'] : "") );?>
+    </select>
+    <button class="styled styled_small toggle" type="button" >Toggle selection</button>
+</div>
 
 <div id="tabs">
 
