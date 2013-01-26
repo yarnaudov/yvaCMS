@@ -4,7 +4,10 @@ class Settings extends MY_Controller {
 
     public  $trl;
     
-    function __construct() {
+    private $sub_menu;
+    
+    function __construct() 
+    {
         
         parent::__construct();
         
@@ -39,6 +42,15 @@ class Settings extends MY_Controller {
             $this->jquery_ext->add_script($script);
             $method = 'general';   
         }
+        
+        // create sub actions menu
+        $parent_id = $this->Ap_menu->getDetails($this->current_menu, 'parent_id');
+        if(empty($parent_id)){
+            $parent_id = $this->current_menu;
+        }
+        $this->sub_menu = $this->Ap_menu->getSubActions($parent_id);        
+        $current_key = key($this->sub_menu);
+        unset($this->sub_menu[$current_key]);
         
         $this->$method();
         
@@ -75,6 +87,7 @@ class Settings extends MY_Controller {
         $this->jquery_ext->add_script($script);
         
         $data['settings'] = $this->Setting->getSettings();
+        $data['sub_menu'] = $this->sub_menu;
         
         $content["content"] = $this->load->view('settings/index', $data, true);		
         $this->load->view('layouts/default', $content);
@@ -101,6 +114,7 @@ class Settings extends MY_Controller {
         }
         
         $data['settings'] = $this->Setting->getSettings();
+        $data['sub_menu'] = $this->sub_menu;
         
         $content["content"] = $this->load->view('settings/mail', $data, true);		
         $this->load->view('layouts/default', $content);

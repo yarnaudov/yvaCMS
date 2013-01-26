@@ -204,7 +204,10 @@ class Users extends MY_Controller {
         $data['order']     = trim(str_replace('`', '', $order_by));
         $data['limit']     = $limit;
         $data['max_pages'] = $limit == 'all' ? 0 : ceil(count($this->User->getUsers($filters))/$limit);
-        $data["users"]  = $this->User->getUsers($filters, $order_by, $limit_str);
+        $data["users"]     = $this->User->getUsers($filters, $order_by, $limit_str);
+        
+        // create sub actions menu
+        $data['sub_menu'] = $this->Ap_menu->getSubActions($this->current_menu);
         
         // set css class on sorted element
         $elm_id = trim(str_replace(array('`','DESC'), '', $order_by));

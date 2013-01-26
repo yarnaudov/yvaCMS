@@ -217,9 +217,11 @@ class Menus extends MY_Controller {
         $data = $filters;
         $data['order']      = trim(str_replace('`', '', $order_by));
         $data['limit']      = $limit;        
-        $data["menus"]      = $this->Menu->getMenus($filters, $order_by);
-        
+        $data["menus"]      = $this->Menu->getMenus($filters, $order_by);        
         $data['categories'] = $this->Category->getForDropdown();
+        
+        // create sub actions menu
+        $data['sub_menu'] = $this->Ap_menu->getSubActions($this->current_menu);
         
         /*
          * special way to set limit for menus 

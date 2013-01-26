@@ -27,19 +27,9 @@
     <!-- end page header -->
     
 
-    <!-- start page content -->
     <div id="sub_actions" >
-	<?php
-	
-	$menu[lang('label_users')]         = 'users';
-	$menu[lang('label_groups')]        = 'groups/users';
-	$menu[lang('label_custom_fields')] = 'custom_fields/users';
-				
-        echo $this->menu_lib->create_menu($menu);
-  
-        ?>
+	<?php echo $this->menu_lib->create_menu($sub_menu); ?>
     </div>
-    <!-- start page content -->
 
 
     <!-- start messages -->

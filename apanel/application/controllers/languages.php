@@ -162,6 +162,9 @@ class Languages extends MY_Controller {
         $data['max_pages'] = $limit == 'all' ? 0 : ceil(count($this->Language->getLanguages($filters))/$limit);
         $data["languages"]  = $this->Language->getLanguages($filters, $order_by, $limit_str);
         
+        // create sub actions menu
+        $data['sub_menu'] = $this->Ap_menu->getSubActions($this->current_menu);
+        
         // set css class on sorted element
         $elm_id = trim(str_replace(array('`','DESC'), '', $order_by));
         $class  = substr_count($order_by, 'DESC') == 0 ? "sorted" : "sorted_desc";        

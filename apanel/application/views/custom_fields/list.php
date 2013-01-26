@@ -2,10 +2,10 @@
 <?php
 
 $cancel_link = $this->extension;
-$menu_id = @$this->Adm_menu->getDetailsByAlias($this->extension, 'id');
+$menu_id     = $this->Ap_menu->getDetailsByAlias($this->extension, 'id');
 if(empty($menu_id)){
     $cancel_link = 'components/'.$this->extension;
-    $menu_id = $this->Adm_menu->getDetailsByAlias('components/'.$this->extension, 'id');
+    $menu_id     = $this->Ap_menu->getDetailsByAlias('components/'.$this->extension, 'id');
 }
 
 ?>
@@ -27,9 +27,6 @@ if(empty($menu_id)){
             <?php } ?>
             
             <span>&nbsp;»&nbsp;</span>
-            <!--
-            <img src="<?=base_url('img/iconCustom_fields.png');?>" >
-            -->
             <span><?=lang('label_custom_fields');?></span>
         </div>
 	
@@ -45,29 +42,9 @@ if(empty($menu_id)){
     </div>
     <!-- end page header -->
     
-
-    <!-- start page content -->
     <div id="sub_actions" >
-	<?php
-	
-        if(lang('label_'.$this->extension)){
-            $menu[lang('label_'.$this->extension)] = $this->extension;
-        }
-
-        $children_menus = $this->Adm_menu->getChildrenMenus($menu_id, 1);
-        
-        foreach($children_menus as $children_menu_d){
-            $menu[$children_menu_d['title_'.get_lang()]] = $children_menu_d['alias'];
-        }
-        
-        $menu[lang('label_custom_fields')] = 'custom_fields/'.$this->extension;
-        
-        echo $this->menu_lib->create_menu($menu);
-  
-        ?>
+	<?php echo $this->menu_lib->create_menu($sub_menu); ?>
     </div>
-    <!-- start page content -->
-
 
     <!-- start messages -->
     <?php $good_msg = $this->session->userdata('good_msg');

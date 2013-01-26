@@ -17,6 +17,8 @@ class MY_Controller extends CI_Controller{
     // all information about installed modules
     public $modules = array();
     
+    public $current_menu;
+    
     public function __construct()
     {
 
@@ -28,7 +30,8 @@ class MY_Controller extends CI_Controller{
         $this->load->language('apanel_labels');
         $this->load->language('apanel_msg');
         
-        $this->load->model('Adm_menu');
+        //$this->load->model('Adm_menu');
+        $this->load->model('Ap_menu');
         
         // set translation to default language
         $this->trl = $this->Language->getDefault();
@@ -58,7 +61,7 @@ class MY_Controller extends CI_Controller{
             $access = $user_group['access'];
         	  
             if($access == '*'){        	  	
-                $this->access = $this->Adm_menu->getAllMenus();
+                $this->access = $this->Ap_menu->getAllMenus();
             }
             else{        	  
               $this->access = json_decode($access, true);
@@ -66,7 +69,8 @@ class MY_Controller extends CI_Controller{
             
         }
         
-        $this->Adm_menu->setConfig();
+        //$this->Adm_menu->setConfig();
+        $this->Ap_menu->setConfig();
         
         /*
          * Check access to pages. If user does not have access redirect to no_access page
@@ -90,6 +94,9 @@ class MY_Controller extends CI_Controller{
         elseif(!empty($segment2) && $segment2 != 'add' && $segment2 != 'edit' && $segment2 != 'index'){
             $url = $url.'/'.$segment2;
         }
+        
+        // get current menu id by alias
+        $this->current_menu = $this->Ap_menu->getDetailsByAlias($url, 'id');
         
         if(@$this->access[$url] != 'on' && !in_array($url, $this->config->item('no_login')) && isset($_SESSION['user_id']) && !isset($_SESSION['no_access_page'])){
            $_SESSION['no_access_page'] = $_SERVER['REQUEST_URI'];

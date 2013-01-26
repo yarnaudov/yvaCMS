@@ -22,25 +22,9 @@
     <!-- end page header -->
     
     
-    <!-- start page content -->
     <div id="sub_actions" >
-	<?php
-	
-	$main_menu = $this->Adm_menu->getDetails(6);
-	$menu[$main_menu['title_'.get_lang()]] = $main_menu['alias'];
-        
-        $children_menus = $this->Adm_menu->getChildrenMenus(6, 1);
-                
-        $children_menu = array();
-        foreach($children_menus as $children_menu_d){
-            $menu[$children_menu_d['title_'.get_lang()]] = $children_menu_d['alias']; 
-        }
-        				
-        echo $this->menu_lib->create_menu($menu);
-  
-        ?>
+	<?php echo $this->menu_lib->create_menu($sub_menu); ?>
     </div>
-    <!-- start page content -->
 
 
     <!-- start messages -->

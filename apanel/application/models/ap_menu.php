@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Adm_menu extends CI_Model {
+class Ap_menu extends CI_Model {
 	
     function setConfig()
     {
@@ -10,7 +10,7 @@ class Adm_menu extends CI_Model {
         $menus = $this->db->query("SELECT 
                                        * 
                                     FROM 
-                                       adm_menus 
+                                       ap_menus 
                                     WHERE
                                        check_access = 0
                                     ORDER BY `order`");
@@ -32,17 +32,21 @@ class Adm_menu extends CI_Model {
     	
     }
     
-    public function getDetails($menu_id, $field = null)
+    public function getDetails($id, $field = null)
     {
 
         $this->db->select('*');
-        $this->db->where('id', $menu_id);
+        $this->db->where('id', $id);
 
-        $menu = $this->db->get('adm_menus');  	
+        $menu = $this->db->get('ap_menus');  	
         $menu = $menu->result_array();
 
+        if(empty($menu)){
+            return;
+        }
+        
         if($field == null){
-                return $menu[0];
+            return $menu[0];
         }
         else{  	
             return $menu[0][$field];
@@ -56,11 +60,15 @@ class Adm_menu extends CI_Model {
         $this->db->select('*');
         $this->db->where('alias', $alias);
 
-        $menu = $this->db->get('adm_menus');  	
+        $menu = $this->db->get('ap_menus');  	
         $menu = $menu->result_array();
 
+        if(empty($menu)){
+            return;
+        }
+        
         if($field == null){
-                return $menu[0];
+            return $menu[0];
         }
         else{  	
             return $menu[0][$field];
@@ -68,15 +76,15 @@ class Adm_menu extends CI_Model {
 
     }
     
-    public function getMainMenus($check_access = null, $check_user_access = 'yes')
+    public function getMenus($type, $check_access = null, $check_user_access = 'yes')
     {
         
         $menus = $this->db->query("SELECT 
                                        * 
                                     FROM 
-                                       adm_menus 
+                                       ap_menus 
                                     WHERE 
-                                       parent_id is NULL
+                                       type  = '".$type."'
                                        ".($check_access != null ? "AND check_access = '".$check_access."' " : "")."
                                     ORDER BY `order`");
         $menus = $menus->result_array();
@@ -92,21 +100,21 @@ class Adm_menu extends CI_Model {
         
     }
     
-    public function getChildrenMenus($parent_id, $submenu, $check_access = null, $check_user_access = 'yes')
+    public function getChildrenMenus($parent_id, $type, $check_access = null, $check_user_access = 'yes')
     {
         
         $menus = $this->db->query("SELECT 
                                       * 
                                     FROM 
-                                      adm_menus 
+                                      ap_menus 
                                     WHERE 
                                       parent_id = '".$parent_id."' 
                                     AND 
-                                      submenu = '".$submenu."' 
+                                      type LIKE '%".$type."%' 
                                       ".($check_access != null ? "AND check_access = '".$check_access."' " : "")."
                                     ORDER BY `order`");
         $menus = $menus->result_array();
-        //echo print_r($this->config->item('no_login'))."<---<br/>";
+
         $menus_arr = array();
         foreach($menus as $menu){
             if(@$this->access[$menu['alias']] == 'on' || in_array($menu['alias'], $this->config->item('no_login')) || $check_user_access == 'no'){
@@ -124,9 +132,9 @@ class Adm_menu extends CI_Model {
        $menus = $this->db->query("SELECT 
                                        * 
                                     FROM 
-                                       adm_menus 
+                                       ap_menus 
                                     WHERE 
-                                       component = 1
+                                       component = 'yes'
                                     ORDER BY `order`");
         $menus = $menus->result_array();
         
@@ -137,18 +145,35 @@ class Adm_menu extends CI_Model {
     public function getAllMenus()
     {
     	
-    	  $this->db->select('*');
+        $this->db->select('*');
 
-        $menus = $this->db->get('adm_menus');  	
+        $menus = $this->db->get('ap_menus');  	
         $menus = $menus->result_array();
+
+        $menus_arr = array();
+        foreach($menus as $menu){
+            $menus_arr[$menu['alias']] = 'on';
+        }
+
+        return $menus_arr;
     	  
-    	  $menus_arr = array();
-    	  foreach($menus as $menu){
-    	  	$menus_arr[$menu['alias']] = 'on';
-    	  }
-    	  
-    	  return $menus_arr;
-    	  
+    }
+    
+    public function getSubActions($id)
+    {
+        
+        $main_menu = $this->Ap_menu->getDetails($id);
+        
+	$sub_menu[$main_menu['title_'.get_lang()]] = $main_menu['alias'];        
+        
+        $children_menus = $this->Ap_menu->getChildrenMenus($id, 'sub_action');                
+        
+        foreach($children_menus as $children_menu_d){
+            $sub_menu[$children_menu_d['title_'.get_lang()]] = $children_menu_d['alias']; 
+        }
+        
+        return $sub_menu;
+        
     }
     
 }

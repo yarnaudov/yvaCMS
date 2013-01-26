@@ -175,11 +175,15 @@ class Custom_fields extends MY_Controller {
         $limit_str = $limit == 'all' ? '' : ($this->page-1)*$limit.', '.$limit;
                 
         // get custom_fields
-        $data = $filters;
-        $data['order'] = trim(str_replace('`', '', $order_by));
-        $data['limit']     = $limit;
-        $data['max_pages'] = $limit == 'all' ? 0 : ceil(count($this->Custom_field->getCustomFields($filters))/$limit);
+        $data                  = $filters;
+        $data['order']         = trim(str_replace('`', '', $order_by));
+        $data['limit']         = $limit;
+        $data['max_pages']     = $limit == 'all' ? 0 : ceil(count($this->Custom_field->getCustomFields($filters))/$limit);
         $data["custom_fields"] = $this->Custom_field->getCustomFields($filters, $order_by, $limit_str);
+        
+        // create sub actions menu
+        $parent_id = $this->Ap_menu->getDetails($this->current_menu, 'parent_id');
+        $data['sub_menu'] = $this->Ap_menu->getSubActions($parent_id);
         
         // set css class on sorted element
         $elm_id = trim(str_replace(array('`','DESC'), '', $order_by));

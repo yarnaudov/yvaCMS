@@ -191,6 +191,10 @@ class Groups extends MY_Controller {
         $data['max_pages'] = $limit == 'all' ? 0 : ceil(count($this->User_group->getGroups($filters))/$limit);
         $data["groups"]  = $this->User_group->getGroups($filters, $order_by, $limit_str);
         
+        // create sub actions menu
+        $parent_id = $this->Ap_menu->getDetails($this->current_menu, 'parent_id');
+        $data['sub_menu'] = $this->Ap_menu->getSubActions($parent_id);
+        
         // set css class on sorted element
         $elm_id = trim(str_replace(array('`','DESC'), '', $order_by));
         $class  = substr_count($order_by, 'DESC') == 0 ? "sorted" : "sorted_desc";        

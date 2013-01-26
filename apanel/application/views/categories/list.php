@@ -26,21 +26,9 @@
     </div>
     <!-- end page header -->
     
-
-    <!-- start page content -->
     <div id="sub_actions" >
-	<?php
-	
-	$menu[lang('label_'.$this->extension)] = $this->extension;
-	$menu[lang('label_categories')]        = 'categories/'.$this->extension;
-	$menu[lang('label_custom_fields')]     = 'custom_fields/'.$this->extension;
-				
-        echo $this->menu_lib->create_menu($menu);
-  
-        ?>
+	<?php echo $this->menu_lib->create_menu($sub_menu); ?>
     </div>
-    <!-- start page content -->
-
 
     <!-- start messages -->
     <?php $good_msg = $this->session->userdata('good_msg');
