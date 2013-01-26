@@ -23,9 +23,9 @@
 	
 	<div class="actions" >
 		
-	    <button type="submit" name="save"          class="styled save"   ><?=lang('label_save');?></button>
-	    <button type="submit" name="apply"         class="styled apply"  ><?=lang('label_apply');?></button>
-	    <a href="<?=site_url('gallery/albums');?>" class="styled cancel" ><?=lang('label_cancel');?></a>
+	    <button type="submit" name="save"                     class="styled save"   ><?=lang('label_save');?></button>
+	    <button type="submit" name="apply"                    class="styled apply"  ><?=lang('label_apply');?></button>
+	    <a href="<?=site_url('components/gallery/albums');?>" class="styled cancel" ><?=lang('label_cancel');?></a>
 		
 	</div>
 	
@@ -80,7 +80,7 @@
                                                         
                             <tr>
                                 <th><label class="multilang" ><?=lang('label_title');?>:</label></th>
-                                <td><input type="text" name="title" value="<?=set_value('title', isset(${'title_'.$this->trl}) ? ${'title_'.$this->trl} : "");?>" ></td>
+                                <td><input type="text" name="title" value="<?=set_value('title', isset($title) ? $title : "");?>" ></td>
                             </tr>
                                                         
                         </table>
@@ -93,7 +93,7 @@
                     <div class="box" >
 	      	        <span class="header multilang" ><?=lang('label_description');?></span>
                         <div class="editor_div" >
-                          <textarea name="description" class="editor" ><?=set_value('description', isset(${'description_'.$this->trl}) ? ${'description_'.$this->trl} : "");?></textarea>
+                          <textarea name="description" class="editor" ><?=set_value('description', isset($description) ? $description : "");?></textarea>
                         </div>
 	            </div>
 	      
@@ -113,7 +113,7 @@
                                 <tr>
                                     <td>
                                         <select name="translation" >
-                                            <?=create_options('languages', 'abbreviation', 'title', $this->trl, array('status' => 'yes') );?>
+                                            <?=create_options('languages', 'id', 'title', $this->trl, array('status' => 'yes') );?>
                                         </select>
                                     </td>
                                 </tr>
@@ -146,9 +146,9 @@
                                 <tr>	      			
                                     <th><label><?=lang('label_language');?>:</label></th>
                                     <td>
-                                        <select name="language" >
+                                        <select name="show_in_language" >
                                             <option value="all" ><?=lang('label_all');?></option>
-                                            <?=create_options('languages', 'language_id', 'title', set_value('translation', isset($language_id) ? $language_id : ""), array('status' => 'yes') );?>
+                                            <?=create_options('languages', 'id', 'title', set_value('show_in_language', isset($show_in_language) ? $show_in_language : ""), array('status' => 'yes') );?>
                                         </select>
                                     </td>
                                 </tr>

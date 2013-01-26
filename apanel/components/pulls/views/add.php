@@ -164,7 +164,7 @@
                                                     <span><?=$number;?></span>
                                                 </legend>
                                                 <div class="button" >
-                                                    <a class="styled delete" lang="field<?=$number;?>" title="<?=lang('label_delete');?>" >x</a>    
+                                                    <a class="styled delete" lang="field<?=$number;?>" title="<?=lang('label_delete');?>" >&nbsp;</a>    
                                                 </div>                                                
                                             </fieldset>
                                         </td>     

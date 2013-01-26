@@ -16,8 +16,7 @@ class Images extends MY_Controller {
         $this->load->model('Article');
         $this->load->model('Album');
         
-        $this->load->language('com_gallery_labels');
-        $this->load->language('com_gallery_msg');
+        parent::_loadComponetLanguages('gallery');
         
         $this->tool_title = lang('com_gallery_label_gallery').' '.lang('com_gallery_label_images');
         
@@ -245,12 +244,17 @@ class Images extends MY_Controller {
         $limit_str = $limit == 'all' ? '' : ($this->page-1)*$limit.', '.$limit;
                 
         // get images
-        $data             = $filters;
-        $data['order']    = trim(str_replace('`', '', $order_by));
+        $data              = $filters;
+        $data['order']     = trim(str_replace('`', '', $order_by));
         $data['limit']     = $limit;
         $data['max_pages'] = $limit == 'all' ? 0 : ceil(count($this->Image->getImages($filters))/$limit);
-        $data["images"]   = $this->Image->getImages($filters, $order_by, $limit_str);
-        $data["articles"] = $this->Article->getArticlesByCategory(array(), "`order`");
+        $data['images']    = $this->Image->getImages($filters, $order_by, $limit_str);
+        $data['albums']    = $this->Album->getForDropdown();
+        
+        // create sub actions menu
+        $data['sub_menu'] = $this->Ap_menu->getSubActions($this->current_menu);
+        $current_key = key($data['sub_menu']);
+        unset($data['sub_menu'][$current_key]);
         
         // set css class on sorted element
         $elm_id = trim(str_replace(array('`','DESC'), '', $order_by));
@@ -268,6 +272,8 @@ class Images extends MY_Controller {
 	
     public function add()
     {   
+        
+        $data['albums']        = $this->Album->getForDropdown();
         $data['custom_fields'] = $this->Custom_field->getCustomFields(array('status' => 'yes'), '`order`');
 
         $content["content"] = $this->load->view('gallery/images/add', $data, true);		
@@ -277,13 +283,11 @@ class Images extends MY_Controller {
     public function edit()      
     {
         
-        $data = $this->Image->getDetails($this->image_id);
-        $data = @array_merge($data, $this->Custom_field->getFieldsValues($this->image_id));        
+        $data                  = $this->Image->getDetails($this->image_id); 
+        $data['albums']        = $this->Album->getForDropdown();
         $data['custom_fields'] = $this->Custom_field->getCustomFields(array('status' => 'yes'), '`order`');
-        $data['meta'] = '<meta http-equiv="cache-control" content="no-cache">';
+        $data['meta']          = '<meta http-equiv="cache-control" content="no-cache">';
         
-        //print_r($data);
-
         $content["content"] = $this->load->view('gallery/images/add', $data, true);		
         $this->load->view('layouts/default', $content);
         

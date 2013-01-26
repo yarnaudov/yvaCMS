@@ -2,13 +2,13 @@
 
 class Contact_form extends CI_Model {
 
-    private $contact_form_id;
+    private $id;
     
-    public function getDetails($contact_form_id, $field = null)
+    public function getDetails($id, $field = null)
     {
 
         $this->db->select('*');
-        $this->db->where('contact_form_id', $contact_form_id);
+        $this->db->where('id', $id);
 
         $contact_form = $this->db->get('com_contacts_forms');  	
         $contact_form = $contact_form->result_array();
@@ -59,7 +59,7 @@ class Contact_form extends CI_Model {
                     FROM
                         com_contacts_forms
                     WHERE
-                        contact_form_id IS NOT NULL
+                        id IS NOT NULL
                         ".$filter."
                     ".($order_by != "" ? "ORDER BY ".$order_by : "")."
                     ".($limit    != "" ? "LIMIT ".$limit : "")."";
@@ -101,7 +101,7 @@ class Contact_form extends CI_Model {
 
     }
     
-    public function prepareData($contact_form_id, $action)
+    public function prepareData($id, $action)
     {
         
         $data['title_'.$this->trl]       = $this->input->post('title');
@@ -123,7 +123,7 @@ class Contact_form extends CI_Model {
             
             foreach($data['fields'] as $number => $field){
                         
-                $fields = json_decode(self::getDetails($contact_form_id, 'fields'), true);
+                $fields = json_decode(self::getDetails($id, 'fields'), true);
                 $languages = Language::getLanguages();
                 foreach($languages as $key => $language){
                     if($this->trl == $language['abbreviation']){
@@ -168,11 +168,11 @@ class Contact_form extends CI_Model {
         
     }
     
-    public function edit($contact_form_id)
+    public function edit($id)
     {
         
-        $data = self::prepareData($contact_form_id, 'update');
-        $where = "contact_form_id = ".$contact_form_id; 
+        $data = self::prepareData($id, 'update');
+        $where = "id = ".$id; 
 
         $query = $this->db->update_string('com_contacts_forms', $data, $where);
         //echo $query;
@@ -185,15 +185,15 @@ class Contact_form extends CI_Model {
             $this->session->set_userdata('error_msg', lang('msg_save_contact_form_error'));
         }
                 
-        return $contact_form_id;
+        return $id;
         
     }
     
-    public function changeStatus($contact_form_id, $status)
+    public function changeStatus($id, $status)
     {   
 
         $data['status'] = $status;
-        $where = "contact_form_id = ".$contact_form_id;
+        $where = "id = ".$id;
 
         $query = $this->db->update_string('com_contacts_forms', $data, $where);
         //echo $query;
@@ -208,10 +208,10 @@ class Contact_form extends CI_Model {
 
     }
     
-    public function changeOrder($contact_form_id, $order)
+    public function changeOrder($id, $order)
     {   
         
-        $old_order   = self::getDetails($contact_form_id, 'order');
+        $old_order   = self::getDetails($id, 'order');
         
         if($order == 'up'){
             $new_order =  $old_order-1;        
@@ -227,7 +227,7 @@ class Contact_form extends CI_Model {
         $result1 = $this->db->query($query1);
         
         $data2['order'] = $new_order;
-        $where2 = "contact_form_id = ".$contact_form_id;
+        $where2 = "id = ".$id;
         $query2 = $this->db->update_string('com_contacts_forms', $data2, $where2);
         //echo $query2;
         $result2 = $this->db->query($query2);
@@ -252,7 +252,7 @@ class Contact_form extends CI_Model {
             $status = self::getDetails($contact_form, 'status');
             
             if($status == 'trash'){
-                $result = $this->db->simple_query("DELETE FROM com_contacts_forms WHERE contact_form_id = '".$contact_form."'");
+                $result = $this->db->simple_query("DELETE FROM com_contacts_forms WHERE id = '".$contact_form."'");
             }
             else{
                 $result = self::changeStatus($contact_form, 'trash');

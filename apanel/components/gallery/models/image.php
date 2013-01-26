@@ -1,18 +1,27 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Image extends CI_Model {
+class Image extends MY_Model {
 
-    public function getDetails($image_id, $field = null)
+    public function getDetails($id, $field = null)
     {
 
-        $this->db->select('*');
-        $this->db->where('image_id', $image_id);
-
-        $image = $this->db->get('com_gallery_images');  	
+        $query = "SELECT 
+                      *
+                    FROM
+                      com_gallery_images cgi
+                      LEFT JOIN com_gallery_images_data cgid ON (cgi.id = cgid.image_id AND cgid.language_id = '".$this->trl."')
+                    WHERE
+                      cgi.id = '".$id."' ";
+        
+        $image = $this->db->query($query);  	
         $image = $image->result_array();
 
+        if(empty($image)){
+            return;
+        }
+
         if($field == null){
-                return $image[0];
+            return $image[0];
         }
         else{  	
             return $image[0][$field];
@@ -64,9 +73,10 @@ class Image extends CI_Model {
         $query = "SELECT 
                         *
                     FROM
-                        com_gallery_images
+                        com_gallery_images cgi
+                        LEFT JOIN com_gallery_images_data cgid ON (cgi.id = cgid.image_id AND cgid.language_id = '".$this->trl."')
                     WHERE
-                        image_id IS NOT NULL
+                        cgi.id IS NOT NULL
                         ".$filter."
                     ".($order_by != "" ? "ORDER BY ".$order_by : "")."
                     ".($limit    != "" ? "LIMIT ".$limit : "")."";
@@ -79,28 +89,11 @@ class Image extends CI_Model {
 
     }
     
-    public function getimagesByCategory($filters = array(), $order_by = "")
+    public function getMaxOrder($album_id)
     {
-        
-        $images = self::getimages($filters, $order_by);
-        
-        foreach($images as $image){
-            
-            $images_arr[$this->Category->getDetails($image['category_id'], 'title_'.$this->Language->getDefault())][$image['image_id']] = $image['title_'.$this->Language->getDefault()];
-            
-        }
-        
-        return $images_arr;
-        
-    }
-    
-    public function getMaxOrder($album = "")
-    {
-        
-        $album == "" ? $album = $this->input->post('album') : '';
         
         $this->db->select_max("`order`");
-        $this->db->where("album_id", $category);
+        $this->db->where("album_id", $album_id);
         $max_order = $this->db->get('com_gallery_images')->result_array();      
         $order = $max_order[0]['order'];
 
@@ -108,7 +101,7 @@ class Image extends CI_Model {
 
     }
     
-    public function count($album = "")
+    public function count($album_id)
     {
         
         $query = "SELECT 
@@ -116,7 +109,7 @@ class Image extends CI_Model {
                     FROM
                         com_gallery_images
                     WHERE
-                        album_id = '".$album."'";
+                        album_id = '".$album_id."'";
          
         //echo $query."<br/>";
 
@@ -128,39 +121,33 @@ class Image extends CI_Model {
   
     public function prepareData($action)
     {
-         
-        $this->load->helper(array('alias', 'string'));
-        
-        $data['title_'.$this->trl]        = $this->input->post('title');
-        $data['description_'.$this->trl]  = $this->input->post('description');
+                 
+        $data['com_gallery_images_data']['title']       = $this->input->post('title');
+        $data['com_gallery_images_data']['description'] = $this->input->post('description');
+        $data['com_gallery_images_data']['language_id'] = $this->trl;
 
-        $data['album_id']          = $this->input->post('album');
-        $data['status']            = $this->input->post('status');      
-        $data['language_id']       = $this->input->post('language');
-        $data['article_id']        = $this->input->post('article');
-        $data['ext']               =  end(explode(".", $_FILES["file"]["name"]));
+        $data['com_gallery_images']['album_id']         = $this->input->post('album');
+        $data['com_gallery_images']['status']           = $this->input->post('status');      
+        $data['com_gallery_images']['show_in_language'] = $this->input->post('show_in_language');
+        $data['com_gallery_images']['ext']              =  end(explode(".", $_FILES["file"]["name"]));
         
-        if($data['language_id'] == 'all'){
-            $data['language_id'] = NULL;
+        if($data['com_gallery_images']['show_in_language'] == 'all'){
+            $data['com_gallery_images']['show_in_language'] = NULL;
         }
-        if($data['article_id'] == ''){
-            $data['article_id'] = NULL;
-        }
-        if($data['ext'] == ''){
-            unset($data['ext']);
+        if($data['com_gallery_images']['ext'] == ''){
+            unset($data['com_gallery_images']['ext']);
         }
 
         if($action == 'insert'){            
-            $data['order']      =  self::getMaxOrder()+1;
-            $data['created_by'] =  $_SESSION['user_id'];
-            $data['created_on'] =  now();        
+            $data['com_gallery_images']['order']      =  self::getMaxOrder()+1;
+            $data['com_gallery_images']['created_by'] =  $_SESSION['user_id'];
+            $data['com_gallery_images']['created_on'] =  now();        
         }
         elseif($action == 'update'){            
-            $data['updated_by'] =  $_SESSION['user_id'];
-            $data['updated_on'] =  now(); 
+            $data['com_gallery_images']['updated_by'] =  $_SESSION['user_id'];
+            $data['com_gallery_images']['updated_on'] =  now(); 
         }
 
-        //echo print_r($data);
         return $data;
 
     }
@@ -170,78 +157,103 @@ class Image extends CI_Model {
         
         $data = self::prepareData('insert');
 
-        $query = $this->db->insert_string('com_gallery_images', $data);
-        //echo $query;
+        $this->db->query('BEGIN');
+        
+        // save data in com_gallery_images table
+        $query = $this->db->insert_string('com_gallery_images', $data['com_gallery_images']);
         $result = $this->db->query($query);
-
-        if($result == true){
-            $this->session->set_userdata('good_msg', lang('msg_save_image'));
-        }
-        else{
+        if($result != true){
             $this->session->set_userdata('error_msg', lang('msg_save_image_error'));
+            $this->db->query('ROLLBACK');
+            return;
         }
         
-        $image_id = $this->db->insert_id();
+        $id = $this->db->insert_id();
         
-        $this->Custom_field->saveFieldsValues($image_id);
+        // save data in com_gallery_images_data table
+        $data['com_gallery_images_data']['image_id'] = $id;
+        $query = $this->db->insert_string('com_gallery_images_data', $data['com_gallery_images_data']);
+        $result = $this->db->query($query);        
+        if($result != true){
+            $this->session->set_userdata('error_msg', lang('msg_save_image_error'));
+            $this->db->query('ROLLBACK');
+            return $id;
+        }
+                
+        self::upload($id);
         
-        self::upload($image_id);
-        
-        return $image_id;
+        $this->session->set_userdata('good_msg', lang('msg_save_image'));
+        $this->db->query('COMMIT');
+        return $id;
 
     }
 
-    public function edit($image_id)
+    public function edit($id)
     {
 
         $data = self::prepareData('update');
-        $where = "image_id = ".$image_id; 
-
-        $query = $this->db->update_string('com_gallery_images', $data, $where);
-        //echo $query;
-        $result = $this->db->query($query);
-
-        if($result == true){
-            $this->session->set_userdata('good_msg', lang('msg_save_image'));
-        }
-        else{
+        
+        $this->db->query('BEGIN');
+        
+        // save data in com_gallery_images table
+        $where = "id = ".$id; 
+        $query = $this->db->update_string('com_gallery_images', $data['com_gallery_images'], $where);        
+        $result = $this->db->query($query);        
+        if($result != true){
             $this->session->set_userdata('error_msg', lang('msg_save_image_error'));
+            $this->db->query('ROLLBACK');
+            return $id;
         }
         
-        $this->Custom_field->saveFieldsValues($image_id);
-        
+        // save data in com_gallery_images_data table
+        if(parent::_dataExists('com_gallery_images_data', 'image_id', $id) == 0){
+            $data['com_gallery_images_data']['image_id'] = $id;
+            $query = $this->db->insert_string('com_gallery_images_data', $data['com_gallery_images_data']);
+        }
+        else{            
+            $where = "image_id = ".$id." AND language_id = ".$this->trl." ";
+            $query = $this->db->update_string('com_gallery_images_data', $data['com_gallery_images_data'], $where);            
+        }        
+        $this->db->query($query);
+        if($result != true){
+            $this->session->set_userdata('error_msg', lang('msg_save_image_error'));
+            $this->db->query('ROLLBACK');
+            return $id;
+        }
+            
         if($_FILES["file"]["size"] > 0){
-            self::upload($image_id);
+            self::upload($id);
         }
         
-        return $image_id;
+        $this->session->set_userdata('good_msg', lang('msg_save_image'));
+        $this->db->query('COMMIT');
+        return $id;
 
     }
 
-    public function changeStatus($image_id, $status)
+    public function changeStatus($id, $status)
     {   
 
         $data['status'] = $status;
-        $where = "image_id = ".$image_id;
+        $where = "id = ".$id;
 
         $query = $this->db->update_string('com_gallery_images', $data, $where);
-        //echo $query;
         $result = $this->db->query($query);
 
-        if($result == true){
-            return true; 
-        }
-        else{
+        if($result != true){
             $this->session->set_userdata('error_msg', lang('msg_status_error'));
+            return false;
         }
+        
+        return true;
 
     }
     
-    public function changeOrder($image_id, $order)
+    public function changeOrder($id, $order)
     {   
         
-        $old_order = self::getDetails($image_id, 'order');
-        $album_id  = self::getDetails($image_id, 'album_id');
+        $old_order = self::getDetails($id, 'order');
+        $album_id  = self::getDetails($id, 'album_id');
         
         if($order == 'up'){
             $new_order =  $old_order-1;        
@@ -257,7 +269,7 @@ class Image extends CI_Model {
         $result1 = $this->db->query($query1);
         
         $data2['order'] = $new_order;
-        $where2 = "image_id = ".$image_id;
+        $where2 = "id = ".$id;
         $query2 = $this->db->update_string('com_gallery_images', $data2, $where2);
         //echo $query2;
         $result2 = $this->db->query($query2);
@@ -282,7 +294,7 @@ class Image extends CI_Model {
             $status = self::getDetails($image, 'status');
             
             if($status == 'trash'){
-                $result = $this->db->simple_query("DELETE FROM com_gallery_images WHERE image_id = '".$image."'");
+                $result = $this->db->simple_query("DELETE FROM com_gallery_images WHERE id = '".$image."'");
             }
             else{
                 $result = self::changeStatus($image, 'trash');
@@ -300,7 +312,7 @@ class Image extends CI_Model {
         
     }
     
-    public function upload($image_id)
+    public function upload($id)
     {
         
         $this->load->helper('resizeImage');
@@ -318,8 +330,8 @@ class Image extends CI_Model {
         }
         
         
-        resizeImage($_FILES['file']['tmp_name'], $images_dir.'/'.$image_id.'.'.$ext, $this->input->post('image_width'), $this->input->post('image_height'));
-        resizeImage($images_dir.'/'.$image_id.".".$ext, $thumbs_dir.'/'.$image_id.'.'.$ext, $this->input->post('thumb_width'), $this->input->post('thumb_height'));
+        resizeImage($_FILES['file']['tmp_name'], $images_dir.'/'.$id.'.'.$ext, $this->input->post('image_width'), $this->input->post('image_height'));
+        resizeImage($images_dir.'/'.$id.".".$ext, $thumbs_dir.'/'.$id.'.'.$ext, $this->input->post('thumb_width'), $this->input->post('thumb_height'));
 	      
         
     }

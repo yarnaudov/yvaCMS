@@ -1,18 +1,27 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Album extends CI_Model {
+class Album extends MY_Model {
 
-    public function getDetails($album_id, $field = null)
+    public function getDetails($id, $field = null)
     {
 
-        $this->db->select('*');
-        $this->db->where('album_id', $album_id);
-
-        $album = $this->db->get('com_gallery_albums');  	
+        $query = "SELECT 
+                      *
+                    FROM
+                      com_gallery_albums cga
+                      LEFT JOIN com_gallery_albums_data cgad ON (cga.id = cgad.album_id AND cgad.language_id = '".$this->trl."')
+                    WHERE
+                      cga.id = '".$id."' ";
+        
+        $album = $this->db->query($query);  	
         $album = $album->result_array();
 
+        if(empty($album)){
+            return;
+        }
+
         if($field == null){
-                return $album[0];
+            return $album[0];
         }
         else{  	
             return $album[0][$field];
@@ -20,6 +29,32 @@ class Album extends CI_Model {
 
     }
   
+    public function getForDropdown()
+    {
+        
+        $query = "SELECT 
+                      cga.id,
+                      cgad.title
+                    FROM
+                      com_gallery_albums cga
+                      JOIN com_gallery_albums_data cgad ON (cga.id = cgad.album_id)
+                    WHERE
+                      cgad.language_id = ".$this->trl."
+                     AND 
+                      cga.status = 'yes'
+                    ORDER BY cga.`order`";
+    
+        $albums = $this->db->query($query)->result_array();
+        
+        $albums_arr = array();
+        foreach($albums as $album){
+            $albums_arr[$album['id']] = $album['title'];
+        }
+        
+        return $albums_arr;
+        
+    }
+    
     public function getAlbums($filters = array(), $order_by = "", $limit = "")
     {
         
@@ -54,9 +89,10 @@ class Album extends CI_Model {
         $query = "SELECT 
                         *
                     FROM
-                        com_gallery_albums
+                        com_gallery_albums cga
+                        LEFT JOIN com_gallery_albums_data cgad ON (cga.id = cgad.album_id AND cgad.language_id = '".$this->trl."')
                     WHERE
-                        album_id IS NOT NULL
+                        cga.id IS NOT NULL
                         ".$filter."
                     ".($order_by != "" ? "ORDER BY ".$order_by : "")."
                     ".($limit    != "" ? "LIMIT ".$limit : "")."";
@@ -99,27 +135,27 @@ class Album extends CI_Model {
     public function prepareData($action)
     {
                  
-        $data['title_'.$this->trl]        = $this->input->post('title');
-        $data['description_'.$this->trl]  = $this->input->post('description');
+        $data['com_gallery_albums_data']['title']       = $this->input->post('title');
+        $data['com_gallery_albums_data']['description'] = $this->input->post('description');
+        $data['com_gallery_albums_data']['language_id'] = $this->trl;
 
-        $data['status']            = $this->input->post('status');      
-        $data['language_id']       = $this->input->post('language');
+        $data['com_gallery_albums']['status']           = $this->input->post('status');      
+        $data['com_gallery_albums']['show_in_language'] = $this->input->post('show_in_language');
         
-        if($data['language_id'] == 'all'){
-            $data['language_id'] = NULL;
+        if($data['com_gallery_albums']['show_in_language'] == 'all'){
+            $data['com_gallery_albums']['show_in_language'] = NULL;
         }
 
         if($action == 'insert'){            
-            $data['order']      =  self::getMaxOrder()+1;
-            $data['created_by'] =  $_SESSION['user_id'];
-            $data['created_on'] =  now();        
+            $data['com_gallery_albums']['order']      =  self::getMaxOrder()+1;
+            $data['com_gallery_albums']['created_by'] =  $_SESSION['user_id'];
+            $data['com_gallery_albums']['created_on'] =  now();        
         }
         elseif($action == 'update'){            
-            $data['updated_by'] =  $_SESSION['user_id'];
-            $data['updated_on'] =  now(); 
+            $data['com_gallery_albums']['updated_by'] =  $_SESSION['user_id'];
+            $data['com_gallery_albums']['updated_on'] =  now(); 
         }
 
-        //echo print_r($data);
         return $data;
 
     }
@@ -129,67 +165,97 @@ class Album extends CI_Model {
         
         $data = self::prepareData('insert');
 
-        $query = $this->db->insert_string('com_gallery_albums', $data);
-        //echo $query;
+        $this->db->query('BEGIN');
+        
+        // save data in com_gallery_albums table
+        $query = $this->db->insert_string('com_gallery_albums', $data['com_gallery_albums']);
         $result = $this->db->query($query);
-
-        if($result == true){
-            $this->session->set_userdata('good_msg', lang('msg_save_album'));
-        }
-        else{
+        if($result != true){
             $this->session->set_userdata('error_msg', lang('msg_save_album_error'));
+            $this->db->query('ROLLBACK');
+            return;
         }
         
-        $album_id = $this->db->insert_id();
+        $id = $this->db->insert_id();
+        
+        // save data in com_gallery_albums_data table
+        $data['com_gallery_albums_data']['album_id'] = $id;
+        $query = $this->db->insert_string('com_gallery_albums_data', $data['com_gallery_albums_data']);
+        $result = $this->db->query($query);        
+        if($result != true){
+            $this->session->set_userdata('error_msg', lang('msg_save_album_error'));
+            $this->db->query('ROLLBACK');
+            return $id;
+        }
                 
-        return $album_id;
+        $this->session->set_userdata('good_msg', lang('msg_save_album'));
+        $this->db->query('COMMIT');
+        return $id;
 
     }
 
-    public function edit($album_id)
+    public function edit($id)
     {
 
         $data = self::prepareData('update');
-        $where = "album_id = ".$album_id; 
-
-        $query = $this->db->update_string('com_gallery_albums', $data, $where);
-        //echo $query;
-        $result = $this->db->query($query);
-
-        if($result == true){
-            $this->session->set_userdata('good_msg', lang('msg_save_album'));
-        }
-        else{
+        
+        $this->db->query('BEGIN');
+        
+        // save data in com_gallery_albums table
+        $where = "id = ".$id; 
+        $query = $this->db->update_string('com_gallery_albums', $data['com_gallery_albums'], $where);        
+        $result = $this->db->query($query);        
+        if($result != true){
             $this->session->set_userdata('error_msg', lang('msg_save_album_error'));
+            $this->db->query('ROLLBACK');
+            return $id;
+        }
+        
+        // save data in com_gallery_albums_data table
+        if(parent::_dataExists('com_gallery_albums_data', 'album_id', $id) == 0){
+            $data['com_gallery_albums_data']['album_id'] = $id;
+            $query = $this->db->insert_string('com_gallery_albums_data', $data['com_gallery_albums_data']);
+        }
+        else{            
+            $where = "album_id = ".$id." AND language_id = ".$this->trl." ";
+            $query = $this->db->update_string('com_gallery_albums_data', $data['com_gallery_albums_data'], $where);            
+        }        
+        $this->db->query($query);
+        if($result != true){
+            $this->session->set_userdata('error_msg', lang('msg_save_album_error'));
+            $this->db->query('ROLLBACK');
+            return $id;
         }
                    
-        return $album_id;
+        $this->session->set_userdata('good_msg', lang('msg_save_album'));
+        $this->db->query('COMMIT');
+        return $id;
 
     }
 
-    public function changeStatus($album_id, $status)
+    public function changeStatus($id, $status)
     {   
 
         $data['status'] = $status;
-        $where = "album_id = ".$album_id;
+        $where = "id = ".$id;
 
         $query = $this->db->update_string('com_gallery_albums', $data, $where);
         //echo $query;
         $result = $this->db->query($query);
 
-        if($result == true){
-            return true; 
-        }
-        else{
+        if($result != true){
             $this->session->set_userdata('error_msg', lang('msg_status_error'));
+            return false;
         }
+        
+        return true; 
 
     }
     
-    public function changeOrder($album_id, $order)
+    public function changeOrder($id, $order)
     {   
         
-        $old_order   = self::getDetails($album_id, 'order');
+        $old_order   = self::getDetails($id, 'order');
         
         if($order == 'up'){
             $new_order =  $old_order-1;        
@@ -205,17 +271,17 @@ class Album extends CI_Model {
         $result1 = $this->db->query($query1);
         
         $data2['order'] = $new_order;
-        $where2 = "album_id = ".$album_id;
+        $where2 = "id = ".$id;
         $query2 = $this->db->update_string('com_gallery_albums', $data2, $where2);
         //echo $query2;
         $result2 = $this->db->query($query2);
         
-        if($result1 == true && $result2 == true){
-            return true; 
-        }
-        else{
+        if($result1 != true && $result2 != true){
             $this->session->set_userdata('error_msg', lang('msg_order_error'));
+            return false;
         }
+        
+        return true;
 
     }
     
@@ -230,7 +296,7 @@ class Album extends CI_Model {
             $status = self::getDetails($album, 'status');
             
             if($status == 'trash'){
-                $result = $this->db->simple_query("DELETE FROM com_gallery_albums WHERE album_id = '".$album."'");
+                $result = $this->db->simple_query("DELETE FROM com_gallery_albums WHERE id = '".$album."'");
             }
             else{
                 $result = self::changeStatus($album, 'trash');

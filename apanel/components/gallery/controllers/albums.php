@@ -20,8 +20,7 @@ class Albums extends MY_Controller {
         $this->load->model('Image');
         $this->load->model('Article');
         
-        $this->load->language('com_gallery_labels');
-        $this->load->language('com_gallery_msg');
+        parent::_loadComponetLanguages('gallery');
         
         $this->tool_title = lang('com_gallery_label_gallery').' '.lang('com_gallery_label_albums');
         
@@ -161,9 +160,6 @@ class Albums extends MY_Controller {
             if(isset($_POST['search_v']) && !empty($_POST['search_v'])){
                 $filters['search_v'] = $_POST['search_v'];
             }
-            if(isset($_POST['category']) && $_POST['category'] != "none"){
-                $filters['category'] = $_POST['category'];
-            }
             if(isset($_POST['article']) && $_POST['article'] != "none"){
                 $filters['article'] = $_POST['article'];
             }
@@ -214,12 +210,16 @@ class Albums extends MY_Controller {
         $limit_str = $limit == 'all' ? '' : ($this->page-1)*$limit.', '.$limit;
                 
         // get albums
-        $data             = $filters;
-        $data['order']    = trim(str_replace('`', '', $order_by));
+        $data              = $filters;
+        $data['order']     = trim(str_replace('`', '', $order_by));
         $data['limit']     = $limit;
         $data['max_pages'] = $limit == 'all' ? 0 : ceil(count($this->Album->getAlbums($filters))/$limit);
-        $data["albums"]   = $this->Album->getAlbums($filters, $order_by, $limit_str);
-        $data["articles"] = $this->Article->getArticlesByCategory(array(), "`order`");
+        $data["albums"]    = $this->Album->getAlbums($filters, $order_by, $limit_str);
+        
+        // create sub actions menu
+        $data['sub_menu'] = $this->Ap_menu->getSubActions($this->current_menu);
+        $current_key = key($data['sub_menu']);
+        unset($data['sub_menu'][$current_key]);
         
         // set css class on sorted element
         $elm_id = trim(str_replace(array('`','DESC'), '', $order_by));

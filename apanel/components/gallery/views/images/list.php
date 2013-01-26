@@ -26,21 +26,7 @@
 
     <!-- start page content -->
     <div id="sub_actions" >
-	<?php
-	
-	//$main_menu = $this->Adm_menu->getDetails(38);
-	//$menu[$main_menu['title_'.get_lang()]] = $main_menu['alias'];
-        
-        $children_menus = $this->Adm_menu->getChildrenMenus(38, 1);
-                
-        $children_menu = array();
-        foreach($children_menus as $children_menu_d){
-            $menu[$children_menu_d['title_'.get_lang()]] = $children_menu_d['alias']; 
-        }
-        				
-        echo $this->menu_lib->create_menu($menu);
-  
-        ?>
+	<?php echo $this->menu_lib->create_menu($sub_menu); ?>
     </div>
     <!-- start page content -->
 
@@ -79,12 +65,7 @@
 			
                 <select name="album" >
                     <option value="none" > - <?=lang('label_select');?> <?=lang('com_gallery_label_album');?> - </option>
-                    <?=create_options('com_gallery_albums', 'album_id', 'title_'.Language::getDefault(), isset($album) ? $album : "", array('status' => 'yes') );?>
-                </select>
-                
-                <select name="article" >
-                    <option value="none" > - <?=lang('label_select');?> <?=lang('label_article');?> - </option>
-                    <?=create_options_array($articles, isset($article) ? $article : "");?>
+                    <?=create_options_array($albums, isset($album) ? $album : "");?>
                 </select>
 
                 <select name="status" >
@@ -115,30 +96,30 @@
                     $row_class = $numb&1 ? "odd" : "even"; ?>
 		
             <tr class="row <?=$row_class;?>" >
-                <td><?=($numb+1);?></td>	
+                <td><?=(($numb+1)+($limit*($this->page-1)));?></td>	
                 <td>
-                    <input type="checkbox" class="checkbox" name="images[]" value="<?=$image['image_id'];?>" />
+                    <input type="checkbox" class="checkbox" name="images[]" value="<?=$image['id'];?>" />
                 </td>
                 <td>
-                    <a href="<?=site_url('components/gallery/images/edit/'.$image['image_id']);?>" >
-                        <img class="image" src="<?=base_url('../'.$this->config->item('thumbs_dir').'/'.$image['image_id'].'.'.$image['ext']);?>" > 
+                    <a href="<?=site_url('components/gallery/images/edit/'.$image['id']);?>" >
+                        <img class="image" src="<?=base_url('../'.$this->config->item('thumbs_dir').'/'.$image['id'].'.'.$image['ext']);?>" > 
                     </a>
-                    <?php $image_data = getimagesize(FCPATH.'../'.$this->config->item('images_dir').'/'.$image['image_id'].'.'.$image['ext']);
-                          $thumb_data = getimagesize(FCPATH.'../'.$this->config->item('thumbs_dir').'/'.$image['image_id'].'.'.$image['ext']); ?>
+                    <?php $image_data = getimagesize(FCPATH.'../'.$this->config->item('images_dir').'/'.$image['id'].'.'.$image['ext']);
+                          $thumb_data = getimagesize(FCPATH.'../'.$this->config->item('thumbs_dir').'/'.$image['id'].'.'.$image['ext']); ?>
                     <span class="image_size">
                         <strong><?=$image_data[0];?></strong>x<strong><?=$image_data[1];?></strong>px,
                         <strong><?=$thumb_data[0];?></strong>x<strong><?=$thumb_data[1];?></strong>px
                     </span>
                 </td>
                 <td style="text-align: left;" >
-                    <a href="<?=site_url('components/gallery/images/edit/'.$image['image_id']);?>" >
-                        <?=$image['title_'.Language::getDefault()];?>
+                    <a href="<?=site_url('components/gallery/images/edit/'.$image['id']);?>" >
+                        <?=$image['title'];?>
                     </a>
-                    <?php if(!empty($image['description_'.Language::getDefault()])){ ?>
-                    <div class="description" >(<span class="head" ><?=lang('label_description');?>:</span> <span class="content" ><?=strip_tags($image['description_'.Language::getDefault()]);?></span>)</div>
+                    <?php if(!empty($image['description'])){ ?>
+                    <div class="description" >(<span class="head" ><?=lang('label_description');?>:</span> <span class="content" ><?=strip_tags($image['description']);?></span>)</div>
                     <?php } ?>
                 </td>
-                <td><?=$this->Album->getDetails($image['album_id'], 'title_'.Language::getDefault());?></td>
+                <td><?=$this->Album->getDetails($image['album_id'], 'title');?></td>
                 <td>
                     <?php if($image['status'] == 'yes'){ ?>
                     <img class="status_img" alt="no"  src="<?=base_url('img/iconActive.png');?>" >
@@ -174,14 +155,14 @@
                 </td>
                 <td><?=User::getDetails($image['created_by'], 'user');?></td>
                 <td><?=($image['created_on']);?></td>
-                <td><?=$image['image_id'];?></td>
+                <td><?=$image['id'];?></td>
             </tr>
 		
             <?php } ?>
 	    
             <?php if(count($images) == 0){ ?>
             <tr>
-                <td colspan="9" ><?=lang('msg_no_results_found');?></td>
+                <td colspan="10" ><?=lang('msg_no_results_found');?></td>
             </tr>
             <?php } ?>
             

@@ -9,7 +9,7 @@
             
             <div class="home_menu" >
     
-                <?php $menus = $this->Adm_menu->getMainMenus();
+                <?php $menus = $this->Ap_menu->getMenus('general');
                       foreach($menus as $menu){     
                         if($menu['alias'] == 'components'){
                             $component_menu = $menu;
@@ -25,7 +25,7 @@
                 
                 <div class="components" ><?=$component_menu['title_'.get_lang()];?></div>
                 
-                <?php $components = $this->Adm_menu->getChildrenMenus($component_menu['id'], 0);
+                <?php $components = $this->Ap_menu->getComponents();
                       foreach($components as $component){ ?>
                 <div class="menu" >
                     <a href="<?=site_url($component['alias']);?>" >

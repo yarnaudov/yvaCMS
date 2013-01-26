@@ -14,8 +14,7 @@ class Pulls extends MY_Controller {
         
         $this->load->model('Pull');
         
-        $this->load->language('com_pulls_labels');
-        $this->load->language('com_pulls_msg');
+        parent::_loadComponetLanguages('pulls');
                 
         $this->page = isset($_GET['page']) ? $_GET['page'] : 1;
                 

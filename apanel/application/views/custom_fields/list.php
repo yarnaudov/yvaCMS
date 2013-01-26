@@ -105,7 +105,7 @@ if(empty($menu_id)){
                     $row_class = $numb&1 ? "odd" : "even"; ?>
 		
             <tr class="row <?=$row_class;?>" >
-                <td><?=($numb+1);?></td>	
+                <td><?=(($numb+1)+($limit*($this->page-1)));?></td>	
                 <td>
                     <input type="checkbox" class="checkbox" name="custom_fields[]" value="<?=$custom_field['id'];?>" />
                 </td>

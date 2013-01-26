@@ -80,16 +80,16 @@
                                                         
                             <tr>
                                 <th rowspan="5" >
-                                    <?php if(isset($image_id)){ ?>
-                                    <a href="<?=base_url('../'.$this->config->item('images_dir').'/'.$image_id.'.'.$ext);?>" rel="lightbox" title="<?=${'title_'.$this->trl};?>" >
-                                        <img class="image" src="<?=base_url('../'.$this->config->item('thumbs_dir').'/'.$image_id.'.'.$ext);?>" > 
+                                    <?php if(isset($id)){ ?>
+                                    <a href="<?=base_url('../'.$this->config->item('images_dir').'/'.$id.'.'.$ext);?>" rel="lightbox" title="<?=$title;?>" >
+                                        <img class="image" src="<?=base_url('../'.$this->config->item('thumbs_dir').'/'.$id.'.'.$ext);?>" > 
                                     </a>
                                     <?php }else{ ?>
                                     <img src="<?=base_url('img/no_photo.jpg');?>" >
                                     <?php } ?>
                                 </th>
                                 <th><label class="multilang" ><?=lang('label_title');?>:</label></th>
-                                <td><input type="text" name="title" value="<?=set_value('title', isset(${'title_'.$this->trl}) ? ${'title_'.$this->trl} : "");?>" ></td>
+                                <td><input type="text" name="title" value="<?=set_value('title', isset($title) ? $title : "");?>" ></td>
                             </tr>
 
                             <tr><td colspan="2" class="empty_line" ></td></tr>
@@ -150,7 +150,7 @@
                     <div class="box" >
 	      	        <span class="header multilang" ><?=lang('label_description');?></span>
                         <div class="editor_div" >
-                          <textarea name="description" class="editor" ><?=set_value('description', isset(${'description_'.$this->trl}) ? ${'description_'.$this->trl} : "");?></textarea>
+                          <textarea name="description" class="editor" ><?=set_value('description', isset($description) ? $description : "");?></textarea>
                         </div>
 	            </div>
 	      
@@ -170,7 +170,7 @@
                                 <tr>
                                     <td>
                                         <select name="translation" >
-                                            <?=create_options('languages', 'abbreviation', 'title', $this->trl, array('status' => 'yes') );?>
+                                            <?=create_options('languages', 'id', 'title', $this->trl, array('status' => 'yes') );?>
                                         </select>
                                     </td>
                                 </tr>
@@ -191,7 +191,7 @@
                                     <th><label><?=lang('com_gallery_label_album');?>:</label></th>
                                     <td>
                                         <select name="album" >
-                                            <?=create_options('com_gallery_albums', 'album_id', 'title_'.Language::getDefault(), set_value('album', isset($album_id) ? $album_id : ""), array('status' => 'yes') );?>
+                                            <?=create_options_array($albums, set_value('album', isset($album_id) ? $album_id : ""));?>
                                         </select>
                                     </td>
                                 </tr>
@@ -212,38 +212,13 @@
                                 <tr>	      			
                                     <th><label><?=lang('label_language');?>:</label></th>
                                     <td>
-                                        <select name="language" >
+                                        <select name="show_in_language" >
                                             <option value="all" ><?=lang('label_all');?></option>
-                                            <?=create_options('languages', 'language_id', 'title', set_value('translation', isset($language_id) ? $language_id : ""), array('status' => 'yes') );?>
+                                            <?=create_options('languages', 'id', 'title', set_value('show_in_language', isset($show_in_language) ? $show_in_language : ""), array('status' => 'yes') );?>
                                         </select>
                                     </td>
                                 </tr>
-                                
-                                <tr><td colspan="2" class="empty_line" ></td></tr>
-                                
-                                <tr>	      			
-                                    <th><label><?=lang('label_article');?>:</label></th>
-                                    <td>                                                                               
-                                        <input type="hidden" name="article" id="article" >
-                                        
-                                        <?php 
-                                            $article = set_value('article', isset($article_id) ? $article_id : "");
-                                            $article = $article != "" ? $this->Article->getDetails($article, 'title_'.Language::getDefault()) : "";
-                                        ?>
-                                        <input type="text" readonly name="article_name" id="article_name" value="<?=$article;?>" style="width: 70%">
-                                        <a href="<?=site_url('articles');?>" 
-                                           class = "load_jquery_ui_iframe" 
-                                           lang  = "dialog-select-article" ><?=lang('label_select');?></a>
-                                        
-                                        <!-- start jquery UI -->
-                                        <div id="dialog-select-article"
-                                             class = "jquery_ui_iframe"
-                                             title="<?=lang('label_select').' '.lang('label_article');?>" 
-                                             lang="<?=site_url('articles/index/simple_ajax');?>" ></div>
-                                        
-                                    </td>
-                                </tr>
-                                
+                                                                                                
                                 <?php if(count($custom_fields) > 0){ ?>
                                 <tr><td colspan="2" class="empty_line" ></td></tr>
                                 <tr>
@@ -273,8 +248,8 @@
                                 <tr>	      			
                                     <th><label><?=lang('label_size');?>:</label></th>
                                     <td>
-                                        <?php $image_data = getimagesize(FCPATH.'../'.$this->config->item('images_dir').'/'.$image_id.'.'.$ext);
-                                              $thumb_data = getimagesize(FCPATH.'../'.$this->config->item('thumbs_dir').'/'.$image_id.'.'.$ext); ?>
+                                        <?php $image_data = getimagesize(FCPATH.'../'.$this->config->item('images_dir').'/'.$id.'.'.$ext);
+                                              $thumb_data = getimagesize(FCPATH.'../'.$this->config->item('thumbs_dir').'/'.$id.'.'.$ext); ?>
                                         <span class="image_size">
                                             <strong><?=$image_data[0];?></strong>x<strong><?=$image_data[1];?></strong>px,
                                             <strong><?=$thumb_data[0];?></strong>x<strong><?=$thumb_data[1];?></strong>px

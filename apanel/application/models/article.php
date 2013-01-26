@@ -129,7 +129,7 @@ class Article extends MY_Model {
         $articles_arr = array();
         foreach($articles as $article){
             
-            $articles_arr[$this->Category->getDetails($article['category_id'], 'title_'.$this->Language->getDefault())][$article['id']] = $article['title_'.$this->Language->getDefault()];
+            $articles_arr[$this->Category->getDetails($article['category_id'], 'title')][$article['id']] = $article['title'];
             
         }
         

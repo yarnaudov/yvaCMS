@@ -2,23 +2,23 @@
 
 class Pull extends CI_Model {
 
-    private $pull_id;
+    private $id;
     
-    public function getDetails($pull_id, $field = null)
+    public function getDetails($id, $field = null)
     {
 
         $this->db->select('*');
-        $this->db->where('pull_id', $pull_id);
+        $this->db->where('id', $id);
 
         $pull = $this->db->get('com_pulls');  	
         $pull = $pull->result_array();
              
-        $answers = self::getAnswers($pull_id);
+        $answers = self::getAnswers($id);
         foreach($answers as $key => $answer){
-            $pull[0]['answers'][$key+1]['answer_id'] = $answer['answer_id'];
-            $pull[0]['answers'][$key+1]['title']     = $answer['title'];
-            $pull[0]['answers'][$key+1]['votes']    = $answer['votes'];
-            $pull[0]['answers'][$key+1]['status']    = $answer['status'];
+            $pull[0]['answers'][$key+1]['id']     = $answer['id'];
+            $pull[0]['answers'][$key+1]['title']  = $answer['title'];
+            $pull[0]['answers'][$key+1]['votes']  = $answer['votes'];
+            $pull[0]['answers'][$key+1]['status'] = $answer['status'];
         }
                                 
         if($field == null){
@@ -66,7 +66,7 @@ class Pull extends CI_Model {
                     FROM
                         com_pulls
                     WHERE
-                        pull_id IS NOT NULL
+                        id IS NOT NULL
                         ".$filter."
                     ".($order_by != "" ? "ORDER BY ".$order_by : "")."
                     ".($limit    != "" ? "LIMIT ".$limit : "")."";
@@ -83,7 +83,7 @@ class Pull extends CI_Model {
     {
                 
         $this->db->select_max("`order`");
-        $max_order = $this->db->get('com_contacts_forms')->result_array();      
+        $max_order = $this->db->get('com_pulls')->result_array();      
         $order = $max_order[0]['order'];
 
         return $order;
@@ -108,7 +108,7 @@ class Pull extends CI_Model {
 
     }
     
-    public function prepareData($pull_id, $action)
+    public function prepareData($id, $action)
     {
         
         $data['title']            = $this->input->post('title');
@@ -153,50 +153,50 @@ class Pull extends CI_Model {
         //echo $query;
         $result = $this->db->query($query);
 
-        $pull_id = $this->db->insert_id();
+        $id = $this->db->insert_id();
 
         if($result == true){
-        	  $this->saveAnswers($pull_id, $answers);
+            $this->saveAnswers($id, $answers);
             $this->session->set_userdata('good_msg', lang('msg_save_article'));
         }
         else{
             $this->session->set_userdata('error_msg', lang('msg_save_article_error'));
         }
         
-        return $pull_id;
+        return $id;
         
     }
     
-    public function edit($pull_id)
+    public function edit($id)
     {
         
-        $data = self::prepareData($pull_id, 'update');
+        $data = self::prepareData($id, 'update');
         $answers = $data['answers'];
         unset($data['answers']);
         
-        $where = "pull_id = ".$pull_id; 
+        $where = "id = ".$id; 
 
         $query = $this->db->update_string('com_pulls', $data, $where);
         //echo $query;
         $result = $this->db->query($query);
 
         if($result == true){
-        	  $this->saveAnswers($pull_id, $answers);
+        	  $this->saveAnswers($id, $answers);
             $this->session->set_userdata('good_msg', lang('msg_save_article'));
         }
         else{
             $this->session->set_userdata('error_msg', lang('msg_save_article_error'));
         }
                 
-        return $pull_id;
+        return $id;
         
     }
     
-    public function changeStatus($pull_id, $status)
+    public function changeStatus($id, $status)
     {   
 
         $data['status'] = $status;
-        $where = "pull_id = ".$pull_id;
+        $where = "id = ".$id;
 
         $query = $this->db->update_string('com_pulls', $data, $where);
         //echo $query;
@@ -211,10 +211,10 @@ class Pull extends CI_Model {
 
     }
     
-    public function changeOrder($pull_id, $order)
+    public function changeOrder($id, $order)
     {   
         
-        $old_order   = self::getDetails($pull_id, 'order');
+        $old_order   = self::getDetails($id, 'order');
         
         if($order == 'up'){
             $new_order =  $old_order-1;        
@@ -230,7 +230,7 @@ class Pull extends CI_Model {
         $result1 = $this->db->query($query1);
         
         $data2['order'] = $new_order;
-        $where2 = "pull_id = ".$pull_id;
+        $where2 = "id = ".$id;
         $query2 = $this->db->update_string('com_pulls', $data2, $where2);
         //echo $query2;
         $result2 = $this->db->query($query2);
@@ -255,7 +255,7 @@ class Pull extends CI_Model {
             $status = self::getDetails($pull, 'status');
             
             if($status == 'trash'){
-                $result = $this->db->simple_query("DELETE FROM com_pulls WHERE pull_id = '".$pull."'");
+                $result = $this->db->simple_query("DELETE FROM com_pulls WHERE id = '".$pull."'");
             }
             else{
                 $result = self::changeStatus($pull, 'trash');
@@ -273,10 +273,10 @@ class Pull extends CI_Model {
         
     }
     
-    function saveAnswers($pull_id, $answers)
+    function saveAnswers($id, $answers)
     {
     	  
-        //$this->db->query("DELETE FROM com_pull_answers WHERE pull_id = '".$pull_id."'");
+        //$this->db->query("DELETE FROM com_pull_answers WHERE id = '".$id."'");
     	    	
         foreach($answers as $answer){
     	  	
@@ -287,31 +287,31 @@ class Pull extends CI_Model {
             $data['title']  = $answer['title'];
             $data['status'] = $answer['status'];
             
-            if(!empty($answer['answer_id'])){
-                $where = "answer_id = ".$answer['answer_id']; 
+            if(!empty($answer['id'])){
+                $where = "id = ".$answer['id']; 
                 $query = $this->db->update_string('com_pull_answers', $data, $where);
             }
             else{
-                $data['pull_id'] = $pull_id;
+                $data['pull_id'] = $id;
                 $query = $this->db->insert_string('com_pull_answers', $data);
             }
             
             //echo $query;
             $result = $this->db->query($query);
             
-            $answers_ids[] = !empty($answer['answer_id']) ? $answer['answer_id'] : $this->db->insert_id();
+            $answers_ids[] = !empty($answer['id']) ? $answer['id'] : $this->db->insert_id();
             
         }
         
-        $this->db->query("DELETE FROM com_pull_answers WHERE pull_id = '".$pull_id."' AND answer_id NOT IN (".implode(',', $answers_ids).")");
+        $this->db->query("DELETE FROM com_pull_answers WHERE pull_id = '".$id."' AND id NOT IN (".implode(',', $answers_ids).")");
 
     }
     
-    function getAnswers($pull_id)
+    function getAnswers($id)
     {
     	
     	$this->db->select('*');
-        $this->db->where('pull_id', $pull_id);
+        $this->db->where('pull_id', $id);
 
         $answers = $this->db->get('com_pull_answers');  	
         $answers = $answers->result_array();

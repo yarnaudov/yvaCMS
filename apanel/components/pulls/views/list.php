@@ -66,11 +66,11 @@
             <tr>
                 <th style="width:3%;"  >#</th>
                 <th style="width:3%;"  >&nbsp;</th>
-                <th style="width:41%;" class="sortable" id="title_<?=Language::getDefault();?>" ><?=lang('label_title');?></th>
-                <th style="width:6%;"  class="sortable" id="status"      ><?=lang('label_status');?></th>
-                <th style="width:8%;"  class="sortable" id="order"       ><?=lang('label_order');?></th>
-                <th style="width:8%;"  class="sortable" id="created_by"  ><?=lang('label_author');?></th>
-                <th style="width:12%;" class="sortable" id="created_on"  ><?=lang('label_date');?></th>
+                <th style="width:41%;" class="sortable" id="title"      ><?=lang('label_title');?></th>
+                <th style="width:6%;"  class="sortable" id="status"     ><?=lang('label_status');?></th>
+                <th style="width:8%;"  class="sortable" id="order"      ><?=lang('label_order');?></th>
+                <th style="width:8%;"  class="sortable" id="created_by" ><?=lang('label_author');?></th>
+                <th style="width:12%;" class="sortable" id="created_on" ><?=lang('label_date');?></th>
                 <th style="width:5%;"  >ID</th>
             </tr>
 
@@ -78,12 +78,12 @@
                     $row_class = $numb&1 ? "odd" : "even"; ?>
 
             <tr class="row <?=$row_class;?>" >
-                <td><?=($numb+1);?></td>
+                <td><?=(($numb+1)+($limit*($this->page-1)));?></td>
                 <td>
-                    <input type="checkbox" class="checkbox" name="pulls[]" value="<?=$pull['pull_id'];?>" />
+                    <input type="checkbox" class="checkbox" name="pulls[]" value="<?=$pull['id'];?>" />
                 </td>
                 <td style="text-align: left;" >
-                    <a href="<?=site_url('components/pulls/edit/'.$pull['pull_id']);?>" >
+                    <a href="<?=site_url('components/pulls/edit/'.$pull['id']);?>" >
                         <?=$pull['title'];?>
                     </a>
                     <?php if(!empty($pull['description'])){ ?>
@@ -125,7 +125,7 @@
                 </td>
                 <td><?=$this->User->getDetails($pull['created_by'], 'user');?></td>
                 <td><?=($pull['created_on']);?></td>
-                <td><?=$pull['pull_id'];?></td>
+                <td><?=$pull['id'];?></td>
             </tr>
 
             <?php } ?>

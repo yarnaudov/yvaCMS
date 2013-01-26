@@ -105,7 +105,7 @@
                     $row_class = $numb&1 ? "odd" : "even"; ?>
 		
             <tr class="row <?=$row_class;?>" >
-                <td><?=($numb+1);?></td>
+                <td><?=(($numb+1)+($limit*($this->page-1)));?></td>
                 
                 <?php if($this->layout != 'simple_ajax'){ ?>
                 <td>
