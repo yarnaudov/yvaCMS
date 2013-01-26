@@ -35,7 +35,7 @@ class Article extends MY_Model {
     {
 
         $this->db->select('*');
-        $this->db->where('id', $id);
+        $this->db->where('article_id', $id);
         $this->db->where('updated_on', $updated_on);
 
         $article = $this->db->get('articles_history');  	
@@ -54,7 +54,7 @@ class Article extends MY_Model {
     {
 
         $this->db->select('*');
-        $this->db->where('id', $id);
+        $this->db->where('article_id', $id);
         $this->db->order_by('updated_on DESC');
 
         $article = $this->db->get('articles_history');  	

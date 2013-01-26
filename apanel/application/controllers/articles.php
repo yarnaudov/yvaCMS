@@ -274,7 +274,9 @@ class Articles extends MY_Controller {
     {
                 
         if($this->uri->segment(4) == 'history'){
-            $data = $this->Article->getHistoryDetails($this->article_id, urldecode($this->uri->segment(5)) );             
+            $data = $this->Article->getHistoryDetails($this->article_id, urldecode($this->uri->segment(5)) );
+            $data['id'] = $data['article_id'];
+            $this->trl  = $data['language_id'];
         }
         else{
             $data = $this->Article->getDetails($this->article_id);
@@ -286,6 +288,28 @@ class Articles extends MY_Controller {
 
         $content["content"] = $this->load->view('articles/add', $data, true);		
         $this->load->view('layouts/default', $content);
+        
+    }
+    
+    public function history()
+    {
+        
+        $this->jquery_ext->add_plugin('iframe_auto_height');
+        
+        $script = "$('a').live('click', function(event){
+                       
+                       event.preventDefault();
+                       
+                       parent.window.location = $(this).attr('href');
+                       
+                   });";
+        
+        $this->jquery_ext->add_script($script, 'general');
+            
+        $history = $this->Article->getHistory($this->article_id);
+        
+        $content = $this->load->view('articles/history', compact('history'), true);    
+        $this->load->view('layouts/simple', compact('content'));
         
     }
     

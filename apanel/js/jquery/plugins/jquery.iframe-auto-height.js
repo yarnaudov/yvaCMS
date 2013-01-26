@@ -1,6 +1,6 @@
 
 function autoHeightIframe(frameid){
-        
+      
     var currentfr    = parent.document.getElementById(frameid);
     var iframeHeight = $(currentfr).contents().find("#main").height();
                           

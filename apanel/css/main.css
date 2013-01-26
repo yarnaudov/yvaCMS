@@ -814,25 +814,30 @@ table.menu_types td ul ul{
      border: 1px solid #ccc;
  }
 
- /*
-  * display rules
-  */
+/*
+ * display rules
+ */
   
-  ol.rules{
-      margin-top: 4px;
-      padding-left: 20px;
-  }
-  ol.rules li{
-      padding: 4px;
-  }
-  ol.rules li span{
-      _float: left;
-      margin-top: 3px;
-      width: 85%;
-      display: inline-block;
-  }
-  ol.rules li a{
-      padding: 2px 0px;
-      width: 0px;
-      float: right;
-  }
+ol.rules{
+    margin-top: 4px;
+    padding-left: 20px;
+}
+ol.rules li{
+    padding: 4px;
+}
+ol.rules li span{
+    _float: left;
+    margin-top: 3px;
+    width: 85%;
+    display: inline-block;
+}
+ol.rules li a{
+    padding: 2px 0px;
+    width: 0px;
+    float: right;
+}
+
+.dialog-article-history{
+    width: 460px !important;
+    min-height: 200px !important;     
+}

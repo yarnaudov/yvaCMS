@@ -10,7 +10,8 @@ $config['no_login']           = array('',
                                       'modules/types',
                                       'home/ajax',
                                       'menus/types',
-                                      'banners/types');
+                                      'banners/types',
+                                      'articles/history');
 
 $config['yes_no']             = array('yes'             => 'label_yes', 
                                       'no'              => 'label_no');

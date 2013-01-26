@@ -287,7 +287,10 @@
                                 <tr>
                                     <th></th>
                                     <td style="text-align: right;">
-                                        <a href="<?=site_url('/articles/show_history/'.$id);?>" >Show full history</a>
+                                        <a href = "<?=site_url('/articles/history/'.$id);?>"
+                                           class = "load_jquery_ui_iframe"
+                                           title = "<?=lang('label_article');?> <?=lang('label_history');?>"
+                                           lang = "dialog-article-history" >Show full history</a>
                                     </td>
                                 </tr>
                                 
