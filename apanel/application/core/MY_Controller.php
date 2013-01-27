@@ -110,7 +110,11 @@ class MY_Controller extends CI_Controller{
         
         
         $this->jquery_ext->add_library("jquery/plugins/jquery.fixFloat.js");            
-        $script = "fixFloat($('#page_header'), 'page_header_clone');";
+        $script = "$('select#language_switch').msDropDown();
+                   $('#language_switch').change(function(){
+                       window.location = $(this).val();
+                   });
+                   fixFloat($('#page_header'), 'page_header_clone');";
             
         $script .= "$('.multilang').attr('title', '".lang('msg_multilang_info')."');";
         

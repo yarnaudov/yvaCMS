@@ -31,7 +31,7 @@
                     </li>
                     <?php }else{ ?>
                     <li>
-                        <?=lang('com_'.$component);?>
+                        <span><?=lang('com_'.$component);?></span>
                         <ul>
                             <?php foreach($data['menus'] as $menu => $text){ ?>
                             <li>

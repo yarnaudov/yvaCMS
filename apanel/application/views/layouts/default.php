@@ -18,12 +18,20 @@
         <div class="top_bar" >
                 
             <div class="language_switch" >
+                <select id="language_switch" style="width: 120px;">
                 <?php foreach($this->config->item('lang_desc') as $abbr => $language){ ?>             
+                
+                <option <?=$abbr == get_lang() ? 'selected' : '';?> value="<?=str_replace(site_url(), base_url().$abbr, current_url());?>" data-image="<?=base_url('img/'.$abbr.'.png');?>" >
+                    <?=$language;?>
+                </option>
+                <!--
                 <a href="<?=str_replace(site_url(), base_url().$abbr, current_url());?>" <?=(site_url() == base_url().$abbr) ? 'class="current"' : '';?> >
-                    <img src="<?=base_url('img/'.$abbr.'.png');?>" >
-                    <span><?=$language;?></span>
-                </a>
+                        <img src="<?=base_url('img/'.$abbr.'.png');?>" >
+                        <span><?=$language;?></span>
+                    </a>
+                -->
                 <?php } ?>
+                </select>
             </div>
             
             <div class="links" >

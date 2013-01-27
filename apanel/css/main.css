@@ -18,8 +18,11 @@ textarea{
     border: 1px solid #888;
 }
 input{
-    padding: 1px 0px;
+    padding: 1px 0;
 } 
+select{
+    padding: 1px;
+}
 
 img{
     border: 0;
@@ -74,26 +77,10 @@ body{
 #header .top_bar .language_switch{
   border: 1px solid #BBBBBB;
   border-top: none;
-  padding: 5px 8px 5px 0;
+  padding: 5px 8px;
   background-color: #E7EFEF;
   border-radius: 0 0 3px 3px;
   float: right;
-}
-#header .top_bar .language_switch img,
-#header .top_bar .language_switch span{
-    float: left;
-}
-#header .top_bar .language_switch img{
-    margin: 0 2px 0 10px;
-}
-#header .top_bar .language_switch span{
-    margin-top: 1px;
-}
-#header .top_bar .language_switch span:hover{
-    text-decoration: underline;   
-}
-#header .top_bar .language_switch a.current{
-    color: #444444;
 }
 
 #header .user{

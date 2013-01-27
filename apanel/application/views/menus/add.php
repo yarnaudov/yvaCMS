@@ -119,7 +119,7 @@
                                             
                                             if(count($type_arr) > 2){                                                
                                                 $param      = $type_arr[2];
-                                                $type_label = lang($this->components[$type_arr[1]]['menus'][$type_arr[2]]);
+                                                $type_label = lang('com_'.$type_arr[1]).' > '.lang($this->components[$type_arr[1]]['menus'][$type_arr[2]]);
                                             }
                                             else{                                                
                                                 $type_label = lang($this->components[$type_arr[1]]['menus'][$type_arr[1]]);

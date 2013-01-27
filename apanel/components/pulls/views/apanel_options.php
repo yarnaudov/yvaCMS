@@ -12,8 +12,8 @@ $pulls = $this->Pull->getPulls();
     <td>        
         <select name="params[pull_id]" >
             <?php foreach($pulls as $pull){ ?>
-            <option <?=$pull['pull_id'] == set_value('params[pull_id]', isset($params['pull_id']) ? $params['pull_id'] : "") ? "selected" : "";?> 
-                    value="<?=$pull['pull_id'];?>" ><?=$pull['title'];?></option>
+            <option <?=$pull['id'] == set_value('params[pull_id]', isset($params['pull_id']) ? $params['pull_id'] : "") ? "selected" : "";?> 
+                    value="<?=$pull['id'];?>" ><?=$pull['title'];?></option>
             <?php } ?>
         </select>
     </td>

@@ -30,10 +30,10 @@ $albums = set_value('params[albums]', isset($params['albums']) ? $params['albums
                 <?php foreach($albums_arr as $album){ ?>
                 <tr>
                     <td style="width: 1%;">
-                        <input id="album<?=$album['album_id'];?>" type="checkbox" value="<?=$album['album_id'];?>" name="params[albums][]" <?php echo in_array($album['album_id'], $albums) ? 'checked' : ''; ?> style="width:16px;">
+                        <input id="album<?=$album['id'];?>" type="checkbox" value="<?=$album['id'];?>" name="params[albums][]" <?php echo in_array($album['id'], $albums) ? 'checked' : ''; ?> style="width:16px;">
                     </td>
                     <td>
-                        <label for="album<?=$album['album_id'];?>" ><?=$album['title_'.$this->Language->getDefault()];?></label>
+                        <label for="album<?=$album['id'];?>" ><?=$album['title'];?></label>
                     </td>
                 </tr>
                 <?php } ?>

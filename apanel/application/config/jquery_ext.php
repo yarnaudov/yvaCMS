@@ -44,6 +44,11 @@ $config['jquery_ext']['libraries']['jquery_ui']         = array("path"	=> 'jquer
                                                                                  'themes/redmond/jquery-ui-1.8.17.custom.css')
                                                                 );	
 
+$config['jquery_ext']['libraries']['msdropdown']        = array("path"	=> 'jquery/plugins/msdropdown/',
+                                                                "files" => array('jquery.dd.min.js',
+                                                                                 'css/languages.css')
+                                                                );
+
 $config['jquery_ext']['libraries']['cookies']           = array("path"  => 'jquery/plugins/',
                                                                 "files" => array('jquery.cookies.2.2.0.min.js')
                                                                 );
@@ -93,7 +98,7 @@ $config['jquery_ext']['libraries']['codemirror']         = array("path"  => 'cod
 |
 */
 
-$config['jquery_ext']['autoload'] = array('jquery_ui');
+$config['jquery_ext']['autoload'] = array('jquery_ui', 'msdropdown');
 
 /*
 |------------------------------------------------------------------------------
