@@ -1,8 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Images extends MY_Controller {
-    
-    public  $trl;
+
     public  $extension = 'gallery';
     public  $page;
     private $image_id;
@@ -13,7 +12,6 @@ class Images extends MY_Controller {
         parent::__construct();    
         
         $this->load->model('Image');
-        $this->load->model('Article');
         $this->load->model('Album');
         
         parent::_loadComponetLanguages('gallery');

@@ -20,7 +20,8 @@ class Article extends MY_Model {
             return;
         }
         
-        $article[0] = array_merge($article[0], $this->Custom_field->getFieldsValues($id));
+        $article[0]['params'] = json_decode($article[0]['params'], true); 
+        $article[0]           = array_merge($article[0], $this->Custom_field->getFieldsValues($id));
         
         if($field == null){
             return $article[0];
@@ -176,6 +177,7 @@ class Article extends MY_Model {
         $data['articles']['show_in_language'] = $this->input->post('show_in_language');
         $data['articles']['start_publishing'] = $this->input->post('start_publishing');
         $data['articles']['end_publishing']   = $this->input->post('end_publishing');
+        $data['articles']['params']           = json_encode($this->input->post('params'));
 
         if($data['articles']['show_in_language'] == 'all'){
             $data['articles']['show_in_language'] = NULL;

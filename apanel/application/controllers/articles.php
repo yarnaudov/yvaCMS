@@ -58,7 +58,12 @@ class Articles extends MY_Controller {
                             dateFormat: 'yy-mm-dd',
                             buttonImage: '".base_url('img/iconCalendar.png')."',
                             buttonImageOnly: true
-                        });";
+                        });
+                        
+                        $('#article_images a.delete').live('click', function(){
+                            $(this).parent().remove();
+                        });
+                        $('#article_images').sortable();";
             $this->jquery_ext->add_script($script);
             $this->jquery_ext->add_plugin("tinymce");
             $this->jquery_ext->add_library("tinymce.js");
@@ -311,6 +316,16 @@ class Articles extends MY_Controller {
         $history = $this->Article->getHistory($this->article_id);
         
         $content = $this->load->view('articles/history', compact('history'), true);    
+        $this->load->view('layouts/simple', compact('content'));
+        
+    }
+    
+    public function images()
+    {
+        
+        $this->jquery_ext->add_plugin('iframe_auto_height');
+        
+        $content = $this->load->view('articles/images', true);
         $this->load->view('layouts/simple', compact('content'));
         
     }

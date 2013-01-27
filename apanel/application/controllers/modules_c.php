@@ -332,4 +332,23 @@ class Modules_c extends MY_Controller {
         
     }
     
+    public function article_list()
+    {
+        $this->load->model('Module');
+        $data["modules"]  = $this->Module->getModules();
+        
+        $this->jquery_ext->add_library('scroll_into_view.js');
+        
+        /*
+         * load modules languages
+         */
+        foreach($this->modules as $module){
+           $this->_loadModuleLanguage($module);                                                                   
+        }
+        
+        $content["content"] = $this->load->view('modules/simple_list', $data, true);
+        $this->load->view('layouts/simple', $content);
+        
+    }
+    
 }

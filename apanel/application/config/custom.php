@@ -4,14 +4,14 @@ $config['no_login']           = array('',
                                       'login',
                                       'logout',
                                       'no_access',
-                                      'home/media',
-                                      'home/modules',
-                                      'home/components',
+                                      'media/browse',
+                                      'modules/article_list',
                                       'home/ajax',
                                       'modules/types',
                                       'menus/types',
                                       'banners/types',
-                                      'articles/history');
+                                      'articles/history',
+                                      'articles/images');
 
 $config['yes_no']             = array('yes'             => 'label_yes', 
                                       'no'              => 'label_no');

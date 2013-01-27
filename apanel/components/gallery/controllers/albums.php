@@ -2,7 +2,6 @@
 
 class Albums extends MY_Controller {
     
-    public  $trl;
     public  $extension = 'gallery';
     public  $page;
     private $album_id;
@@ -18,7 +17,6 @@ class Albums extends MY_Controller {
         
         $this->load->model('Album');
         $this->load->model('Image');
-        $this->load->model('Article');
         
         parent::_loadComponetLanguages('gallery');
         

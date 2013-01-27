@@ -110,7 +110,7 @@
                                     <span><?=lang('label_article');?></span>
                                 </a>
 
-                                <a href = "<?=site_url('home/media/simple_ajax');?>"
+                                <a href = "<?=site_url('media/browse');?>"
                                    class = "load_jquery_ui_iframe"
                                    title = "<?=lang('label_browse').' '.lang('label_media');?>"
                                    lang = "dialog-media-browser" >
@@ -118,7 +118,7 @@
                                     <span><?=lang('label_image');?> / <?=lang('label_video');?></span>
                                 </a>
                                 
-                                <a href = "<?=site_url('home/modules');?>"
+                                <a href = "<?=site_url('modules/article_list');?>"
                                    class = "load_jquery_ui_iframe"
                                    title = "<?=lang('label_select');?> <?=lang('label_module');?>"
                                    lang = "dialog-select-module" >
@@ -243,6 +243,39 @@
                             </table>
                         </div>
                             
+                    </div>
+                    
+                    <div class="box" >
+	      	        <span class="header" ><?=lang('label_images');?></span>
+                        
+                        <div class="box_content" >
+                            
+                            <ol id="article_images" >
+                                
+                                <?php $images = set_value('params[images]', isset($params['images']) ? $params['images'] : array());
+                                      foreach($images as $image){ ?>
+                                <li>
+                                    <input type="hidden" value="<?=$image;?>" name="params[images][]">
+                                    
+                                    <?php if(is_dir('../'.$image)){ ?>
+                                    <img class="directory" src="<?=base_url('img/media/iconFolder.png');?>" >
+                                    <?php }else{ ?>
+                                    <img src="<?=base_url('../'.$image);?>" >
+                                    <?php } ?>
+                                    
+                                    <span><?=$image;?></span>
+                                    <a class="styled delete" >&nbsp;</a>
+                                </li>
+                                <?php } ?>
+                                
+                            </ol>
+                            
+                            <a href="<?=site_url('media/browse/article');?>"
+                               class = "load_jquery_ui_iframe styled add"
+                               title="<?=lang('label_article');?> <?=lang('label_images');?>"
+                               lang="dialog-article-images" ><?=lang('label_add');?></a>
+                            
+                        </div>
                     </div>
                     
                     <?php if(isset($created_by)){ ?>

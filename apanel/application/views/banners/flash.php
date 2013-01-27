@@ -5,7 +5,7 @@
     <td>
         <input class="flash" type="text" readonly name="params[flash]" id="media" value="<?=set_value('params[flash]', isset($params['flash']) ? $params['flash'] : "");?>" style="width: 58%">
 
-        <a href  = "<?=site_url('home/media/simple_ajax');?>" 
+        <a href  = "<?=site_url('media/browse');?>" 
            class = "load_jquery_ui_iframe"
            title="<?=lang('label_browse').' '.lang('label_media');?>"
            lang  = "dialog-media-browser" ><?=lang('label_select');?></a>&nbsp;|&nbsp;<a href  = "#"

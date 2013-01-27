@@ -112,7 +112,7 @@
                                 <tr>
                                     <td>
                                         <select name="translation" >
-                                            <?=create_options('languages', 'abbreviation', 'title', $this->trl, array('status' => 'yes'));?>
+                                            <?=create_options('languages', 'id', 'title', $this->trl, array('status' => 'yes'));?>
                                         </select>
                                     </td>
                                 </tr>
@@ -191,7 +191,7 @@
                                                     <span><?=$number;?></span>
                                                 </legend>
                                                 <div class="button" >
-                                                    <a class="styled delete" lang="field<?=$number;?>" title="<?=lang('label_delete');?>" >x</a>    
+                                                    <a class="styled delete" lang="field<?=$number;?>" title="<?=lang('label_delete');?>" >&nbsp;</a>    
                                                 </div>                                                
                                             </fieldset>
                                         </td>     

@@ -825,7 +825,7 @@ ol.rules{
     padding-left: 20px;
 }
 ol.rules li{
-    padding: 4px;
+    padding: 4px 0;
 }
 ol.rules li span{
     _float: left;
@@ -834,12 +834,61 @@ ol.rules li span{
     display: inline-block;
 }
 ol.rules li a{
-    padding: 2px 0px;
+    padding: 1px 9px !important;
     width: 0px;
     float: right;
+    background-position: 1px center;
 }
 
 .dialog-article-history{
     width: 460px !important;
     min-height: 200px !important;     
+}
+
+.media_tabs{
+    list-style: none;
+    border-bottom: 1px solid #aaa;
+    padding-left: 20px;
+}
+.media_tabs li{
+    display: inline-block;
+    padding: 3px 10px;
+    margin-bottom: -1px;
+    border: 1px solid #fff;
+    border-bottom: none;
+}
+.media_tabs li.active{
+    border: 1px solid #aaa;
+    border-bottom: 1px solid #fff;
+}
+.media_tabs li.active a{
+    color: #666;
+}
+
+#article_images{
+    list-style: none;
+}
+#article_images li{
+    overflow: auto;
+    padding-bottom: 8px;
+}
+#article_images img{
+    width: 48px;
+    float: left;
+    border: 1px solid #AAAAAA;
+    padding: 1px;
+}
+#article_images img.directory{
+    border: none;
+}
+#article_images span{
+    float: left;
+    padding: 10px 4px;
+}
+#article_images a{
+    float: right;
+    padding: 1px 9px !important;
+    width: 0px;
+    float: right;
+    background-position: 1px center;
 }

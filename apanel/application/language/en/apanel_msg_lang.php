@@ -43,6 +43,7 @@ $lang['msg_image_allowed_ext']       = 'The file format is not permited. Permite
 
 $lang['msg_empty_folder']            = 'Please fill folder name';
 $lang['msg_folder_allowed_chars']    = 'There are not allowed characters in folder name. You can use only letters, numbers and underscore';
+$lang['msg_folder_exists']           = 'Folder with same name olready exists';
 
 $lang['msg_multilang_info']          = 'This field has different value for all languages';
 

@@ -18,7 +18,7 @@
             <a href="#" class="styled rename" ><?=lang('label_rename');?></a>
 	    <a href="#" class="styled delete" ><?=lang('label_delete');?></a>
             &nbsp;&nbsp;&nbsp;&nbsp;
-            <a href="#" class="styled select" ><?=lang('label_select');?></a>
+            <a href="#" class="styled select <?=$param;?>" ><?=lang('label_select');?></a>
 		
 	</div>
 		
@@ -44,7 +44,7 @@
             <?php } ?>
             
             <?php
-            $media_dir = realpath(dirname(__FILE__).'/../../../../').'/'.$folder;
+            $media_dir = realpath(FCPATH.'../').'/'.$folder;
             $handle = opendir($media_dir); 
             ?>
 
@@ -82,7 +82,7 @@
                             <?php } ?>
                     <?php } ?>             
                     
-                    <input type="checkbox" class="checkbox" name="item[]" value="<?=$entry;?>" >
+                    <input type="checkbox" class="checkbox<?=is_dir($media_dir.$entry) ? ' directory' : ''; ?>" name="item[]" value="<?=$entry;?>" >
                     
                 </div>
 
@@ -100,7 +100,7 @@
                         <div class="first" >
                             <label><?=lang('label_upload');?> <?=lang('label_file');?>:</label>
                             <div class="input_file" >
-                              <input type="file" name="file" size="30" class="file">
+                              <input type="file" name="file[]" size="30" multiple class="file">
                               <button type="button" class="styled" >Browse</button>
                               <input type="text" class="text">
                             </div>

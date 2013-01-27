@@ -314,7 +314,7 @@
                                     <td>
                                         <input class="image" type="text" readonly name="image" id="media" value="<?=set_value('image', isset($image) ? $image : "");?>" style="width: 58%">
                                        
-                                        <a href="<?=site_url('home/media');?>" 
+                                        <a href="<?=site_url('media/browse');?>" 
                                            class = "load_jquery_ui_iframe"
                                            title="<?=lang('label_browse').' '.lang('label_media');?>"
                                            lang  = "dialog-media-browser" ><?=lang('label_select');?></a>&nbsp;|&nbsp;<a href  = "#"

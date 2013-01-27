@@ -62,6 +62,8 @@
       $(this).parent().remove();
 
   });
+  
+  $('ol.rules').sortable();
 
 </script>
                     

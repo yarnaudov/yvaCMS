@@ -6,6 +6,7 @@ $(document).ready(function() {
         $('input[name=folder]').val($('input[name=folder]').val()+$(this).attr('lang'));
         $('form').submit();
     });
+    
     $('#up').bind('click', function(){
         $('form').append('<input type="hidden" name="up" >');
         $('form').submit();
@@ -154,7 +155,15 @@ $(document).ready(function() {
     });
     
     $('input.file').bind('change', function(){
-        $('input.text').val($(this).val());
+        
+        var files = new Array();
+        
+        $(this.files).each(function(){
+            files.push(this.name);
+        });
+        
+        $('input.text').val(files.join(','));
+        
     });
     
 });

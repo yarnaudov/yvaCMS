@@ -13,5 +13,8 @@ table.fields fieldset div.button{
     background-color: #fff;
 }
 table.fields fieldset a{
-    padding: 0px 4px 1px 5px;   
+    padding: 1px 9px !important;
+    width: 0px;
+    float: right;
+    background-position: 1px center;
 }

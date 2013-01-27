@@ -1,8 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Contact_form extends CI_Model {
-
-    private $id;
     
     public function getDetails($id, $field = null)
     {

@@ -10,7 +10,7 @@ $(document).ready(function() {
    $('a.add').bind('click', function(){
        var html = $('tbody#field0').html();
        
-       var number = $('table.fields tbody').length;
+       var number = $('table.form_fields tbody').length;
               
        html = replaceAll(html, 'fields[0]', 'fields['+number+']');
               

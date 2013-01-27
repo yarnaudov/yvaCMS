@@ -15,7 +15,7 @@
         <div id="dialog-media-browser"
              class = "jquery_ui_iframe"
              title="<?=lang('label_browse').' '.lang('label_media');?>" 
-             lang="<?=site_url('home/media/simple_ajax');?>" ></div>
+             lang="<?=site_url('media/browse');?>" ></div>
                                                 
     </td>
 </tr>
