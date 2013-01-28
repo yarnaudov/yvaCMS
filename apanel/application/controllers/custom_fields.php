@@ -10,6 +10,8 @@ class Custom_fields extends MY_Controller {
     public  $extension;
     private $custom_field_id;
     
+    private $sub_menu;
+    
     function __construct()
     {
   	
@@ -27,6 +29,10 @@ class Custom_fields extends MY_Controller {
         }        
         
         $this->page = isset($_GET['page']) ? $_GET['page'] : 1;
+        
+        // create sub actions menu
+        $parent_id = $this->Ap_menu->getDetails($this->current_menu, 'parent_id');
+        $this->sub_menu = $this->Ap_menu->getSubActions($parent_id);
         
     }
     
@@ -179,12 +185,11 @@ class Custom_fields extends MY_Controller {
         $data['order']         = trim(str_replace('`', '', $order_by));
         $data['limit']         = $limit;
         $data['max_pages']     = $limit == 'all' ? 0 : ceil(count($this->Custom_field->getCustomFields($filters))/$limit);
-        $data["custom_fields"] = $this->Custom_field->getCustomFields($filters, $order_by, $limit_str);
+        $data['custom_fields'] = $this->Custom_field->getCustomFields($filters, $order_by, $limit_str);
         
         // create sub actions menu
-        $parent_id = $this->Ap_menu->getDetails($this->current_menu, 'parent_id');
-        $data['sub_menu'] = $this->Ap_menu->getSubActions($parent_id);
-        
+        $data['sub_menu'] = $this->sub_menu;
+
         // set css class on sorted element
         $elm_id = trim(str_replace(array('`','DESC'), '', $order_by));
         $class  = substr_count($order_by, 'DESC') == 0 ? "sorted" : "sorted_desc";        
@@ -201,7 +206,13 @@ class Custom_fields extends MY_Controller {
 	
     public function add()
     {   
-        $data['trl'] = $this->trl;
+        
+        $data = array();
+        
+        if(in_array('categories/'.$this->extension, $this->sub_menu)){
+            $data['categories'] = $this->Category->getForDropdown();
+        }
+         
         $content["content"] = $this->load->view('custom_fields/add', $data, true);		
         $this->load->view('layouts/default', $content);
     }
@@ -210,9 +221,10 @@ class Custom_fields extends MY_Controller {
     {
         
         $data = $this->Custom_field->getDetails($this->custom_field_id);
-        $data['trl'] = $this->trl;
         
-        //print_r($data);
+        if(in_array('categories/'.$this->extension, $this->sub_menu)){
+            $data['categories'] = $this->Category->getForDropdown();
+        }
 
         $content["content"] = $this->load->view('custom_fields/add', $data, true);		
         $this->load->view('layouts/default', $content);

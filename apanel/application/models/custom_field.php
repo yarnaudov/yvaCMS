@@ -75,15 +75,18 @@ class Custom_field extends CI_Model {
     
     public function prepareData($action)
     {
-         
-        $this->load->helper('alias');
-        
+                 
         $data['title']       = $this->input->post('title');
         $data['description'] = $this->input->post('description');
         $data['type']        = $this->input->post('type');
         $data['value']       = $this->input->post('value');
         $data['multilang']   = $this->input->post('multilang');
+        $data['category_id'] = $this->input->post('category');
 
+        if($data['category_id'] == 'all'){
+            $data['category_id'] = NULL;
+        }
+        
         if($action == 'insert'){
             $data['extension']  = $this->extension;
             $data['order']      =  self::getMaxOrder()+1;
@@ -94,8 +97,7 @@ class Custom_field extends CI_Model {
             $data['updated_by'] =  $_SESSION['user_id'];
             $data['updated_on'] =  now();
         }
-
-        //echo print_r($data);
+        
         return $data;
 
     }

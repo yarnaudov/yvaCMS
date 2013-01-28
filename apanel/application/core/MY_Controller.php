@@ -148,6 +148,84 @@ class MY_Controller extends CI_Controller{
                
     }
     
+    public function index($model, $session, $redirect)
+    {
+        
+        // delete
+        if(isset($_POST['delete'])){
+            $result = $model->delete();
+            if($result == true){
+                if($this->page > 1){
+                    $page = "?page=".$this->page;
+                }
+                redirect($redirect.$page);
+                exit();
+            }
+        }
+        
+        // change status
+        if(isset($_POST['change_status'])){
+            $result = $model->changeStatus($_POST['element_id'], $_POST['change_status']);
+            if($result == true){
+                if($this->page > 1){
+                    $page = "?page=".$this->page;
+                }
+                redirect($redirect.$page);
+                exit();
+            }
+        }
+        
+        // change order
+        if(isset($_POST['change_order'])){
+            $result = $model->changeOrder($_POST['element_id'], $_POST['change_order']);
+            if($result == true){
+                redirect($redirect);
+                exit();
+            }
+        }
+        
+        // set order by
+        if(isset($_POST['order_by'])){
+            $_POST['order_by'] = "`".$_POST['order_by']."`";
+            $order_by = $this->session->userdata($session.'_order');
+            if($order_by == $_POST['order_by']){
+                $_POST['order_by'] = $_POST['order_by']." DESC";
+            }
+            $this->session->set_userdata($session.'_order', $_POST['order_by']);
+            redirect($redirect);
+            exit();            
+        }
+        
+        // set limit
+        if(isset($_POST['limit'])){
+            $this->session->set_userdata($session.'_page_results', $_POST['page_results']);
+            redirect($redirect);
+            exit();            
+        }
+        
+        // clear filters
+        if(isset($_POST['clear'])){
+            $this->session->unset_userdata($session.'_filters');
+            redirect($redirect);
+            exit();
+        }
+        
+        // set css class on sorted element
+        $order_by = $this->session->userdata($session.'_order') == '' ? '`order`' : $this->session->userdata($session.'_order');
+        $elm_id   = str_replace(array('`',' DESC'), '', $order_by);
+        $class    = substr_count($order_by, 'DESC') == 0 ? "sorted" : "sorted_desc";        
+        $script   = "$('#".$elm_id."').addClass('".$class."');";
+        $this->jquery_ext->add_script($script);
+        
+        
+        // set data       
+        $data['order_by'] = $this->session->userdata($session.'_order') == '' ? '`order`' : $this->session->userdata($session.'_order');
+        $data['limit']    = $this->session->userdata($session.'_page_results') == '' ? $this->config->item('default_paging_limit') : $this->session->userdata($session.'_page_results');
+        
+        return $data;
+        
+    }
+    
     private function _loadComponetsData()
     {
         

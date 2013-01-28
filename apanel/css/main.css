@@ -75,11 +75,7 @@ body{
 }
 
 #header .top_bar .language_switch{
-  border: 1px solid #BBBBBB;
-  border-top: none;
-  padding: 5px 8px;
-  background-color: #E7EFEF;
-  border-radius: 0 0 3px 3px;
+
   float: right;
 }
 

@@ -93,8 +93,10 @@ class Language extends CI_Model {
         $data['title']        = $this->input->post('title');
         $data['abbreviation'] = $this->input->post('abbreviation');
         $data['description']  = $this->input->post('description');
-        $data['status']       = $this->input->post('status');        
+        $data['status']       = $this->input->post('status'); 
+        $data['image']        = $this->input->post('image');
         $data['default']      = $this->input->post('default');
+        
         if($data['default'] == ""){
             unset($data['default']);
         }

@@ -18,6 +18,7 @@
         <div class="top_bar" >
                 
             <div class="language_switch" >
+                
                 <select id="language_switch" style="width: 120px;">
                 <?php foreach($this->config->item('lang_desc') as $abbr => $language){ ?>             
                 

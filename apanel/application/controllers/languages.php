@@ -25,6 +25,7 @@ class Languages extends MY_Controller {
             
             $this->jquery_ext->add_plugin("tinymce");
             $this->jquery_ext->add_library("tinymce.js");
+            $this->jquery_ext->add_library("check_actions_add_edit.js");
 
             $this->load->helper('form');
             $this->load->library('form_validation');            

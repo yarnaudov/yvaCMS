@@ -118,6 +118,22 @@
                         <div class="box_content" >
                             <table class="box_table" cellpadding="0" cellspacing="0" >
 
+                                <?php if(isset($categories)){ ?>
+                                <tr>	      			
+                                    <th><label><?=lang('label_category');?>:</label></th>
+                                    <td>
+                                        <select name="category" >
+                                            <option value="all" ><?=lang('label_all');?></option>
+                                            <?=create_options_array($categories, set_value('category', isset($category_id) ? $category_id : ""));?>
+                                        </select>
+                                    </td>
+                                </tr>
+                                
+                                <tr><td colspan="2" class="empty_line" ></td></tr>
+                                <?php }else{ ?>
+                                <input type="hidden" name="category" value="all" >
+                                <?php } ?>
+                                
                                 <tr>	      			
                                     <th><label><?=lang('label_status');?>:</label></th>
                                     <td>

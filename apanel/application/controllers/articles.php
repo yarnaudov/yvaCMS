@@ -153,39 +153,8 @@ class Articles extends MY_Controller {
             $redirect     = 'articles/index/'.$this->layout;
         }
         
-        // delete articles
-        if(isset($_POST['delete'])){
-            $result = $this->Article->delete();
-            if($result == true){
-                if($this->page > 1){
-                    $page = "?page=".$this->page;
-                }
-                redirect($redirect.$page);
-                exit();
-            }
-        }
-        
-        // change status
-        if(isset($_POST['change_status'])){
-            $result = $this->Article->changeStatus($_POST['element_id'], $_POST['change_status']);
-            if($result == true){
-                if($this->page > 1){
-                    $page = "?page=".$this->page;
-                }
-                redirect($redirect.$page);
-                exit();
-            }
-        }
-        
-        // change order
-        if(isset($_POST['change_order'])){
-            $result = $this->Article->changeOrder($_POST['element_id'], $_POST['change_order']);
-            if($result == true){
-                redirect($redirect);
-                exit();
-            }
-        }
-        
+        $data = parent::index($this->Article, 'articles', $redirect);
+                
         // set filters
         if(isset($_POST['search'])){
             $filters = array();
@@ -203,66 +172,26 @@ class Articles extends MY_Controller {
             exit();
         }
         
-        // clear filters
-        if(isset($_POST['clear'])){
-            $this->session->unset_userdata('articles_filters');
-            redirect($redirect);
-            exit();
-        }
-        
-        // set order by
-        if(isset($_POST['order_by'])){
-            $_POST['order_by'] = "`".$_POST['order_by']."`";
-            $order_by = $this->session->userdata('articles_order');
-            if($order_by == $_POST['order_by']){
-                $_POST['order_by'] = $_POST['order_by']." DESC";
-            }
-            $this->session->set_userdata('articles_order', $_POST['order_by']);
-            redirect($redirect);
-            exit();            
-        }
-        
-        // set limit
-        if(isset($_POST['limit'])){
-            $this->session->set_userdata('articles_page_results', $_POST['page_results']);
-            redirect($redirect);
-            exit();            
-        }
-        
         //get filters, order by and limit
-        $filters  = $this->session->userdata('articles_filters');        
-        $order_by = $this->session->userdata('articles_order');
-        $limit    = $this->session->userdata('articles_page_results');
-                
-        // set default filter and otder by
-        $filters  == "" ? $filters  = array() : "";
-        $order_by == "" ? $order_by = "`order`" : "";
-        $limit    == "" ? $limit = $this->config->item('default_paging_limit') : "";
+        $filters = $this->session->userdata('articles_filters') == '' ? array() : $this->session->userdata('articles_filters');
         
-        $limit_str = $limit == 'all' ? '' : ($this->page-1)*$limit.', '.$limit;
+        $limit_str = $data['limit'] == 'all' ? '' : ($this->page-1)*$data['limit'].', '.$data['limit'];
         
         // get articles
-        $data               = $filters;
-        $data['order']      = trim(str_replace('`', '', $order_by));
-        $data['limit']      = $limit;
-        $data['max_pages']  = $limit == 'all' ? 0 : ceil(count($this->Article->getArticles($filters))/$limit);
-        $data["articles"]   = $this->Article->getArticles($filters, $order_by, $limit_str);        
+        $data               = array_merge($data, $filters);
+        $data['order']      = trim(str_replace('`', '', $data['order_by']));
+        $data['max_pages']  = $data['limit'] == 'all' ? 0 : ceil(count($this->Article->getArticles($filters))/$data['limit']);
+        $data['articles']   = $this->Article->getArticles($filters, $data['order_by'], $limit_str);        
         $data['categories'] = $this->Category->getForDropdown();
         
         // create sub actions menu
         $data['sub_menu'] = $this->Ap_menu->getSubActions($this->current_menu);
-        
-        // set css class on sorted element
-        $elm_id = trim(str_replace(array('`','DESC'), '', $order_by));
-        $class  = substr_count($order_by, 'DESC') == 0 ? "sorted" : "sorted_desc";        
-        $script = "$('#".$elm_id."').addClass('".$class."');";
-        $this->jquery_ext->add_script($script);
-        
+
         // load custom jquery script
         $this->jquery_ext->add_library("check_actions.js");      
 
-        $content["content"] = $this->load->view('articles/list', $data, true);
-        $this->load->view('layouts/'.$this->layout , $content);
+        $content = $this->load->view('articles/list', $data, true);
+        $this->load->view('layouts/'.$this->layout , compact('content'));
         
     }
 	
