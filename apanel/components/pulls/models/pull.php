@@ -41,19 +41,7 @@ class Pull extends CI_Model {
         foreach($filters as $key => $value){
             
             if($key == 'search_v'){
-                $filter .= " AND ( ";
-                $languages = Language::getLanguages();
-                foreach($languages as $key => $language){
-                    if($key > 0){
-                        $filter .= " OR ";
-                    }
-                    $filter .= "title_".$language['abbreviation']." like '%".$value."%'
-                                OR
-                                description_".$language['abbreviation']."  like '%".$value."%'";
-                }
-
-                $filter .= " ) ";
-
+                $filter .= " AND ( title like '%".$value."%' OR description like '%".$value."%' ) ";
             }
             else{
                 $filter .= " AND `".$key."` = '".$value."' ";

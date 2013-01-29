@@ -13,8 +13,7 @@ class Users extends MY_Controller {
         
         $this->load->model('User');
                 
-        $this->page = isset($_GET['page']) ? $_GET['page'] : 1;
-                
+        $this->page    = isset($_GET['page']) ? $_GET['page'] : 1;                
         $this->user_id = $this->uri->segment(3);
         
     }
@@ -107,113 +106,27 @@ class Users extends MY_Controller {
     public function index()
     {
         
-        $page = "";
-        
-        $this->load->model('User_group');
-        
-        // delete users
-        if(isset($_POST['delete'])){
-            $result = $this->User->delete();
-            if($result == true){
-                if($this->page > 1){
-                    $page = "?page=".$this->page;
-                }
-                redirect('users'.$page);
-                exit();
-            }
-        }
-        
-        // change status
-        if(isset($_POST['change_status'])){
-            $result = $this->User->changeStatus($_POST['element_id'], $_POST['change_status']);
-            if($result == true){
-                if($this->page > 1){
-                    $page = "?page=".$this->page;
-                }
-                redirect('users'.$page);
-                exit();
-            }
-        }
-        
-        // change order
-        if(isset($_POST['change_order'])){
-            $result = $this->User->changeOrder($_POST['element_id'], $_POST['change_order']);
-            if($result == true){
-                redirect('users');
-                exit();
-            }
-        }
-        
-        // set filters
-        if(isset($_POST['search'])){
-            $filters = array();
-            if(isset($_POST['search_v']) && !empty($_POST['search_v'])){
-                $filters['search_v'] = $_POST['search_v'];
-            }
-            if(isset($_POST['category']) && $_POST['category'] != "none"){
-                $filters['category'] = $_POST['category'];
-            }
-            if(isset($_POST['status']) && $_POST['status'] != "none"){
-                $filters['status'] = $_POST['status'];
-            }            
-            $this->session->set_userdata('users_filters', $filters);
-            redirect('users');
-            exit();
-        }
-        
-        // clear filters
-        if(isset($_POST['clear'])){
-            $this->session->unset_userdata('users_filters');
-            redirect('users');
-            exit();
-        }
-        
-        // set order by
-        if(isset($_POST['order_by'])){
-            $_POST['order_by'] = "`".$_POST['order_by']."`";
-            $order_by = $this->session->userdata('users_order');
-            if($order_by == $_POST['order_by']){
-                $_POST['order_by'] = $_POST['order_by']." DESC";
-            }
-            $this->session->set_userdata('users_order', $_POST['order_by']);
-            redirect('users');
-            exit();            
-        }
-        
-        // set limit
-        if(isset($_POST['limit'])){
-            $this->session->set_userdata('users_page_results', $_POST['page_results']);
-            redirect('users');
-            exit();            
-        }
-        
-        //get filters, order by and limit
-        $filters  = $this->session->userdata('users_filters');        
-        $order_by = $this->session->userdata('users_order');
-        $limit    = $this->session->userdata('users_page_results');
-                
-        // set default filter and otder by
-        $filters  == "" ? $filters  = array() : "";
-        $order_by == "" ? $order_by = "`order`" : "";
-        $limit    == "" ? $limit = $this->config->item('default_paging_limit') : "";
-        
-        $limit_str = $limit == 'all' ? '' : ($this->page-1)*$limit.', '.$limit;
-        
+        /*
+         *  parent index method handels: 
+         *  delete, change status, change order, set order by, set filters, 
+         *  clear filter, set limit, get sub menus, set class on sorted element
+         */
+        $data = parent::index($this->User, 'users', 'users');
+       
         // get users
-        $data              = $filters;
-        $data['order']     = trim(str_replace('`', '', $order_by));
-        $data['limit']     = $limit;
-        $data['max_pages'] = $limit == 'all' ? 0 : ceil(count($this->User->getUsers($filters))/$limit);
-        $data["users"]     = $this->User->getUsers($filters, $order_by, $limit_str);
+        $users = $this->User->getUsers($data['filters'], $data['order_by']);
+        if($data['limit'] == 'all'){
+            $users[0] = $users;
+        }
+        else{
+          $users = array_chunk($users, $data['limit']);
+          $data['max_pages'] = count($users);
+        }
+
+        $data['users']   = count($users) == 0 ? array() : $users[($this->page-1)];
         
         // create sub actions menu
         $data['sub_menu'] = $this->Ap_menu->getSubActions($this->current_menu);
-        
-        // set css class on sorted element
-        $elm_id = trim(str_replace(array('`','DESC'), '', $order_by));
-        $class  = substr_count($order_by, 'DESC') == 0 ? "sorted" : "sorted_desc";        
-        $script = "$('#".$elm_id."').addClass('".$class."');";
-        $this->jquery_ext->add_script($script);
         
         // load custom jquery script
         $this->jquery_ext->add_library("check_actions.js");      

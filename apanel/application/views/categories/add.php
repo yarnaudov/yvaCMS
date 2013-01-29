@@ -9,9 +9,6 @@
             <img src="<?=base_url('img/icon'.ucfirst($this->extension).'_25.png');?>" >
             <span><?=lang('label_'.$this->extension);?></span>
             <span>&nbsp;»&nbsp;</span>
-            <!--
-	    <img src="<?=base_url('img/iconCategories_25.png');?>" >
-            -->
             <span><?=lang('label_categories');?></span>
             <span>&nbsp;»&nbsp;</span>
             <span>

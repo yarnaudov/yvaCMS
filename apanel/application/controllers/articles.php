@@ -14,21 +14,7 @@ class Articles extends MY_Controller {
         
         $this->load->model('Article');
         
-        /*
-         * get current translation
-         */
-        $this->trl = $this->session->userdata('trl') == "" ? Language::getDefault() : $this->session->userdata('trl');
-        //$this->session->unset_userdata('trl');
-        if(isset($_POST['translation'])){         
-            $this->trl = $_POST['translation'];
-            if(isset($_POST['uset_posts'])){                
-                $this->input->post = array();
-                $_POST = array();
-            }
-        }
-        
-        $this->page = isset($_GET['page']) ? $_GET['page'] : 1;
-                
+        $this->page       = isset($_GET['page']) ? $_GET['page'] : 1;                
         $this->article_id = $this->uri->segment(3);
         
     }
@@ -113,13 +99,10 @@ class Articles extends MY_Controller {
     public function index()
     {
         
-        $page = "";
+        $this->layout = 'default';
+        $redirect     = 'articles';
         
-        if($this->uri->segment(3) == ''){
-            $this->layout = 'default';
-            $redirect     = 'articles';
-        }
-        else{
+        if($this->uri->segment(3) != ''){
             
             $this->jquery_ext->add_plugin('dialog-select-article');
             $this->jquery_ext->add_plugin('iframe_auto_height');
@@ -153,40 +136,29 @@ class Articles extends MY_Controller {
             $redirect     = 'articles/index/'.$this->layout;
         }
         
+        /*
+         *  parent index method handels: 
+         *  delete, change status, change order, set order by, set filters, 
+         *  clear filter, set limit, get sub menus, set class on sorted element
+         */
         $data = parent::index($this->Article, 'articles', $redirect);
-                
-        // set filters
-        if(isset($_POST['search'])){
-            $filters = array();
-            if(isset($_POST['search_v']) && !empty($_POST['search_v'])){
-                $filters['search_v'] = $_POST['search_v'];
-            }
-            if(isset($_POST['category']) && $_POST['category'] != "none"){
-                $filters['category'] = $_POST['category'];
-            }
-            if(isset($_POST['status']) && $_POST['status'] != "none"){
-                $filters['status'] = $_POST['status'];
-            }            
-            $this->session->set_userdata('articles_filters', $filters);
-            redirect($redirect);
-            exit();
+
+        // get articles        
+        $articles = $this->Article->getArticles($data['filters'], $data['order_by']);
+        if($data['limit'] == 'all'){
+            $articles[0] = $articles;
         }
-        
-        //get filters, order by and limit
-        $filters = $this->session->userdata('articles_filters') == '' ? array() : $this->session->userdata('articles_filters');
-        
-        $limit_str = $data['limit'] == 'all' ? '' : ($this->page-1)*$data['limit'].', '.$data['limit'];
-        
-        // get articles
-        $data               = array_merge($data, $filters);
-        $data['order']      = trim(str_replace('`', '', $data['order_by']));
-        $data['max_pages']  = $data['limit'] == 'all' ? 0 : ceil(count($this->Article->getArticles($filters))/$data['limit']);
-        $data['articles']   = $this->Article->getArticles($filters, $data['order_by'], $limit_str);        
+        else{
+          $articles = array_chunk($articles, $data['limit']);
+          $data['max_pages'] = count($articles);
+        }
+
+        $data['articles']   = count($articles) == 0 ? array() : $articles[($this->page-1)];        
         $data['categories'] = $this->Category->getForDropdown();
         
         // create sub actions menu
         $data['sub_menu'] = $this->Ap_menu->getSubActions($this->current_menu);
-
+        
         // load custom jquery script
         $this->jquery_ext->add_library("check_actions.js");      
 

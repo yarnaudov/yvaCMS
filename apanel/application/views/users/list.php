@@ -52,21 +52,21 @@
 	<div id="filter_content" >
 		
             <div class="search" >
-                <input type="text" name="search_v" value="<?=isset($search_v) ? $search_v : "";?>" >
+                <input type="text" name="filters[search_v]" value="<?=isset($filters['search_v']) ? $filters['search_v'] : "";?>" >
                 <button class="styled" type="submit" name="search" ><?=lang('label_search');?></button>
                 <button class="styled" type="submit" name="clear"  ><?=lang('label_clear');?></button>
             </div class="search" >
 		
             <div class="filter" >
 			
-                <select name="user_group" >
+                <select name="filters[user_group]" >
                     <option value="none" > - <?=lang('label_select');?> <?=lang('label_group');?> - </option>
-                    <?=create_options('users_groups', 'id', 'title', isset($user_group) ? $user_group : "", array('status' => 'yes') );?>
+                    <?=create_options('users_groups', 'id', 'title', isset($filters['user_group']) ? $filters['user_group'] : "", array('status' => 'yes') );?>
                 </select>
 
-                <select name="status" >
+                <select name="filters[status]" >
                     <option value="none" > - <?=lang('label_select');?> <?=lang('label_status');?> - </option>
-                    <?=create_options_array($this->config->item('statuses'), isset($status) ? $status : "");?>
+                    <?=create_options_array($this->config->item('statuses'), isset($filters['status']) ? $filters['status'] : "");?>
                 </select>
 
             </div>

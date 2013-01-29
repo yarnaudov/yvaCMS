@@ -43,19 +43,7 @@ class Module extends MY_Model {
         foreach($filters as $key => $value){
             
             if($key == 'search_v'){
-                $filter .= " AND ( ";
-                $languages = Language::getLanguages();
-                foreach($languages as $key => $language){
-                    if($key > 0){
-                        $filter .= " OR ";
-                    }
-                    $filter .= "title_".$language['abbreviation']." like '%".$value."%'
-                                OR
-                                text_".$language['abbreviation']."  like '%".$value."%'";
-                }
-                
-                $filter .= " ) ";
-
+                $filter .= " AND ( title like '%".$value."%' OR description like '%".$value."%' ) ";
             }
             elseif($key == 'category'){
                 $filter .= " AND category_id = '".$value."' ";

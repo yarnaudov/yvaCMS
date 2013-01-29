@@ -12,19 +12,6 @@ class Categories extends MY_Controller {
   	
         parent::__construct();
         
-        /*
-         * get current translation
-         */
-        $this->trl = $this->session->userdata('trl') == "" ? Language::getDefault() : $this->session->userdata('trl');
-        $this->session->unset_userdata('trl');
-        if(isset($_POST['translation'])){         
-            $this->trl = $_POST['translation'];
-            if(isset($_POST['uset_posts'])){                
-                $this->input->post = array();
-                $_POST = array();
-            }
-        }
-        
         $this->page = isset($_GET['page']) ? $_GET['page'] : 1;
         
     }
@@ -99,110 +86,29 @@ class Categories extends MY_Controller {
     
     public function index()
     {
-        
-        $page = "";
-        
-        // delete articles
-        if(isset($_POST['delete'])){
-            $result = $this->Category->delete();
-            if($result == true){
-                if($this->page > 1){
-                    $page = "?page=".$this->page;
-                }
-                redirect('categories/'.$this->extension.$page);
-                exit();
-            }
-        }
-        
-        // change status
-        if(isset($_POST['change_status'])){
-            $result = $this->Category->changeStatus($_POST['element_id'], $_POST['change_status']);
-            if($result == true){
-                if($this->page > 1){
-                    $page = "?page=".$this->page;
-                }
-                redirect('categories/'.$this->extension.$page);
-                exit();
-            }
-        }
-        
-        // change order
-        if(isset($_POST['change_order'])){
-            $result = $this->Category->changeOrder($_POST['element_id'], $_POST['change_order']);
-            if($result == true){
-                redirect('categories/'.$this->extension);
-                exit();
-            }
-        }
-        
-        // set filters
-        if(isset($_POST['search'])){
-            $filters = array();
-            if(isset($_POST['search_v']) && !empty($_POST['search_v'])){
-                $filters['search_v'] = $_POST['search_v'];
-            }
-            if(isset($_POST['status']) && $_POST['status'] != "none"){
-                $filters['status'] = $_POST['status'];
-            }            
-            $this->session->set_userdata($this->extension.'categories_filters', $filters);
-            redirect('categories/'.$this->extension);
-            exit();
-        }
-        
-        // clear filters
-        if(isset($_POST['clear'])){
-            $this->session->unset_userdata($this->extension.'categories_filters');
-            redirect('categories/'.$this->extension);
-            exit();
-        }
-        
-        // set order by
-        if(isset($_POST['order_by'])){
-            $_POST['order_by'] = "`".$_POST['order_by']."`";
-            $order_by = $this->session->userdata($this->extension.'categories_order');
-            if($order_by == $_POST['order_by']){
-                $_POST['order_by'] = $_POST['order_by']." DESC";
-            }
-            $this->session->set_userdata($this->extension.'categories_order', $_POST['order_by']);
-            redirect('categories/'.$this->extension);
-            exit();            
-        }
-        
-        // set limit
-        if(isset($_POST['limit'])){
-            $this->session->set_userdata($this->extension.'categories_page_results', $_POST['page_results']);
-            redirect('categories/'.$this->extension);
-            exit();            
-        }
-        
-        //get filters, order by and limit
-        $filters  = $this->session->userdata($this->extension.'categories_filters');        
-        $order_by = $this->session->userdata($this->extension.'categories_order');
-        $limit    = $this->session->userdata($this->extension.'categories_page_results');
-        
-        // set default filter and otder by
-        $filters  == "" ? $filters  = array() : "";
-        $order_by == "" ? $order_by = "`order`" : "";
-        $limit    == "" ? $limit = $this->config->item('default_paging_limit') : "";
-        
-        $limit_str = $limit == 'all' ? '' : ($this->page-1)*$limit.', '.$limit;
                 
-        // get categories
-        $data = $filters;
-        $data['order'] = trim(str_replace('`', '', $order_by));
-        $data['limit']     = $limit;
-        $data['max_pages'] = $limit == 'all' ? 0 : ceil(count($this->Category->getCategories($filters))/$limit);
-        $data["categories"] = $this->Category->getCategories($filters, $order_by, $limit_str);
+        /*
+         *  parent index method handels: 
+         *  delete, change status, change order, set order by, set filters, 
+         *  clear filter, set limit, get sub menus, set class on sorted element
+         */
+        $data = parent::index($this->Category, 'categories', 'categories/'.$this->extension);
         
+        // get categories
+        $categories = $this->Category->getCategories($data['filters'], $data['order_by']);
+        if($data['limit'] == 'all'){
+            $categories[0] = $categories;
+        }
+        else{
+          $categories = array_chunk($categories, $data['limit']);
+          $data['max_pages'] = count($categories);
+        }
+        
+        $data['categories'] = count($categories) == 0 ? array() : $categories[($this->page-1)]; 
+                
         // create sub actions menu
         $parent_id = $this->Ap_menu->getDetails($this->current_menu, 'parent_id');
         $data['sub_menu'] = $this->Ap_menu->getSubActions($parent_id);
-        
-        // set css class on sorted element
-        $elm_id = trim(str_replace(array('`','DESC'), '', $order_by));
-        $class  = substr_count($order_by, 'DESC') == 0 ? "sorted" : "sorted_desc";        
-        $script = "$('#".$elm_id."').addClass('".$class."');";
-        $this->jquery_ext->add_script($script);
         
         // load custom jquery script
         $this->jquery_ext->add_library("check_actions.js");      

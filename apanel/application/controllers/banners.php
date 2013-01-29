@@ -15,8 +15,7 @@ class Banners extends MY_Controller {
         
         $this->load->model('Banner');
                 
-        $this->page = isset($_GET['page']) ? $_GET['page'] : 1;
-                
+        $this->page      = isset($_GET['page']) ? $_GET['page'] : 1;
         $this->banner_id = $this->uri->segment(3);
         
         /*
@@ -102,112 +101,28 @@ class Banners extends MY_Controller {
     public function index()
     {
             
-        $page = "";
-        
-        // delete banners
-        if(isset($_POST['delete'])){
-            $result = $this->Banner->delete();
-            if($result == true){
-                if($this->page > 1){
-                    $page = "?page=".$this->page;
-                }
-                redirect('banners'.$page);
-                exit();
-            }
-        }
-        
-        // change status
-        if(isset($_POST['change_status'])){
-            $result = $this->Banner->changeStatus($_POST['element_id'], $_POST['change_status']);
-            if($result == true){
-                if($this->page > 1){
-                    $page = "?page=".$this->page;
-                }
-                redirect('banners'.$page);
-                exit();
-            }
-        }
-        
-        // change order
-        if(isset($_POST['change_order'])){
-            $result = $this->Banner->changeOrder($_POST['element_id'], $_POST['change_order']);
-            if($result == true){
-                redirect('banners');
-                exit();
-            }
-        }
-        
-        // set filters
-        if(isset($_POST['search'])){
-            $filters = array();
-            if(isset($_POST['search_v']) && !empty($_POST['search_v'])){
-                $filters['search_v'] = $_POST['search_v'];
-            }
-            if(isset($_POST['position']) && $_POST['position'] != "none"){
-                $filters['position'] = $_POST['position'];
-            }
-            if(isset($_POST['status']) && $_POST['status'] != "none"){
-                $filters['status'] = $_POST['status'];
-            }            
-            $this->session->set_userdata('banners_filters', $filters);
-            redirect('banners');
-            exit();
-        }
-        
-        // clear filters
-        if(isset($_POST['clear'])){
-            $this->session->unset_userdata('banners_filters');
-            redirect('banners');
-            exit();
-        }
-        
-        // set order by
-        if(isset($_POST['order_by'])){
-            $_POST['order_by'] = "`".$_POST['order_by']."`";
-            $order_by = $this->session->userdata('banners_order');
-            if($order_by == $_POST['order_by']){
-                $_POST['order_by'] = $_POST['order_by']." DESC";
-            }
-            $this->session->set_userdata('banners_order', $_POST['order_by']);
-            redirect('banners');
-            exit();            
-        }
-        
-        // set limit
-        if(isset($_POST['limit'])){
-            $this->session->set_userdata('banners_page_results', $_POST['page_results']);
-            redirect('banners');
-            exit();            
-        }
-        
-        //get filters, order by and limit
-        $filters  = $this->session->userdata('banners_filters');        
-        $order_by = $this->session->userdata('banners_order');
-        $limit    = $this->session->userdata('banners_page_results');
-                
-        // set default filter and otder by
-        $filters  == "" ? $filters  = array() : "";
-        $order_by == "" ? $order_by = "`order`" : "";
-        $limit    == "" ? $limit = $this->config->item('default_paging_limit') : "";
-        
-        $limit_str = $limit == 'all' ? '' : ($this->page-1)*$limit.', '.$limit;
+        /*
+         *  parent index method handels: 
+         *  delete, change status, change order, set order by, set filters, 
+         *  clear filter, set limit, get sub menus, set class on sorted element
+         */
+        $data = parent::index($this->Banner, 'banners', 'banners');
         
         // get banners
-        $data              = $filters;
-        $data['order']     = trim(str_replace('`', '', $order_by));
-        $data['limit']     = $limit;
-        $data['max_pages'] = $limit == 'all' ? 0 : ceil(count($this->Banner->getbanners($filters))/$limit);
-        $data["banners"]   = $this->Banner->getbanners($filters, $order_by, $limit_str);
+        $banners = $this->Banner->getbanners($data['filters'], $data['order_by']);
+        if($data['limit'] == 'all'){
+            $banners[0] = $banners;
+        }
+        else{
+          $banners = array_chunk($banners, $data['limit']);
+          $data['max_pages'] = count($banners);
+        }
+
+        $data['banners']   = count($banners) == 0 ? array() : $banners[($this->page-1)]; 
         $data['positions'] = $this->positions;
         
         // create sub actions menu
         $data['sub_menu'] = $this->Ap_menu->getSubActions($this->current_menu);
-        
-        // set css class on sorted element
-        $elm_id = trim(str_replace(array('`','DESC'), '', $order_by));
-        $class  = substr_count($order_by, 'DESC') == 0 ? "sorted" : "sorted_desc";        
-        $script = "$('#".$elm_id."').addClass('".$class."');";
-        $this->jquery_ext->add_script($script);
         
         // load custom jquery script
         $this->jquery_ext->add_library("check_actions.js");      

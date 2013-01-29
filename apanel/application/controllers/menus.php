@@ -13,21 +13,7 @@ class Menus extends MY_Controller {
         
         $this->load->model('Menu');
         
-        /*
-         * get current translation
-         */
-        $this->trl = $this->session->userdata('trl') == "" ? Language::getDefault() : $this->session->userdata('trl');
-        $this->session->unset_userdata('trl');
-        if(isset($_POST['translation'])){         
-            $this->trl = $_POST['translation'];
-            if(isset($_POST['uset_posts'])){                
-                $this->input->post = array();
-                $_POST = array();
-            }
-        }
-        
-        $this->page = isset($_GET['page']) ? $_GET['page'] : 1;
-        
+        $this->page    = isset($_GET['page']) ? $_GET['page'] : 1;        
         $this->menu_id = $this->uri->segment(3);
         
     }
@@ -124,122 +110,28 @@ class Menus extends MY_Controller {
     public function index()
     {
         
-        $page = "";
-        
-        // delete
-        if(isset($_POST['delete'])){
-            $result = $this->Menu->delete();
-            if($result == true){
-                if($this->page > 1){
-                    $page = "?page=".$this->page;
-                }
-                redirect('menus'.$page);
-                exit();
-            }
-        }
-        
-        // change status
-        if(isset($_POST['change_status'])){
-            $result = $this->Menu->changeStatus($_POST['element_id'], $_POST['change_status']);
-            if($result == true){
-                if($this->page > 1){
-                    $page = "?page=".$this->page;
-                }
-                redirect('menus'.$page);
-                exit();
-            }
-        }
-        
-        // change order
-        if(isset($_POST['change_order'])){
-            $result = $this->Menu->changeOrder($_POST['element_id'], $_POST['change_order']);
-            if($result == true){
-                redirect('menus');
-                exit();
-            }
-        }
-        
-        // set filters
-        if(isset($_POST['search'])){
-            $filters = array();
-            if(isset($_POST['search_v']) && !empty($_POST['search_v'])){
-                $filters['search_v'] = $_POST['search_v'];
-            }
-            if(isset($_POST['category']) && $_POST['category'] != "none"){
-                $filters['category'] = $_POST['category'];
-            }
-            if(isset($_POST['status']) && $_POST['status'] != "none"){
-                $filters['status'] = $_POST['status'];
-            }            
-            $this->session->set_userdata('menus_filters', $filters);
-            redirect('menus');
-            exit();
-        }
-        
-        // clear filters
-        if(isset($_POST['clear'])){
-            $this->session->unset_userdata('menus_filters');
-            redirect('menus');
-            exit();
-        }
-        
-        // set order by
-        if(isset($_POST['order_by'])){
-            $_POST['order_by'] = "`".$_POST['order_by']."`";
-            $order_by = $this->session->userdata('menus_order');
-            if($order_by == $_POST['order_by']){
-                $_POST['order_by'] = $_POST['order_by']." DESC";
-            }
-            $this->session->set_userdata('menus_order', $_POST['order_by']);
-            redirect('menus');
-            exit();            
-        }
-        
-        // set limit
-        if(isset($_POST['limit'])){
-            $this->session->set_userdata('menus_page_results', $_POST['page_results']);
-            redirect('menus');
-            exit();            
-        }
-        
-        //get filters, order by and limit
-        $filters  = $this->session->userdata('menus_filters');        
-        $order_by = $this->session->userdata('menus_order');
-        $limit    = $this->session->userdata('menus_page_results');
-        
-        // set default filter and otder by
-        $filters  == "" ? $filters  = array() : "";
-        $order_by == "" ? $order_by = "`order`" : "";
-        $limit    == "" ? $limit = $this->config->item('default_paging_limit') : "";
-               
+        /*
+         *  parent index method handels: 
+         *  delete, change status, change order, set order by, set filters, 
+         *  clear filter, set limit, get sub menus, set class on sorted element
+         */
+        $data = parent::index($this->Menu, 'menus', 'menus');
                 
-        // get menus
-        $data = $filters;
-        $data['order']      = trim(str_replace('`', '', $order_by));
-        $data['limit']      = $limit;        
-        $data["menus"]      = $this->Menu->getMenus($filters, $order_by);        
+        // get menus     
+        $menus = $this->Menu->getMenus($data['filters'], $data['order_by']);
+        if($data['limit'] == 'all'){
+            $menus[0] = $menus;
+        }
+        else{
+          $menus = array_chunk($menus, $data['limit']);
+          $data['max_pages'] = count($menus);
+        }
+
+        $data['menus']      = count($menus) == 0 ? array() : $menus[($this->page-1)];  
         $data['categories'] = $this->Category->getForDropdown();
         
         // create sub actions menu
-        $data['sub_menu'] = $this->Ap_menu->getSubActions($this->current_menu);
-        
-        /*
-         * special way to set limit for menus 
-         */
-        $data['max_pages'] = $limit == 'all' ? 0 : ceil(count($data["menus"])/$limit);        
-        if($limit != 'all'){
-            foreach($data["menus"] as $key => $menu){
-                if($key < ($this->page-1)*$limit || $key >= ((($this->page-1)*$limit)+$limit)){
-                    unset($data["menus"][$key]);
-                }
-            }
-        }
-        
-        // set css class on sorted element
-        $elm_id = trim(str_replace(array('`','DESC'), '', $order_by));
-        $class  = substr_count($order_by, 'DESC') == 0 ? "sorted" : "sorted_desc";        
-        $script = "$('#".$elm_id."').addClass('".$class."');";
-        $this->jquery_ext->add_script($script);
+        $data['sub_menu'] = $this->Ap_menu->getSubActions($this->current_menu);       
         
         // load custom jquery script
         $this->jquery_ext->add_library("check_actions.js");      

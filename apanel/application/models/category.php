@@ -75,19 +75,7 @@ class Category extends MY_Model {
         foreach($filters as $key => $value){
             
             if($key == 'search_v'){
-                $filter .= " AND ( ";
-                $languages = Language::getLanguages();
-                foreach($languages as $key => $language){
-                    if($key > 0){
-                        $filter .= " OR ";
-                    }
-                    $filter .= "title_".$language['abbreviation']." like '%".$value."%'
-                                OR
-                                description_".$language['abbreviation']."  like '%".$value."%'";
-                }
-                
-                $filter .= " ) ";
-
+                $filter .= " AND ( title like '%".$value."%' OR description like '%".$value."%' ) ";
             }
             else{
                 $filter .= " AND `".$key."` = '".$value."' ";
@@ -262,7 +250,7 @@ class Category extends MY_Model {
         }        
         
         $data2['order'] = $new_order;
-        $where2  = "category_id = ".$category_id;
+        $where2  = "id = ".$id;
         $query2  = $this->db->update_string('categories', $data2, $where2);
         $result2 = $this->db->query($query2);
         if($result2 != true){

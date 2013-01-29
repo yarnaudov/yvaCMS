@@ -72,7 +72,7 @@ class User extends CI_Model {
             if($key == 'search_v'){                                
                 $filter .= " AND name LIKE '%".$value."%'";                
             }
-            elseif($key == 'group'){
+            elseif($key == 'user_group'){
                 $filter .= " AND user_group_id = '".$value."' ";
             }
             else{

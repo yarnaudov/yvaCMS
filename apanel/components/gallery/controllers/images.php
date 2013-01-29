@@ -18,21 +18,7 @@ class Images extends MY_Controller {
         
         $this->tool_title = lang('com_gallery_label_gallery').' '.lang('com_gallery_label_images');
         
-        /*
-         * get current translation
-         */
-        $this->trl = $this->session->userdata('trl') == "" ? Language::getDefault() : $this->session->userdata('trl');
-        $this->session->unset_userdata('trl');
-        if(isset($_POST['translation'])){         
-            $this->trl = $_POST['translation'];
-            if(isset($_POST['uset_posts'])){                
-                $this->input->post = array();
-                $_POST = array();
-            }
-        }
-        
-        $this->page = isset($_GET['page']) ? $_GET['page'] : 1;
-        
+        $this->page     = isset($_GET['page']) ? $_GET['page'] : 1;        
         $this->image_id = $this->uri->segment(5);
         
     }
@@ -140,125 +126,30 @@ class Images extends MY_Controller {
     public function index()
     {
         
-        $page = "";
-        
-        // delete images
-        if(isset($_POST['delete'])){
-            $result = $this->Image->delete();
-            if($result == true){
-                if($this->page > 1){
-                    $page = "?page=".$this->page;
-                }
-                redirect('components/gallery/images'.$page);
-                exit();
-            }
-        }
-        
-        // change status
-        if(isset($_POST['change_status'])){
-            $result = $this->Image->changeStatus($_POST['element_id'], $_POST['change_status']);
-            if($result == true){
-                if($this->page > 1){
-                    $page = "?page=".$this->page;
-                }
-                redirect('components/gallery/images'.$page);
-                exit();
-            }
-        }
-        
-        // change order
-        if(isset($_POST['change_order'])){
-            $result = $this->Image->changeOrder($_POST['element_id'], $_POST['change_order']);
-            if($result == true){
-                redirect('components/gallery/images');
-                exit();
-            }
-        }
-        
-        // set filters
-        if(isset($_POST['search'])){
-            $filters = array();
-            if(isset($_POST['search_v']) && !empty($_POST['search_v'])){
-                $filters['search_v'] = $_POST['search_v'];
-            }
-            if(isset($_POST['album']) && $_POST['album'] != "none"){
-                $filters['album'] = $_POST['album'];
-            }
-            if(isset($_POST['article']) && $_POST['article'] != "none"){
-                $filters['article'] = $_POST['article'];
-            }
-            if(isset($_POST['status']) && $_POST['status'] != "none"){
-                $filters['status'] = $_POST['status'];
-            }            
-            $this->session->set_userdata('images_filters', $filters);
-            redirect('components/gallery/images');
-            exit();
-        }
-        
-        // clear filters
-        if(isset($_POST['clear'])){
-            $this->session->unset_userdata('images_filters');
-            redirect('components/gallery/images');
-            exit();
-        }
-        
-        // set album filter
-        if(isset($_GET['album'])){
-             $filters['album'] = $_GET['album'];
-            $this->session->set_userdata('images_filters', $filters);
-            redirect('components/gallery/images');
-            exit();
-        }
-        
-        // set order by
-        if(isset($_POST['order_by'])){
-            $_POST['order_by'] = "`".$_POST['order_by']."`";
-            $order_by = $this->session->userdata('images_order');
-            if($order_by == $_POST['order_by']){
-                $_POST['order_by'] = $_POST['order_by']." DESC";
-            }
-            $this->session->set_userdata('images_order', $_POST['order_by']);
-            redirect('components/gallery/images');
-            exit();            
-        }
-        
-        // set limit
-        if(isset($_POST['limit'])){
-            $this->session->set_userdata('images_page_results', $_POST['page_results']);
-            redirect('components/gallery/images');
-            exit();            
-        }
-        
-        //get filters, order by and limit
-        $filters  = $this->session->userdata('images_filters');        
-        $order_by = $this->session->userdata('images_order');
-        $limit    = $this->session->userdata('images_page_results');
-        
-        // set default filter and otder by
-        $filters  == "" ? $filters  = array() : "";
-        $order_by == "" ? $order_by = "`order`" : "";
-        $limit    == "" ? $limit = $this->config->item('default_paging_limit') : "";
-        
-        $limit_str = $limit == 'all' ? '' : ($this->page-1)*$limit.', '.$limit;
-                
+        /*
+         *  parent index method handels: 
+         *  delete, change status, change order, set order by, set filters, 
+         *  clear filter, set limit, get sub menus, set class on sorted element
+         */
+        $data = parent::index($this->Image, 'gallery_images', 'components/gallery/images');        
+         
         // get images
-        $data              = $filters;
-        $data['order']     = trim(str_replace('`', '', $order_by));
-        $data['limit']     = $limit;
-        $data['max_pages'] = $limit == 'all' ? 0 : ceil(count($this->Image->getImages($filters))/$limit);
-        $data['images']    = $this->Image->getImages($filters, $order_by, $limit_str);
-        $data['albums']    = $this->Album->getForDropdown();
+        $images = $this->Image->getImages($data['filters'], $data['order_by']); 
+        if($data['limit'] == 'all'){
+            $images[0] = $images;
+        }
+        else{
+          $images = array_chunk($images, $data['limit']);
+          $data['max_pages'] = count($images);
+        }
+
+        $data['images'] = count($images) == 0 ? array() : $images[($this->page-1)]; 
+        $data['albums'] = $this->Album->getForDropdown();
         
         // create sub actions menu
         $data['sub_menu'] = $this->Ap_menu->getSubActions($this->current_menu);
         $current_key = key($data['sub_menu']);
         unset($data['sub_menu'][$current_key]);
-        
-        // set css class on sorted element
-        $elm_id = trim(str_replace(array('`','DESC'), '', $order_by));
-        $class  = substr_count($order_by, 'DESC') == 0 ? "sorted" : "sorted_desc";        
-        $script = "$('#".$elm_id."').addClass('".$class."');";
-        $this->jquery_ext->add_script($script);
         
         // load custom jquery script
         $this->jquery_ext->add_library("check_actions.js");      

@@ -40,9 +40,6 @@ class Banner extends CI_Model {
             if($key == 'search_v'){
                 $filter .= " AND (title like '%".$value."%' OR description like '%".$value."%')";
             }
-            elseif($key == 'position'){
-                $filter .= " AND position = '".$value."' ";
-            }
             else{
                 $filter .= " AND `".$key."` = '".$value."' ";
             }

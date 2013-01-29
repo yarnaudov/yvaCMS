@@ -9,7 +9,6 @@
             <span><?=lang('label_modules');?></span>
         </div>
 	
-        <?php if($this->layout != 'simple_ajax'){ ?>
 	<div class="actions" >
 	    
             <a href="<?=site_url('modules/add');?>"  class="styled add"    ><?=lang('label_add');?></a>
@@ -18,19 +17,14 @@
             <a href="<?=site_url();?>"               class="styled cancel" ><?=lang('label_cancel');?></a>
 		
 	</div>
-        <?php } ?>
         
     </div>
     <!-- end page header -->
     
     
-    <?php if($this->layout != 'simple_ajax'){ ?>
-    <!-- start page content -->
     <div id="sub_actions" >
 	<?php echo $this->menu_lib->create_menu($sub_menu); ?>
     </div>
-    <!-- start page content -->
-    <?php } ?>
 
 
     <!-- start messages -->
@@ -58,21 +52,21 @@
 	<div id="filter_content" >
 		
             <div class="search" >
-                <input type="text" name="search_v" value="<?=isset($search_v) ? $search_v : "";?>" >
+                <input type="text" name="filters[search_v]" value="<?=isset($filters['search_v']) ? $filters['search_v'] : "";?>" >
                 <button class="styled" type="submit" name="search" ><?=lang('label_search');?></button>
                 <button class="styled" type="submit" name="clear"  ><?=lang('label_clear');?></button>
             </div>
 		
             <div class="filter" >
 			
-                <select name="position" >
+                <select name="filters[position]" >
                     <option value="none" > - <?=lang('label_select');?> <?=lang('label_position');?> - </option>
-                    <?=create_options_array($positions, isset($position) ? $position : "" );?>
+                    <?=create_options_array($positions, isset($filters['position']) ? $filters['position'] : "" );?>
                 </select>
 
-                <select name="status" >
+                <select name="filters[status]" >
                     <option value="none" > - <?=lang('label_select');?> <?=lang('label_status');?> - </option>
-                    <?=create_options_array($this->config->item('statuses'), isset($status) ? $status : "");?>
+                    <?=create_options_array($this->config->item('statuses'), isset($filters['status']) ? $filters['status'] : "");?>
                 </select>
 
             </div>
@@ -82,20 +76,13 @@
 	<table class="list" cellpadding="0" cellspacing="2" >
 		
             <tr>
-                <th style="width:3%;"  >#</th>
-                
-                <th style="width:3%;"  >&nbsp;</th>
-                
-                
-                <th style="width:39%;" class="sortable" id="title"     ><?=lang('label_title');?></th>
-                <th style="width:10%;" class="sortable" id="type"      ><?=lang('label_type');?></th>
-                <th style="width:12%;" class="sortable" id="position"  ><?=lang('label_position');?></th>
-                
-                <?php if($this->layout != 'simple_ajax'){ ?>
+                <th style="width:3%;"  >#</th>           
+                <th style="width:3%;"  >&nbsp;</th>       
+                <th style="width:39%;" class="sortable" id="title"      ><?=lang('label_title');?></th>
+                <th style="width:10%;" class="sortable" id="type"       ><?=lang('label_type');?></th>
+                <th style="width:12%;" class="sortable" id="position"   ><?=lang('label_position');?></th>
                 <th style="width:6%;"  class="sortable" id="status"     ><?=lang('label_status');?></th>
                 <th style="width:8%;"  class="sortable" id="order"      ><?=lang('label_order');?></th>
-                <?php } ?>
-                
                 <th style="width:8%;"  class="sortable" id="created_by" ><?=lang('label_author');?></th>
                 <th style="width:12%;" class="sortable" id="created_on" ><?=lang('label_date');?></th>
                 <th style="width:5%;"  >ID</th>

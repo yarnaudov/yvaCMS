@@ -13,8 +13,7 @@ class Groups extends MY_Controller {
         
         $this->load->model('User_group');
                 
-        $this->page = isset($_GET['page']) ? $_GET['page'] : 1;
-                
+        $this->page     = isset($_GET['page']) ? $_GET['page'] : 1;                
         $this->group_id = $this->uri->segment(3);
         
     }
@@ -94,112 +93,28 @@ class Groups extends MY_Controller {
     public function index()
     {
         
-        $page = "";
-                    
-        // delete groups
-        if(isset($_POST['delete'])){
-            $result = $this->User_group->delete();
-            if($result == true){
-                if($this->page > 1){
-                    $page = "?page=".$this->page;
-                }
-                redirect('groups/users'.$page);
-                exit();
-            }
-        }
-        
-        // change status
-        if(isset($_POST['change_status'])){
-            $result = $this->User_group->changeStatus($_POST['element_id'], $_POST['change_status']);
-            if($result == true){
-                if($this->page > 1){
-                    $page = "?page=".$this->page;
-                }
-                redirect('groups/users'.$page);
-                exit();
-            }
-        }
-        
-        // change order
-        if(isset($_POST['change_order'])){
-            $result = $this->User_group->changeOrder($_POST['element_id'], $_POST['change_order']);
-            if($result == true){
-                redirect('groups/users');
-                exit();
-            }
-        }
-        
-        // set filters
-        if(isset($_POST['search'])){
-            $filters = array();
-            if(isset($_POST['search_v']) && !empty($_POST['search_v'])){
-                $filters['search_v'] = $_POST['search_v'];
-            }
-            if(isset($_POST['category']) && $_POST['category'] != "none"){
-                $filters['category'] = $_POST['category'];
-            }
-            if(isset($_POST['status']) && $_POST['status'] != "none"){
-                $filters['status'] = $_POST['status'];
-            }            
-            $this->session->set_userdata('groups_filters', $filters);
-            redirect('groups/users');
-            exit();
-        }
-        
-        // clear filters
-        if(isset($_POST['clear'])){
-            $this->session->unset_userdata('groups_filters');
-            redirect('groups/users');
-            exit();
-        }
-        
-        // set order by
-        if(isset($_POST['order_by'])){
-            $_POST['order_by'] = "`".$_POST['order_by']."`";
-            $order_by = $this->session->userdata('groups_order');
-            if($order_by == $_POST['order_by']){
-                $_POST['order_by'] = $_POST['order_by']." DESC";
-            }
-            $this->session->set_userdata('groups_order', $_POST['order_by']);
-            redirect('groups/users');
-            exit();            
-        }
-        
-        // set limit
-        if(isset($_POST['limit'])){
-            $this->session->set_userdata('groups_page_results', $_POST['page_results']);
-            redirect('groups/users');
-            exit();            
-        }
-        
-        //get filters, order by and limit
-        $filters  = $this->session->userdata('groups_filters');        
-        $order_by = $this->session->userdata('groups_order');
-        $limit    = $this->session->userdata('groups_page_results');
-                
-        // set default filter and otder by
-        $filters  == "" ? $filters  = array() : "";
-        $order_by == "" ? $order_by = "`order`" : "";
-        $limit    == "" ? $limit = $this->config->item('default_paging_limit') : "";
-        
-        $limit_str = $limit == 'all' ? '' : ($this->page-1)*$limit.', '.$limit;
+        /*
+         *  parent index method handels: 
+         *  delete, change status, change order, set order by, set filters, 
+         *  clear filter, set limit, get sub menus, set class on sorted element
+         */
+        $data = parent::index($this->User_group, 'groups', 'groups/users');
         
         // get groups
-        $data              = $filters;
-        $data['order']     = trim(str_replace('`', '', $order_by));
-        $data['limit']     = $limit;
-        $data['max_pages'] = $limit == 'all' ? 0 : ceil(count($this->User_group->getGroups($filters))/$limit);
-        $data["groups"]  = $this->User_group->getGroups($filters, $order_by, $limit_str);
+        $groups = $this->User_group->getGroups($data['filters'], $data['order_by']);
+        if($data['limit'] == 'all'){
+            $groups[0] = $groups;
+        }
+        else{
+          $groups = array_chunk($groups, $data['limit']);
+          $data['max_pages'] = count($groups);
+        }
+
+        $data['groups'] = count($groups) == 0 ? array() : $groups[($this->page-1)];  
         
         // create sub actions menu
         $parent_id = $this->Ap_menu->getDetails($this->current_menu, 'parent_id');
         $data['sub_menu'] = $this->Ap_menu->getSubActions($parent_id);
-        
-        // set css class on sorted element
-        $elm_id = trim(str_replace(array('`','DESC'), '', $order_by));
-        $class  = substr_count($order_by, 'DESC') == 0 ? "sorted" : "sorted_desc";        
-        $script = "$('#".$elm_id."').addClass('".$class."');";
-        $this->jquery_ext->add_script($script);
         
         // load custom jquery script
         $this->jquery_ext->add_library("check_actions.js");      

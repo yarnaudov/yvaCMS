@@ -33,8 +33,18 @@ class MY_Controller extends CI_Controller{
         //$this->load->model('Adm_menu');
         $this->load->model('Ap_menu');
         
-        // set translation to default language
-        $this->trl = $this->Language->getDefault();
+        /*
+         * get current translation
+         */
+        $this->trl = $this->session->userdata('trl') == "" ? $this->Language->getDefault() : $this->session->userdata('trl');
+        $this->session->unset_userdata('trl');
+        if(isset($_POST['translation'])){         
+            $this->trl = $_POST['translation'];
+            if(isset($_POST['uset_posts'])){                
+                $this->input->post = array();
+                $_POST = array();
+            }
+        }
         
         // load components data
         $this->components = $this->_loadComponetsData();
@@ -145,11 +155,13 @@ class MY_Controller extends CI_Controller{
         }
                 
         $this->jquery_ext->add_script($script);
-               
+                 
     }
     
     public function index($model, $session, $redirect)
     {
+        
+        $page = "";
         
         // delete
         if(isset($_POST['delete'])){
@@ -210,6 +222,19 @@ class MY_Controller extends CI_Controller{
             exit();
         }
         
+        // set filters
+        if(isset($_POST['search'])){
+            $filters = array();
+            foreach($_POST['filters'] as $name => $value){
+                if(!empty($value) && $value != 'none'){
+                    $filters[$name] = $value;
+                }
+            }            
+            $this->session->set_userdata($session.'_filters', $filters);
+            redirect($redirect);
+            exit();
+        }
+        
         // set css class on sorted element
         $order_by = $this->session->userdata($session.'_order') == '' ? '`order`' : $this->session->userdata($session.'_order');
         $elm_id   = str_replace(array('`',' DESC'), '', $order_by);
@@ -217,10 +242,12 @@ class MY_Controller extends CI_Controller{
         $script   = "$('#".$elm_id."').addClass('".$class."');";
         $this->jquery_ext->add_script($script);
         
-        
         // set data       
-        $data['order_by'] = $this->session->userdata($session.'_order') == '' ? '`order`' : $this->session->userdata($session.'_order');
-        $data['limit']    = $this->session->userdata($session.'_page_results') == '' ? $this->config->item('default_paging_limit') : $this->session->userdata($session.'_page_results');
+        $data['order_by']  = $this->session->userdata($session.'_order')        == '' ? '`order`' : $this->session->userdata($session.'_order');
+        $data['order']     = trim(str_replace('`', '', $data['order_by']));
+        $data['limit']     = $this->session->userdata($session.'_page_results') == '' ? $this->config->item('default_paging_limit') : $this->session->userdata($session.'_page_results');
+        $data['filters']   = $this->session->userdata($session.'_filters')      == '' ? array() : $this->session->userdata($session.'_filters');
+        $data['max_pages'] = 0;
         
         return $data;
         

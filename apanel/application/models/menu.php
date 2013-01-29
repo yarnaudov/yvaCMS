@@ -49,19 +49,7 @@ class Menu extends MY_Model {
         foreach($filters as $key => $value){
             
             if($key == 'search_v'){
-                $filter .= " AND ( ";
-                $languages = Language::getLanguages();
-                foreach($languages as $key => $language){
-                    if($key > 0){
-                        $filter .= " OR ";
-                    }
-                    $filter .= "title_".$language['abbreviation']." like '%".$value."%'
-                                OR
-                                description_".$language['abbreviation']."  like '%".$value."%'";
-                }
-                
-                $filter .= " ) ";
-
+                $filter .= " AND ( title like '%".$value."%' OR description like '%".$value."%' OR alias like '%".$value."%' ) ";
             }
             elseif($key == 'category'){
                 $filter .= " AND category_id = '".$value."' ";
@@ -212,7 +200,7 @@ class Menu extends MY_Model {
     public function getMaxOrder($category_id, $parent_id)
     {
         
-        if($parent_id == "none"){
+        if($parent_id == NULL){
             $parent = "parent_id IS NULL";
         }
         else{
@@ -229,6 +217,7 @@ class Menu extends MY_Model {
                         ".$parent."";
          
         //echo $query."<br/>";
+        //exit;
 
         $max_order = $this->db->query($query)->result_array();    
 

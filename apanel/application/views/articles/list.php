@@ -58,21 +58,21 @@
 	<div id="filter_content" >
 		
             <div class="search" >
-                <input type="text" name="search_v" value="<?=isset($search_v) ? $search_v : "";?>" >
+                <input type="text" name="filters[search_v]" value="<?=isset($filters['search_v']) ? $filters['search_v'] : "";?>" >
                 <button class="styled" type="submit" name="search" ><?=lang('label_search');?></button>
                 <button class="styled" type="submit" name="clear"  ><?=lang('label_clear');?></button>
             </div>
 		
             <div class="filter" >
 			
-                <select name="category" >
+                <select name="filters[category]" >
                     <option value="none" > - <?=lang('label_select');?> <?=lang('label_category');?> - </option>
-                    <?=create_options_array($categories, isset($category) ? $category : "");?>
+                    <?=create_options_array($categories, isset($filters['category']) ? $filters['category'] : "");?>
                 </select>
 
-                <select name="status" >
+                <select name="filters[status]" >
                     <option value="none" > - <?=lang('label_select');?> <?=lang('label_status');?> - </option>
-                    <?=create_options_array($this->config->item('statuses'), isset($status) ? $status : "");?>
+                    <?=create_options_array($this->config->item('statuses'), isset($filters['status']) ? $filters['status'] : "");?>
                 </select>
 
             </div>
@@ -109,12 +109,12 @@
                 
                 <?php if($this->layout != 'simple_ajax'){ ?>
                 <td>
-                    <input type="checkbox" class="checkbox" name="articles[]" value="<?=$article['article_id'];?>" />
+                    <input type="checkbox" class="checkbox" name="articles[]" value="<?=$article['id'];?>" />
                 </td>
                 <?php } ?>
                 
                 <td style="text-align: left;" >
-                    <a href="<?=site_url('articles/edit/'.$article['article_id']);?>" lang="<?=$article['alias'];?>" >
+                    <a href="<?=site_url('articles/edit/'.$article['id']);?>" lang="<?=$article['alias'];?>" >
                         <?=$article['title'];?>
                     </a>
                     <div class="description" >(<span class="head" ><?=lang('label_alias');?>:</span> <span class="content" ><?=$article['alias'];?></span>)</div>
@@ -159,7 +159,7 @@
                 
                 <td><?=$this->User->getDetails($article['created_by'], 'user');?></td>
                 <td><?=($article['created_on']);?></td>
-                <td><?=$article['article_id'];?></td>
+                <td><?=$article['id'];?></td>
             </tr>
 		
             <?php } ?>
