@@ -87,88 +87,6 @@
                     </div>
 	            <!-- mandatory information  -->
                     
-	            
-                    <div class="box" >
-	      	        <span class="header multilang" ><?=lang('label_description');?></span>
-                        <div class="editor_div" >
-                          <textarea name="description" class="editor"  ><?=set_value('description', isset(${'description_'.$this->trl}) ? ${'description_'.$this->trl} : "");?></textarea>
-                        </div>
-                        
-	            </div>
-	      
-                </td>
-                <!-- end left content  -->
-	        
-                
-                <!-- start right content  -->
-	        <td class="right" >
-	      
-                    <div class="box" >
-                        <span class="header" ><?=lang('label_translation');?></span>
-                        
-                        <div class="box_content" >
-                            <table class="box_table" cellpadding="0" cellspacing="0" >
-
-                                <tr>
-                                    <td>
-                                        <select name="translation" >
-                                            <?=create_options('languages', 'id', 'title', $this->trl, array('status' => 'yes'));?>
-                                        </select>
-                                    </td>
-                                </tr>
-
-                            </table>
-                        </div>
-                        
-	            </div>
-                    
-	      
-	            <div class="box" >
-	      	        <span class="header" ><?=lang('label_options');?></span>
-	                
-                        <div class="box_content" >
-                            <table class="box_table" cellpadding="0" cellspacing="0" >
-
-                                <tr>	      			
-                                    <th><label><?=lang('label_status');?>:</label></th>
-                                    <td>
-                                        <select name="status" >
-                                            <?=create_options_array($this->config->item('statuses'), set_value('status', isset($status) ? $status : ""));?>
-                                        </select>
-                                    </td>
-                                </tr>
-  
-                                <tr><td colspan="2" class="empty_line" ></td></tr>
-                                
-                                <tr>	      			
-                                    <th><label><?=lang('label_email_to');?>:</label></th>
-                                    <td>
-                                        <textarea name="to" ><?=set_value('to', isset($to) ? $to : "");?></textarea>
-                                    </td>
-                                </tr>
-                                
-                                <tr><td colspan="2" class="empty_line" ></td></tr>
-                                
-                                <tr>	      			
-                                    <th><label><?=lang('label_email_cc');?>:</label></th>
-                                    <td>
-                                        <textarea name="cc" ><?=set_value('cc', isset($cc) ? $cc : "");?></textarea>
-                                    </td>
-                                </tr>
-                                
-                                <tr><td colspan="2" class="empty_line" ></td></tr>
-                                
-                                <tr>	      			
-                                    <th><label><?=lang('label_email_bcc');?>:</label></th>
-                                    <td>
-                                        <textarea name="bcc" ><?=set_value('bcc', isset($bcc) ? $bcc : "");?></textarea>
-                                    </td>
-                                </tr>
-                                
-                            </table>
-                        </div>
-                            
-                    </div>
                     
                     
                     <div class="box" >
@@ -277,7 +195,88 @@
                         </div>
                             
                     </div>
+	            
+                    <div class="box" >
+	      	        <span class="header multilang" ><?=lang('label_description');?></span>
+                        <div class="editor_div" >
+                          <textarea name="description" class="editor"  ><?=set_value('description', isset(${'description_'.$this->trl}) ? ${'description_'.$this->trl} : "");?></textarea>
+                        </div>
+                        
+	            </div>
+	      
+                </td>
+                <!-- end left content  -->
+	        
+                
+                <!-- start right content  -->
+	        <td class="right" >
+	      
+                    <div class="box" >
+                        <span class="header" ><?=lang('label_translation');?></span>
+                        
+                        <div class="box_content" >
+                            <table class="box_table" cellpadding="0" cellspacing="0" >
+
+                                <tr>
+                                    <td>
+                                        <select name="translation" >
+                                            <?=create_options('languages', 'id', 'title', $this->trl, array('status' => 'yes'));?>
+                                        </select>
+                                    </td>
+                                </tr>
+
+                            </table>
+                        </div>
+                        
+	            </div>
                     
+	      
+	            <div class="box" >
+	      	        <span class="header" ><?=lang('label_options');?></span>
+	                
+                        <div class="box_content" >
+                            <table class="box_table" cellpadding="0" cellspacing="0" >
+
+                                <tr>	      			
+                                    <th><label><?=lang('label_status');?>:</label></th>
+                                    <td>
+                                        <select name="status" >
+                                            <?=create_options_array($this->config->item('statuses'), set_value('status', isset($status) ? $status : ""));?>
+                                        </select>
+                                    </td>
+                                </tr>
+  
+                                <tr><td colspan="2" class="empty_line" ></td></tr>
+                                
+                                <tr>	      			
+                                    <th><label><?=lang('label_email_to');?>:</label></th>
+                                    <td>
+                                        <textarea name="to" ><?=set_value('to', isset($to) ? $to : "");?></textarea>
+                                    </td>
+                                </tr>
+                                
+                                <tr><td colspan="2" class="empty_line" ></td></tr>
+                                
+                                <tr>	      			
+                                    <th><label><?=lang('label_email_cc');?>:</label></th>
+                                    <td>
+                                        <textarea name="cc" ><?=set_value('cc', isset($cc) ? $cc : "");?></textarea>
+                                    </td>
+                                </tr>
+                                
+                                <tr><td colspan="2" class="empty_line" ></td></tr>
+                                
+                                <tr>	      			
+                                    <th><label><?=lang('label_email_bcc');?>:</label></th>
+                                    <td>
+                                        <textarea name="bcc" ><?=set_value('bcc', isset($bcc) ? $bcc : "");?></textarea>
+                                    </td>
+                                </tr>
+                                
+                            </table>
+                        </div>
+                            
+                    </div>
                     
                     <?php if(isset($created_by)){ ?>
                     <div class="box" >

@@ -2,11 +2,14 @@
 $(document).ready(function() {
     
    function replaceAll( text, old_string, new_string ){
-   while (text.toString().indexOf(old_string) != -1)
-       text = text.toString().replace(old_string, new_string);
+       while (text.toString().indexOf(old_string) != -1){
+           text = text.toString().replace(old_string, new_string);
+       }
        return text;
    }
 
+   $('.form_fields').sortable();
+   
    $('a.add').bind('click', function(){
        var html = $('tbody#field0').html();
        
@@ -21,27 +24,31 @@ $(document).ready(function() {
    });
    
    $('a.delete').live('click', function(){
-       $('tbody#'+$(this).attr('lang')).remove();
        
-       $('table.form_fields tbody').each(function(index){
-                      
-           var html = $(this).html();
+       $('tbody#'+$(this).attr('lang')).toggle('slow', function() {
            
-           $(this).attr('id', 'field'+index);
-           
-           var number = $('tbody#field'+index+' fieldset legend span').html();
-           number = parseInt(number);
-           
-           if(number != index){
-               html = replaceAll(html, 'fields['+number+']', 'fields['+index+']');
-               $(this).html(html);
-           }
-           
-           
-           $('tbody#field'+index+' fieldset legend span').html(index);
-           $('tbody#field'+index+' fieldset a').attr('lang', 'field'+index);
-           
-       });
+           $(this).remove();
+       
+           $('table.form_fields tbody').each(function(index){
+
+               var html = $(this).html();
+
+               $(this).attr('id', 'field'+index);
+
+               var number = $('tbody#field'+index+' fieldset legend span').html();
+               number = parseInt(number);
+
+               if(number != index){
+                   html = replaceAll(html, 'fields['+number+']', 'fields['+index+']');
+                   $(this).html(html);
+               }
+
+               $('tbody#field'+index+' fieldset legend span').html(index);
+               $('tbody#field'+index+' fieldset a').attr('lang', 'field'+index);
+
+            });
+            
+        });
        
    });
     

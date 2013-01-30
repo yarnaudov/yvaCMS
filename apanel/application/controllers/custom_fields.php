@@ -44,6 +44,10 @@ class Custom_fields extends MY_Controller {
                                 
             }
                 
+            $script = "$('select[name=type]').change(function(){
+                           $('form').submit();
+                       });";
+            $this->jquery_ext->add_script($script);
             $this->jquery_ext->add_plugin("tinymce");
             $this->jquery_ext->add_library("tinymce.js");
 

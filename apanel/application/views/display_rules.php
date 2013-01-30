@@ -59,7 +59,9 @@
       var rule = $(this).parent().find('span').html();
 
       $('input[name=rule]').val(rule);
-      $(this).parent().remove();
+      $(this).parent().toggle('slow', function() {
+          $(this).remove();
+      });
 
   });
   

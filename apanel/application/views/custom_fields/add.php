@@ -79,9 +79,9 @@
                 <!-- start left content  -->
 	        <td class="left" >
 	            
-                    <!-- mandatory information  -->
+                    <!-- required information  -->
 	            <div class="box" >
-	      	      <span class="header" ><?=lang('label_mandatory');?> <?=lang('label_information');?></span>
+	      	      <span class="header" ><?=lang('label_required');?> <?=lang('label_information');?></span>
 	      	      
                       <div class="box_content" >
                         <table class="box_table" cellpadding="0" cellspacing="0" >
@@ -95,7 +95,7 @@
                       </div>
 	      	              
                     </div>
-	            <!-- mandatory information  -->
+	            <!-- required information  -->
                     
 	            
                     <div class="box" >
@@ -146,26 +146,6 @@
                                 <tr><td colspan="2" class="empty_line" ></td></tr>
                                 
                                 <tr>
-                                    <th><label><?=lang('label_type');?>:</label></th>
-                                    <td>
-                                        <select name="type" >
-                                            <?=create_options_array($this->config->item('custom_field_types'), set_value('type', isset($type) ? $type : ""));?>
-                                        </select>
-                                    </td>
-                                </tr>
-                                
-                                <tr><td colspan="2" class="empty_line" ></td></tr>
-                                
-                                <tr>
-                                    <th><label><?=lang('label_value');?>:</label></th>
-                                    <td>
-                                        <input type="text" name="value" value="<?=set_value('value', isset($value) ? $value : "");?>" >
-                                    </td>
-                                </tr>
-                                
-                                <tr><td colspan="2" class="empty_line" ></td></tr>
-                                
-                                <tr>
                                     <th><label><?=lang('label_multilang');?>:</label></th>
                                     <td>
                                         <select name="multilang" >
@@ -173,6 +153,35 @@
                                         </select>
                                     </td>
                                 </tr>
+                                
+                                <tr><td colspan="2" class="empty_line" ></td></tr>
+                                
+                                <tr>	      			
+                                    <th><label><?=lang('label_required');?>:</label></th>
+                                    <td>
+                                        <?php if(!isset($required)){$required = 'no';} ?>
+                                        <select name="required" <?=$required == 'yes' ? 'disabled' : '';?> >
+                                            <?=create_options_array($this->config->item('yes_no'), set_value('required', isset($required) ? $required : ""));?>
+                                        </select>
+                                    </td>
+                                </tr>
+                                
+                                <tr><td colspan="2" class="empty_line" ></td></tr>
+                                
+                                <tr>
+                                    <th><label><?=lang('label_type');?>:</label></th>
+                                    <td>
+                                        <?php $type = set_value('type', isset($type) ? $type : ""); ?>
+                                        <select name="type" >
+                                            <?=create_options_array($this->config->item('custom_field_types'), $type);?>
+                                        </select>
+                                    </td>
+                                </tr>
+                                
+                                <?php if($type){
+                                          $this->load->view('custom_fields/'.$type);
+                                      } ?>                      
+                                
 
                             </table>
                         </div>

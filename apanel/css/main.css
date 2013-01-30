@@ -809,6 +809,7 @@ ol.rules{
 }
 ol.rules li{
     padding: 4px 0;
+    cursor: move;
 }
 ol.rules li span{
     _float: left;
@@ -854,6 +855,7 @@ ol.rules li a{
 #article_images li{
     overflow: auto;
     padding-bottom: 8px;
+    cursor: move;
 }
 #article_images img{
     width: 48px;
@@ -869,6 +871,32 @@ ol.rules li a{
     padding: 10px 4px;
 }
 #article_images a{
+    float: right;
+    padding: 1px 9px !important;
+    width: 0px;
+    float: right;
+    background-position: 1px center;
+}
+
+#checkboxes{
+    list-style: none;
+}
+#checkboxes li{
+    overflow: auto;
+    padding-bottom: 6px;
+    cursor: move;
+}
+#checkboxes li input[type=checkbox],
+#checkboxes li input[type=radio]{
+    margin-top: 4px;
+    display: inline-block;
+    width: 16px !important;
+    float: left;
+}
+#checkboxes li input[type=text]{
+    width: 78%;   
+}
+#checkboxes a{
     float: right;
     padding: 1px 9px !important;
     width: 0px;

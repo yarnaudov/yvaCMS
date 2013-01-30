@@ -47,7 +47,9 @@ class Articles extends MY_Controller {
                         });
                         
                         $('#article_images a.delete').live('click', function(){
-                            $(this).parent().remove();
+                            $(this).parent().toggle('slow', function() {
+                                $(this).remove();
+                            });
                         });
                         $('#article_images').sortable();";
             $this->jquery_ext->add_script($script);
