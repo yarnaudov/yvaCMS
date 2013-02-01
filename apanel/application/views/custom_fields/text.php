@@ -3,6 +3,6 @@
 <tr>
     <th><label><?=lang('label_value');?>:</label></th>
     <td>
-        <input type="text" name="value" value="<?=set_value('value', isset($value) ? $value : "");?>" >
+        <input type="text" name="params[value]" value="<?=set_value('params[value]', isset($params['value']) ? $params['value'] : "");?>" >
     </td>
 </tr>

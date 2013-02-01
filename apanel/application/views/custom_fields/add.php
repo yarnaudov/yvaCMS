@@ -178,10 +178,10 @@
                                     </td>
                                 </tr>
                                 
-                                <?php if($type){
-                                          $this->load->view('custom_fields/'.$type);
-                                      } ?>                      
-                                
+                                <tbody id="params" >
+                                <?php $type == "" ? $type = "text" : "";
+                                      $this->load->view('custom_fields/'.$type); ?>                      
+                                </tbody>
 
                             </table>
                         </div>

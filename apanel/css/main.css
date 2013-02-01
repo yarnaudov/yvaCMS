@@ -903,3 +903,22 @@ ol.rules li a{
     float: right;
     background-position: 1px center;
 }
+
+td.custom_field ul li label{
+    display: inline !important;   
+    float: left !important;
+    text-align: left !important;
+}
+td.custom_field ul li input[type=radio],
+td.custom_field ul li input[type=checkbox]{
+    width: auto !important;
+    float: left !important;
+    margin-right: 5px;
+}
+td.custom_field ul{
+    list-style: none;   
+}
+td.custom_field ul li{
+    padding: 2px;
+    overflow: auto;
+}

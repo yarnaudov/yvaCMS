@@ -41,6 +41,7 @@ $lang['label_position']      = 'Position';
 
 
 $lang['label_mandatory']     = 'Mandatory';
+$lang['label_required']      = 'Mandatory';
 $lang['label_translation']   = 'Translation';
 $lang['label_options']       = 'Options';
 $lang['label_information']   = 'Information';
@@ -113,6 +114,7 @@ $lang['label_text_field']     = 'Text field';
 $lang['label_textarea_field'] = 'Textarea';
 $lang['label_dropdown_field'] = 'Dropdown list';
 $lang['label_checkbox_field'] = 'Checkbox';
+$lang['label_radio_field']    = 'Radio';
 $lang['label_date_field']     = 'Date field';
 
 $lang['label_all']           = 'All';

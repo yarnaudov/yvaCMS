@@ -48,6 +48,7 @@ class Home extends MY_Controller {
     {
         
         switch($action){
+            
             case "get_menus":
                 
                 $this->load->model('Menu');
@@ -62,6 +63,13 @@ class Home extends MY_Controller {
                     $menus_arr[] = array('value' => $menu['id'], 'text' => $lavel.$menu['title']);
                 }
                 echo json_encode($menus_arr);
+                
+            break;
+            
+            case "load":
+                
+                $this->load->helper('form');
+                $this->load->view($this->input->get('view'));
                 
             break;
             

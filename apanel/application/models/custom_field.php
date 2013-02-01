@@ -10,9 +10,15 @@ class Custom_field extends CI_Model {
 
         $custom_field = $this->db->get('custom_fields');  	
         $custom_field = $custom_field->result_array();
+        
+        if(empty($custom_field)){
+            return;
+        }
+        
+        $custom_field[0]['params'] = json_decode($custom_field[0]['params'], true);
 
         if($field == null){
-                return $custom_field[0];
+            return $custom_field[0];
         }
         else{  	
             return $custom_field[0][$field];
@@ -30,12 +36,8 @@ class Custom_field extends CI_Model {
                     
         foreach($filters as $key => $value){
             
-            if($key == 'search_v'){
-                
-                $filter .= " AND (title like '%".$value."%'
-                            OR
-                            description  like '%".$value."%' )";            
-
+            if($key == 'search_v'){               
+                $filter .= " AND (title like '%".$value."%' OR description  like '%".$value."%' )";            
             }
             else{
                 $filter .= " AND `".$key."` = '".$value."' ";
@@ -56,6 +58,10 @@ class Custom_field extends CI_Model {
         //echo $query."<br/>";
 
         $custom_fields = $this->db->query($query)->result_array();
+        
+        foreach($custom_fields as $key => $custom_field){
+            $custom_fields[$key]['params'] = json_decode($custom_field['params'], true);
+        }
 
         return $custom_fields;
 
@@ -79,9 +85,9 @@ class Custom_field extends CI_Model {
         $data['title']       = $this->input->post('title');
         $data['description'] = $this->input->post('description');
         $data['type']        = $this->input->post('type');
-        $data['value']       = $this->input->post('value');
         $data['multilang']   = $this->input->post('multilang');
         $data['category_id'] = $this->input->post('category');
+        $data['params']      = json_encode($this->input->post('params'));
 
         if($data['category_id'] == 'all'){
             $data['category_id'] = NULL;
@@ -243,9 +249,14 @@ class Custom_field extends CI_Model {
         $custom_fields = $this->Custom_field->getCustomFields(array('status' => 'yes'), '`order`');
         
         foreach($custom_fields as $custom_field){
+                  
+            $data = array();
             
-            $data['language_id'] = $custom_field['multilang'] == "yes" ? $this->trl : NULL;            
+            $data['language_id'] = $custom_field['multilang'] == "yes" ? $this->trl : NULL;  
             $data['value']       = $this->input->post('field'.$custom_field['id']);
+            if(is_array($data['value'])){
+                $data['value'] = json_encode($data['value']);
+            }
             
             $where_language_id = $data['language_id'] == NULL ? "language_id IS NULL" : "language_id = '".$data['language_id']."'";
             
@@ -262,15 +273,13 @@ class Custom_field extends CI_Model {
                         WHERE
                           ".$where."";
 
-            //echo $query."<br/>";
-            //exit();
-
             $count = $this->db->query($query)->result_array();    
 
             if($count[0]['count'] == 1){
                 
+                unset($data['language_id']);
                 $query = $this->db->update_string('custom_fields_values', $data, $where);
-                
+
             }
             else{
                 
@@ -286,7 +295,7 @@ class Custom_field extends CI_Model {
             }
             
         }
-        
+    
         return true;
         
     }
@@ -315,17 +324,22 @@ class Custom_field extends CI_Model {
                      AND
                       (language_id = '".$this->trl."' || language_id IS NULL)";
         
+        //echo $query;
+        
         $custom_fields = $this->db->query($query)->result_array();
         
         $data = array();
         
         foreach($custom_fields as $custom_field){
                        
+            if(isJson($custom_field['value'])){
+                $custom_field['value'] = json_decode($custom_field['value']);
+            }
             $data['field'.$custom_field['custom_field_id']] = $custom_field['value'];
                   
             
         }
-        
+
         return $data;
         
     }

@@ -41,6 +41,7 @@ $lang['label_position']      = 'Позиция';
 
 
 $lang['label_mandatory']     = 'Задължителна';
+$lang['label_required']      = 'Задължително';
 $lang['label_translation']   = 'Превод';
 $lang['label_options']       = 'Опции';
 $lang['label_information']   = 'Информация';
@@ -113,6 +114,7 @@ $lang['label_text_field']     = 'Текстово поле';
 $lang['label_textarea_field'] = 'Текстова област';
 $lang['label_dropdown_field'] = 'Падащо меню';
 $lang['label_checkbox_field'] = 'Отметката';
+$lang['label_radio_field']    = 'Радио';
 $lang['label_date_field']     = 'Избор на дата';
 
 

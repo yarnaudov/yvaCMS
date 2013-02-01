@@ -117,7 +117,7 @@ if(empty($menu_id)){
                     <div class="description" >(<span class="head" ><?=lang('label_description');?>:</span> <span class="content" ><?=strip_tags($custom_field['description']);?></span>)</div>
                     <?php } ?>
                 </td>
-                <td><?=lang('label_'.$custom_field['type']);?></td>
+                <td><?=lang('label_'.$custom_field['type'].'_field');?></td>
                 <td>
                     <?php if($custom_field['status'] == 'yes'){ ?>
                     <img class="status_img" alt="no"  src="<?=base_url('img/iconActive.png');?>" >

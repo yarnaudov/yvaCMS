@@ -45,7 +45,11 @@ class Custom_fields extends MY_Controller {
             }
                 
             $script = "$('select[name=type]').change(function(){
-                           $('form').submit();
+                           $.get('".site_url('home/ajax/load')."?view=custom_fields/'+$(this).val(), function(data){
+                               $('#params').toggle(250);
+                               $('#params').html(data);
+                               $('#params').toggle(250);
+                           });
                        });";
             $this->jquery_ext->add_script($script);
             $this->jquery_ext->add_plugin("tinymce");

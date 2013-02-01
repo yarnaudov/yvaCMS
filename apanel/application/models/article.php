@@ -13,7 +13,7 @@ class Article extends MY_Model {
                     WHERE
                       a.id = '".$id."' ";
         
-        $article = $this->db->query($query);  	
+        $article = $this->db->query($query);
         $article = $article->result_array();
 
         if(empty($article)){
