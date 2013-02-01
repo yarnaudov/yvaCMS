@@ -894,7 +894,9 @@ ol.rules li a{
     float: left;
 }
 #checkboxes li input[type=text]{
-    width: 78%;   
+    width: 76%;   
+    float: left;
+    margin-right: 4px;
 }
 #checkboxes a{
     float: right;

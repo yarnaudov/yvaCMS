@@ -134,6 +134,22 @@
                                 <input type="hidden" name="category" value="all" >
                                 <?php } ?>
                                 
+                                <?php if(isset($positions)){ ?>
+                                <tr>	      			
+                                    <th><label><?=lang('label_position');?>:</label></th>
+                                    <td>
+                                        <select name="position" >
+                                            <option value="all" ><?=lang('label_all');?></option>
+                                            <?=create_options_array($positions, set_value('position', isset($position) ? $position : ""));?>
+                                        </select>
+                                    </td>
+                                </tr>
+                                
+                                <tr><td colspan="2" class="empty_line" ></td></tr>
+                                <?php }else{ ?>
+                                <input type="hidden" name="position" value="all" >
+                                <?php } ?>
+                                
                                 <tr>	      			
                                     <th><label><?=lang('label_status');?>:</label></th>
                                     <td>
@@ -149,7 +165,7 @@
                                     <th><label><?=lang('label_multilang');?>:</label></th>
                                     <td>
                                         <select name="multilang" >
-                                            <?=create_options_array($this->config->item('yes_no'), set_value('multilang', isset($multilang) ? $multilang : ""));?>
+                                            <?=create_options_array($this->config->item('yes_no'), set_value('multilang', isset($multilang) ? $multilang : "no"));?>
                                         </select>
                                     </td>
                                 </tr>

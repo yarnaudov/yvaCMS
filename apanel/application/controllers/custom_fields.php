@@ -18,6 +18,8 @@ class Custom_fields extends MY_Controller {
         parent::__construct();
         
         $this->load->model('Custom_field');
+        $this->load->model('Module');
+        $this->load->model('Banner');
         
         $this->page = isset($_GET['page']) ? $_GET['page'] : 1;
         
@@ -46,9 +48,9 @@ class Custom_fields extends MY_Controller {
                 
             $script = "$('select[name=type]').change(function(){
                            $.get('".site_url('home/ajax/load')."?view=custom_fields/'+$(this).val(), function(data){
-                               $('#params').toggle(250);
+                               $('#params').css('display', 'none');
                                $('#params').html(data);
-                               $('#params').toggle(250);
+                               $('#params').toggle('slow');
                            });
                        });";
             $this->jquery_ext->add_script($script);
@@ -130,6 +132,12 @@ class Custom_fields extends MY_Controller {
         if(in_array('categories/'.$this->extension, $this->sub_menu)){
             $data['categories'] = $this->Category->getForDropdown();
         }
+        elseif($this->extension == 'modules'){
+            $data['positions'] = $this->Module->getPositions(parent::_parseTemplateFile('modules'));
+        }
+        elseif($this->extension == 'banners'){
+            $data['positions'] = $this->Banner->getPositions(parent::_parseTemplateFile('banners'));
+        }
          
         $content["content"] = $this->load->view('custom_fields/add', $data, true);		
         $this->load->view('layouts/default', $content);
@@ -142,6 +150,12 @@ class Custom_fields extends MY_Controller {
         
         if(in_array('categories/'.$this->extension, $this->sub_menu)){
             $data['categories'] = $this->Category->getForDropdown();
+        }
+        elseif($this->extension == 'modules'){
+            $data['positions'] = $this->Module->getPositions(parent::_parseTemplateFile('modules'));
+        }
+        elseif($this->extension == 'banners'){
+            $data['positions'] = $this->Banner->getPositions(parent::_parseTemplateFile('banners'));
         }
 
         $content["content"] = $this->load->view('custom_fields/add', $data, true);		

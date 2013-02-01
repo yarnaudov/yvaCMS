@@ -226,20 +226,12 @@
                                     </td>
                                 </tr>
                                 
-                                <?php if(count($custom_fields) > 0){ ?>
-                                <tr><td colspan="2" class="empty_line" ></td></tr>
-                                <tr>
-                                    <td colspan="2" class="empty_line" >
-                                        <fieldset style="border:none;border-top: 1px solid #aaa;padding-left: 10px;">
-                                            <legend style="font-weight: bold;padding: 0 5px;" ><?=lang('label_custom_fields');?></legend>
-                                        </fieldset>
-                                    </td>
-                                </tr>
+                                <tbody id="custom_fields" >
+                                <?php if(count($custom_fields) > 0){
+                                          $this->load->view('custom_fields/load_fields');
+                                      } ?>
+                                </tbody>
                                 
-                                <?php $this->load->view('custom_fields/load_fields'); ?>
-                                
-                                <?php } ?>
-  
                             </table>
                         </div>
                             

@@ -26,18 +26,24 @@ class Custom_field extends CI_Model {
 
     }
   
-    public function getCustomFields($filters = array(), $order_by = "", $limit = "")
+    public function getCustomFields($filters = array(), $order_by = "`order`", $limit = "")
     {
         
-        $filter = ''; 
+        $filter = '';
         if(!isset($filters['status'])){
-            $filter = " AND status != 'trash'"; 
-        }     
+            $filter = " AND status != 'trash'";
+        }
                     
         foreach($filters as $key => $value){
             
             if($key == 'search_v'){               
                 $filter .= " AND (title like '%".$value."%' OR description  like '%".$value."%' )";            
+            }
+            elseif($key == 'category'){
+                $filter .= " AND (`category_id` = '".$value."' OR `category_id` is NULL) ";
+            }
+            elseif($key == 'position'){
+                $filter .= " AND (`position` = '".$value."' OR `position` is NULL) ";
             }
             else{
                 $filter .= " AND `".$key."` = '".$value."' ";
@@ -87,10 +93,15 @@ class Custom_field extends CI_Model {
         $data['type']        = $this->input->post('type');
         $data['multilang']   = $this->input->post('multilang');
         $data['category_id'] = $this->input->post('category');
+        $data['position']    = $this->input->post('position');
         $data['params']      = json_encode($this->input->post('params'));
 
         if($data['category_id'] == 'all'){
             $data['category_id'] = NULL;
+        }
+        
+        if($data['position'] == 'all'){
+            $data['position'] = NULL;
         }
         
         if($action == 'insert'){

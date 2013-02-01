@@ -52,6 +52,7 @@ class Modules_c extends MY_Controller {
                        catch(err){}
                        
                        $('select[name=position]').bind('change', function(){
+                       
                            if($(this).val() == 'value'){
                              $(this).css('display', 'none');
                              $(this).attr('disabled', true);
@@ -59,8 +60,16 @@ class Modules_c extends MY_Controller {
                              $('input[name=position]').attr('disabled', false);
                              $('input[name=position]').focus();
                            }
+                           
+                           $.get('".site_url('home/ajax/load_custom_fields')."?extension=".$this->extension."&position='+$(this).val(), function(data){
+                               $('#custom_fields').css('display', 'none');
+                               $('#custom_fields').html(data);
+                               $('#custom_fields').toggle('slow');
+                           });
+                           
                        });
                        $('input[name=position]').blur(function(){
+                       
                            if($(this).val() == ''){
                              $(this).css('display', 'none');
                              $(this).attr('disabled', true);
@@ -68,6 +77,7 @@ class Modules_c extends MY_Controller {
                              $('select[name=position]').attr('disabled', false);
                              $('select[name=position]').val('');
                            }
+                             
                        });";
             
             if ($method == 'add'){
@@ -165,8 +175,10 @@ class Modules_c extends MY_Controller {
 	
     public function add()
     {   
-        $data['custom_fields'] = $this->Custom_field->getCustomFields(array('status' => 'yes'), '`order`');
+        
         $data['positions']     = $this->positions;
+        $data['custom_fields'] = $this->Custom_field->getCustomFields(array('position' => set_value('position', key($data['positions'])),
+                                                                            'status'   => 'yes'));
 
         $content["content"] = $this->load->view('modules/add', $data, true);		
         $this->load->view('layouts/default', $content);
@@ -176,7 +188,8 @@ class Modules_c extends MY_Controller {
     {
                 
         $data                  = $this->Module->getDetails($this->module_id);
-        $data['custom_fields'] = $this->Custom_field->getCustomFields(array('status' => 'yes'), '`order`');
+        $data['custom_fields'] = $this->Custom_field->getCustomFields(array('position' => set_value('position', isset($data['position']) ? $data['position'] : ""), 
+                                                                            'status'   => 'yes'));
         $data['positions']     = $this->positions;
         
         $content["content"] = $this->load->view('modules/add', $data, true);		

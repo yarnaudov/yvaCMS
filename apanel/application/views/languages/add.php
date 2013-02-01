@@ -152,6 +152,12 @@
                                                                                 
                                     </td>
                                 </tr>
+                                
+                                <tbody id="custom_fields" >
+                                <?php if(count($custom_fields) > 0){
+                                          $this->load->view('custom_fields/load_fields');
+                                      } ?>
+                                </tbody>
 
                             </table>
                         </div>

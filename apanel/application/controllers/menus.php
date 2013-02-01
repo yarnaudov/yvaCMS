@@ -45,6 +45,13 @@ class Menus extends MY_Controller {
                                });
 
                            });
+                           
+                           $.get('".site_url('home/ajax/load_custom_fields')."?extension=".$this->extension."&category='+$(this).val(), function(data){
+                               $('#custom_fields').css('display', 'none');
+                               $('#custom_fields').html(data);
+                               $('#custom_fields').toggle('slow');
+                           });
+
                        }); ";
             
             if ($method == 'add'){
@@ -146,7 +153,8 @@ class Menus extends MY_Controller {
         
         $data['categories']    = $this->Category->getForDropdown();
         $data['menus']         = $this->Menu->getForDropdown(array('category_id' => set_value('category', key($data['categories']))));
-        $data['custom_fields'] = $this->Custom_field->getCustomFields(array('status' => 'yes'), '`order`');
+        $data['custom_fields'] = $this->Custom_field->getCustomFields(array('category' => set_value('category', key($data['categories'])),
+                                                                            'status'   => 'yes'));
         
         $content = $this->load->view('menus/add', $data, true);		
         $this->load->view('layouts/default', compact('content'));
@@ -159,7 +167,8 @@ class Menus extends MY_Controller {
         $data                  = $this->Menu->getDetails($this->menu_id);   
         $data['categories']    = $this->Category->getForDropdown();
         $data['menus']         = $this->Menu->getForDropdown(array('category_id' => set_value('category', isset($data['category_id']) ? $data['category_id'] : "")));
-        $data['custom_fields'] = $this->Custom_field->getCustomFields(array('status' => 'yes'), '`order`');
+        $data['custom_fields'] = $this->Custom_field->getCustomFields(array('category' => set_value('category', isset($data['category_id']) ? $data['category_id'] : ""), 
+                                                                            'status'   => 'yes'));
         
         //print_r($data);
 

@@ -72,6 +72,29 @@ class Home extends MY_Controller {
                 $this->load->view($this->input->get('view'));
                 
             break;
+        
+            case "load_custom_fields":
+                
+                $this->load->helper('form');
+                
+                $this->extension = $this->input->get('extension');
+                
+                $category = $this->input->get('category');
+                $position = $this->input->get('position');
+                
+                $filters['status'] = 'yes';
+                if(!empty($category)){
+                    $filters['category'] = $category;
+                }
+                elseif(!empty($position)){
+                    $filters['position'] = $position; 
+                }
+                
+                $custom_fields = $this->Custom_field->getCustomFields($filters);
+                    
+                $this->load->view('custom_fields/load_fields', compact('custom_fields'));
+                
+            break;
             
         }
         

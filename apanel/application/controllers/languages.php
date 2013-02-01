@@ -97,7 +97,7 @@ class Languages extends MY_Controller {
 	
     public function add()
     {   
-        $data['custom_fields'] = $this->Custom_field->getCustomFields(array('status' => 'yes'), '`order`');
+        $data['custom_fields'] = $this->Custom_field->getCustomFields(array('status' => 'yes'));
 
         $content["content"] = $this->load->view('languages/add', $data, true);		
         $this->load->view('layouts/default', $content);
@@ -108,7 +108,7 @@ class Languages extends MY_Controller {
         
         $data = $this->Language->getDetails($this->language_id);
         $data = @array_merge($data, $this->Custom_field->getFieldsValues($this->language_id));        
-        $data['custom_fields'] = $this->Custom_field->getCustomFields(array('status' => 'yes'), '`order`');
+        $data['custom_fields'] = $this->Custom_field->getCustomFields(array('status' => 'yes'));
         
         //print_r($data);
 

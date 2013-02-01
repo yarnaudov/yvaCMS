@@ -138,7 +138,7 @@ class Users extends MY_Controller {
 	
     public function add()
     {   
-        $data['custom_fields'] = $this->Custom_field->getCustomFields(array('status' => 'yes'), '`order`');
+        $data['custom_fields'] = $this->Custom_field->getCustomFields(array('status' => 'yes'));
 
         $content["content"] = $this->load->view('users/add', $data, true);		
         $this->load->view('layouts/default', $content);
@@ -149,9 +149,7 @@ class Users extends MY_Controller {
         
         $data = $this->User->getDetails($this->user_id);
         $data = @array_merge($data, $this->Custom_field->getFieldsValues($this->user_id));        
-        $data['custom_fields'] = $this->Custom_field->getCustomFields(array('status' => 'yes'), '`order`');
-        
-        //print_r($data);
+        $data['custom_fields'] = $this->Custom_field->getCustomFields(array('status' => 'yes'));
 
         $content["content"] = $this->load->view('users/add', $data, true);		
         $this->load->view('layouts/default', $content);

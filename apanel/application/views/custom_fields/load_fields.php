@@ -1,4 +1,15 @@
 
+<?php if(count($custom_fields) > 0){ ?>
+<tr><td colspan="2" class="empty_line" ></td></tr>
+<tr>
+    <td colspan="2" class="empty_line" >
+        <fieldset style="border:none;border-top: 1px solid #aaa;padding-left: 10px;">
+            <legend style="font-weight: bold;padding: 0 5px;" ><?=lang('label_custom_fields');?></legend>
+        </fieldset>
+    </td>
+</tr>
+<?php } ?>
+
 <?php 
 
 foreach($custom_fields as $custom_field){
@@ -26,6 +37,8 @@ foreach($custom_fields as $custom_field){
         
         case 'dropdown':
             
+            $optgroup = false;
+            
             echo '<select name="field'.$custom_field['id'].'" >';
             foreach($params['options'] as $key => $option){
           
@@ -34,7 +47,21 @@ foreach($custom_fields as $custom_field){
                     $selected = 'selected';
                 }
                 
-                echo '<option '.$selected.' value="'.$key.'" >'.$params['labels'][$key].'</option>';   
+                if($params['optgroups'][$key] == 1){
+                    if($optgroup == true){
+                        echo '</optgroup>';
+                    }
+                    $optgroup = true;
+                    echo '<optgroup label="'.$params['labels'][$key].'" >';
+                }
+                else{
+                    echo '<option '.$selected.' value="'.$key.'" >'.$params['labels'][$key].'</option>';   
+                }
+                
+                if($key+1 == count($params['options']) && $optgroup == true){
+                    echo '</optgroup>';
+                }
+                
             }
             echo '</select>';
             
