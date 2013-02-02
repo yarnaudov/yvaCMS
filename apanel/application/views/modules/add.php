@@ -148,25 +148,7 @@
                 <!-- start right content  -->
 	        <td class="right" >
 	      
-                    <div class="box" >
-                        <span class="header" ><?=lang('label_translation');?></span>
-                        
-                        <div class="box_content" >
-                            <table class="box_table" cellpadding="0" cellspacing="0" >
-
-                                <tr>
-                                    <td>
-                                        <select name="translation" >
-                                            <?=create_options('languages', 'id', 'title', $this->trl, array('status' => 'yes'));?>
-                                        </select>
-                                    </td>
-                                </tr>
-
-                            </table>
-                        </div>
-                        
-	            </div>
-                    
+                    <?php $this->load->view('translation'); ?>                     
 	      
 	            <div class="box" >
 	      	        <span class="header" ><?=lang('label_options');?></span>
@@ -174,19 +156,7 @@
                         <div class="box_content" >
                             <table class="box_table" cellpadding="0" cellspacing="0" >
 
-                                <tr>	      			
-                                    <th><label><?=lang('label_position');?>:</label></th>
-                                    <td>
-                                        
-                                        <input type="text" name="position" disabled style="display: none;" >
-                                        
-                                        <select name="position" >
-                                            <?=create_options_array($positions, set_value('position', isset($position) ? $position : ""));?>
-                                            <option value="value" >(<?=lang('label_value');?>)</option>
-                                        </select>
-                                        
-                                    </td>
-                                </tr>
+                                <?php $this->load->view('positions'); ?>
 
                                 <tr><td colspan="2" class="empty_line" ></td></tr>
 
@@ -222,23 +192,7 @@
                                     </td>
                                 </tr>
                                 
-                                <tr><td colspan="2" class="empty_line" ></td></tr>
-
-                                <tr>	      			
-                                    <th><label><?=lang('label_start_date');?>:</label></th>
-                                    <td>
-                                        <input type="text" class="datepicker" name="start_publishing" value="<?=set_value('start_publishing', isset($start_publishing) ? $start_publishing : "");?>" >
-                                    </td>
-                                </tr>
-
-                                <tr><td colspan="2" class="empty_line" ></td></tr>
-
-                                <tr>	      			
-                                    <th><label><?=lang('label_end_date');?>:</label></th>
-                                    <td>
-                                        <input type="text" class="datepicker" name="end_publishing" value="<?=set_value('end_publishing', isset($end_publishing) ? $end_publishing : "");?>" >
-                                    </td>
-                                </tr>
+                                <?php $this->load->view('start_end_dates'); ?>
                                 
                                 <tr><td colspan="2" class="empty_line" ></td></tr>
                                 

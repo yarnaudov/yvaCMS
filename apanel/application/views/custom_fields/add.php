@@ -118,36 +118,24 @@
                         <div class="box_content" >
                             <table class="box_table" cellpadding="0" cellspacing="0" >
 
-                                <?php if(isset($categories)){ ?>
+                                <?php if(isset($extension_keys)){ ?>
+                                
                                 <tr>	      			
-                                    <th><label><?=lang('label_category');?>:</label></th>
+                                    <th><label><?=lang('label_'.$extension_keys_label);?>:</label></th>
                                     <td>
-                                        <select name="category" >
+                                        <select name="extension_key" >
                                             <option value="all" ><?=lang('label_all');?></option>
-                                            <?=create_options_array($categories, set_value('category', isset($category_id) ? $category_id : ""));?>
+                                            <?=create_options_array($extension_keys, set_value('extension_key', isset($extension_key) ? $extension_key : ""));?>
                                         </select>
                                     </td>
                                 </tr>
                                 
                                 <tr><td colspan="2" class="empty_line" ></td></tr>
-                                <?php }else{ ?>
-                                <input type="hidden" name="category" value="all" >
-                                <?php } ?>
                                 
-                                <?php if(isset($positions)){ ?>
-                                <tr>	      			
-                                    <th><label><?=lang('label_position');?>:</label></th>
-                                    <td>
-                                        <select name="position" >
-                                            <option value="all" ><?=lang('label_all');?></option>
-                                            <?=create_options_array($positions, set_value('position', isset($position) ? $position : ""));?>
-                                        </select>
-                                    </td>
-                                </tr>
-                                
-                                <tr><td colspan="2" class="empty_line" ></td></tr>
                                 <?php }else{ ?>
-                                <input type="hidden" name="position" value="all" >
+                                
+                                <tr><td colspan="2" ><input type="hidden" name="extension_key" value="all" ></td></tr>
+                                                                
                                 <?php } ?>
                                 
                                 <tr>	      			

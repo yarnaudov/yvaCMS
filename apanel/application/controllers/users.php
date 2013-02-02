@@ -22,26 +22,17 @@ class Users extends MY_Controller {
     {
         if ($method == 'add' || $method == 'edit')
         {
-            if ($method == 'add'){
-               
-                $script = "$('select[name=translation]').attr('disabled', true);";
-                
-            }
-            elseif($method == 'edit'){
-                
-                $script = "$('select[name=translation]').bind('change', function(){
-                               $('form').append('<input type=\"hidden\" name=\"uset_posts\" value=\"true\" >');
-                               $('form').submit();
-                           });";
-                
-            }
             
-            $script .= "$('.datepicker').datepicker({
-                            showOn: 'button',
-                            dateFormat: 'yy-mm-dd',
-                            buttonImage: '".base_url('img/iconCalendar.png')."',
-                            buttonImageOnly: true
-                        });";
+            $script = "$('select[name=user_group]').change(function(){
+
+                           $.get('".site_url('home/ajax/load_custom_fields')."?extension=".$this->extension."&extension_key='+$(this).val(), function(data){
+                               $('#custom_fields').css('display', 'none');
+                               $('#custom_fields').html(data);
+                               $('#custom_fields').toggle('slow');
+                           });
+
+                       });";
+            
             $this->jquery_ext->add_script($script);
             $this->jquery_ext->add_plugin("tinymce");
             $this->jquery_ext->add_library("tinymce.js");
@@ -138,7 +129,10 @@ class Users extends MY_Controller {
 	
     public function add()
     {   
-        $data['custom_fields'] = $this->Custom_field->getCustomFields(array('status' => 'yes'));
+        
+        $data['user_groups']   = $this->User_group->getForDropdown();
+        $data['custom_fields'] = $this->Custom_field->getCustomFields(array('extension_key' => set_value('user_group', key($data['user_groups'])), 
+                                                                            'status'        => 'yes'));
 
         $content["content"] = $this->load->view('users/add', $data, true);		
         $this->load->view('layouts/default', $content);
@@ -148,8 +142,9 @@ class Users extends MY_Controller {
     {
         
         $data = $this->User->getDetails($this->user_id);
-        $data = @array_merge($data, $this->Custom_field->getFieldsValues($this->user_id));        
-        $data['custom_fields'] = $this->Custom_field->getCustomFields(array('status' => 'yes'));
+        $data['user_groups']   = $this->User_group->getForDropdown();
+        $data['custom_fields'] = $this->Custom_field->getCustomFields(array('extension_key' => set_value('user_group', isset($data['user_group_id']) ? $data['user_group_id'] : ""), 
+                                                                            'status'        => 'yes'));
 
         $content["content"] = $this->load->view('users/add', $data, true);		
         $this->load->view('layouts/default', $content);

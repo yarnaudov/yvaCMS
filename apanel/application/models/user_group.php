@@ -64,6 +64,29 @@ class User_group extends CI_Model {
 
     }
     
+    public function getForDropdown()
+    {
+        
+        $query = "SELECT 
+                      id,
+                      title
+                    FROM
+                      users_groups
+                    WHERE
+                      status = 'yes'
+                    ORDER BY `order`";
+    
+        $groups = $this->db->query($query)->result_array();
+        
+        $groups_arr = array();
+        foreach($groups as $group){
+            $groups_arr[$group['id']] = $group['title'];
+        }
+        
+        return $groups_arr;
+        
+    }
+    
     public function getMaxOrder()
     {
         

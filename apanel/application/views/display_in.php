@@ -49,5 +49,3 @@
     <?php echo $contents; ?>
 
 </div>
-
-</div>

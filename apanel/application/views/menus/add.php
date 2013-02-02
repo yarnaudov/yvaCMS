@@ -203,25 +203,7 @@
                 <!-- start right content  -->
 	        <td class="right" >
 	      
-                    <div class="box" >
-                        <span class="header" ><?=lang('label_translation');?></span>
-                        
-                        <div class="box_content" >
-                            <table class="box_table" cellpadding="0" cellspacing="0" >
-
-                                <tr>
-                                    <td>
-                                        <select name="translation" >
-                                            <?=create_options('languages', 'id', 'title', $this->trl, array('status' => 'yes'));?>
-                                        </select>
-                                    </td>
-                                </tr>
-
-                            </table>
-                        </div>
-                        
-	            </div>
-                    
+                    <?php $this->load->view('translation'); ?>                    
 	      
 	            <div class="box" >
 	      	        <span class="header" ><?=lang('label_options');?></span>
@@ -229,14 +211,7 @@
                         <div class="box_content" >
                             <table class="box_table" cellpadding="0" cellspacing="0" >
 
-                                <tr>	      			
-                                    <th><label><?=lang('label_category');?>:</label></th>
-                                    <td>
-                                        <select name="category" >
-                                            <?=create_options_array($categories, set_value('category', isset($category_id) ? $category_id : ""));?>
-                                        </select>
-                                    </td>
-                                </tr>
+                                <?php $this->load->view('categories'); ?>
 
                                 <tr><td colspan="2" class="empty_line" ></td></tr>
 

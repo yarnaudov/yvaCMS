@@ -44,10 +44,10 @@
         }
 
         var html = '<li>'
-                   +'<span>'+rule+'</span>'
+                   +'<span>'+rule+'<\/span>'
                    +'<input type="hidden" name="params[display_rules][]" value="'+rule+'" >'
-                   +'<a class="styled delete" title="<?=lang('label_delete');?>">&nbsp;</a>'
-                   +'</li>';
+                   +'<a class="styled delete" title="<?=lang('label_delete');?>">&nbsp;<\/a>'
+                   +'<\/li>';
 
         $('ol.rules').append(html);                                             
         $('input[name=rule]').val('');

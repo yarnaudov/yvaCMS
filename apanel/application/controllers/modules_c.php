@@ -49,57 +49,8 @@ class Modules_c extends MY_Controller {
             $script = "try{
                          var editor = CodeMirror.fromTextArea(document.getElementById('code'), {mode: 'text/html', tabMode: 'indent', lineNumbers: true});
                        }
-                       catch(err){}
-                       
-                       $('select[name=position]').bind('change', function(){
-                       
-                           if($(this).val() == 'value'){
-                             $(this).css('display', 'none');
-                             $(this).attr('disabled', true);
-                             $('input[name=position]').css('display', 'inline');
-                             $('input[name=position]').attr('disabled', false);
-                             $('input[name=position]').focus();
-                           }
-                           
-                           $.get('".site_url('home/ajax/load_custom_fields')."?extension=".$this->extension."&position='+$(this).val(), function(data){
-                               $('#custom_fields').css('display', 'none');
-                               $('#custom_fields').html(data);
-                               $('#custom_fields').toggle('slow');
-                           });
-                           
-                       });
-                       $('input[name=position]').blur(function(){
-                       
-                           if($(this).val() == ''){
-                             $(this).css('display', 'none');
-                             $(this).attr('disabled', true);
-                             $('select[name=position]').css('display', 'inline');
-                             $('select[name=position]').attr('disabled', false);
-                             $('select[name=position]').val('');
-                           }
-                             
-                       });";
-            
-            if ($method == 'add'){
-               
-                $script .= "$('select[name=translation]').attr('disabled', true);";
-                
-            }
-            elseif($method == 'edit'){
-                
-                $script .= "$('select[name=translation]').bind('change', function(){
-                                $('form').append('<input type=\"hidden\" name=\"uset_posts\" value=\"true\" >');
-                                $('form').submit();
-                            });";
-                
-            }
-            
-            $script .= "$('.datepicker').datepicker({
-                            showOn: 'button',
-                            dateFormat: 'yy-mm-dd',
-                            buttonImage: '".base_url('img/iconCalendar.png')."',
-                            buttonImageOnly: true
-                        });";
+                       catch(err){}";
+                        
             $this->jquery_ext->add_script($script);
             $this->jquery_ext->add_plugin("tinymce");
             $this->jquery_ext->add_library("tinymce.js");
@@ -177,8 +128,8 @@ class Modules_c extends MY_Controller {
     {   
         
         $data['positions']     = $this->positions;
-        $data['custom_fields'] = $this->Custom_field->getCustomFields(array('position' => set_value('position', key($data['positions'])),
-                                                                            'status'   => 'yes'));
+        $data['custom_fields'] = $this->Custom_field->getCustomFields(array('extension_key' => set_value('position', key($data['positions'])),
+                                                                            'status'        => 'yes'));
 
         $content["content"] = $this->load->view('modules/add', $data, true);		
         $this->load->view('layouts/default', $content);
@@ -188,8 +139,8 @@ class Modules_c extends MY_Controller {
     {
                 
         $data                  = $this->Module->getDetails($this->module_id);
-        $data['custom_fields'] = $this->Custom_field->getCustomFields(array('position' => set_value('position', isset($data['position']) ? $data['position'] : ""), 
-                                                                            'status'   => 'yes'));
+        $data['custom_fields'] = $this->Custom_field->getCustomFields(array('extension_key' => set_value('position', isset($data['position']) ? $data['position'] : ""), 
+                                                                            'status'        => 'yes'));
         $data['positions']     = $this->positions;
         
         $content["content"] = $this->load->view('modules/add', $data, true);		

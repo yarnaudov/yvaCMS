@@ -77,18 +77,11 @@ class Home extends MY_Controller {
                 
                 $this->load->helper('form');
                 
-                $this->extension = $this->input->get('extension');
+                $this->extension = $this->input->get('extension');                
+                $extension_key   = $this->input->get('extension_key');
                 
-                $category = $this->input->get('category');
-                $position = $this->input->get('position');
-                
-                $filters['status'] = 'yes';
-                if(!empty($category)){
-                    $filters['category'] = $category;
-                }
-                elseif(!empty($position)){
-                    $filters['position'] = $position; 
-                }
+                $filters['status']        = 'yes';
+                $filters['extension_key'] = $extension_key;
                 
                 $custom_fields = $this->Custom_field->getCustomFields($filters);
                     

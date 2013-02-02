@@ -39,11 +39,8 @@ class Custom_field extends CI_Model {
             if($key == 'search_v'){               
                 $filter .= " AND (title like '%".$value."%' OR description  like '%".$value."%' )";            
             }
-            elseif($key == 'category'){
-                $filter .= " AND (`category_id` = '".$value."' OR `category_id` is NULL) ";
-            }
-            elseif($key == 'position'){
-                $filter .= " AND (`position` = '".$value."' OR `position` is NULL) ";
+            elseif($key == 'extension_key'){
+                $filter .= " AND (`extension_key` = '".$value."' OR `extension_key` is NULL) ";
             }
             else{
                 $filter .= " AND `".$key."` = '".$value."' ";
@@ -88,20 +85,15 @@ class Custom_field extends CI_Model {
     public function prepareData($action)
     {
                  
-        $data['title']       = $this->input->post('title');
-        $data['description'] = $this->input->post('description');
-        $data['type']        = $this->input->post('type');
-        $data['multilang']   = $this->input->post('multilang');
-        $data['category_id'] = $this->input->post('category');
-        $data['position']    = $this->input->post('position');
-        $data['params']      = json_encode($this->input->post('params'));
+        $data['title']         = $this->input->post('title');
+        $data['description']   = $this->input->post('description');
+        $data['type']          = $this->input->post('type');
+        $data['multilang']     = $this->input->post('multilang');        
+        $data['params']        = json_encode($this->input->post('params'));
+        $data['extension_key'] = $this->input->post('extension_key');
 
-        if($data['category_id'] == 'all'){
-            $data['category_id'] = NULL;
-        }
-        
-        if($data['position'] == 'all'){
-            $data['position'] = NULL;
+        if($data['extension_key'] == 'all'){
+            $data['extension_key'] = NULL;
         }
         
         if($action == 'insert'){

@@ -25,42 +25,12 @@ class Articles extends MY_Controller {
             
             $this->jquery_ext->add_library("check_actions_add_edit.js");
             
-            if ($method == 'add'){
-               
-                $script = "$('select[name=translation]').attr('disabled', true);";
-                
-            }
-            elseif($method == 'edit'){
-                
-                $script = "$('select[name=translation]').bind('change', function(){
-                               $('form').append('<input type=\"hidden\" name=\"uset_posts\" value=\"true\" >');
-                               $('form').submit();
-                           });";
-                
-            }
-            
-            $script .= "$('.datepicker').datepicker({
-                            showOn: 'button',
-                            dateFormat: 'yy-mm-dd',
-                            buttonImage: '".base_url('img/iconCalendar.png')."',
-                            buttonImageOnly: true
-                        });
-                        
-                        $('#article_images a.delete').live('click', function(){
-                            $(this).parent().toggle('slow', function() {
-                                $(this).remove();
-                            });
-                        });
-                        
-                        $('select[name=category]').change(function(){
-                            $.get('".site_url('home/ajax/load_custom_fields')."?extension=".$this->extension."&category='+$(this).val(), function(data){
-                                $('#custom_fields').css('display', 'none');
-                                $('#custom_fields').html(data);
-                                $('#custom_fields').toggle('slow');
-                            });
-                        });
-                        
-                        $('#article_images').sortable();";
+            $script = "$('#article_images a.delete').live('click', function(){
+                           $(this).parent().toggle('slow', function() {
+                               $(this).remove();
+                           });
+                       });
+                       $('#article_images').sortable();";
             
             $this->jquery_ext->add_script($script);
             $this->jquery_ext->add_plugin("tinymce");
@@ -183,8 +153,8 @@ class Articles extends MY_Controller {
     {   
         
         $categories    = $this->Category->getForDropdown();
-        $custom_fields = $this->Custom_field->getCustomFields(array('category' => set_value('category', key($data['categories'])), 
-                                                                    'status' => 'yes'));
+        $custom_fields = $this->Custom_field->getCustomFields(array('extension_key' => set_value('category', key($data['categories'])),
+                                                                    'status'        => 'yes'));
 
         $content = $this->load->view('articles/add', compact('categories', 'custom_fields'), true);		
         $this->load->view('layouts/default', compact('content'));
@@ -205,8 +175,8 @@ class Articles extends MY_Controller {
         
         $data['categories'] = $this->Category->getForDropdown();
                
-        $data['custom_fields'] = $this->Custom_field->getCustomFields(array('category' => set_value('category', isset($data['category_id']) ? $data['category_id'] : ""), 
-                                                                            'status'   => 'yes'));
+        $data['custom_fields'] = $this->Custom_field->getCustomFields(array('extension_key' => set_value('category', isset($data['category_id']) ? $data['category_id'] : ""), 
+                                                                            'status'        => 'yes'));
 
         $content["content"] = $this->load->view('articles/add', $data, true);		
         $this->load->view('layouts/default', $content);
