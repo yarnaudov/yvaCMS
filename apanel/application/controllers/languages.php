@@ -20,10 +20,12 @@ class Languages extends MY_Controller {
     
     public function _remap($method)
     {
+        
         if ($method == 'add' || $method == 'edit'){
             
             $this->jquery_ext->add_plugin("tinymce");
             $this->jquery_ext->add_library("tinymce.js");
+            $this->jquery_ext->add_plugin("validation");
             $this->jquery_ext->add_library("check_actions_add_edit.js");
 
             $this->load->helper('form');

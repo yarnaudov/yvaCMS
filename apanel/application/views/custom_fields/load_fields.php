@@ -16,6 +16,8 @@ foreach($custom_fields as $custom_field){
 
     $params = $custom_field['params'];
     
+    $required = $custom_field['required'] == "yes" ? "class=required" : "";
+    
     echo '<tr><td colspan="2" class="empty_line" ></td></tr>';
     echo '<tr>';
     echo '  <th><label '.($custom_field['multilang'] == "yes" ? "class=multilang" : "").' >'.$custom_field['title'].':</label></th>';
@@ -27,19 +29,19 @@ foreach($custom_fields as $custom_field){
         
         case 'text':
             $set_value = ($set_value == "" && !isset(${'field'.$custom_field['id']})) ? $params['value'] : $set_value;
-            echo '<input type="text" name="field'.$custom_field['id'].'" value="'.$set_value.'" >';
+            echo '<input '.$required.' type="text" name="field'.$custom_field['id'].'" value="'.$set_value.'" >';
           break;
         
         case 'textarea':
             $set_value = ($set_value == "" && !isset(${'field'.$custom_field['id']})) ? $params['value'] : $set_value;
-            echo '<textarea name="field'.$custom_field['id'].'" >'.$set_value.'</textarea>';
+            echo '<textarea '.$required.' name="field'.$custom_field['id'].'" >'.$set_value.'</textarea>';
           break;
         
         case 'dropdown':
             
             $optgroup = false;
             
-            echo '<select name="field'.$custom_field['id'].'" >';
+            echo '<select '.$required.' name="field'.$custom_field['id'].'" >';
             foreach($params['options'] as $key => $option){
           
                 $selected = '';
@@ -70,20 +72,23 @@ foreach($custom_fields as $custom_field){
         case 'checkbox':
         case 'radio':
             
+            $name_sufix = $custom_field['type'] == 'checkbox' ? '[]' : '';
+            
             echo '<ul>';
             foreach($params['options'] as $key => $option){
             
                 $checked = '';
-                if(@in_array($key, $set_value) || ($set_value == "" && $option == 1)){
+                if(@in_array($key, $set_value) || $key == $set_value || ($set_value == "" && $option == 1)){
                     $checked = 'checked';
                 }
                 
                 echo '<li>';
                 echo '<input type="'.$custom_field['type'].'" 
-                             name="field'.$custom_field['id'].'[]" 
+                             name="field'.$custom_field['id'].$name_sufix.'" 
                              id="option'.$custom_field['id'].$key.'" 
                              value="'.$key.'" 
-                             '.$checked.' >';
+                             '.$checked.'
+                             '.$required.' >';
                 echo '<label for="option'.$custom_field['id'].$key.'" >'.$params['labels'][$key].'</label>';
                 echo '</li>';
             }
@@ -92,7 +97,7 @@ foreach($custom_fields as $custom_field){
           break;
       
         case 'date':
-            echo '<input type="text" class="datepicker" name="field'.$custom_field['id'].'" value="'.$set_value.'" >';
+            echo '<input '.$required.' type="text" class="datepicker" name="field'.$custom_field['id'].'" value="'.$set_value.'" >';
           break;
         
     }

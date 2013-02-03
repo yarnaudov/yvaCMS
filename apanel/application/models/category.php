@@ -48,7 +48,7 @@ class Category extends MY_Model {
                     WHERE
                       c.extension = '".$extension."'
                      AND
-                      cd.language_id = ".$this->trl."
+                      cd.language_id = ".$this->Language->getDefault()."
                      AND 
                       c.status = 'yes'
                     ORDER BY c.`order`";

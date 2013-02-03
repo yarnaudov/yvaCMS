@@ -83,7 +83,7 @@
 
                             <tr>
                                 <th><label><?=lang('label_title');?>:</label></th>
-                                <td><input type="text" name="title" value="<?=set_value('title', isset($title) ? $title : "");?>" ></td>
+                                <td><input class="required" type="text" name="title" value="<?=set_value('title', isset($title) ? $title : "");?>" ></td>
                             </tr>
 
                         </table>
@@ -109,9 +109,9 @@
                                 <table  class="box_table" cellpadding="0" cellspacing="0" >
                                 <?php
                                 
-                                $access       = @json_decode($access, true);                                
-                                $user_group_id     = $this->User->getDetails('', 'user_group_id');
-                                $group_access = $this->User_group->getDetails($user_group_id, 'access');
+                                $access        = @json_decode($access, true);                                
+                                $user_group_id = $this->User->getDetails('', 'user_group_id');
+                                $group_access  = $this->User_group->getDetails($user_group_id, 'access');
 
                                 $no_access_flag = false;
                                 if( (count(@array_diff_key($access, $this->access)) > 0 && $group_access != '*') || $user_group_id == $this->uri->segment(3)){
@@ -129,7 +129,7 @@
                                     
                                 }
 
-                                $menus = $this->Adm_menu->getMainMenus(1, 'no');
+                                $menus = $this->Ap_menu->getMenus('general', null, 'no');
                                 foreach($menus as $menu){
 
                                     echo '<tr>';
@@ -140,8 +140,8 @@
                                     echo '<tr>';
 
 
-                                    $children_menus1 = $this->Adm_menu->getChildrenMenus($menu['id'], 0, 1, 'no');
-                                    $children_menus2 = $this->Adm_menu->getChildrenMenus($menu['id'], 1, 1, 'no');
+                                    $children_menus1 = $this->Ap_menu->getChildrenMenus($menu['id'], 'general_sub', null, 'no');
+                                    $children_menus2 = $this->Ap_menu->getChildrenMenus($menu['id'], 'sub_action', null, 'no');
                                     $children_menus  = $children_menus1+$children_menus2;                                    
                                     
                                     foreach($children_menus as $children_menu){

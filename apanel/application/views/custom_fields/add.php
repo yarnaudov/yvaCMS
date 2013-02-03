@@ -81,14 +81,14 @@
 	            
                     <!-- required information  -->
 	            <div class="box" >
-	      	      <span class="header" ><?=lang('label_required');?> <?=lang('label_information');?></span>
+	      	      <span class="header" ><?=lang('label_mandatory');?> <?=lang('label_information');?></span>
 	      	      
                       <div class="box_content" >
                         <table class="box_table" cellpadding="0" cellspacing="0" >
 
                             <tr>
                                 <th><label><?=lang('label_title');?>:</label></th>
-                                <td><input type="text" name="title" value="<?=set_value('title', isset($title) ? $title : "");?>" ></td>
+                                <td><input class="required" type="text" name="title" value="<?=set_value('title', isset($title) ? $title : "");?>" ></td>
                             </tr>
 
                         </table>
@@ -164,7 +164,7 @@
                                     <th><label><?=lang('label_required');?>:</label></th>
                                     <td>
                                         <?php if(!isset($required)){$required = 'no';} ?>
-                                        <select name="required" <?=$required == 'yes' ? 'disabled' : '';?> >
+                                        <select name="required" >
                                             <?=create_options_array($this->config->item('yes_no'), set_value('required', isset($required) ? $required : ""));?>
                                         </select>
                                     </td>

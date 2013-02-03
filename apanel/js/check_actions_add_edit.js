@@ -1,5 +1,9 @@
 $(document).ready(function() {
         
+    $('form[name=add]').validate({
+        errorPlacement: function(error, element) {}
+    });
+                        
     $('.load_jquery_ui_iframe').live('click', function(event) {    
         
         event.preventDefault();
@@ -38,47 +42,5 @@ $(document).ready(function() {
         $('.'+$(this).attr('lang')).val('');
         return false;
     });
-        
-    $('select.template').bind('change', function(){
-        if($(this).val() == 'value'){
-            $(this).css('display', 'none');
-            $(this).attr('disabled', true);
-            $('input.template').css('display', 'inline');
-            $('input.template').attr('disabled', false);
-            $('input.template').focus();
-        }
-    });
-    
-    $('input.template').bind('blur', function(){
-        if($(this).val() == ''){
-            $(this).css('display', 'none');
-            $(this).attr('disabled', true);
-            $('select.template').val('default');
-            $('select.template').css('display', 'inline');
-            $('select.template').attr('disabled', false);
-        }
-    });
-    
-    
-    $('#tabs').tabs();
-    $('.toggle').bind('click', function(){
-        $('.display_menus').each(function(index){
-            if($(this).attr('disabled') != 'disabled'){
-                $(this).attr('checked', !$(this).attr('checked'));  
-            }
-        });
-    });
-    $('select.display_in').bind('change', function(){
-        if($(this).val() == 'all'){
-            $('.display_menus').attr('checked', true).attr('disabled', true);
-        }
-        else if($(this).val() == 'on_selected'){
-            $('.display_menus').removeAttr('disabled');
-        }
-        else if($(this).val() == 'all_except_selected'){
-            $('.display_menus').removeAttr('disabled');
-        }
-    });
-    $('select.display_in').trigger('change');
     
 });

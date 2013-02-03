@@ -23,6 +23,9 @@ class Users extends MY_Controller {
         if ($method == 'add' || $method == 'edit')
         {
             
+            $this->jquery_ext->add_plugin("validation");
+            $this->jquery_ext->add_library("check_actions_add_edit.js"); 
+            
             $script = "$('select[name=user_group]').change(function(){
 
                            $.get('".site_url('home/ajax/load_custom_fields')."?extension=".$this->extension."&extension_key='+$(this).val(), function(data){

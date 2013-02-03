@@ -2,25 +2,25 @@
 
 class Setting extends CI_Model {
 
-    public function getDetails($type, $field)
+    public function getDetails($name, $field)
     {
 
         $this->db->select('*');
-        $this->db->where('type', $type);
+        $this->db->where('name', $name);
+        $this->db->where('language_id', $this->trl);
+        $this->db->or_where('language_id', NULL);
         $setting = $this->db->get('settings');  	
         $setting = $setting->result_array();
-  	
-        $setting = $setting[0];
         
-        if(isJson($setting['value'])){
-            $setting['value'] = json_decode($setting['value'], true);
+        if(empty($setting)){
+            return;
         }
         
         if($field == null){
-            return $setting;
+            return $setting[0];
         }
         else{  	
-            return $setting[$field];
+            return $setting[0][$field];
         }
 
     }
@@ -29,14 +29,13 @@ class Setting extends CI_Model {
     {
         
         $this->db->select('*');
+        $this->db->where('language_id', $this->trl);
+        $this->db->or_where('language_id', NULL);
         $settings = $this->db->get('settings');  	
         $settings = $settings->result_array();
                 
         $settings_arr = array();
         foreach($settings as $setting){
-            if(isJson($setting['value'])){
-                $setting['value'] = json_decode($setting['value'], true);  
-            }
             $settings_arr[$setting['name']] = $setting['value'];
         }
         
@@ -50,15 +49,16 @@ class Setting extends CI_Model {
         return $settings['template']; 
     }
     
-    public function check($type)
+    public function check($data)
     {
         
         $this->db->select('*');
-        $this->db->where('type', $type);
+        $this->db->where('name', $data['name']);
+        $this->db->where('language_id', $data['language_id']);
         $settings = $this->db->get('settings');  	
         $settings = $settings->result_array();
         
-        return count($settings) == 0 ? false : true;
+        return count($settings) == 0 ? false : $settings[0]['id'];
         
     }
     
@@ -67,28 +67,33 @@ class Setting extends CI_Model {
         
         $settings = $this->input->post('settings');
 
-        foreach($settings as $type => $setting){
+        foreach($settings as $name => $setting){
                         
-            switch($type){
+            switch($name){
                 case "site_name":
                 case "meta_description":
                 case "meta_keywords":
-                    $data['value'] = self::getDetails($type, 'value');
-                    $data['value'][$this->trl] = $setting;
-                    $data['value'] = json_encode($data['value']);
+                    $data['language_id'] = $this->trl;
+                    
+                    //$data['value'] = self::getDetails($type, 'value');
+                    //$data['value'][$this->trl] = $setting;
+                    //$data['value'] = json_encode($data['value']);
                  break;
                 default:
-                    $data['value'] = $setting;
+                    $data['language_id'] = NULL;
+                    //$data['value'] = $setting;
                  break;
             }
             
-            if(self::check($type)){
-                $where  = "type = '".$type."'";
+            $data['name']  = $name;
+            $data['value'] = $setting;
+            
+            if($id = self::check($data)){
+                $where  = "id = '".$id."'";
                 $query  = $this->db->update_string('settings', $data, $where);
                 $result = $this->db->query($query);
             }
             else{
-                $data['type']  = $type;
                 $query  = $this->db->insert_string('settings', $data);
                 $result = $this->db->query($query);
             }

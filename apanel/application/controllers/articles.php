@@ -23,8 +23,9 @@ class Articles extends MY_Controller {
     {
         if ($method == 'add' || $method == 'edit'){
             
-            $this->jquery_ext->add_library("check_actions_add_edit.js");
-            
+            $this->jquery_ext->add_plugin("validation");
+            $this->jquery_ext->add_library("check_actions_add_edit.js");            
+                        
             $script = "$('#article_images a.delete').live('click', function(){
                            $(this).parent().toggle('slow', function() {
                                $(this).remove();
@@ -153,7 +154,7 @@ class Articles extends MY_Controller {
     {   
         
         $categories    = $this->Category->getForDropdown();
-        $custom_fields = $this->Custom_field->getCustomFields(array('extension_key' => set_value('category', key($data['categories'])),
+        $custom_fields = $this->Custom_field->getCustomFields(array('extension_key' => set_value('category', key($categories)),
                                                                     'status'        => 'yes'));
 
         $content = $this->load->view('articles/add', compact('categories', 'custom_fields'), true);		

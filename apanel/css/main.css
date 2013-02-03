@@ -458,6 +458,17 @@ a.rename{
     width: 100%;
     max-width: 840px;
 }
+
+.box input.error,
+.box select.error,
+.box textarea.error{
+    border: 1px solid red;
+}
+.box input[type=checkbox].error,
+.box input[type=radio].error{
+   outline: 1px solid red; 
+}
+
 .box input{
     _max-width: 600px;
 }

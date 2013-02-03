@@ -43,6 +43,7 @@ class Modules_c extends MY_Controller {
             $this->load->model('Article');
             $this->load->model('Menu');
             
+            $this->jquery_ext->add_plugin("validation");
             $this->jquery_ext->add_library("check_actions_add_edit.js");
             $this->jquery_ext->add_plugin("codemirror");
             

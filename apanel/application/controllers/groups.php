@@ -20,30 +20,14 @@ class Groups extends MY_Controller {
     
     public function _remap($method)
     {
+        
         if ($method == 'add' || $method == 'edit')
         {
-            if ($method == 'add'){
-               
-                $script = "$('select[name=translation]').attr('disabled', true);";
-                
-            }
-            elseif($method == 'edit'){
-                
-                $script = "$('select[name=translation]').bind('change', function(){
-                               $('form').append('<input type=\"hidden\" name=\"uset_posts\" value=\"true\" >');
-                               $('form').submit();
-                           });";
-                
-            }
             
-            $script .= "$('.datepicker').datepicker({
-                            showOn: 'button',
-                            dateFormat: 'yy-mm-dd',
-                            buttonImage: '".base_url('img/iconCalendar.png')."',
-                            buttonImageOnly: true
-                        });";
+            $this->jquery_ext->add_plugin("validation");
+            $this->jquery_ext->add_library("check_actions_add_edit.js");
             
-            $script .= "$('input[type=checkbox]').click(function(){                            
+            $script = "$('input[type=checkbox]').click(function(){                            
                             var class_name = $(this).attr('class');
                             var checked = $(this).attr('checked');
                             if(class_name != 'main' && checked == 'checked'){
@@ -126,16 +110,18 @@ class Groups extends MY_Controller {
 	
     public function add()
     {   
+        
+        $data['access'] = "";
+        
         $content["content"] = $this->load->view('groups/add', $data, true);		
         $this->load->view('layouts/default', $content);
+        
     }
 	
     public function edit()      
     {
         
         $data = $this->User_group->getDetails($this->group_id);
-        
-        //print_r($data);
 
         $content["content"] = $this->load->view('groups/add', $data, true);		
         $this->load->view('layouts/default', $content);

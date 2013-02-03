@@ -78,14 +78,14 @@
 
                             <tr>
                                 <th><label><?=lang('label_name');?>:</label></th>
-                                <td><input type="text" name="name" value="<?=set_value('name', isset($name) ? $name : "");?>" ></td>
+                                <td><input class="required" type="text" name="name" value="<?=set_value('name', isset($name) ? $name : "");?>" ></td>
                             </tr>
 
                             <tr><td colspan="2" class="empty_line" ></td></tr>
                             
                             <tr>
                                 <th><label><?=lang('label_user');?>:</label></th>
-                                <td><input type="text" name="user" value="<?=set_value('user', isset($user) ? $user : "");?>" ></td>
+                                <td><input class="required" type="text" name="user" value="<?=set_value('user', isset($user) ? $user : "");?>" ></td>
                             </tr>
 
                             <tr><td colspan="2" class="empty_line" ></td></tr>

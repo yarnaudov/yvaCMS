@@ -65,7 +65,7 @@
 
                             <tr>
                                 <th><label class="multilang" ><?=lang('label_site_name');?>:</label></th>
-                                <td><input type="text" name="settings[site_name]" value="<?=set_value('settings[site_name]', isset($settings['site_name'][$this->trl]) ? $settings['site_name'][$this->trl] : "");?>" ></td>
+                                <td><input type="text" name="settings[site_name]" value="<?=set_value('settings[site_name]', isset($settings['site_name']) ? $settings['site_name'] : "");?>" ></td>
                             </tr>
 
                             <tr><td colspan="2" class="empty_line" ></td></tr>
@@ -123,14 +123,14 @@
 
                             <tr>
                                 <th><label class="multilang" ><?=lang('label_description');?>:</label></th>
-                                <td><textarea name="settings[meta_description]" ><?=set_value('settings[meta_description]', isset($settings['meta_description'][$this->trl]) ? $settings['meta_description'][$this->trl] : "");?></textarea></td>
+                                <td><textarea name="settings[meta_description]" ><?=set_value('settings[meta_description]', isset($settings['meta_description']) ? $settings['meta_description'] : "");?></textarea></td>
                             </tr>
 
                             <tr><td colspan="2" class="empty_line" ></td></tr>
 
                             <tr>
                                 <th><label class="multilang" ><?=lang('label_keywords');?>:</label></th>
-                                <td><textarea name="settings[meta_keywords]" ><?=set_value('settings[meta_keywords]', isset($settings['meta_keywords'][$this->trl]) ? $settings['meta_keywords'][$this->trl] : "");?></textarea></td>
+                                <td><textarea name="settings[meta_keywords]" ><?=set_value('settings[meta_keywords]', isset($settings['meta_keywords']) ? $settings['meta_keywords'] : "");?></textarea></td>
                             </tr>
 
                             <tr><td colspan="2" class="empty_line" ></td></tr>
@@ -169,7 +169,7 @@
                                 <tr>
                                     <td>
                                         <select name="translation" >
-                                            <?=create_options('languages', 'abbreviation', 'title', $this->trl, array('status' => 'yes'));?>
+                                            <?=create_options('languages', 'id', 'title', $this->trl, array('status' => 'yes'));?>
                                         </select>
                                     </td>
                                 </tr>

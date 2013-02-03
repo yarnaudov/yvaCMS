@@ -89,6 +89,7 @@ class Custom_field extends CI_Model {
         $data['description']   = $this->input->post('description');
         $data['type']          = $this->input->post('type');
         $data['multilang']     = $this->input->post('multilang');        
+        $data['required']      = $this->input->post('required'); 
         $data['params']        = json_encode($this->input->post('params'));
         $data['extension_key'] = $this->input->post('extension_key');
 

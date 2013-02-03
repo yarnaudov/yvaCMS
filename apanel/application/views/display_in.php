@@ -49,3 +49,28 @@
     <?php echo $contents; ?>
 
 </div>
+
+<script type="text/javascript" >
+
+    $('#tabs').tabs();
+    $('.toggle').bind('click', function(){
+        $('.display_menus').each(function(index){
+            if($(this).attr('disabled') != 'disabled'){
+                $(this).attr('checked', !$(this).attr('checked'));  
+            }
+        });
+    });
+    $('select.display_in').bind('change', function(){
+        if($(this).val() == 'all'){
+            $('.display_menus').attr('checked', true).attr('disabled', true);
+        }
+        else if($(this).val() == 'on_selected'){
+            $('.display_menus').removeAttr('disabled');
+        }
+        else if($(this).val() == 'all_except_selected'){
+            $('.display_menus').removeAttr('disabled');
+        }
+    });
+    $('select.display_in').trigger('change');
+
+</script>

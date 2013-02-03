@@ -78,14 +78,14 @@
 
                             <tr>
                                 <th><label><?=lang('label_title');?>:</label></th>
-                                <td><input type="text" name="title" value="<?=set_value('title', isset($title) ? $title : "");?>" ></td>
+                                <td><input class="required" type="text" name="title" value="<?=set_value('title', isset($title) ? $title : "");?>" ></td>
                             </tr>
                             
                             <tr><td colspan="2" class="empty_line" ></td></tr>
 
                             <tr>
                                 <th><label><?=lang('label_abbreviation');?>:</label></th>
-                                <td><input type="text" name="abbreviation" value="<?=set_value('abbreviation', isset($abbreviation) ? $abbreviation : "");?>" ></td>
+                                <td><input class="required" type="text" name="abbreviation" value="<?=set_value('abbreviation', isset($abbreviation) ? $abbreviation : "");?>" ></td>
                             </tr>
 
                         </table>

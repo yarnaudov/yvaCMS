@@ -24,7 +24,8 @@ class Menus extends MY_Controller {
         {   
             
             $this->load->model('Article');
-            $this->load->helper('parceXMLfile');
+            
+            $this->jquery_ext->add_plugin("validation");
             $this->jquery_ext->add_library("check_actions_add_edit.js");  
                                  
             $script = "$('select[name=category]').bind('change', function(){

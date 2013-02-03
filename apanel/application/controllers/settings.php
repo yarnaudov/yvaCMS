@@ -13,23 +13,7 @@ class Settings extends MY_Controller {
         
         $this->load->model('Setting');
         
-        /*
-         * get current translation
-         */
-        $this->trl = $this->session->userdata('trl') == "" ? Language::getDefault() : $this->session->userdata('trl');
-        $this->session->unset_userdata('trl');
-        if(isset($_POST['translation'])){         
-            $this->trl = $_POST['translation'];
-            if(isset($_POST['uset_posts'])){                
-                $this->input->post = array();
-                $_POST = array();
-            }
-        }
-        
         $this->load->helper('form');
-        //$this->load->library('form_validation'); 
-            
-        //$this->jquery_ext->add_library("select_active_menu.js");
         
     }    
     

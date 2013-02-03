@@ -35,6 +35,10 @@ class Custom_fields extends MY_Controller {
         
         if ($method == 'add' || $method == 'edit')
         {
+            
+            $this->jquery_ext->add_plugin("validation");
+            $this->jquery_ext->add_library("check_actions_add_edit.js");
+            
             if ($method == 'add'){
                 
                 $this->extension = $this->uri->segment(3);

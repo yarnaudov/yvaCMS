@@ -74,7 +74,7 @@ class MY_Controller extends CI_Controller{
                 $this->access = $this->Ap_menu->getAllMenus();
             }
             else{        	  
-              $this->access = json_decode($access, true);
+                $this->access = json_decode($access, true);
             }
             
         }
@@ -119,7 +119,7 @@ class MY_Controller extends CI_Controller{
         }
         
         
-        $this->jquery_ext->add_library("jquery/plugins/jquery.fixFloat.js");            
+        $this->jquery_ext->add_library("jquery.fixFloat.js");            
         $script = "$('select#language_switch').msDropDown();
                    $('#language_switch').change(function(){
                        window.location = $(this).val();
