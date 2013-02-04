@@ -3,7 +3,7 @@
  /*
   *  set default content templates
   */
-  $this->Content->templates['main'] = '../../templates/'.$this->Settings->getTemplate().'/vews/content/main';
+  //$this->Content->templates['main'] = '../../templates/'.$this->Setting->getTemplate().'/vews/content/main';
                                     
 ?>
 
@@ -30,34 +30,25 @@
             <div id="header_top" >
                 
                 <div id="search">
-                    <?=$this->Module->load('search');?>
                     <include type="module" name="search" />
                 </div>
 
                 <div id="language_switch" >
-                    <?=$this->Module->load('language_switch');?>
                     <include type="module" name="language_switch" />
                 </div>
                 
             </div>
             
             <div id="sitename" class="clear">
-                <h1>
-                    <a href="<?=site_url();?>">
-                        <?=$this->Module->load('logo');?>
-                        <include type="module" name="logo" />
-                    </a>
-                </h1>               
+                <include type="module" name="logo" />             
             </div>
                         
             <div id="navbar">	
                 <div class="clear">
-                    <?=$this->Module->load('main_menu');?>
                 </div>
             </div>
 
             <div id="header" class="clear">
-                <?=$this->Banner->load('');?>
             </div>
             <div class="header-bottom"></div>
 
@@ -66,7 +57,6 @@
                 <div class="bcnav">
                     <div class="bcnav-left">
                         <div class="bcnav-right clear">
-                            <?=$this->Module->load('breadcrumb');?>
                         </div>
                     </div>
                 </div>
@@ -76,16 +66,16 @@
 
                     <div class="clear">
 
-                        <?php $sidebar_modules = $this->Module->load('sidebar'); ?>
+                        <?php $sidebar_modules = 1;/*$this->Module->count('sidebar');*/ ?>
                         
                         <div class="column <?php echo $sidebar_modules ? "column-650" : "column-auto"; ?> column-left">
-                            <?=$this->Content->load();?>
+                            <include type="content" />
                         </div>
 
                         <?php if($sidebar_modules){ ?>
                         <div id="sidebar" class="column column-240 column-right">
                             <include type="banner" name="sidebar" />
-                            <?=$sidebar_modules?>
+                            <include type="module" name="sidebar" /> 
                         </div>
                         <?php } ?>
 
@@ -96,7 +86,7 @@
             </div>
 
             <div id="footer">
-                <?=$this->Module->load('footer_left');?>
+                <include type="module" name="footer_left" />
                 <br/>
             </div>
 

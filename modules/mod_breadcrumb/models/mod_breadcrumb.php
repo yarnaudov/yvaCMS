@@ -5,7 +5,7 @@ class mod_breadcrumb extends CI_Model{
     function run($module)
     {
 	  	
-        $data['text']      = $module['params']['text_'.$this->lang_lib->get()];
+        $data['text']      = $module['params']['text'][$this->language_id];
         $data['separator'] = $module['params']['separator'];
         
         $menus_arr = array();
@@ -14,7 +14,7 @@ class mod_breadcrumb extends CI_Model{
             $menu = $menu = $this->Menu->getDetails($menu);
             
             /* --- check language for menu display --- */
-            if($menu['language_id'] != NULL && $menu['language_id'] != $this->language_id){
+            if($menu['show_in_language'] != NULL && $menu['show_in_language'] != $this->language_id){
                 continue;
             }
             
@@ -24,7 +24,6 @@ class mod_breadcrumb extends CI_Model{
             }
             
             $menu['link']   = module::menu_link($menu);
-            $menu['title']  = $menu['title_'.$this->lang_lib->get()];
             $menu['class']  = module::menu_class($menu);
             
             $menus_arr[] = $menu;

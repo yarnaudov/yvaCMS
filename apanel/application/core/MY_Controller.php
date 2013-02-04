@@ -319,7 +319,7 @@ class MY_Controller extends CI_Controller{
     
         $this->load->helper('simple_html_dom');
         
-        $template_file = FCPATH.'/../templates/'.$this->Setting->getTemplate().'/index.php';
+        $template_file = FCPATH.'/../templates/'.$this->Setting->getTemplate().'.php';
         $html = file_get_html($template_file);
         
         $data = array();

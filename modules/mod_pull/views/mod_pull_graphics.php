@@ -1,7 +1,7 @@
 
 <script type="text/javascript" src="<?=base_url('modules/mod_pull/js/mod_pull.js');?>" ></script>
 
-<ul class="pull<?=$pull['pull_id'];?>" >
+<ul class="pull<?=$pull['id'];?>" >
 	
     <li><?=$pull['title'];?></li>
 

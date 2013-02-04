@@ -2,18 +2,18 @@
 
 class Pull extends CI_Model {
 
-    private $pull_id;
+    private $id;
     
-    public function getDetails($pull_id, $field = null)
+    public function getDetails($id, $field = null)
     {
 
         $this->db->select('*');
-        $this->db->where('pull_id', $pull_id);
+        $this->db->where('id', $id);
 
         $pull = $this->db->get('com_pulls');  	
         $pull = $pull->result_array();
         
-        $pull[0]['answers'] = self::getAnswers($pull_id);
+        $pull[0]['answers'] = self::getAnswers($id);
                                 
         if($field == null){
             return $pull[0];

@@ -4,23 +4,28 @@ class Menu extends CI_Model {
     
     private $menus = array();
     
-    public function getDetails($menu_id, $field = null)
+    public function getDetails($id, $field = null)
     {
 
-        $this->db->select('*');
-        $this->db->where('menu_id', $menu_id);
-
-        $menu = $this->db->get('menus');  	
-        $menu = $menu->result_array();
+        $query = "SELECT 
+                      *
+                    FROM
+                      menus m
+                      LEFT JOIN menus_data md ON (m.id = md.menu_id AND md.language_id = '".$this->language_id."')
+                    WHERE
+                      m.id = '".$id."' ";
         
+        $menu = $this->db->query($query);  	
+        $menu = $menu->result_array();
+
         if(empty($menu)){
-            return '';
+            return;
         }
         
-        $menu[0]['params'] = @json_decode($menu[0]['params'], true);
-        
+        $menu[0]['params'] = json_decode($menu[0]['params'], true);   
+        $menu[0]           = array_merge($menu[0], $this->Custom_field->getValues('menus', $id));
+
         if($field == null){
-            $menu[0]['custom_fields'] = $this->Custom_field->getValues('menus', $menu[0]['menu_id']);
             return $menu[0];
         }
         else{  	
@@ -32,18 +37,25 @@ class Menu extends CI_Model {
     public function getByAlias($alias, $field = null)
     {
 
-        $this->db->select('*');
-        $this->db->where('alias',  $alias);
-        $this->db->where('status', 'yes');
-        $menu = $this->db->get('menus');  	
+        $query = "SELECT 
+                      *
+                    FROM
+                      menus m
+                      LEFT JOIN menus_data md ON (m.id = md.menu_id AND md.language_id = '".$this->language_id."')
+                    WHERE
+                      m.alias = '".$alias."' ";
+        
+        $menu = $this->db->query($query);  	
         $menu = $menu->result_array();
 
         if(empty($menu)){
-            return '';
+            return;
         }
         
+        $menu[0]['params'] = json_decode($menu[0]['params'], true);   
+        $menu[0]           = array_merge($menu[0], $this->Custom_field->getValues('menus', $menu[0]['id']));
+
         if($field == null){
-            $menu[0]['custom_fields'] = $this->Custom_field->getValues('menus', $menu[0]['menu_id']);
             return $menu[0];
         }
         else{  	
@@ -55,13 +67,18 @@ class Menu extends CI_Model {
     public function getDefault($field = null)
     {
 
-        $this->db->select('*');
+        $this->db->select('id');
         $this->db->where('default', 'yes');
-        $menu = $this->db->get('menus');  	
+        $menu = $this->db->get('menus');
         $menu = $menu->result_array();
 
+        if(empty($menu)){
+            return;
+        }
+        
+        $menu[0] = self::getDetails($menu[0]['id']); 
+        
         if($field == null){
-            $menu[0]['custom_fields'] = $this->Custom_field->getValues('menus', $menu[0]['menu_id']);
             return $menu[0];
         }
         else{  	
@@ -75,7 +92,7 @@ class Menu extends CI_Model {
         
         $this->menus = array();
         
-        $this->db->select('*');
+        $this->db->select('id');
         $this->db->where('category_id', $category_id);
         $this->db->where('status', 'yes');
         $this->db->where('parent_id IS NULL', NULL);
@@ -85,13 +102,13 @@ class Menu extends CI_Model {
  	
         foreach($menus as $menu){
             
-            $menu['custom_fields'] = $this->Custom_field->getValues('menus', $menu['menu_id']);
+            $menu = self::getDetails($menu['id']);
             
             $menu['lavel'] = 1;
             $this->menus[] = $menu;
             
-            if(self::checkChildren($menu['menu_id']) == true){
-                self::getChildren($menu['menu_id'], 2);
+            if(self::checkChildren($menu['id']) == true){
+                self::getChildren($menu['id'], 2);
             }
             
         }
@@ -121,7 +138,7 @@ class Menu extends CI_Model {
     public function getChildren($menu_id, $lavel)
     {
         
-        $this->db->select('*');
+        $this->db->select('id');
         $this->db->where('parent_id', $menu_id);
         $this->db->where('status', 'yes');
         $this->db->order_by('order', 'asc');
@@ -130,11 +147,13 @@ class Menu extends CI_Model {
 
         foreach($menus as $menu){
             
+            $menu = self::getDetails($menu['id']);
+            
             $menu['lavel'] = $lavel;
             $this->menus[] = $menu;
             
-            if(self::checkChildren($menu['menu_id']) == true){
-                self::getChildren($menu['menu_id'], ($lavel+1));
+            if(self::checkChildren($menu['id']) == true){
+                self::getChildren($menu['id'], ($lavel+1));
             }
             
         }

@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Settings extends CI_Model {
+class Setting extends CI_Model {
 
     private $settings;
     
@@ -14,18 +14,14 @@ class Settings extends CI_Model {
         
     }
     
-    public function getDetails($type, $field)
+    public function getDetails($name, $field)
     {
         
         $this->db->select('*');
-        $this->db->where('type', $type);
+        $this->db->where('name', $name);
         $setting = $this->db->get('settings');  	
         $setting = $setting->result_array();
-  	
-        if(isJson($setting[0]['value'])){
-            $setting[0]['value'] = json_decode($setting[0]['value'], true);
-        }
-        
+  	        
         if($field == null){
             return $setting[0];
         }
@@ -39,15 +35,14 @@ class Settings extends CI_Model {
     {
         
         $this->db->select('*');
-        $settings = $this->db->get('settings');  	
+        $this->db->where('language_id', $this->language_id);
+        $this->db->or_where('language_id', NULL);
+        $settings = $this->db->get('settings');        
         $settings = $settings->result_array();
                 
         $settings_arr = array();
         foreach($settings as $setting){
-            if(isJson($setting['value'])){
-                $setting['value'] = json_decode($setting['value'], true);  
-            }
-            $settings_arr[$setting['type']] = $setting['value'];
+            $settings_arr[$setting['name']] = $setting['value'];
         }
         
         return $settings_arr;
@@ -56,7 +51,7 @@ class Settings extends CI_Model {
         
     public function getSiteName()
     {                
-        return $this->settings['site_name'][get_lang()];
+        return $this->settings['site_name'];
     }
     
     public function getSiteNameInTitle()
@@ -71,12 +66,12 @@ class Settings extends CI_Model {
     
     public function getMetaDescription()
     {        
-        return $this->settings['meta_description'][get_lang()];
+        return $this->settings['meta_description'];
     }
     
     public function getMetaKeywords()
     {        
-        return $this->settings['meta_keywords'][get_lang()];      
+        return $this->settings['meta_keywords'];      
     }
     
     public function getRobots()

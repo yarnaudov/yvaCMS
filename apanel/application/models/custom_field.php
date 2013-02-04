@@ -307,7 +307,7 @@ class Custom_field extends CI_Model {
     public function getFieldsValues($element_id)
     {
         
-        $custom_fields = $this->Custom_field->getCustomFields(array('status' => 'yes'), '`order`');
+        $custom_fields = $this->Custom_field->getCustomFields(array('status' => 'yes'));
         
         if(count($custom_fields) == 0){
             return array();

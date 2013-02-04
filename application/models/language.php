@@ -33,12 +33,11 @@ class Language extends CI_Model {
 
         $this->db->select('*');
         $this->db->where('abbreviation', $abbr);
-
         $language = $this->db->get('languages');  	
         $language = $language->result_array();
 
         if($field == null){
-            $language[0]['custom_fields'] = $this->Custom_field->getValues('languages', $language[0]['language_id']);
+            $language[0]['custom_fields'] = $this->Custom_field->getValues('languages', $language[0]['id']);
             return $language[0];
         }
         else{

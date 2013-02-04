@@ -3,9 +3,10 @@
 <tr>	      			
     <th><label><?=lang('label_category');?>:</label></th>
     <td>
+        <?php $categories = $this->Category->getForDropdown('menus'); ?>
         <select name="params[category_id]" >
             <option value="none" >- - -</option>
-            <?=create_options('categories', 'category_id', 'title_'.$this->Language->getDefault(), set_value('params[category_id]', isset($params['category_id']) ? $params['category_id'] : ""), array('extension' => 'menus'));?>
+            <?=create_options_array($categories, set_value('params[category_id]', isset($params['category_id']) ? $params['category_id'] : ""));?>
         </select>
     </td>
 </tr>

@@ -2,21 +2,28 @@
 
 class Article extends CI_Model {
 
-    public function getDetails($article_id, $field = null)
+    public function getDetails($id, $field = null)
     {
-        
-        if(empty($article_id)){
-            return array();
-        }
-        
-        $this->db->select('*');
-        $this->db->where('article_id', $article_id);
 
-        $article = $this->db->get('articles');  	
+        $query = "SELECT 
+                      *
+                    FROM
+                      articles a
+                      LEFT JOIN articles_data ad ON (a.id = ad.article_id AND ad.language_id = '".$this->language_id."')
+                    WHERE
+                      a.id = '".$id."' ";
+        
+        $article = $this->db->query($query);
         $article = $article->result_array();
 
+        if(empty($article)){
+            return;
+        }
+        
+        $article[0]['params'] = json_decode($article[0]['params'], true); 
+        $article[0]           = array_merge($article[0], $this->Custom_field->getValues($id, 'articles'));
+        
         if($field == null){
-            $article[0]['custom_fields'] = $this->Custom_field->getValues('articles', $article[0]['article_id']);
             return $article[0];
         }
         else{  	
@@ -32,7 +39,7 @@ class Article extends CI_Model {
             return array();
         }
         
-        $this->db->select('*');
+        $this->db->select('id');
         $this->db->where('category_id', $category_id);
         $this->db->where('status', 'yes');
         $this->db->order_by('order', 'asc');
@@ -41,8 +48,7 @@ class Article extends CI_Model {
         
         $articles_arr = array();
         foreach($articles as $article){
-            $article['custom_fields'] = $this->Custom_field->getValues('articles', $article['article_id']);
-            $articles_arr[] = $article; 
+            $articles_arr[] = self::getDetails($article['id']); 
         }
         
         return $articles_arr;
@@ -67,7 +73,7 @@ class Article extends CI_Model {
         }
         
         if($field == null){
-            $article[0]['custom_fields'] = $this->Custom_field->getValues('articles', $article[0]['article_id']);
+            $article[0]['custom_fields'] = $this->Custom_field->getValues('articles', $article[0]['id']);
             return $article[0];
         }
         else{  	

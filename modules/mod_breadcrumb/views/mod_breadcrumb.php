@@ -8,7 +8,7 @@ if(count($menus) > 0 || $article_alias != ''){
     echo '<ul>';
 
     echo '    <li>';
-    echo '        <a href="'.site_url().'" >'.$this->Menu->getDefault('title_'.$this->lang_lib->get()).'</a>';
+    echo '        <a href="'.site_url().'" >'.$this->Menu->getDefault('title').'</a>';
     echo '    </li>';
 
     $numb = 1;
@@ -32,7 +32,7 @@ if(count($menus) > 0 || $article_alias != ''){
     if($article_alias != ''){
         
         echo '    <li class="separator" >'.$separator.'</li>';
-        echo '    <li class="current" >'.$this->Article->getByAlias($article_alias, 'title_'.$this->lang_lib->get()).'</li>';
+        echo '    <li class="current" >'.$this->Article->getByAlias($article_alias, 'title').'</li>';
         
     }
     

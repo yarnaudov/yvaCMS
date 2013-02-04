@@ -11,11 +11,11 @@ class mod_pull extends CI_Model{
         $data['pull'] = $this->Pull->getDetails($module['params']['pull_id']);
                 
         $show_votes = false;
-        if(isset($_COOKIE['pulls'][$data['pull']['pull_id']])){
+        if(isset($_COOKIE['pulls'][$data['pull']['id']])){
             $show_votes = true;
-            $answer_id  = $_COOKIE['pulls'][$data['pull']['pull_id']];
+            $answer_id  = $_COOKIE['pulls'][$data['pull']['id']];
         }
-        elseif(isset($_REQUEST['show_votes']) && $_REQUEST['show_votes'] == $data['pull']['pull_id']){
+        elseif(isset($_REQUEST['show_votes']) && $_REQUEST['show_votes'] == $data['pull']['id']){
             $show_votes = true;
             $answer_id  = false;
         }

@@ -10,13 +10,13 @@ class MY_Controller extends CI_Controller {
     public $template;
     public $data;
     
-    function __construct() {
+    function __construct()
+    {
         
         parent::__construct();
         
         $this->load->library('Lang_lib');
         
-        $this->load->model('Settings');
         $this->load->model('Category');
         $this->load->model('Menu');
         $this->load->model('Article');
@@ -24,18 +24,24 @@ class MY_Controller extends CI_Controller {
         $this->load->model('Banner');
         $this->load->model('Custom_field');
         $this->load->model('Module');
-        $this->load->model('Content');
-        
+        $this->load->model('Content');        
         $this->load->model('Component');
         
+        $this->load->helper('simple_html_dom');
+        
         $this->load->language('system');
+        
+        $this->language_id = $this->Language->getDetailsByAbbr(get_lang(), 'id');
+        
+        $this->load->model('Setting');
+        
         
         /*
          * Set settings
          */
-        $this->template = $this->Settings->getTemplate();
-        if($this->Settings->getUrlSuffix()){
-            $this->config->set_item('url_suffix', '.'.$this->Settings->getUrlSuffix());
+        $this->template = $this->Setting->getTemplate();
+        if($this->Setting->getUrlSuffix()){
+            $this->config->set_item('url_suffix', '.'.$this->Setting->getUrlSuffix());
         }
 
         $alias = $this->uri->segment(1) != '' ? $this->uri->segment(1) : $this->Menu->getDefault('alias');        
@@ -64,7 +70,7 @@ class MY_Controller extends CI_Controller {
             /*
              * If menu type is 'menu' rewrite variable $menu with new menu but save alias from original menu
              */
-            if($menu['type'] == 'menu' && !empty($menu['params']['menu_id'])){
+            if($menu['params']['type'] == 'menu' && !empty($menu['params']['menu_id'])){
                 
                 $alias = $menu['alias'];
                 $menu = $this->Menu->getDetails($menu['params']['menu_id']);
@@ -78,7 +84,7 @@ class MY_Controller extends CI_Controller {
             /*
              * If menu type is 'component' set route to component and redirect the page 
              */
-            if($menu['type'] == 'component'){                     
+            if($menu['params']['type'] == 'component'){                     
                 $this->setRoute($menu);                
             }
             
@@ -87,19 +93,17 @@ class MY_Controller extends CI_Controller {
         /*
          * If tamplate is assignt to menu load it insted of default one
          */
-        if($menu['params']['template'] != 'default'){
-            $this->template = $menu['params']['template'];
+        if($menu['template'] != 'default'){
+            $this->template = $menu['template'];
         }
-
-        $this->language_id = $this->Language->getDetailsByAbbr('bg', 'language_id');
         
         /*
          * Set settings for template
          */
-        $this->data['SiteName']        = $this->Settings->getSiteName();
-        $this->data['MetaDescription'] = $this->Settings->getMetaDescription();
-        $this->data['MetaKeywords']    = $this->Settings->getMetaKeywords();
-        $this->data['robots']          = $this->Settings->getRobots();
+        $this->data['SiteName']        = $this->Setting->getSiteName();
+        $this->data['MetaDescription'] = $this->Setting->getMetaDescription();
+        $this->data['MetaKeywords']    = $this->Setting->getMetaKeywords();
+        $this->data['robots']          = $this->Setting->getRobots();
         
         $script = "var base_url = '".base_url()."';
                    var site_url = '".site_url()."';";
@@ -164,6 +168,33 @@ class MY_Controller extends CI_Controller {
         if($this->uri->segment(1) == ''){
             redirect($menu['alias']);  
         }
+        
+    }
+    
+    function _parseTemplateFile()
+    {
+                
+        $template_file = FCPATH . 'templates/'.$this->template.'.php';
+        if(!file_exists($template_file)){
+            return $this->load->view('template_not_found', '', true);
+        }
+        
+        $html = $this->load->view('../../templates/'.$this->template, '', true);
+        $html2 = str_get_html($html);
+    
+        foreach($html2->find('include') as $include){
+            if($include->type == 'module'){
+                $html = str_replace($include, $this->Module->load($include->name), $html);
+            }
+            elseif($include->type == 'banner'){
+                $html = str_replace($include, '[-----banner-----]', $html);
+            }
+            elseif($include->type == 'content'){
+                $html = str_replace($include, $this->Content->load(), $html);
+            }
+        }
+
+        return $html;
         
     }
     

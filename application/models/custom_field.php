@@ -48,7 +48,7 @@ class Custom_field extends CI_Model {
         }
         
         foreach($custom_fields as $custom_field){
-            $custom_fields_ids[] = $custom_field['custom_field_id'];
+            $custom_fields_ids[] = $custom_field['id'];
         }
         
         $query = "SELECT 
@@ -60,7 +60,9 @@ class Custom_field extends CI_Model {
                      AND
                       custom_field_id IN (".implode(',', $custom_fields_ids).")
                      AND
-                      (translation = '".get_lang()."' || translation IS NULL)";
+                      (language_id = '".$this->language_id."' || language_id IS NULL)";
+        
+        //echo $query;
         
         $custom_fields = $this->db->query($query)->result_array();
         
@@ -68,11 +70,14 @@ class Custom_field extends CI_Model {
         
         foreach($custom_fields as $custom_field){
                        
-            $data['field'.$custom_field['custom_field_id']]  = $custom_field['value'];
+            if(isJson($custom_field['value'])){
+                $custom_field['value'] = json_decode($custom_field['value']);
+            }
+            $data['field'.$custom_field['custom_field_id']] = $custom_field['value'];
                   
             
         }
-        
+
         return $data;
         
     }

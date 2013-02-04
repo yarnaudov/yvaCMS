@@ -1,9 +1,7 @@
 
-<div class="module module_<?=$module['type'].$module['params']['css_class'];?>" >
+<div class="module module_<?=$module['params']['type'].$module['css_class_sufix'];?>" >
     
-    <?php if($module['show_title'] == 'yes'){ ?>
-    <div class="title" ><?=$module['title_'.get_lang()];?></div>
-    <?php } ?>
+    <div class="title" ><?=$module['title'];?></div>
     
     <?=$content;?>
     

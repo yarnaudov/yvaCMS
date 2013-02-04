@@ -4,19 +4,28 @@ class Module extends CI_Model {
     
     public $templates = array('main' => 'modules/main');
     
-    public function getDetails($module_id, $field = null)
+    public function getDetails($id, $field = null)
     {
 
-        $this->db->select('*');
-        $this->db->where('module_id', $module_id);
-
-        $module = $this->db->get('modules');  	
+        $query = "SELECT 
+                      *
+                    FROM
+                      modules m
+                      LEFT JOIN modules_data md ON (m.id = md.module_id AND md.language_id = '".$this->language_id."')
+                    WHERE
+                      m.id = '".$id."' ";
+        
+        $module = $this->db->query($query);  	
         $module = $module->result_array();
+
+        $module[0]['params'] = json_decode($module[0]['params'], true); 
+        $module[0]           = array_merge($module[0], $this->Custom_field->getValues($id, 'modules'));
         
-        $module[0]['params'] = @json_decode($module[0]['params'], true);
-        
+        if(empty($module)){
+            return;
+        }
+
         if($field == null){
-            $module[0]['custom_fields'] = $this->Custom_field->getValues('modules', $module[0]['module_id']);
             return $module[0];
         }
         else{  	
@@ -25,39 +34,37 @@ class Module extends CI_Model {
 
     }    
     
-    public function load($category_alias, $templates = array())
+    public function load($position, $templates = array())
     {        
         
         $templates = array_merge($this->templates, $templates);
                 
-        $modules = self::_getModules($category_alias);
-        
+        $modules = self::_getModules($position);
+
         $module_html = '';
         foreach($modules as $module){
             
-            $module['template'] = isset($templates[$module['type']]) ? $templates[$module['type']] : "";
+            $module['template'] = isset($templates[$module['params']['type']]) ? $templates[$module['params']['type']] : "";
             
-            $content = Module::_load_module($module['module_id']);
+            $content = Module::_load_module($module['id']);
                 
             $module_html .= $this->load->view($templates['main'], compact('module', 'content'), true); 
                       
         }
-        
+
         return $module_html;
         
     }
     
-    function _getModules($category_alias)
+    function _getModules($position)
     {
         
-        $category_id = @$this->Category->getByAlias($category_alias, 'modules', 'category_id');
-        
-        if(empty($category_id)){
+        if(empty($position)){
             return array();
         }
         
-        $this->db->select('*');
-        $this->db->where('category_id', $category_id);
+        $this->db->select('id');
+        $this->db->where('position', $position);
         $this->db->where('status', 'yes');
         $this->db->order_by('order', 'asc');
         $modules = $this->db->get('modules');  	
@@ -65,25 +72,22 @@ class Module extends CI_Model {
 
         $modules_arr = array();
         foreach($modules as $module){
+                       
+            $module = $this->Module->getDetails($module['id']);            
             
-            $module['custom_fields'] = $this->Custom_field->getValues('modules', $module['module_id']);
-            
-            /* --- check menus for module display --- */
-            $module['params'] = json_decode($module['params'], true);            
-            if($module['display_in'] == 'on_selected' && !in_array($this->menu_id, $module['params']['display_menus'])){
+            /* --- check menus for module display --- */          
+            if($module['params']['display_in'] == 'on_selected' && !in_array($this->menu_id, $module['params']['display_menus'])){
                 continue;
             }
-            elseif($module['display_in'] == 'all_except_selected' && in_array($this->menu_id, $module['params']['display_menus'])){
+            elseif($module['params']['display_in'] == 'all_except_selected' && in_array($this->menu_id, $module['params']['display_menus'])){
                 continue;
-            }
-            
+            }            
             
             /* --- check language for module display --- */
-            if($module['language_id'] != NULL && $module['language_id'] != $this->Language->getDetailsByAbbr(get_lang(), 'language_id')){
+            if($module['show_in_language'] != NULL && $module['show_in_language'] != $this->Language->getDetailsByAbbr(get_lang(), 'id')){
                 continue;
             }
-            
-            
+                        
             /* --- check start end date for module display --- */
             if($module['start_publishing'] != NULL && $module['start_publishing'] > date('Y-m-d')){
                 continue;
@@ -102,21 +106,19 @@ class Module extends CI_Model {
     
     function menu_link($menu)
     {
-        
+
         /* --- get menu link --- */            
-        switch($menu['type']){
+        switch($menu['params']['type']){
             case "article":
             case "articles_list":
             case "component":
             case "menu":
-                $link = site_url($menu['alias']);
+                return site_url($menu['alias']);
             break;
             case "external_url":
-                $link = $menu['params']['url'];
+                return $menu['params']['url'];
             break;
         }
-        
-        return $link;
         
     }
     
@@ -124,7 +126,7 @@ class Module extends CI_Model {
     {
         
         $class = '';
-        if(in_array($menu['menu_id'], $this->current_menus)){
+        if(in_array($menu['id'], $this->current_menus)){
             $class = 'current';
         }
         
@@ -138,7 +140,7 @@ class Module extends CI_Model {
     	ob_start();
     	extract($data);
     	if(empty($module['template'])){
-            include 'modules/' . $module['type'] . '/views/' . $module['type'] . '.php';
+            include 'modules/' . $module['params']['type'] . '/views/' . $module['params']['type'] . '.php';
         }
         else{
             include $module['template'];
@@ -157,11 +159,11 @@ class Module extends CI_Model {
         
         $module = Module::getDetails($id);
 
-        if(file_exists('modules/' . $module['type'] . '/models/' . $module['type'] . '.php')){
+        if(file_exists('modules/' . $module['params']['type'] . '/models/' . $module['params']['type'] . '.php')){
 
-            include_once 'modules/' . $module['type'] . '/models/' . $module['type'] . '.php';
+            include_once 'modules/' . $module['params']['type'] . '/models/' . $module['params']['type'] . '.php';
 
-            $moduleObj = new $module['type'];
+            $moduleObj = new $module['params']['type'];
             $content   = $moduleObj->run($module);
 
         }
