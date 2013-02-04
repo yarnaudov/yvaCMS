@@ -41,11 +41,11 @@ class Content extends CI_Model {
             /*
              * If menu type is 'menu' rewrite variable $menu with new menu
              */
-            if($menu['type'] == 'menu' && !empty($menu['params']['menu_id'])){
+            if($menu['params']['type'] == 'menu' && !empty($menu['params']['menu_id'])){
                 $menu = $this->Menu->getDetails($menu['params']['menu_id']);
             }
             
-            switch($menu['type']){
+            switch($menu['params']['type']){
                 
                 case "article":
                 case "component":
@@ -57,7 +57,7 @@ class Content extends CI_Model {
                     
                     $data['content'] = $this->Article->parceText(@$article['text']);
                                         
-                    if($menu['type'] == 'component'){
+                    if($menu['params']['type'] == 'component'){
                         
                         $data['content'] = '<div class="article" >'.$data['content'].'</div>';
                         

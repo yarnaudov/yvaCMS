@@ -18,10 +18,6 @@ class mod_menu extends CI_Model{
             $menu['link']  = module::menu_link($menu);
             $menu['class'] = module::menu_class($menu);
             
-            if(isset($menu['params']['image']) && !empty($menu['params']['image'])){
-                $menu['image'] = $menu['params']['image'];
-            }
-            
             $menus_arr[] = $menu;
             
         }

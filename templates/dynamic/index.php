@@ -3,7 +3,7 @@
  /*
   *  set default content templates
   */
-  //$this->Content->templates['main'] = '../../templates/'.$this->Setting->getTemplate().'/vews/content/main';
+  $this->Content->templates['main'] = '../../templates/'.$this->Setting->getTemplate().'/../vews/content/main';
                                     
 ?>
 
@@ -45,6 +45,7 @@
                         
             <div id="navbar">	
                 <div class="clear">
+                    <include type="module" name="menu" />
                 </div>
             </div>
 

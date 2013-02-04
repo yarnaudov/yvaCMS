@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 27, 2013 at 08:31 PM
+-- Generation Time: Feb 05, 2013 at 12:18 AM
 -- Server version: 5.5.27
 -- PHP Version: 5.4.7
 
@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS `ap_menus` (
   `order` int(4) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `parent_id` (`parent_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=25 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=26 ;
 
 --
 -- Dumping data for table `ap_menus`
@@ -59,7 +59,7 @@ INSERT INTO `ap_menus` (`id`, `title_bg`, `title_en`, `alias`, `parent_id`, `typ
 (12, 'Групи', 'Groups', 'groups/users', 11, 'sub_action', 'no', 'yes', 1),
 (13, 'Потребителски полета', 'Custom fields', 'custom_fields/users', 11, 'sub_action', 'no', 'yes', 2),
 (14, 'Модули', 'Modules', 'modules', NULL, 'general', 'no', 'yes', 6),
-(15, 'Потребителски полета', 'Custom fields', 'categories/modules', 14, 'sub_action', 'no', 'yes', 1),
+(15, 'Потребителски полета', 'Custom fields', 'custom_fields/modules', 14, 'sub_action', 'no', 'yes', 1),
 (16, 'Компоненти', 'Components', 'components', NULL, 'general', 'no', 'yes', 7),
 (17, 'Настройки', 'Settings', 'settings', NULL, 'general', 'no', 'yes', 8),
 (18, 'Основни', 'General', 'settings/general', 17, 'general_sub sub_action', 'no', 'yes', 1),
@@ -68,7 +68,8 @@ INSERT INTO `ap_menus` (`id`, `title_bg`, `title_en`, `alias`, `parent_id`, `typ
 (21, 'Галерия', 'Gallery', 'components/gallery', 16, 'general_sub', 'yes', 'yes', 2),
 (22, 'Контактни форми', 'Contact forms', 'components/contact_forms', 16, 'general_sub', 'yes', 'yes', 3),
 (23, 'Албуми', 'Albums', 'components/gallery/albums', 21, 'sub_action', 'no', 'no', 1),
-(24, 'Снимки', 'Images', 'components/gallery/images', 21, 'sub_action', 'no', 'no', 2);
+(24, 'Снимки', 'Images', 'components/gallery/images', 21, 'sub_action', 'no', 'no', 2),
+(25, 'Бързо добавяне', 'Quick add', 'components/gallery/images/quickadd', 21, 'sub_action', 'no', 'yes', 3);
 
 -- --------------------------------------------------------
 
@@ -95,15 +96,21 @@ CREATE TABLE IF NOT EXISTS `articles` (
   KEY `language_id` (`show_in_language`),
   KEY `created_by` (`created_by`),
   KEY `updated_by` (`updated_by`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=15 ;
 
 --
 -- Dumping data for table `articles`
 --
 
 INSERT INTO `articles` (`id`, `category_id`, `alias`, `show_in_language`, `start_publishing`, `end_publishing`, `params`, `created_by`, `created_on`, `updated_by`, `updated_on`, `status`, `order`) VALUES
-(7, 1, 'aricle1', 1, '2013-01-01', '2013-01-23', '{"images":["media\\/images\\/Koala.jpg","media\\/images\\/Chrysanthemum.jpg","media\\/images\\/Desert.jpg"]}', 1, '2013-01-19 16:14:37', 1, '2013-01-27 20:22:31', 'yes', 1),
-(8, 1, 'aricle2', NULL, NULL, NULL, '', 1, '2013-01-19 22:46:15', NULL, NULL, 'yes', 2);
+(7, 1, 'aricle1', 1, NULL, NULL, '{"images":["media\\/images\\/Koala.jpg","media\\/images\\/Desert.jpg","media\\/images\\/Chrysanthemum.jpg"]}', 1, '2013-01-19 16:14:37', 1, '2013-02-04 23:51:26', 'yes', 1),
+(8, 1, 'aricle2', NULL, NULL, NULL, 'false', 1, '2013-01-19 22:46:15', 1, '2013-02-02 19:32:16', 'yes', 2),
+(9, 1, 'articles3', NULL, NULL, NULL, 'false', 1, '2013-01-29 21:20:21', NULL, NULL, 'yes', 3),
+(10, 1, 'article4', NULL, NULL, NULL, 'false', 1, '2013-01-29 21:21:45', NULL, NULL, 'yes', 4),
+(11, 1, 'article5', NULL, NULL, NULL, 'false', 1, '2013-01-29 21:22:00', NULL, NULL, 'yes', 5),
+(12, 1, 'article6', NULL, NULL, NULL, 'false', 1, '2013-01-29 21:22:15', NULL, NULL, 'yes', 6),
+(13, 1, 'article7', NULL, NULL, NULL, 'false', 1, '2013-01-29 21:22:40', NULL, NULL, 'yes', 7),
+(14, 1, 'fhhrj', NULL, NULL, NULL, 'false', 1, '2013-02-02 17:19:24', NULL, NULL, 'yes', 8);
 
 -- --------------------------------------------------------
 
@@ -128,7 +135,14 @@ CREATE TABLE IF NOT EXISTS `articles_data` (
 INSERT INTO `articles_data` (`article_id`, `language_id`, `title`, `text`) VALUES
 (7, 1, 'Статия 1', '<p>Текст 1</p>'),
 (7, 2, 'Article 1', '<p><a href="article:aricle1">Article 1</a>Text 1<img src="media/iconPull_25.png" alt="" /></p>'),
-(8, 1, 'Статия 2', '');
+(8, 1, 'Статия 2', ''),
+(8, 2, 'as', ''),
+(9, 1, 'Статия 3', ''),
+(10, 1, 'Статия 4', ''),
+(11, 1, 'Статия 5', ''),
+(12, 1, 'Снимка 6', ''),
+(13, 1, 'Снимка 7', ''),
+(14, 1, 'sdgdh', '');
 
 -- --------------------------------------------------------
 
@@ -188,7 +202,45 @@ INSERT INTO `articles_history` (`article_id`, `language_id`, `category_id`, `ali
 (7, 1, 1, 'aricle1', 1, '2013-01-01', '2013-01-23', 1, '2013-01-19 16:14:37', 1, '2013-01-27 20:16:26', 'Статия 1', '<p>Текст 1</p>', 'yes', 1),
 (7, 1, 1, 'aricle1', 1, '2013-01-01', '2013-01-23', 1, '2013-01-19 16:14:37', 1, '2013-01-27 20:16:36', 'Статия 1', '<p>Текст 1</p>', 'yes', 1),
 (7, 1, 1, 'aricle1', 1, '2013-01-01', '2013-01-23', 1, '2013-01-19 16:14:37', 1, '2013-01-27 20:17:41', 'Статия 1', '<p>Текст 1</p>', 'yes', 1),
-(7, 1, 1, 'aricle1', 1, '2013-01-01', '2013-01-23', 1, '2013-01-19 16:14:37', 1, '2013-01-27 20:22:27', 'Статия 1', '<p>Текст 1</p>', 'yes', 1);
+(7, 1, 1, 'aricle1', 1, '2013-01-01', '2013-01-23', 1, '2013-01-19 16:14:37', 1, '2013-01-27 20:22:27', 'Статия 1', '<p>Текст 1</p>', 'yes', 1),
+(7, 1, 1, 'aricle1', 1, '2013-01-01', '2013-01-23', 1, '2013-01-19 16:14:37', 1, '2013-01-27 20:22:31', 'Статия 1', '<p>Текст 1</p>', 'yes', 1),
+(7, 1, 1, 'aricle1', 1, NULL, NULL, 1, '2013-01-19 16:14:37', 1, '2013-01-28 00:12:39', 'Статия 1', '<p>Текст 1</p>', 'yes', 1),
+(7, 2, 1, 'aricle1', 1, NULL, NULL, 1, '2013-01-19 16:14:37', 1, '2013-01-28 01:07:00', 'Article 1', '<p><a href="article:aricle1">Article 1</a>Text 1<img src="media/iconPull_25.png" alt="" /></p>', 'yes', 1),
+(7, 2, 1, 'aricle1', 1, NULL, NULL, 1, '2013-01-19 16:14:37', 1, '2013-01-29 21:44:22', 'Article 1', '<p><a href="article:aricle1">Article 1</a>Text 1<img src="media/iconPull_25.png" alt="" /></p>', 'yes', 1),
+(7, 1, 1, 'aricle1', 1, NULL, NULL, 1, '2013-01-19 16:14:37', 1, '2013-01-29 21:47:53', 'Статия 1', '<p>Текст 1</p>', 'yes', 1),
+(7, 1, 2, 'aricle1', 1, NULL, NULL, 1, '2013-01-19 16:14:37', 1, '2013-02-01 00:18:05', 'Статия 1', '<p>Текст 1</p>', 'yes', 1),
+(7, 1, 2, 'aricle1', 1, NULL, NULL, 1, '2013-01-19 16:14:37', 1, '2013-02-01 00:20:09', 'Статия 1', '<p>Текст 1</p>', 'yes', 1),
+(7, 1, 2, 'aricle1', 1, NULL, NULL, 1, '2013-01-19 16:14:37', 1, '2013-02-01 00:21:10', 'Статия 1', '<p>Текст 1</p>', 'yes', 1),
+(7, 1, 2, 'aricle1', 1, NULL, NULL, 1, '2013-01-19 16:14:37', 1, '2013-02-01 00:23:49', 'Статия 1', '<p>Текст 1</p>', 'yes', 1),
+(7, 1, 2, 'aricle1', 1, NULL, NULL, 1, '2013-01-19 16:14:37', 1, '2013-02-01 00:24:43', 'Статия 1', '<p>Текст 1</p>', 'yes', 1),
+(7, 1, 2, 'aricle1', 1, NULL, NULL, 1, '2013-01-19 16:14:37', 1, '2013-02-01 00:30:02', 'Статия 1', '<p>Текст 1</p>', 'yes', 1),
+(7, 1, 2, 'aricle1', 1, NULL, NULL, 1, '2013-01-19 16:14:37', 1, '2013-02-01 00:42:57', 'Статия 1', '<p>Текст 1</p>', 'yes', 1),
+(7, 1, 2, 'aricle1', 1, NULL, NULL, 1, '2013-01-19 16:14:37', 1, '2013-02-01 00:46:35', 'Статия 1', '<p>Текст 1</p>', 'yes', 1),
+(7, 1, 2, 'aricle1', 1, NULL, NULL, 1, '2013-01-19 16:14:37', 1, '2013-02-01 00:47:25', 'Статия 1', '<p>Текст 1</p>', 'yes', 1),
+(7, 1, 2, 'aricle1', 1, NULL, NULL, 1, '2013-01-19 16:14:37', 1, '2013-02-01 00:47:47', 'Статия 1', '<p>Текст 1</p>', 'yes', 1),
+(7, 1, 2, 'aricle1', 1, NULL, NULL, 1, '2013-01-19 16:14:37', 1, '2013-02-01 00:47:52', 'Статия 1', '<p>Текст 1</p>', 'yes', 1),
+(7, 1, 2, 'aricle1', 1, NULL, NULL, 1, '2013-01-19 16:14:37', 1, '2013-02-01 00:48:48', 'Статия 1', '<p>Текст 1</p>', 'yes', 1),
+(7, 1, 2, 'aricle1', 1, NULL, NULL, 1, '2013-01-19 16:14:37', 1, '2013-02-01 00:48:54', 'Статия 1', '<p>Текст 1</p>', 'yes', 1),
+(7, 1, 2, 'aricle1', 1, NULL, NULL, 1, '2013-01-19 16:14:37', 1, '2013-02-01 00:49:17', 'Статия 1', '<p>Текст 1</p>', 'yes', 1),
+(7, 1, 2, 'aricle1', 1, NULL, NULL, 1, '2013-01-19 16:14:37', 1, '2013-02-01 00:50:17', 'Статия 1', '<p>Текст 1</p>', 'yes', 1),
+(7, 1, 2, 'aricle1', 1, NULL, NULL, 1, '2013-01-19 16:14:37', 1, '2013-02-01 00:53:02', 'Статия 1', '<p>Текст 1</p>', 'yes', 1),
+(7, 1, 2, 'aricle1', 1, NULL, NULL, 1, '2013-01-19 16:14:37', 1, '2013-02-01 00:54:12', 'Статия 1', '<p>Текст 1</p>', 'yes', 1),
+(7, 1, 2, 'aricle1', 1, NULL, NULL, 1, '2013-01-19 16:14:37', 1, '2013-02-01 00:55:22', 'Статия 1', '<p>Текст 1</p>', 'yes', 1),
+(7, 1, 2, 'aricle1', 1, NULL, NULL, 1, '2013-01-19 16:14:37', 1, '2013-02-01 00:58:39', 'Статия 1', '<p>Текст 1</p>', 'yes', 1),
+(7, 1, 2, 'aricle1', 1, NULL, NULL, 1, '2013-01-19 16:14:37', 1, '2013-02-01 00:58:57', 'Статия 1', '<p>Текст 1</p>', 'yes', 1),
+(7, 1, 2, 'aricle1', 1, NULL, NULL, 1, '2013-01-19 16:14:37', 1, '2013-02-01 00:59:12', 'Статия 1', '<p>Текст 1</p>', 'yes', 1),
+(7, 1, 2, 'aricle1', 1, NULL, NULL, 1, '2013-01-19 16:14:37', 1, '2013-02-01 00:59:45', 'Статия 1', '<p>Текст 1</p>', 'yes', 1),
+(7, 2, 2, 'aricle1', 1, NULL, NULL, 1, '2013-01-19 16:14:37', 1, '2013-02-01 01:03:57', 'Article 1', '<p><a href="article:aricle1">Article 1</a>Text 1<img src="media/iconPull_25.png" alt="" /></p>', 'yes', 1),
+(7, 1, 2, 'aricle1', 1, NULL, NULL, 1, '2013-01-19 16:14:37', 1, '2013-02-01 01:06:14', 'Статия 1', '<p>Текст 1</p>', 'yes', 1),
+(7, 1, 2, 'aricle1', 1, NULL, NULL, 1, '2013-01-19 16:14:37', 1, '2013-02-01 01:07:41', 'Статия 1', '<p>Текст 1</p>', 'yes', 1),
+(7, 1, 2, 'aricle1', 1, NULL, NULL, 1, '2013-01-19 16:14:37', 1, '2013-02-01 01:08:47', 'Статия 1', '<p>Текст 1</p>', 'yes', 1),
+(7, 1, 2, 'aricle1', 1, NULL, NULL, 1, '2013-01-19 16:14:37', 1, '2013-02-01 01:12:45', 'Статия 1', '<p>Текст 1</p>', 'yes', 1),
+(7, 2, 2, 'aricle1', 1, NULL, NULL, 1, '2013-01-19 16:14:37', 1, '2013-02-01 01:14:47', 'Article 1', '<p><a href="article:aricle1">Article 1</a>Text 1<img src="media/iconPull_25.png" alt="" /></p>', 'yes', 1),
+(8, 1, 1, 'aricle2', NULL, NULL, NULL, 1, '2013-01-19 22:46:15', NULL, NULL, 'Статия 2', '', 'yes', 2),
+(8, 1, 1, 'aricle2', NULL, NULL, NULL, 1, '2013-01-19 22:46:15', 1, '2013-02-02 19:25:09', 'Статия 2', '', 'yes', 2),
+(8, 1, 1, 'aricle2', NULL, NULL, NULL, 1, '2013-01-19 22:46:15', 1, '2013-02-02 19:26:31', 'Статия 2', '', 'yes', 2),
+(8, 1, 1, 'aricle2', NULL, NULL, NULL, 1, '2013-01-19 22:46:15', 1, '2013-02-02 19:27:21', 'Статия 2', '', 'yes', 2),
+(7, 1, 2, 'aricle1', 1, NULL, NULL, 1, '2013-01-19 16:14:37', 1, '2013-02-01 01:16:16', 'Статия 1', '<p>Текст 1</p>', 'yes', 1);
 
 -- --------------------------------------------------------
 
@@ -223,7 +275,7 @@ CREATE TABLE IF NOT EXISTS `banners` (
 --
 
 INSERT INTO `banners` (`id`, `position`, `title`, `description`, `show_in_language`, `params`, `start_publishing`, `end_publishing`, `css_class_sufix`, `created_by`, `created_on`, `updated_by`, `updated_on`, `status`, `order`) VALUES
-(4, 'top', 'Банер 1', '', NULL, '{"type":"html","html":"<div>\\r\\n  <a href=\\"#\\" ><\\/a>\\r\\n<\\/div>","display_in":"on_selected","display_menus":["5"],"display_rules":["(.*)modules$","http:\\/\\/vbox7.com\\/play:470f315928","http:\\/\\/localhost\\/phpmyadmin\\/index.php","http:\\/\\/yvaweb.eu$"]}', NULL, NULL, '', 1, '2013-01-24 21:54:09', 1, '2013-01-27 20:20:54', 'yes', 1);
+(4, 'top', 'Банер 1', '', NULL, '{"type":"html","html":"<div>\\r\\n  <a href=\\"#\\" ><\\/a>\\r\\n<\\/div>","display_in":"on_selected","display_menus":["5"],"display_rules":["(.*)modules$","http:\\/\\/vbox7.com\\/play:470f315928","http:\\/\\/localhost\\/phpmyadmin\\/index.php","http:\\/\\/yvaweb.eu$"]}', NULL, NULL, '', 1, '2013-01-24 21:54:09', 1, '2013-02-03 09:58:31', 'yes', 1);
 
 -- --------------------------------------------------------
 
@@ -243,7 +295,7 @@ CREATE TABLE IF NOT EXISTS `categories` (
   PRIMARY KEY (`id`),
   KEY `created_by` (`created_by`),
   KEY `updated_by` (`updated_by`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
 
 --
 -- Dumping data for table `categories`
@@ -251,9 +303,13 @@ CREATE TABLE IF NOT EXISTS `categories` (
 
 INSERT INTO `categories` (`id`, `extension`, `created_by`, `created_on`, `updated_by`, `updated_on`, `status`, `order`) VALUES
 (1, 'articles', 1, '2013-01-19 00:00:00', 1, '2013-01-19 21:11:46', 'yes', 1),
-(2, 'articles', 1, '2013-01-19 21:13:22', 1, '2013-01-19 21:13:38', 'yes', 2),
+(2, 'articles', 1, '2013-01-19 21:13:22', 1, '2013-01-29 21:45:10', 'yes', 2),
 (3, 'menus', 1, '2013-01-20 00:04:21', 1, '2013-01-20 00:04:49', 'yes', 1),
-(4, 'menus', 1, '2013-01-20 16:11:35', NULL, NULL, 'yes', 2);
+(4, 'menus', 1, '2013-01-20 16:11:35', NULL, NULL, 'yes', 2),
+(5, 'articles', 1, '2013-01-29 22:07:39', NULL, NULL, 'yes', 3),
+(6, 'articles', 1, '2013-01-29 22:07:50', NULL, NULL, 'yes', 4),
+(7, 'articles', 1, '2013-01-29 22:07:59', NULL, NULL, 'yes', 5),
+(8, 'articles', 1, '2013-01-29 22:08:08', NULL, NULL, 'yes', 6);
 
 -- --------------------------------------------------------
 
@@ -281,7 +337,11 @@ INSERT INTO `categories_data` (`category_id`, `language_id`, `title`, `descripti
 (2, 2, 'Category 1', ''),
 (3, 1, 'Некатегоризирани', ''),
 (3, 2, 'Uncategorized', ''),
-(4, 1, 'Категория 1', '');
+(4, 1, 'Категория 1', ''),
+(5, 1, 'Категория 2', ''),
+(6, 1, 'Категория 3', ''),
+(7, 1, 'Категория 4', ''),
+(8, 1, 'Категория 5', '');
 
 -- --------------------------------------------------------
 
@@ -492,12 +552,14 @@ INSERT INTO `com_pull_answers` (`id`, `pull_id`, `title`, `votes`, `status`) VAL
 
 CREATE TABLE IF NOT EXISTS `custom_fields` (
   `id` int(4) NOT NULL AUTO_INCREMENT,
+  `extension_key` varchar(50) DEFAULT NULL,
   `title` varchar(500) NOT NULL,
-  `description` varchar(1000) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+  `description` varchar(1000) NOT NULL,
   `multilang` enum('yes','no') NOT NULL,
-  `extension` varchar(50) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+  `required` enum('yes','no') NOT NULL,
+  `extension` varchar(50) NOT NULL,
   `type` varchar(50) NOT NULL,
-  `value` varchar(500) NOT NULL,
+  `params` varchar(1000) NOT NULL,
   `created_by` int(4) NOT NULL,
   `created_on` datetime NOT NULL,
   `updated_by` int(4) DEFAULT NULL,
@@ -507,7 +569,22 @@ CREATE TABLE IF NOT EXISTS `custom_fields` (
   PRIMARY KEY (`id`),
   KEY `created_by` (`created_by`),
   KEY `updated_by` (`updated_by`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=11 ;
+
+--
+-- Dumping data for table `custom_fields`
+--
+
+INSERT INTO `custom_fields` (`id`, `extension_key`, `title`, `description`, `multilang`, `required`, `extension`, `type`, `params`, `created_by`, `created_on`, `updated_by`, `updated_on`, `status`, `order`) VALUES
+(2, '1', 'Поле 1', '', 'no', 'yes', 'articles', 'radio', '{"options":["0","0","0"],"labels":["Futured","Special","Different"]}', 1, '2013-01-28 22:55:15', 1, '2013-02-02 09:49:39', 'no', 1),
+(3, NULL, 'Поле 2', '', 'yes', 'yes', 'articles', 'text', '{"value":"12"}', 1, '2013-01-31 23:47:12', 1, '2013-02-01 00:59:29', 'no', 2),
+(4, NULL, 'Поле 3', '', 'no', 'yes', 'articles', 'dropdown', '{"options":["0","0","0","0","0"],"labels":["\\u041f\\u043e\\u043d\\u0435\\u0434\\u0435\\u043b\\u043d\\u0438\\u043a","\\u0412\\u0442\\u043e\\u0440\\u043d\\u0438\\u043a","\\u0421\\u0440\\u044f\\u0434\\u0430","\\u0427\\u0435\\u0442\\u0432\\u044a\\u0440\\u0442\\u044a\\u043a","\\u041f\\u0435\\u0442\\u044a\\u043a"],"optgroups":["0","0","0","0","0"]}', 1, '2013-01-31 23:51:59', 1, '2013-02-02 19:15:49', 'no', 3),
+(5, NULL, 'Поле 4', '', 'no', 'yes', 'articles', 'checkbox', '{"options":["0","0","0"],"labels":["1","2","3"]}', 1, '2013-01-31 23:57:44', 1, '2013-02-02 17:28:20', 'no', 4),
+(6, '4', 'Поле 1', '', 'no', 'yes', 'menus', 'text', '{"value":"1"}', 1, '2013-02-01 22:32:31', 1, '2013-02-02 09:56:55', 'yes', 1),
+(7, 'sidebar', 'Поле 1', '', 'no', 'yes', 'banners', 'text', '{"value":" "}', 1, '2013-02-01 22:58:05', 1, '2013-02-02 10:00:11', 'yes', 1),
+(8, NULL, 'Поле 1', '', 'no', 'yes', 'languages', 'text', '{"value":""}', 1, '2013-02-01 23:20:21', NULL, NULL, 'yes', 1),
+(9, '1', 'Поле 1', '', 'no', 'yes', 'users', 'text', '{"value":""}', 1, '2013-02-01 23:26:19', 1, '2013-02-02 12:36:13', 'yes', 1),
+(10, 'search', 'Поле 1', '', 'no', 'yes', 'modules', 'text', '{"value":""}', 1, '2013-02-01 23:28:04', 1, '2013-02-02 10:18:04', 'no', 1);
 
 -- --------------------------------------------------------
 
@@ -525,6 +602,35 @@ CREATE TABLE IF NOT EXISTS `custom_fields_values` (
   KEY `language_id` (`language_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Dumping data for table `custom_fields_values`
+--
+
+INSERT INTO `custom_fields_values` (`custom_field_id`, `element_id`, `language_id`, `value`) VALUES
+(2, 7, NULL, '["1"]'),
+(3, 7, 1, '12'),
+(4, 7, NULL, '2'),
+(5, 7, NULL, '["0"]'),
+(3, 7, 2, '1234'),
+(6, 4, NULL, '0'),
+(7, 4, NULL, '0'),
+(2, 14, NULL, '0'),
+(3, 14, 1, '12'),
+(4, 14, NULL, '3'),
+(5, 14, NULL, '["0"]'),
+(2, 8, NULL, '1'),
+(3, 8, 1, '12'),
+(4, 8, NULL, '0'),
+(5, 8, NULL, '["0"]'),
+(3, 8, 2, '123'),
+(6, 7, NULL, '0'),
+(6, 8, NULL, '0'),
+(6, 10, NULL, '0'),
+(6, 9, NULL, '0'),
+(6, 11, NULL, '0'),
+(6, 12, NULL, '0'),
+(6, 6, NULL, '0');
+
 -- --------------------------------------------------------
 
 --
@@ -537,6 +643,7 @@ CREATE TABLE IF NOT EXISTS `languages` (
   `abbreviation` varchar(5) NOT NULL,
   `description` varchar(1000) NOT NULL,
   `default` varchar(5) NOT NULL,
+  `image` varchar(100) NOT NULL,
   `created_by` int(4) NOT NULL,
   `created_on` datetime NOT NULL,
   `updated_by` int(4) DEFAULT NULL,
@@ -552,10 +659,10 @@ CREATE TABLE IF NOT EXISTS `languages` (
 -- Dumping data for table `languages`
 --
 
-INSERT INTO `languages` (`id`, `title`, `abbreviation`, `description`, `default`, `created_by`, `created_on`, `updated_by`, `updated_on`, `status`, `order`) VALUES
-(1, 'Български', 'bg', '', 'yes', 1, '2013-01-19 00:00:00', 1, '2013-01-19 15:02:36', 'yes', 1),
-(2, 'English', 'en', '', 'no', 1, '2013-01-19 00:00:00', 1, '2013-01-19 15:02:24', 'yes', 2),
-(3, 'Руский', 'ru', '', 'no', 1, '2013-01-19 15:35:39', NULL, NULL, 'yes', 3);
+INSERT INTO `languages` (`id`, `title`, `abbreviation`, `description`, `default`, `image`, `created_by`, `created_on`, `updated_by`, `updated_on`, `status`, `order`) VALUES
+(1, 'Български', 'bg', '', 'yes', 'media/images/Chrysanthemum.jpg', 1, '2013-01-19 00:00:00', 1, '2013-01-28 21:49:42', 'yes', 1),
+(2, 'English', 'en', '', 'no', '', 1, '2013-01-19 00:00:00', 1, '2013-01-19 15:02:24', 'yes', 2),
+(3, 'Руский', 'ru', '', 'no', '', 1, '2013-01-19 15:35:39', NULL, NULL, 'yes', 3);
 
 -- --------------------------------------------------------
 
@@ -588,16 +695,22 @@ CREATE TABLE IF NOT EXISTS `menus` (
   KEY `category_id` (`category_id`),
   KEY `parent_id` (`parent_id`),
   KEY `language_id` (`show_in_language`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=13 ;
 
 --
 -- Dumping data for table `menus`
 --
 
 INSERT INTO `menus` (`id`, `category_id`, `parent_id`, `show_in_language`, `alias`, `default`, `access`, `created_by`, `created_on`, `updated_by`, `updated_on`, `params`, `target`, `image`, `template`, `description_as_page_title`, `status`, `order`) VALUES
-(4, 3, NULL, 1, 'menu1', 'yes', 'public', 1, '2013-01-20 11:56:49', 1, '2013-01-24 22:47:43', '{"type":"article","article_id":"7"}', '_parent', 'media/iconPull_25.png', 'default', 'yes', 'yes', 1),
-(5, 3, NULL, NULL, 'menu2', 'no', 'public', 1, '2013-01-20 12:30:26', 1, '2013-01-22 00:44:07', '{"type":"external_url","url":""}', '_parent', '', 'default', '', 'yes', 1),
-(6, 3, NULL, NULL, 'menu3', 'no', 'public', 1, '2013-01-22 00:52:07', 1, '2013-01-22 19:15:26', '{"type":"external_url","url":"www.abv.bg"}', '_parent', '', 'default', '', 'yes', 1);
+(4, 4, NULL, 1, 'menu1', 'yes', 'public', 1, '2013-01-20 11:56:49', 1, '2013-02-01 22:33:58', '{"type":"article","article_id":"7"}', '_parent', 'media/iconPull_25.png', 'default', 'yes', 'yes', 1),
+(5, 3, NULL, NULL, 'menu2', 'no', 'public', 1, '2013-01-20 12:30:26', 1, '2013-01-22 00:44:07', '{"type":"external_url","url":""}', '_parent', '', 'default', '', 'yes', 2),
+(6, 3, NULL, NULL, 'menu3', 'no', 'public', 1, '2013-01-22 00:52:07', 1, '2013-02-05 00:11:17', '{"type":"external_url","url":"http:\\/\\/www.abv.bg"}', '_parent', '', 'default', '', 'yes', 3),
+(7, 3, NULL, NULL, 'menu4', 'no', 'public', 1, '2013-01-29 22:27:04', 1, '2013-02-05 00:08:31', '{"type":"article","article_id":"10"}', '_parent', '', 'default', '', 'yes', 4),
+(8, 3, NULL, NULL, 'menu5', 'no', 'public', 1, '2013-01-29 22:27:20', 1, '2013-02-05 00:08:54', '{"type":"article","article_id":"11"}', '_parent', '', 'default', '', 'yes', 5),
+(9, 3, NULL, NULL, 'menu6', 'no', 'public', 1, '2013-01-29 22:27:38', 1, '2013-02-05 00:09:28', '{"type":"components\\/pulls","pull_id":"1"}', '_parent', '', 'default', '', 'yes', 6),
+(10, 3, 7, NULL, 'menu41', 'no', 'public', 1, '2013-01-29 22:28:10', 1, '2013-02-05 00:09:08', '{"type":"article","article_id":"10"}', '_parent', '', 'default', '', 'yes', 1),
+(11, 3, NULL, NULL, 'menu7', 'no', 'public', 1, '2013-01-29 22:31:33', 1, '2013-02-05 00:09:49', '{"type":"components\\/gallery\\/albums","albums":["*"]}', '_parent', '', 'default', '', 'yes', 7),
+(12, 3, NULL, NULL, 'menu8', 'no', 'public', 1, '2013-01-29 22:33:52', 1, '2013-02-05 00:10:02', '{"type":"menu","menu_id":"5"}', '_parent', '', 'default', '', 'yes', 8);
 
 -- --------------------------------------------------------
 
@@ -624,7 +737,13 @@ INSERT INTO `menus_data` (`menu_id`, `language_id`, `title`, `description`, `met
 (4, 1, 'Меню 1', '<p>в 12</p>', 'а', 'б'),
 (4, 2, 'Menu 1', '<p>2ррф гфе</p>', '', ''),
 (5, 1, 'Меню 2', '', '', ''),
-(6, 1, 'Меню 3', '', '', '');
+(6, 1, 'Меню 3', '', '', ''),
+(7, 1, 'Меню 4', '', '', ''),
+(8, 1, 'Меню 5', '', '', ''),
+(9, 1, 'Меню 6', '', '', ''),
+(10, 1, 'Меню 4.1', '', '', ''),
+(11, 1, 'Меню 7', '', '', ''),
+(12, 1, 'Меню 8', '', '', '');
 
 -- --------------------------------------------------------
 
@@ -651,15 +770,16 @@ CREATE TABLE IF NOT EXISTS `modules` (
   KEY `language_id` (`show_in_language`),
   KEY `created_by` (`created_by`),
   KEY `updated_by` (`updated_by`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
 --
 -- Dumping data for table `modules`
 --
 
 INSERT INTO `modules` (`id`, `position`, `show_in_language`, `start_publishing`, `end_publishing`, `params`, `access`, `css_class_sufix`, `created_on`, `created_by`, `updated_by`, `updated_on`, `status`, `order`) VALUES
-(1, 'main2', 1, '2013-01-02', '2013-01-30', '{"type":"mod_html","html":"<html style=\\"color: green\\">\\r\\n  <!-- this is a comment -->\\r\\n  <head>\\r\\n    <title>Mixed HTML Example<\\/title>\\r\\n    <style type=\\"text\\/css\\">\\r\\n      h1 {font-family: comic sans; color: #f0f;}\\r\\n      div {background: yellow !important;}\\r\\n      body {\\r\\n        max-width: 50em;\\r\\n        margin: 1em 2em 1em 5em;\\r\\n      }\\r\\n    <\\/style>\\r\\n  <\\/head>\\r\\n  <body>\\r\\n    <h1>Mixed HTML Example<\\/h1>\\r\\n    <script>\\r\\n      function jsFunc(arg1, arg2) {\\r\\n        if (arg1 && arg2) document.body.innerHTML = \\"achoo\\";\\r\\n      }\\r\\n    <\\/script>\\r\\n  <\\/body>\\r\\n<\\/html>","display_in":"on_selected","display_menus":["5","6"],"display_rules":["(.*)modules$","(.*)modules\\/edit[0-9]+"]}', 'registred', '_main', '2013-01-22 22:24:27', 1, 1, '2013-01-27 20:20:25', 'yes', 1),
-(2, 'asasa', NULL, NULL, NULL, '{"type":"mod_article","article_id":"7","display_in":"all"}', 'public', '', '2013-01-23 00:50:50', 1, 1, '2013-01-23 22:21:36', 'yes', 2);
+(1, 'sidebar', 1, NULL, NULL, '{"type":"mod_articles_list","category_id":"2","display_in":"all","display_rules":["(.*)modules$","(.*)modules\\/edit[0-9]+"]}', 'registred', '_main', '2013-01-22 22:24:27', 1, 1, '2013-02-04 22:25:58', 'yes', 1),
+(2, 'menu', NULL, NULL, NULL, '{"type":"mod_menu","category_id":"3","display_in":"all"}', 'public', '', '2013-01-23 00:50:50', 1, 1, '2013-02-04 23:57:10', 'yes', 1),
+(3, 'sidebar', NULL, NULL, NULL, '{"type":"mod_pull","pull_id":"1","display_in":"all"}', 'public', '', '2013-02-04 22:34:28', 1, 1, '2013-02-04 23:00:51', 'yes', 1);
 
 -- --------------------------------------------------------
 
@@ -674,7 +794,7 @@ CREATE TABLE IF NOT EXISTS `modules_data` (
   `description` varchar(1000) NOT NULL,
   KEY `language_id` (`language_id`),
   KEY `module_id` (`module_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
 --
 -- Dumping data for table `modules_data`
@@ -684,7 +804,8 @@ INSERT INTO `modules_data` (`module_id`, `language_id`, `title`, `description`) 
 (1, 1, 'Модул 1', ''),
 (1, 2, 'Module 1', ''),
 (1, 3, 'Модул 1', ''),
-(2, 1, 'Модул 2', '');
+(2, 1, 'Модул 2', ''),
+(3, 1, 'Модул 3', '');
 
 -- --------------------------------------------------------
 
@@ -699,14 +820,24 @@ CREATE TABLE IF NOT EXISTS `settings` (
   `value` text NOT NULL,
   PRIMARY KEY (`id`),
   KEY `language_id` (`language_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=18 ;
 
 --
 -- Dumping data for table `settings`
 --
 
 INSERT INTO `settings` (`id`, `language_id`, `name`, `value`) VALUES
-(2, NULL, 'template', 'dynamic');
+(2, NULL, 'template', 'dynamic/index'),
+(4, NULL, 'site_name_in_title', 'yes'),
+(5, NULL, 'site_name_in_title_separator', '-'),
+(6, NULL, 'url_suffix', 'html'),
+(9, NULL, 'robots', ''),
+(12, 1, 'site_name', 'yvaCMS - BG'),
+(13, 1, 'meta_description', ''),
+(14, 1, 'meta_keywords', ''),
+(15, 2, 'site_name', 'yvaCMS - ENG'),
+(16, 2, 'meta_description', ''),
+(17, 2, 'meta_keywords', '');
 
 -- --------------------------------------------------------
 
@@ -815,9 +946,9 @@ ALTER TABLE `categories_data`
 -- Constraints for table `com_gallery_albums`
 --
 ALTER TABLE `com_gallery_albums`
-  ADD CONSTRAINT `com_gallery_albums_ibfk_3` FOREIGN KEY (`updated_by`) REFERENCES `users` (`id`) ON UPDATE CASCADE,
   ADD CONSTRAINT `com_gallery_albums_ibfk_1` FOREIGN KEY (`show_in_language`) REFERENCES `languages` (`id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `com_gallery_albums_ibfk_2` FOREIGN KEY (`created_by`) REFERENCES `users` (`id`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `com_gallery_albums_ibfk_2` FOREIGN KEY (`created_by`) REFERENCES `users` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `com_gallery_albums_ibfk_3` FOREIGN KEY (`updated_by`) REFERENCES `users` (`id`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `com_gallery_albums_data`
@@ -830,10 +961,10 @@ ALTER TABLE `com_gallery_albums_data`
 -- Constraints for table `com_gallery_images`
 --
 ALTER TABLE `com_gallery_images`
-  ADD CONSTRAINT `com_gallery_images_ibfk_4` FOREIGN KEY (`updated_by`) REFERENCES `users` (`id`) ON UPDATE CASCADE,
   ADD CONSTRAINT `com_gallery_images_ibfk_1` FOREIGN KEY (`album_id`) REFERENCES `com_gallery_albums` (`id`) ON UPDATE CASCADE,
   ADD CONSTRAINT `com_gallery_images_ibfk_2` FOREIGN KEY (`show_in_language`) REFERENCES `languages` (`id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `com_gallery_images_ibfk_3` FOREIGN KEY (`created_by`) REFERENCES `users` (`id`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `com_gallery_images_ibfk_3` FOREIGN KEY (`created_by`) REFERENCES `users` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `com_gallery_images_ibfk_4` FOREIGN KEY (`updated_by`) REFERENCES `users` (`id`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `com_gallery_images_data`
