@@ -112,9 +112,6 @@
                                             
                                             $type_arr = explode('/', $type);
                                             
-                                            $controller = & get_instance();
-                                            $controller->_loadComponetLanguages($type_arr[1]);
-                                            
                                             $options_file = '../../'.$type_arr[0].'/'.$type_arr[1].'/views/apanel_options';
                                             
                                             if(count($type_arr) > 2){                                                

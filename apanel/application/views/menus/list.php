@@ -112,7 +112,24 @@
                     </a>
                     <div class="description" >(<span class="head" ><?=lang('label_alias');?>:</span> <span class="content" ><?=$menu['alias'];?></span>)</div>
                 </td>
-                <td><?=lang('label_'.$menu['params']['type']);?></td>
+                <td>
+                    <?php if(preg_match('/^components{1}/', $menu['params']['type'])){
+                              
+                              $type_arr = explode('/', $menu['params']['type']);
+                              
+                              if(count($type_arr) > 2){
+                                  echo lang('com_'.$type_arr[1]).' > '.lang($this->components[$type_arr[1]]['menus'][$type_arr[2]]);
+                              }
+                              else{                                                
+                                  echo lang($this->components[$type_arr[1]]['menus'][$type_arr[1]]);
+                              }
+                                            
+                          }
+                          else{
+                              echo lang('label_'.$menu['params']['type']);
+                          }
+                        ?>
+                </td>
                 <td><?=$this->Category->getDetails($menu['category_id'], 'title');?></td>
                 <td>
                     <?php if($menu['default'] == 'yes'){ ?>             

@@ -84,7 +84,7 @@ class MY_Controller extends CI_Controller {
             /*
              * If menu type is 'component' set route to component and redirect the page 
              */
-            if($menu['params']['type'] == 'component'){                     
+            if(preg_match('/^components{1}/', $menu['params']['type'])){                     
                 $this->setRoute($menu);                
             }
             
@@ -140,6 +140,9 @@ class MY_Controller extends CI_Controller {
     
     function setRoute($menu)
     {
+        
+        $component = explode('/', $menu['params']['type']);
+        $menu['params']['component'] = $component[1];
         
         include APPPATH . "cache/routes.php";
                         

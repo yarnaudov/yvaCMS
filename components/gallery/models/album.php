@@ -2,17 +2,26 @@
 
 class Album extends CI_Model {
 
-    public function getDetails($album_id, $field = null)
+    public function getDetails($id, $field = null)
     {
 
-        $this->db->select('*');
-        $this->db->where('album_id', $album_id);
-
-        $album = $this->db->get('com_gallery_albums');  	
+        $query = "SELECT 
+                      *
+                    FROM
+                      com_gallery_albums cga
+                      LEFT JOIN com_gallery_albums_data cgad ON (cga.id = cgad.album_id AND cgad.language_id = '".$this->language_id."')
+                    WHERE
+                      cga.id = '".$id."' ";
+        
+        $album = $this->db->query($query);  	
         $album = $album->result_array();
 
+        if(empty($album)){
+            return;
+        }
+
         if($field == null){
-                return $album[0];
+            return $album[0];
         }
         else{  	
             return $album[0][$field];
@@ -31,19 +40,7 @@ class Album extends CI_Model {
         foreach($filters as $key => $value){
             
             if($key == 'search_v'){
-                $filter .= " AND ( ";
-                $languages = Language::getLanguages();
-                foreach($languages as $key => $language){
-                    if($key > 0){
-                        $filter .= " OR ";
-                    }
-                    $filter .= "title_".$language['abbreviation']." like '%".$value."%'
-                                OR
-                                description_".$language['abbreviation']."  like '%".$value."%'";
-                }
-                
-                $filter .= " ) ";
-
+                $filter .= " AND ( title like '%".$value."%' OR description like '%".$value."%' ) ";
             }
             else{
                 $filter .= " AND `".$key."` = '".$value."' ";
@@ -54,9 +51,10 @@ class Album extends CI_Model {
         $query = "SELECT 
                         *
                     FROM
-                        com_gallery_albums
+                        com_gallery_albums cga
+                        LEFT JOIN com_gallery_albums_data cgad ON (cga.id = cgad.album_id AND cgad.language_id = '".$this->language_id."')
                     WHERE
-                        album_id IS NOT NULL
+                        cga.id IS NOT NULL
                         ".$filter."
                     ".($order_by != "" ? "ORDER BY ".$order_by : "")."
                     ".($limit    != "" ? "LIMIT ".$limit : "")."";
@@ -140,17 +138,17 @@ class Album extends CI_Model {
             $this->session->set_userdata('error_msg', lang('msg_save_album_error'));
         }
         
-        $album_id = $this->db->insert_id();
+        $id = $this->db->insert_id();
                 
-        return $album_id;
+        return $id;
 
     }
 
-    public function edit($album_id)
+    public function edit($id)
     {
 
         $data = self::prepareData('update');
-        $where = "album_id = ".$album_id; 
+        $where = "id = ".$id; 
 
         $query = $this->db->update_string('com_gallery_albums', $data, $where);
         //echo $query;
@@ -163,15 +161,15 @@ class Album extends CI_Model {
             $this->session->set_userdata('error_msg', lang('msg_save_album_error'));
         }
                    
-        return $album_id;
+        return $id;
 
     }
 
-    public function changeStatus($album_id, $status)
+    public function changeStatus($id, $status)
     {   
 
         $data['status'] = $status;
-        $where = "album_id = ".$album_id;
+        $where = "id = ".$id;
 
         $query = $this->db->update_string('com_gallery_albums', $data, $where);
         //echo $query;
@@ -186,10 +184,10 @@ class Album extends CI_Model {
 
     }
     
-    public function changeOrder($album_id, $order)
+    public function changeOrder($id, $order)
     {   
         
-        $old_order   = self::getDetails($album_id, 'order');
+        $old_order   = self::getDetails($id, 'order');
         
         if($order == 'up'){
             $new_order =  $old_order-1;        
@@ -205,7 +203,7 @@ class Album extends CI_Model {
         $result1 = $this->db->query($query1);
         
         $data2['order'] = $new_order;
-        $where2 = "album_id = ".$album_id;
+        $where2 = "id = ".$id;
         $query2 = $this->db->update_string('com_gallery_albums', $data2, $where2);
         //echo $query2;
         $result2 = $this->db->query($query2);
@@ -230,7 +228,7 @@ class Album extends CI_Model {
             $status = self::getDetails($album, 'status');
             
             if($status == 'trash'){
-                $result = $this->db->simple_query("DELETE FROM com_gallery_albums WHERE album_id = '".$album."'");
+                $result = $this->db->simple_query("DELETE FROM com_gallery_albums WHERE id = '".$album."'");
             }
             else{
                 $result = self::changeStatus($album, 'trash');
@@ -248,11 +246,11 @@ class Album extends CI_Model {
         
     }
     
-    public function getImage($album_id)
+    public function getImage($id)
     {
         
         $this->db->select('*');
-        $this->db->where('album_id', $album_id);
+        $this->db->where('id', $id);
         $this->db->order_by('`order`');
 
         $image = $this->db->get('com_gallery_images');  	

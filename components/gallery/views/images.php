@@ -12,10 +12,10 @@
     <?php foreach($images as $image){ ?>
     
     <div class="image_small">
-        <a href="<?=current_url();?>/image:<?=$image['image_id'];?>">
-            <img src="<?=base_url('images/thumbs/'.$image['image_id'].'.'.$image['ext']);?>" alt="<?=$image['title_'.get_lang()];?>" >
+        <a href="<?=current_url();?>/image:<?=$image['id'];?>">
+            <img src="<?=base_url('images/thumbs/'.$image['id'].'.'.$image['ext']);?>" alt="<?=$image['title'];?>" >
         </a>
-        <div class="description" ><?=$image['title_'.get_lang()];?></div>
+        <div class="description" ><?=$image['title'];?></div>
     </div>
     
     <?php } ?>

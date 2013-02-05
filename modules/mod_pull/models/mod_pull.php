@@ -29,7 +29,7 @@ class mod_pull extends CI_Model{
                 $data['votes'] += $answer['votes'];	
             }
         	  
-            $module['template'] = 'modules/' . $module['type'] . '/views/mod_pull_graphics.php';
+            $module['template'] = 'modules/' . $module['params']['type'] . '/views/mod_pull_graphics.php';
             
         }
                 

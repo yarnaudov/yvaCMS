@@ -16,6 +16,13 @@ class Menus extends MY_Controller {
         $this->page    = isset($_GET['page']) ? $_GET['page'] : 1;        
         $this->menu_id = $this->uri->segment(3);
         
+        /*
+         * load modules languages
+         */
+        foreach($this->components as $component => $data){
+           $this->_loadComponetLanguages($component);                                                                   
+        }
+        
     }
     
     public function _remap($method)

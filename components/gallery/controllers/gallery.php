@@ -30,8 +30,10 @@ class Gallery extends MY_Controller {
     public function index($url)
     {
         
+        $url = preg_replace('/'.$this->config->item('url_suffix').'$/', '', $url);
         $url1 = explode(':', $url);
         $url2 = $this->uri->segment(2);
+        $url2 = preg_replace('/'.$this->config->item('url_suffix').'$/', '', $url2);
         $url2 = explode(':', $url2);     
         
         if(current($url1) == 'album' || current($url2) == 'album'){
@@ -77,7 +79,8 @@ class Gallery extends MY_Controller {
             
         }
                 
-        $this->load->view('../../templates/'.$this->template.'/index', isset($this->data) ? $this->data : '');
+        echo parent::_parseTemplateFile();
+        //$this->load->view('../../templates/'.$this->template.'/index', isset($this->data) ? $this->data : '');
         
     }
     

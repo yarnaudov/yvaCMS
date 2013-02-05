@@ -38,11 +38,11 @@ class Pull extends CI_Model {
 
     }
     
-    function getAnswer($answer_id, $field = null)
+    function getAnswer($id, $field = null)
     {
     	
         $this->db->select('*');
-        $this->db->where('answer_id', $answer_id);
+        $this->db->where('id', $id);
 
         $answer = $this->db->get('com_pull_answers');  	
         $answer = $answer->result_array();
@@ -67,7 +67,7 @@ class Pull extends CI_Model {
     	  $votes = self::getAnswer($answer_id, 'votes');    	  
     	  $votes++;
     	  
-    	  $this->db->query("UPDATE com_pull_answers SET votes = ".$votes." WHERE answer_id = '".$answer_id."'");
+    	  $this->db->query("UPDATE com_pull_answers SET votes = ".$votes." WHERE id = '".$answer_id."'");
     	
     }
     

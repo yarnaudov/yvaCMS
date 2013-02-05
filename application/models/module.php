@@ -107,12 +107,15 @@ class Module extends CI_Model {
     function menu_link($menu)
     {
 
+        if(preg_match('/^components{1}/', $menu['params']['type'])){
+            $menu['params']['type'] = "component";
+        }
         /* --- get menu link --- */            
         switch($menu['params']['type']){
             case "article":
-            case "articles_list":
-            case "component":
+            case "articles_list":            
             case "menu":
+            case "component":
                 return site_url($menu['alias']);
             break;
             case "external_url":

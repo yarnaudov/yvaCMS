@@ -21,7 +21,7 @@
 */
 $config['jquery_ext']['auto_insert_jquery']  = TRUE;
 $config['jquery_ext']['minimize_output']     = TRUE;
-$config['jquery_ext']['main_library_path']   = "jquery/jquery-1.7.1.min.js";	       // without the first slash if is a local path.
+$config['jquery_ext']['main_library_path']   = "jquery-1.7.1.min.js";	       // without the first slash if is a local path.
 $config['jquery_ext']['libraries_prefix']    = "js/";
 $config['jquery_ext']['generate_js_files']   = FALSE;
 $config['jquery_ext']['js_files_fs_path']    = 'js/output/';		               // path on the filesystem where to store the js files
@@ -39,7 +39,7 @@ $config['jquery_ext']['js_files_url_prefix'] = config_item('base_url') . 'js/out
 |
 */
 
-$config['jquery_ext']['libraries']['jquery_ui']         = array("path"	=> 'jquery/jquery_ui/',
+$config['jquery_ext']['libraries']['jquery_ui']         = array("path"	=> 'jquery_ui/',
                                                                 "files" => array('jquery-ui-1.8.17.custom.min.js',
                                                                                  'themes/redmond/jquery-ui-1.8.17.custom.css')
                                                                 );	

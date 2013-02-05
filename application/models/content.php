@@ -45,26 +45,27 @@ class Content extends CI_Model {
                 $menu = $this->Menu->getDetails($menu['params']['menu_id']);
             }
             
+            if(preg_match('/^components{1}/', $menu['params']['type'])){
+                $menu['params']['type'] = "component";
+            }
+            
             switch($menu['params']['type']){
                 
                 case "article":
-                case "component":
-                    
+                
                     $article = $this->Article->getDetails($menu['params']['article_id']);
                     if(@$article['show_title'] == 'yes'){
                       $data['title'] = $article['title'];
                     }
                     
                     $data['content'] = $this->Article->parceText(@$article['text']);
-                                        
-                    if($menu['params']['type'] == 'component'){
-                        
-                        $data['content'] = '<div class="article" >'.$data['content'].'</div>';
-                        
-                        $data['content'] .= $this->data['content'];
-                        
-                    }
                     
+                break;
+                
+                case "component":
+                                               
+                    $data['content'] = $this->data['content'];
+                                        
                 break;
                 
                 case "articles_list":
