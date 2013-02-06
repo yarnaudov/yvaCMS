@@ -15,8 +15,7 @@ class Contact_forms extends MY_Controller {
         
         $this->load->model('Contact_form');
         
-        $this->load->language('com_cf_labels');
-        $this->load->language('com_cf_msg');
+        parent::_loadComponetLanguages('contact_forms');
                 
         $this->page            = isset($_GET['page']) ? $_GET['page'] : 1;        
         $this->contact_form_id = $this->uri->segment(4);

@@ -78,7 +78,7 @@
 
                             <tr>
                                 <th><label class="multilang" ><?=lang('label_title');?>:</label></th>
-                                <td><input type="text" name="title" value="<?=set_value('title', isset(${'title_'.$this->language_id}) ? ${'title_'.$this->language_id} : "");?>" ></td>
+                                <td><input type="text" name="title" value="<?=set_value('title', isset($title) ? $title : "");?>" ></td>
                             </tr>
 
                         </table>
@@ -129,18 +129,18 @@
                                     <tr><td colspan="2" class="empty_line" ></td></tr>
 
                                     <tr>	      			
-                                        <th><label class="multilang" ><?=lang('label_label');?>:</label></th>
+                                        <th><label><?=lang('label_label');?>:</label></th>
                                         <td>
-                                            <input type="text" name="fields[<?=$number;?>][label_<?=$this->language_id;?>]" value="<?=set_value('fields['.$number.'][label_'.$this->language_id.']', isset($fields[$number]['label_'.$this->language_id]) ? $fields[$number]['label_'.$this->language_id] : "");?>" >
+                                            <input type="text" name="fields[<?=$number;?>][label]" value="<?=set_value('fields['.$number.'][label]', isset($fields[$number]['label']) ? $fields[$number]['label'] : "");?>" >
                                         </td>
                                     </tr>
 
                                     <tr><td colspan="2" class="empty_line" ></td></tr>
 
                                     <tr>	      			
-                                        <th><label class="multilang" ><?=lang('label_value');?>:</label></th>
+                                        <th><label><?=lang('label_value');?>:</label></th>
                                         <td>
-                                            <textarea name="fields[<?=$number;?>][value_<?=$this->language_id;?>]" ><?=set_value('fields['.$number.'][value_'.$this->language_id.']', isset($fields[$number]['value_'.$this->language_id]) ? $fields[$number]['value_'.$this->language_id] : "");?></textarea>
+                                            <textarea name="fields[<?=$number;?>][value]" ><?=set_value('fields['.$number.'][value]', isset($fields[$number]['value']) ? $fields[$number]['value'] : "");?></textarea>
                                         </td>
                                     </tr>
 
@@ -199,7 +199,7 @@
                     <div class="box" >
 	      	        <span class="header multilang" ><?=lang('label_description');?></span>
                         <div class="editor_div" >
-                          <textarea name="description" class="editor"  ><?=set_value('description', isset(${'description_'.$this->language_id}) ? ${'description_'.$this->language_id} : "");?></textarea>
+                          <textarea name="description" class="editor"  ><?=set_value('description', isset($description) ? $description : "");?></textarea>
                         </div>
                         
 	            </div>

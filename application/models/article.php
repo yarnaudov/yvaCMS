@@ -59,21 +59,29 @@ class Article extends CI_Model {
     {
         
         if(empty($alias)){
-            return array();
+            return;
         }
         
-        $this->db->select('*');
-        $this->db->where('alias',  $alias);
-        $this->db->where('status', 'yes');
-        $article = $this->db->get('articles');  	
+        $query = "SELECT 
+                      *
+                    FROM
+                      articles a
+                      LEFT JOIN articles_data ad ON (a.id = ad.article_id AND ad.language_id = '".$this->language_id."')
+                    WHERE
+                      a.alias = '".$alias."' ";
+        
+        $article = $this->db->query($query);
         $article = $article->result_array();
 
         if(empty($article)){
-            return '';
+            return;
         }
         
+        $article[0]['params'] = json_decode($article[0]['params'], true); 
+        $article[0]           = array_merge($article[0], $this->Custom_field->getValues($article[0]['id'], 'articles'));
+        
+        
         if($field == null){
-            $article[0]['custom_fields'] = $this->Custom_field->getValues('articles', $article[0]['id']);
             return $article[0];
         }
         else{  	

@@ -35,23 +35,23 @@
     
     <div>
         <label for="field<?=$number;?>" >
-            <?=$field['label_'.get_lang()];?>: 
+            <?=$field['label'];?>: 
             <?=$field['mandatory'] != 'no' ? '*' : '';?>
         </label>
         <?php switch($field['type']){ 
                 case "text":
                 case "checkbox":
                 case "radio":
-                    echo '<input class="'.$class.'" type="'.$field['type'].'" name="field'.$number.'" value="'.$field['value_'.get_lang()].'" >'; 
+                    echo '<input class="'.$class.'" type="'.$field['type'].'" name="field'.$number.'" value="'.$field['value'].'" >'; 
                   break;
              
                 case "textarea":
-                    echo '<textarea class="'.$class.'" name="field'.$number.'" >'.$field['value_'.get_lang()].'</textarea>'; 
+                    echo '<textarea class="'.$class.'" name="field'.$number.'" >'.$field['value'].'</textarea>'; 
                   break;
                 
                 case "dropdown":
                     echo '<select class="'.$class.'" name="field'.$number.'" >';
-                    $options = explode(',', $field['value_'.get_lang()]);
+                    $options = explode(',', $field['value']);
                     foreach($options as $option){
                         echo '<option value="'.$option.'" >'.$option.'</option>';
                     }
@@ -59,7 +59,7 @@
                   break;
               
                 case "date":
-                    echo '<input type="text" class="'.$class.' datepicker" name="field'.$number.'" value="'.$field['value_'.get_lang()].'" >';                    
+                    echo '<input type="text" class="'.$class.' datepicker" name="field'.$number.'" value="'.$field['value'].'" >';                    
                   break;
               } ?>
         

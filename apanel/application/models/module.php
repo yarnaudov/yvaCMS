@@ -39,6 +39,10 @@ class Module extends MY_Model {
         if(!isset($filters['status'])){
             $filter = " AND status != 'trash'"; 
         }
+        
+        if(substr_count($order_by, 'order')){
+            $order_by = "position, ".$order_by;
+        }
                             
         foreach($filters as $key => $value){
             

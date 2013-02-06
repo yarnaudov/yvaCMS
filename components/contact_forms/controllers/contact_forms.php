@@ -71,7 +71,8 @@ class Contact_forms extends MY_Controller {
         
         $this->data['content'] = $this->load->view('contact_form', compact('contact_form'), true);
         
-        $this->load->view('../../templates/'.$this->template.'/index', isset($this->data) ? $this->data : '');
+        echo parent::_parseTemplateFile();
+        //$this->load->view('../../templates/'.$this->template.'/index', isset($this->data) ? $this->data : '');
         
     }
     

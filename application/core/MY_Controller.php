@@ -55,7 +55,7 @@ class MY_Controller extends CI_Controller {
             $this->current_menus = array();
         }
         else{
-            $this->menu_id       = $this->Menu->getByAlias($alias, 'menu_id');
+            $this->menu_id = $this->Menu->getByAlias($alias, 'menu_id');
             if($this->menu_id == ''){
                 $this->menu_id   = $this->Menu->getDefault('menu_id');
             }                        
@@ -72,11 +72,11 @@ class MY_Controller extends CI_Controller {
              */
             if($menu['params']['type'] == 'menu' && !empty($menu['params']['menu_id'])){
                 
+                $this->current_menus[] = $menu['menu_id'];
+                
                 $alias = $menu['alias'];
                 $menu = $this->Menu->getDetails($menu['params']['menu_id']);
                 $menu['alias'] = $alias;
-                
-                $this->current_menus[] = $menu['menu_id'];
                 
             }
             
@@ -93,7 +93,7 @@ class MY_Controller extends CI_Controller {
         /*
          * If tamplate is assignt to menu load it insted of default one
          */
-        if($menu['template'] != 'default'){
+        if(isset($menu['template']) && $menu['template'] != 'default'){
             $this->template = $menu['template'];
         }
         

@@ -2,17 +2,27 @@
 
 class Contact_form extends CI_Model {
     
-    public function getDetails($contact_form_id, $field = null)
+    public function getDetails($id, $field = null)
     {
-
-        $this->db->select('*');
-        $this->db->where('contact_form_id', $contact_form_id);
-
-        $contact_form = $this->db->get('com_contacts_forms');  	
+        
+        $query = "SELECT 
+                      *
+                    FROM
+                      com_contacts_forms ccf
+                      LEFT JOIN com_contacts_forms_data ccfd ON (ccf.id = ccfd.contact_form_id AND ccfd.language_id = '".$this->language_id."')
+                    WHERE
+                      ccf.id = '".$id."' ";
+        
+        $contact_form = $this->db->query($query);  	
         $contact_form = $contact_form->result_array();
 
-        if($field == null){
-            $contact_form[0]['fields'] = json_decode($contact_form[0]['fields'], true);
+        if(empty($contact_form)){
+            return;
+        }
+
+        $contact_form[0]['fields'] = json_decode($contact_form[0]['fields'], true);
+        
+        if($field == null){            
             return $contact_form[0];
         }
         else{  	

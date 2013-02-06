@@ -1,18 +1,28 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Contact_form extends CI_Model {
+class Contact_form extends MY_Model {
     
     public function getDetails($id, $field = null)
     {
-
-        $this->db->select('*');
-        $this->db->where('id', $id);
-
-        $contact_form = $this->db->get('com_contacts_forms');  	
+        
+        $query = "SELECT 
+                      *
+                    FROM
+                      com_contacts_forms ccf
+                      LEFT JOIN com_contacts_forms_data ccfd ON (ccf.id = ccfd.contact_form_id AND ccfd.language_id = '".$this->language_id."')
+                    WHERE
+                      ccf.id = '".$id."' ";
+        
+        $contact_form = $this->db->query($query);  	
         $contact_form = $contact_form->result_array();
 
-        if($field == null){
-            $contact_form[0]['fields'] = json_decode($contact_form[0]['fields'], true);
+        if(empty($contact_form)){
+            return;
+        }
+
+        $contact_form[0]['fields'] = json_decode($contact_form[0]['fields'], true);
+        
+        if($field == null){            
             return $contact_form[0];
         }
         else{  	
@@ -32,19 +42,7 @@ class Contact_form extends CI_Model {
         foreach($filters as $key => $value){
             
             if($key == 'search_v'){
-                $filter .= " AND ( ";
-                $languages = Language::getLanguages();
-                foreach($languages as $key => $language){
-                    if($key > 0){
-                        $filter .= " OR ";
-                    }
-                    $filter .= "title_".$language['abbreviation']." like '%".$value."%'
-                                OR
-                                description_".$language['abbreviation']."  like '%".$value."%'";
-                }
-                
-                $filter .= " ) ";
-
+                $filter .= " AND (title like '%".$value."%' OR description like '%".$value."%' ) ";
             }
             else{
                 $filter .= " AND `".$key."` = '".$value."' ";
@@ -55,9 +53,10 @@ class Contact_form extends CI_Model {
         $query = "SELECT 
                         *
                     FROM
-                        com_contacts_forms
+                        com_contacts_forms ccf
+                      LEFT JOIN com_contacts_forms_data ccfd ON (ccf.id = ccfd.contact_form_id AND ccfd.language_id = '".$this->language_id."')
                     WHERE
-                        id IS NOT NULL
+                        ccf.id IS NOT NULL
                         ".$filter."
                     ".($order_by != "" ? "ORDER BY ".$order_by : "")."
                     ".($limit    != "" ? "LIMIT ".$limit : "")."";
@@ -99,45 +98,30 @@ class Contact_form extends CI_Model {
 
     }
     
-    public function prepareData($id, $action)
+    public function prepareData($action)
     {
         
-        $data['title_'.$this->language_id]       = $this->input->post('title');
-        $data['description_'.$this->language_id] = $this->input->post('description');
-        $data['status']                  = $this->input->post('status');    
-        $data['to']                      = $this->input->post('to');  
-        $data['cc']                      = $this->input->post('cc');  
-        $data['bcc']                     = $this->input->post('bcc');  
-        $data['fields']                  = $this->input->post('fields');
+        $data['com_contacts_forms_data']['title']       = $this->input->post('title');
+        $data['com_contacts_forms_data']['description'] = $this->input->post('description');        
+        $data['com_contacts_forms_data']['language_id'] = $this->language_id;
         
-        unset($data['fields'][0]);
+        $fields = $this->input->post('fields');
+        unset($fields[0]);
+        $data['com_contacts_forms_data']['fields']      = json_encode($fields);
+        
+        $data['com_contacts_forms']['status']           = $this->input->post('status');    
+        $data['com_contacts_forms']['to']               = $this->input->post('to');  
+        $data['com_contacts_forms']['cc']               = $this->input->post('cc');  
+        $data['com_contacts_forms']['bcc']              = $this->input->post('bcc');  
         
         if($action == 'insert'){
-            $data['order'] =  self::getMaxOrder()+1;
-            $data['created_by'] =  $_SESSION['user_id'];
-            $data['created_on'] =  now();        
+            $data['com_contacts_forms']['order']      = self::getMaxOrder()+1;
+            $data['com_contacts_forms']['created_by'] = $_SESSION['user_id'];
+            $data['com_contacts_forms']['created_on'] = now();        
         }
-        elseif($action == 'update'){
-            
-            foreach($data['fields'] as $number => $field){
-                        
-                $fields = json_decode(self::getDetails($id, 'fields'), true);
-                $languages = Language::getLanguages();
-                foreach($languages as $key => $language){
-                    if($this->language_id == $language['abbreviation']){
-                        continue;
-                    }
-                    
-                    $data['fields'][$number]['label_'.$language['abbreviation']]  = $fields[$number]['label_'.$language['abbreviation']];
-                    $data['fields'][$number]['value_'.$language['abbreviation']]  = $fields[$number]['value_'.$language['abbreviation']];
-
-                }
-                
-            }
-            $data['fields'] = json_encode($data['fields']);
-            
-            $data['updated_by'] =  $_SESSION['user_id'];
-            $data['updated_on'] =  now(); 
+        elseif($action == 'update'){            
+            $data['com_contacts_forms']['updated_by'] = $_SESSION['user_id'];
+            $data['com_contact_forms']['updated_on'] = now();             
         }
         
         return $data;
@@ -147,42 +131,72 @@ class Contact_form extends CI_Model {
     public function add()
     {
         
-        $data = self::prepareData('', 'insert');
-        
-        $query = $this->db->insert_string('com_contacts_forms', $data);
-        //echo $query;
-        $result = $this->db->query($query);
+        $data = self::prepareData('insert');
 
-        if($result == true){
-            $this->session->set_userdata('good_msg', lang('msg_save_contact_form'));
-        }
-        else{
+        $this->db->query('BEGIN');
+        
+        // save data in com_contact_forms table
+        $query = $this->db->insert_string('com_contacts_forms', $data['com_contacts_forms']);
+        $result = $this->db->query($query);
+        if($result != true){
             $this->session->set_userdata('error_msg', lang('msg_save_contact_form_error'));
+            $this->db->query('ROLLBACK');
+            return;
         }
         
-        $article_id = $this->db->insert_id();
+        $id = $this->db->insert_id();
         
-        return $article_id;
+        // save data in com_contact_forms_data table
+        $data['com_contact_forms_data']['contact_form_id'] = $id;
+        $query = $this->db->insert_string('com_contacts_forms_data', $data['com_contacts_forms_data']);
+        $result = $this->db->query($query);        
+        if($result != true){
+            $this->session->set_userdata('error_msg', lang('msg_save_contact_form_error'));
+            $this->db->query('ROLLBACK');
+            return $id;
+        }
+                
+        $this->session->set_userdata('good_msg', lang('msg_save_contact_form'));
+        $this->db->query('COMMIT');
+        return $id;
         
     }
     
     public function edit($id)
     {
         
-        $data = self::prepareData($id, 'update');
+        $data = self::prepareData('update');
+        
+        $this->db->query('BEGIN');
+        
+        // save data in com_contacts_forms table
         $where = "id = ".$id; 
-
-        $query = $this->db->update_string('com_contacts_forms', $data, $where);
-        //echo $query;
-        $result = $this->db->query($query);
-
-        if($result == true){
-            $this->session->set_userdata('good_msg', lang('msg_save_contact_form'));
-        }
-        else{
+        $query = $this->db->update_string('com_contacts_forms', $data['com_contacts_forms'], $where);        
+        $result = $this->db->query($query);        
+        if($result != true){
             $this->session->set_userdata('error_msg', lang('msg_save_contact_form_error'));
+            $this->db->query('ROLLBACK');
+            return $id;
         }
-                
+        
+        // save data in com_contacts_forms_data table
+        if(parent::_dataExists('com_contacts_forms_data', 'contact_form_id', $id) == 0){
+            $data['com_contacts_forms_data']['contact_form_id'] = $id;
+            $query = $this->db->insert_string('com_contacts_forms_data', $data['com_contacts_forms_data']);
+        }
+        else{            
+            $where = "contact_form_id = ".$id." AND language_id = ".$this->language_id." ";
+            $query = $this->db->update_string('com_contacts_forms_data', $data['com_contacts_forms_data'], $where);            
+        }        
+        $this->db->query($query);
+        if($result != true){
+            $this->session->set_userdata('error_msg', lang('msg_save_contact_form_error'));
+            $this->db->query('ROLLBACK');
+            return $id;
+        }
+                   
+        $this->session->set_userdata('good_msg', lang('msg_save_contact_form'));
+        $this->db->query('COMMIT');
         return $id;
         
     }

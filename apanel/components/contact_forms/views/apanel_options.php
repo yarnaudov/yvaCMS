@@ -12,8 +12,8 @@ $contact_forms = $this->Contact_form->getContactForms();
     <td>        
         <select name="params[contact_form_id]" >
             <?php foreach($contact_forms as $contact_form){ ?>
-            <option <?=$contact_form['contact_form_id'] == set_value('params[contact_form_id]', isset($params['contact_form_id']) ? $params['contact_form_id'] : "") ? "selected" : "";?> 
-                    value="<?=$contact_form['contact_form_id'];?>" ><?=$contact_form['title_'.Language::getDefault()];?></option>
+            <option <?=$contact_form['id'] == set_value('params[contact_form_id]', isset($params['contact_form_id']) ? $params['contact_form_id'] : "") ? "selected" : "";?> 
+                    value="<?=$contact_form['id'];?>" ><?=$contact_form['title'];?></option>
             <?php } ?>
         </select>
     </td>
