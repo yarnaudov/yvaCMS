@@ -9,7 +9,7 @@ class Article extends MY_Model {
                       *
                     FROM
                       articles a
-                      LEFT JOIN articles_data ad ON (a.id = ad.article_id AND ad.language_id = '".$this->trl."')
+                      LEFT JOIN articles_data ad ON (a.id = ad.article_id AND ad.language_id = '".$this->language_id."')
                     WHERE
                       a.id = '".$id."' ";
         
@@ -95,7 +95,7 @@ class Article extends MY_Model {
                         *
                     FROM
                         articles a
-                        LEFT JOIN articles_data ad ON (a.id = ad.article_id AND ad.language_id = ".$this->trl.")
+                        LEFT JOIN articles_data ad ON (a.id = ad.article_id AND ad.language_id = ".$this->language_id.")
                     WHERE
                         id IS NOT NULL
                         ".$filter."
@@ -157,7 +157,7 @@ class Article extends MY_Model {
                 
         $data['articles_data']['title']       = $this->input->post('title');
         $data['articles_data']['text']        = $this->input->post('text');
-        $data['articles_data']['language_id'] = $this->trl;
+        $data['articles_data']['language_id'] = $this->language_id;
         
         $data['articles']['alias']            = alias($this->input->post('alias'));
         $data['articles']['category_id']      = $this->input->post('category');
@@ -267,7 +267,7 @@ class Article extends MY_Model {
             $query = $this->db->insert_string('articles_data', $data['articles_data']);
         }
         else{            
-            $where = "article_id = ".$id." AND language_id = ".$this->trl." ";
+            $where = "article_id = ".$id." AND language_id = ".$this->language_id." ";
             $query = $this->db->update_string('articles_data', $data['articles_data'], $where);            
         }        
         $this->db->query($query);
@@ -397,7 +397,7 @@ class Article extends MY_Model {
                                          a.`order`
                                        FROM
                                          articles a
-                                         JOIN articles_data ad ON (a.id = ad.article_id AND ad.language_id = ".$this->trl.")
+                                         JOIN articles_data ad ON (a.id = ad.article_id AND ad.language_id = ".$this->language_id.")
                                        WHERE
                                          a.id = ".$id." ");
         

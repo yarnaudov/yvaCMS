@@ -9,7 +9,7 @@ class Image extends MY_Model {
                       *
                     FROM
                       com_gallery_images cgi
-                      LEFT JOIN com_gallery_images_data cgid ON (cgi.id = cgid.image_id AND cgid.language_id = '".$this->trl."')
+                      LEFT JOIN com_gallery_images_data cgid ON (cgi.id = cgid.image_id AND cgid.language_id = '".$this->language_id."')
                     WHERE
                       cgi.id = '".$id."' ";
         
@@ -59,7 +59,7 @@ class Image extends MY_Model {
                         *
                     FROM
                         com_gallery_images cgi
-                        LEFT JOIN com_gallery_images_data cgid ON (cgi.id = cgid.image_id AND cgid.language_id = '".$this->trl."')
+                        LEFT JOIN com_gallery_images_data cgid ON (cgi.id = cgid.image_id AND cgid.language_id = '".$this->language_id."')
                     WHERE
                         cgi.id IS NOT NULL
                         ".$filter."
@@ -109,7 +109,7 @@ class Image extends MY_Model {
                  
         $data['com_gallery_images_data']['title']       = $this->input->post('title');
         $data['com_gallery_images_data']['description'] = $this->input->post('description');
-        $data['com_gallery_images_data']['language_id'] = $this->trl;
+        $data['com_gallery_images_data']['language_id'] = $this->language_id;
 
         $data['com_gallery_images']['album_id']         = $this->input->post('album');
         $data['com_gallery_images']['status']           = $this->input->post('status');      
@@ -196,7 +196,7 @@ class Image extends MY_Model {
             $query = $this->db->insert_string('com_gallery_images_data', $data['com_gallery_images_data']);
         }
         else{            
-            $where = "image_id = ".$id." AND language_id = ".$this->trl." ";
+            $where = "image_id = ".$id." AND language_id = ".$this->language_id." ";
             $query = $this->db->update_string('com_gallery_images_data', $data['com_gallery_images_data'], $where);            
         }        
         $this->db->query($query);

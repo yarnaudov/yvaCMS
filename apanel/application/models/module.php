@@ -9,7 +9,7 @@ class Module extends MY_Model {
                       *
                     FROM
                       modules m
-                      LEFT JOIN modules_data md ON (m.id = md.module_id AND md.language_id = '".$this->trl."')
+                      LEFT JOIN modules_data md ON (m.id = md.module_id AND md.language_id = '".$this->language_id."')
                     WHERE
                       m.id = '".$id."' ";
         
@@ -58,7 +58,7 @@ class Module extends MY_Model {
                         *
                     FROM
                         modules m
-                        LEFT JOIN modules_data md ON (m.id = md.module_id AND md.language_id = ".$this->trl.")
+                        LEFT JOIN modules_data md ON (m.id = md.module_id AND md.language_id = ".$this->language_id.")
                     WHERE
                         m.id IS NOT NULL
                         ".$filter."
@@ -145,7 +145,7 @@ class Module extends MY_Model {
         
         $data['modules_data']['title']       = $this->input->post('title');
         $data['modules_data']['description'] = $this->input->post('description');
-        $data['modules_data']['language_id'] = $this->trl;
+        $data['modules_data']['language_id'] = $this->language_id;
 
         $data['modules']['position']         = $this->input->post('position');
         $data['modules']['status']           = $this->input->post('status');      
@@ -269,7 +269,7 @@ class Module extends MY_Model {
             $query = $this->db->insert_string('modules_data', $data['modules_data']);
         }
         else{            
-            $where = "module_id = ".$id." AND language_id = ".$this->trl." ";
+            $where = "module_id = ".$id." AND language_id = ".$this->language_id." ";
             $query = $this->db->update_string('modules_data', $data['modules_data'], $where);            
         }        
         $this->db->query($query);

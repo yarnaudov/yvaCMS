@@ -7,7 +7,7 @@ class Setting extends CI_Model {
 
         $this->db->select('*');
         $this->db->where('name', $name);
-        $this->db->where('language_id', $this->trl);
+        $this->db->where('language_id', $this->language_id);
         $this->db->or_where('language_id', NULL);
         $setting = $this->db->get('settings');  	
         $setting = $setting->result_array();
@@ -29,7 +29,7 @@ class Setting extends CI_Model {
     {
         
         $this->db->select('*');
-        $this->db->where('language_id', $this->trl);
+        $this->db->where('language_id', $this->language_id);
         $this->db->or_where('language_id', NULL);
         $settings = $this->db->get('settings');  	
         $settings = $settings->result_array();
@@ -73,10 +73,10 @@ class Setting extends CI_Model {
                 case "site_name":
                 case "meta_description":
                 case "meta_keywords":
-                    $data['language_id'] = $this->trl;
+                    $data['language_id'] = $this->language_id;
                     
                     //$data['value'] = self::getDetails($type, 'value');
-                    //$data['value'][$this->trl] = $setting;
+                    //$data['value'][$this->language_id] = $setting;
                     //$data['value'] = json_encode($data['value']);
                  break;
                 default:

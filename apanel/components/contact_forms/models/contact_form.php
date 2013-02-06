@@ -102,8 +102,8 @@ class Contact_form extends CI_Model {
     public function prepareData($id, $action)
     {
         
-        $data['title_'.$this->trl]       = $this->input->post('title');
-        $data['description_'.$this->trl] = $this->input->post('description');
+        $data['title_'.$this->language_id]       = $this->input->post('title');
+        $data['description_'.$this->language_id] = $this->input->post('description');
         $data['status']                  = $this->input->post('status');    
         $data['to']                      = $this->input->post('to');  
         $data['cc']                      = $this->input->post('cc');  
@@ -124,7 +124,7 @@ class Contact_form extends CI_Model {
                 $fields = json_decode(self::getDetails($id, 'fields'), true);
                 $languages = Language::getLanguages();
                 foreach($languages as $key => $language){
-                    if($this->trl == $language['abbreviation']){
+                    if($this->language_id == $language['abbreviation']){
                         continue;
                     }
                     

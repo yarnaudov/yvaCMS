@@ -9,7 +9,7 @@ class Album extends MY_Model {
                       *
                     FROM
                       com_gallery_albums cga
-                      LEFT JOIN com_gallery_albums_data cgad ON (cga.id = cgad.album_id AND cgad.language_id = '".$this->trl."')
+                      LEFT JOIN com_gallery_albums_data cgad ON (cga.id = cgad.album_id AND cgad.language_id = '".$this->language_id."')
                     WHERE
                       cga.id = '".$id."' ";
         
@@ -39,7 +39,7 @@ class Album extends MY_Model {
                       com_gallery_albums cga
                       JOIN com_gallery_albums_data cgad ON (cga.id = cgad.album_id)
                     WHERE
-                      cgad.language_id = ".$this->trl."
+                      cgad.language_id = ".$this->language_id."
                      AND 
                       cga.status = 'yes'
                     ORDER BY cga.`order`";
@@ -78,7 +78,7 @@ class Album extends MY_Model {
                         *
                     FROM
                         com_gallery_albums cga
-                        LEFT JOIN com_gallery_albums_data cgad ON (cga.id = cgad.album_id AND cgad.language_id = '".$this->trl."')
+                        LEFT JOIN com_gallery_albums_data cgad ON (cga.id = cgad.album_id AND cgad.language_id = '".$this->language_id."')
                     WHERE
                         cga.id IS NOT NULL
                         ".$filter."
@@ -125,7 +125,7 @@ class Album extends MY_Model {
                  
         $data['com_gallery_albums_data']['title']       = $this->input->post('title');
         $data['com_gallery_albums_data']['description'] = $this->input->post('description');
-        $data['com_gallery_albums_data']['language_id'] = $this->trl;
+        $data['com_gallery_albums_data']['language_id'] = $this->language_id;
 
         $data['com_gallery_albums']['status']           = $this->input->post('status');      
         $data['com_gallery_albums']['show_in_language'] = $this->input->post('show_in_language');
@@ -205,7 +205,7 @@ class Album extends MY_Model {
             $query = $this->db->insert_string('com_gallery_albums_data', $data['com_gallery_albums_data']);
         }
         else{            
-            $where = "album_id = ".$id." AND language_id = ".$this->trl." ";
+            $where = "album_id = ".$id." AND language_id = ".$this->language_id." ";
             $query = $this->db->update_string('com_gallery_albums_data', $data['com_gallery_albums_data'], $where);            
         }        
         $this->db->query($query);

@@ -168,7 +168,7 @@ class Articles extends MY_Controller {
         if($this->uri->segment(4) == 'history'){
             $data = $this->Article->getHistoryDetails($this->article_id, urldecode($this->uri->segment(5)) );
             $data['id'] = $data['article_id'];
-            $this->trl  = $data['language_id'];
+            $this->language_id  = $data['language_id'];
         }
         else{
             $data = $this->Article->getDetails($this->article_id);

@@ -3,7 +3,7 @@
 class MY_Controller extends CI_Controller{
     
     // active translation language_id
-    public $trl;
+    public $language_id;
     
     // user access
     public $access;
@@ -36,11 +36,11 @@ class MY_Controller extends CI_Controller{
         /*
          * get current translation
          */
-        $this->trl = $this->session->userdata('trl') == "" ? $this->Language->getDefault() : $this->session->userdata('trl');
+        $this->language_id = $this->session->userdata('trl') == "" ? $this->Language->getDefault() : $this->session->userdata('trl');
         $this->session->unset_userdata('trl');
-        if(isset($_POST['translation'])){         
-            $this->trl = $_POST['translation'];
-            if(isset($_POST['uset_posts'])){                
+        if(isset($_POST['translation'])){
+            $this->language_id = $_POST['translation'];
+            if(isset($_POST['uset_posts'])){
                 $this->input->post = array();
                 $_POST = array();
             }

@@ -256,7 +256,7 @@ class Custom_field extends CI_Model {
                   
             $data = array();
             
-            $data['language_id'] = $custom_field['multilang'] == "yes" ? $this->trl : NULL;  
+            $data['language_id'] = $custom_field['multilang'] == "yes" ? $this->language_id : NULL;  
             $data['value']       = $this->input->post('field'.$custom_field['id']);
             if(is_array($data['value'])){
                 $data['value'] = json_encode($data['value']);
@@ -326,7 +326,7 @@ class Custom_field extends CI_Model {
                      AND
                       custom_field_id IN (".implode(',', $custom_fields_ids).")
                      AND
-                      (language_id = '".$this->trl."' || language_id IS NULL)";
+                      (language_id = '".$this->language_id."' || language_id IS NULL)";
         
         //echo $query;
         

@@ -7,7 +7,7 @@ class MY_Model extends CI_Model {
         
         $this->db->select('*');
         $this->db->where($column, $id);
-        $this->db->where('language_id', $this->trl);
+        $this->db->where('language_id', $this->language_id);
         $this->db->from($table);
         $count = $this->db->count_all_results();
         

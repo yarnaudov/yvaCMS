@@ -8,7 +8,7 @@
             <tr>
                 <td>
                     <select name="translation" >
-                        <?=create_options('languages', 'id', 'title', $this->trl, array('status' => 'yes'));?>
+                        <?=create_options('languages', 'id', 'title', $this->language_id, array('status' => 'yes'));?>
                     </select>
                     
                     <script type="text/javascript" >

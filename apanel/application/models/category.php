@@ -14,7 +14,7 @@ class Category extends MY_Model {
                       *
                     FROM
                       categories c
-                      LEFT JOIN categories_data cd ON (c.id = cd.category_id AND cd.language_id = '".$this->trl."')
+                      LEFT JOIN categories_data cd ON (c.id = cd.category_id AND cd.language_id = '".$this->language_id."')
                     WHERE
                       c.id = '".$id."' ";
         
@@ -87,7 +87,7 @@ class Category extends MY_Model {
                         *
                     FROM
                         categories c
-                        LEFT JOIN categories_data cd ON (c.id = cd.category_id AND cd.language_id = ".$this->trl.")
+                        LEFT JOIN categories_data cd ON (c.id = cd.category_id AND cd.language_id = ".$this->language_id.")
                     WHERE
                         extension = '".$this->extension."'
                         ".$filter."
@@ -119,7 +119,7 @@ class Category extends MY_Model {
                  
         $data['categories_data']['title']       = $this->input->post('title');
         $data['categories_data']['description'] = $this->input->post('description');
-        $data['categories_data']['language_id'] = $this->trl;
+        $data['categories_data']['language_id'] = $this->language_id;
         
         if($action == 'insert'){
             $data['categories']['extension']    = $this->extension;
@@ -193,7 +193,7 @@ class Category extends MY_Model {
             $query = $this->db->insert_string('categories_data', $data['categories_data']);
         }
         else{            
-            $where = "category_id = ".$id." AND language_id = ".$this->trl." ";
+            $where = "category_id = ".$id." AND language_id = ".$this->language_id." ";
             $query = $this->db->update_string('categories_data', $data['categories_data'], $where);            
         }        
         $this->db->query($query);

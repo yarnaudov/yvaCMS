@@ -11,7 +11,7 @@ class Menu extends MY_Model {
                       *
                     FROM
                       menus m
-                      LEFT JOIN menus_data md ON (m.id = md.menu_id AND md.language_id = '".$this->trl."')
+                      LEFT JOIN menus_data md ON (m.id = md.menu_id AND md.language_id = '".$this->language_id."')
                     WHERE
                       m.id = '".$id."' ";
         
@@ -96,7 +96,7 @@ class Menu extends MY_Model {
                       *
                     FROM
                       menus m
-                      LEFT JOIN menus_data md ON (m.id = md.menu_id AND md.language_id = '".$this->trl."')
+                      LEFT JOIN menus_data md ON (m.id = md.menu_id AND md.language_id = '".$this->language_id."')
                     WHERE
                       m.parent_id = '".$id."'                      
                       ".$filter_arr['filter']."
@@ -131,7 +131,7 @@ class Menu extends MY_Model {
                         *
                     FROM
                         menus m
-                        LEFT JOIN menus_data md ON (m.id = md.menu_id AND md.language_id = '".$this->trl."')
+                        LEFT JOIN menus_data md ON (m.id = md.menu_id AND md.language_id = '".$this->language_id."')
                     WHERE
                         m.parent_id IS NULL
                         ".$filter_arr['filter']."
@@ -261,7 +261,7 @@ class Menu extends MY_Model {
         $data['menus_data']['description']          = $this->input->post('description');
         $data['menus_data']['meta_description']     = $this->input->post('meta_description');
         $data['menus_data']['meta_keywords']        = $this->input->post('meta_keywords');
-        $data['menus_data']['language_id']          = $this->trl;
+        $data['menus_data']['language_id']          = $this->language_id;
 
         $data['menus']['alias']                     = alias($this->input->post('alias'));        
         $data['menus']['category_id']               = $this->input->post('category');
@@ -379,7 +379,7 @@ class Menu extends MY_Model {
             $query = $this->db->insert_string('menus_data', $data['menus_data']);
         }
         else{            
-            $where = "menu_id = ".$id." AND language_id = ".$this->trl." ";
+            $where = "menu_id = ".$id." AND language_id = ".$this->language_id." ";
             $query = $this->db->update_string('menus_data', $data['menus_data'], $where);            
         }        
         $this->db->query($query);
