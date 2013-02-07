@@ -101,7 +101,7 @@ class Content extends CI_Model {
             
             $description = trim(strip_tags($menu['description']));
             
-            if(isset($menu['params']['description_as_page_title']) && $menu['params']['description_as_page_title'] == 'yes' && !empty($description) ){
+            if(isset($menu['description_as_page_title']) && $menu['description_as_page_title'] == 'yes' && !empty($description) ){
                 $title = $description;
             }
             else{            

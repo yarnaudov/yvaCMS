@@ -87,16 +87,30 @@
                             <tr>
                                 <th><label><?=lang('label_template');?>:</label></th>
                                 <td>
-                                    <?php $templates_dir = FCPATH.'/../templates/';
+                                    <?php $template = set_value('settings[template]', isset($settings['template']) ? $settings['template'] : "");
+                                          $templates_dir = FCPATH.'/../templates/';
                                           $handle = opendir($templates_dir);  ?>
                                     <select name="settings[template]" style="width: auto;" >
-                                        <?php while (false !== ($entry = readdir($handle))) { 
+                                        <?php while (false !== ($entry = readdir($handle))) {                                                
                                                 if(substr($entry, 0, 1) == "." || !is_dir($templates_dir.$entry)){
                                                   continue;                                                
-                                                }
-                                                $template = set_value('settings[template]', isset($settings['template']) ? $settings['template'] : ""); ?>
+                                                } ?>
                                         
-                                        <option value="<?=$entry;?>" <?=$template == $entry ? "selected" : "";?> ><?=$entry;?></option>
+                                        <optgroup label="<?=$entry;?>" >
+                                            
+                                            <?php $template_dir = $templates_dir.$entry.'/';
+                                                  $handle2 = opendir($template_dir);
+                                                  while (false !== ($file = readdir($handle2))) { 
+                                                      if(substr($file, 0, 1) == "." || is_dir($template_dir.$file) || !preg_match('/.php$/', $file) ){
+                                                          continue;                                                
+                                                      }
+                                                      $file = str_replace('.php', '', $file); ?>
+                                                
+                                            <option value="<?=$entry.'/'.$file;?>" <?=$template == $entry.'/'.$file ? "selected" : "";?> ><?=$entry.'/'.$file;?></option>
+                                            
+                                            <?php } ?>
+                                        
+                                        </optgroup>
                                         
                                         <?php } ?>
                                     </select>

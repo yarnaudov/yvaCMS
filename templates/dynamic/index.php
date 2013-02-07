@@ -34,7 +34,7 @@
                 </div>
 
                 <div id="language_switch" >
-                    <include type="module" name="language_switch" />
+                    <include type="module" name="language_switch" template="" />
                 </div>
                 
             </div>
@@ -67,7 +67,7 @@
 
                     <div class="clear">
 
-                        <?php $sidebar_modules = 1;/*$this->Module->count('sidebar');*/ ?>
+                        <?php $sidebar_modules = $this->Module->count('sidebar'); ?>
                         
                         <div class="column <?php echo $sidebar_modules ? "column-650" : "column-auto"; ?> column-left">
                             <include type="content" />

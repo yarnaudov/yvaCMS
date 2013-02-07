@@ -175,4 +175,13 @@ class Module extends CI_Model {
         
     }
     
+    function count($position)
+    {
+        
+        $modules = self::_getModules($position);
+        
+        return count($modules);
+        
+    }
+    
 }

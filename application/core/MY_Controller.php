@@ -55,9 +55,9 @@ class MY_Controller extends CI_Controller {
             $this->current_menus = array();
         }
         else{
-            $this->menu_id = $this->Menu->getByAlias($alias, 'menu_id');
+            $this->menu_id = $this->Menu->getByAlias($alias, 'id');
             if($this->menu_id == ''){
-                $this->menu_id   = $this->Menu->getDefault('menu_id');
+                $this->menu_id   = $this->Menu->getDefault('id');
             }                        
             $this->current_menus = $this->Menu->getParents($this->menu_id);
             if(current(explode(':', $this->uri->segment(2))) == 'article'){

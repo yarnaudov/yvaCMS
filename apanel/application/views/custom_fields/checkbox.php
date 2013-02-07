@@ -21,6 +21,8 @@
                 <input class="optgroup"        type="checkbox"          name="params[optgroups][]" value="1" <?=(isset($optgroups[$key]) && $optgroups[$key] == 1) ? "checked" : "";?> title="Make this option group">
                 <?php } ?>
                 
+                <img src="" alt="move" >
+                
                 <a class="styled delete" >&nbsp;</a>
             </li>
             <?php } ?>
@@ -35,6 +37,10 @@
     <td>
         <a class="styled add" ><?=lang('label_add');?></a>
         <script type="text/javascript" >
+    
+            $('a.delete').die('click');
+            $('input.option').die('click change');
+            $('input.optgroup').die('click change');
     
             $('a.add').click(function(event){
 
@@ -70,6 +76,9 @@
                 $(this).parent().toggle('slow', function() {
                     if($('#checkboxes li').length > 1){
                         $(this).remove();
+                    }
+                    else{
+                        $(this).toggle('slow');
                     }
                 });
 

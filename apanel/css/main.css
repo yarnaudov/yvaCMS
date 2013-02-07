@@ -678,6 +678,7 @@ button.toggle{
  
  #tabs .ui-widget-content label{
      width: auto !important;
+     display: inline-block;
  }
  
  /*
@@ -895,6 +896,9 @@ ol.rules li a{
 #checkboxes li{
     overflow: auto;
     padding-bottom: 6px;
+    height: 20px;    
+}
+#checkboxes li img{
     cursor: move;
 }
 #checkboxes li input[type=checkbox],
@@ -905,7 +909,7 @@ ol.rules li a{
     float: left;
 }
 #checkboxes li input[type=text]{
-    width: 76%;   
+    width: 70%;   
     float: left;
     margin-right: 4px;
 }
