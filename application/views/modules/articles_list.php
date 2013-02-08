@@ -5,7 +5,7 @@ echo '<ul>';
 foreach($articles as $article){
 
     /* --- check language for article display --- */
-    if($article['language_id'] != NULL && $article['language_id'] != $this->Language->getDetailsByAbbr(get_lang(), 'language_id')){
+    if($article['show_in_language'] != NULL && $article['show_in_language'] != $this->Language->getDetailsByAbbr(get_lang(), 'id')){
         continue;
     }            
 
@@ -23,7 +23,7 @@ foreach($articles as $article){
     }
     
     echo '<li '.($class != '' ? 'class="'.$class.'"' : '').' >';
-    echo '    <a href="'.site_url('article:'.$article['alias']).'" >'.$article['title_'.get_lang()].'</a>';
+    echo '    <a href="'.site_url('article:'.$article['alias']).'" >'.$article['title'].'</a>';
     echo '</li>';
 
 }

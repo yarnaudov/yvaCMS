@@ -127,6 +127,7 @@ class Banner extends CI_Model {
         $data['show_in_language'] = $this->input->post('show_in_language');
         $data['start_publishing'] = $this->input->post('start_publishing');
         $data['end_publishing']   = $this->input->post('end_publishing');
+        $data['show_title']       = $this->input->post('show_title');
         $data['css_class_sufix']  = $this->input->post('css_class_sufix');
         $data['params']           = json_encode($this->input->post('params'));
 

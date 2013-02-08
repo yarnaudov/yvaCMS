@@ -182,6 +182,17 @@
                                 <tr><td colspan="2" class="empty_line" ></td></tr>
                                 
                                 <tr>	      			
+                                    <th><label><?=lang('label_show_title');?>:</label></th>
+                                    <td>
+                                        <select name="show_title" >
+                                            <?=create_options_array($this->config->item('yes_no'), set_value('show_title', isset($show_title) ? $show_title : ""));?>
+                                        </select>
+                                    </td>
+                                </tr>
+                                
+                                <tr><td colspan="2" class="empty_line" ></td></tr>
+                                
+                                <tr>	      			
                                     <th><label><?=lang('label_css_class_suffix');?>:</label></th>
                                     <td>
                                         <input type="text" name="css_class_sufix" value="<?=set_value('css_class_sufix', isset($css_class_sufix) ? $css_class_sufix : "");?>"  >

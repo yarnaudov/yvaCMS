@@ -1,7 +1,11 @@
 
-<?php if(isset($title)){ ?>
-<div class="title" ><?=$title;?></div>
-<?php } ?>
+<div class="content" >
+    
+    <?php if(isset($title)){ ?>
+    <div class="title" ><?=$title;?></div>
+    <?php } ?>
 
-<?=$content;?>
+    <?=$content;?>
+
+</div>
 

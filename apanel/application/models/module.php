@@ -157,6 +157,7 @@ class Module extends MY_Model {
         $data['modules']['start_publishing'] = $this->input->post('start_publishing');
         $data['modules']['end_publishing']   = $this->input->post('end_publishing');
         $data['modules']['access']           = $this->input->post('access');
+        $data['modules']['show_title']       = $this->input->post('show_title');
         $data['modules']['css_class_sufix']  = $this->input->post('css_class_sufix');
         $data['modules']['params']           = $this->input->post('params');
 

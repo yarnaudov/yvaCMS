@@ -185,6 +185,17 @@
 
                                 <?php $this->load->view('start_end_dates'); ?>
                                 
+                                <tr><td colspan="2" class="empty_line" ></td></tr>
+                                
+                                <tr>	      			
+                                    <th><label><?=lang('label_show_title');?>:</label></th>
+                                    <td>
+                                        <select name="show_title" >
+                                            <?=create_options_array($this->config->item('yes_no'), set_value('show_title', isset($show_title) ? $show_title : ""));?>
+                                        </select>
+                                    </td>
+                                </tr>
+                                
                                 <tbody id="custom_fields" >
                                 <?php if(count($custom_fields) > 0){
                                           $this->load->view('custom_fields/load_fields');

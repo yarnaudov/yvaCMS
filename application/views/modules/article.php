@@ -1,7 +1,12 @@
 
-<div>
+<div class="article" >
+    
     <?php if($article['show_title'] == 'yes'){ ?>
-    <div class="article_title" ><?=$article['title_'.get_lang()];?></div>
+    <div class="title" ><?=$article['title'];?></div>
     <?php } ?>
-    <?= $this->Article->parceText(@$article['text_'.get_lang()]);?>
+    
+    <div class="content" >
+        <?=$this->Article->parceText(@$article['text']);?>
+    </div>
+    
 </div>

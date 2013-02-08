@@ -144,6 +144,7 @@ $lang['label_from']          = 'От';
 
 $lang['label_display_module_in'] = 'Показване на модула в';
 $lang['label_display_banner_in'] = 'Показване на банера в';
+$lang['label_show_title']        = 'Покажи заглавието';
 $lang['label_label']             = 'Етикет';
 $lang['label_field_text']        = 'Текст в полето';
 $lang['label_button_text']       = 'Текст в бутона';
@@ -152,7 +153,7 @@ $lang['label_width']             = 'Широчина';
 $lang['label_height']            = 'Височина';
 $lang['label_separator']         = 'Разделител';
 
-$lang['label_css_class_suffix']    = 'CSS клас';
+$lang['label_css_class_suffix']    = 'CSS клас префикс';
 
 // module display in
 $lang['label_all_pages']           = 'Всички страници';

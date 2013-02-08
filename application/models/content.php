@@ -4,7 +4,7 @@ class Content extends CI_Model {
     
     public $templates = array('main'         => 'content/main',
                               'article'      => 'content/article',
-                              'article_list' => 'content/article_list');
+                              'article_list' => 'content/articles_list');
         
     public function load($templates = array())
     {
@@ -18,8 +18,8 @@ class Content extends CI_Model {
             if(@$article['show_title'] == 'yes'){
               $data['title'] = $article['title'];
             }
+            
             $data['content'] = $this->Article->parceText(@$article['text']);
-            //$data['content'] = @$article['text_'.get_lang()];
             
         }
         elseif($this->menu_id == 'search'){ // stupid fix for search component to work with no menu assigned to it
@@ -54,7 +54,8 @@ class Content extends CI_Model {
                 case "article":
                 
                     $article = $this->Article->getDetails($menu['params']['article_id']);
-                    if(@$article['show_title'] == 'yes'){
+                    
+                    if($article['show_title'] == 'yes'){
                       $data['title'] = $article['title'];
                     }
                     
@@ -69,9 +70,8 @@ class Content extends CI_Model {
                 break;
                 
                 case "articles_list":
-                    $data2['menu']     = $menu;
-                    $data2['articles'] = $this->Article->getByCategory($menu['params']['category_id']);
-                    $data['content']   = $this->load->view($menu['template'], $data2, true);                    
+                    $articles = $this->Article->getByCategory($menu['params']['category_id']);
+                    $data['content'] = $this->load->view($this->templates['article_list'], compact('menu', 'articles'), true);                    
                 break;
             
             }

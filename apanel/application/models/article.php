@@ -165,6 +165,7 @@ class Article extends MY_Model {
         $data['articles']['show_in_language'] = $this->input->post('show_in_language');
         $data['articles']['start_publishing'] = $this->input->post('start_publishing');
         $data['articles']['end_publishing']   = $this->input->post('end_publishing');
+        $data['articles']['show_title']       = $this->input->post('show_title');
         $data['articles']['params']           = json_encode($this->input->post('params'));
 
         if($data['articles']['show_in_language'] == 'all'){

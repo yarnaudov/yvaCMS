@@ -2,5 +2,3 @@
 
 $component['languages'][] = 'com_pulls_labels';
 $component['languages'][] = 'com_pulls_msg';
-
-$component['menus']['pulls'] = 'com_pulls'; 
