@@ -84,11 +84,6 @@ class Setting extends CI_Model {
         return $this->settings['template']; 
     }
     
-    public function getUrlSuffix()
-    {        
-        return $this->settings['url_suffix'];  
-    }
-    
     public function getMailer()
     {        
         return $this->settings['mailer'];  

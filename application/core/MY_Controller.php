@@ -40,25 +40,33 @@ class MY_Controller extends CI_Controller {
          * Set settings
          */
         $this->template = $this->Setting->getTemplate();
-        if($this->Setting->getUrlSuffix()){
-            $this->config->set_item('url_suffix', '.'.$this->Setting->getUrlSuffix());
-        }
 
-        $alias = $this->uri->segment(1) != '' ? $this->uri->segment(1) : $this->Menu->getDefault('alias');        
-        $alias = preg_replace('/'.$this->config->item('url_suffix').'$/', '', $alias);
+        $uri = explode('/', $this->uri->uri_string());
+        $uri = array_reverse($uri);
         
-        if(current(explode(':', $alias)) == 'article'){
-            $this->article_alias = end(explode(':', $alias));
+        if(count($uri) == 1 && current(explode(':', $uri[0])) == 'article'){
+            $this->article_alias = end(explode(':', $uri[0]));
         }
-        elseif($alias == 'search'){ // stupid fix for search component to work with no menu assigned to it
+        elseif($uri[0] == 'search'){ // stupid fix for search component to work with no menu assigned to it
             $this->menu_id = 'search';
             $this->current_menus = array();
         }
         else{
-            $this->menu_id = $this->Menu->getByAlias($alias, 'id');
+            
+            //seach for menu by alias              
+            foreach($uri as $alias){
+                $this->menu_id = $this->Menu->getByAlias($alias, 'id');
+                if($this->menu_id != ''){
+                    break;
+                }
+            }
+            
+             //if no menu found load default one
             if($this->menu_id == ''){
                 $this->menu_id   = $this->Menu->getDefault('id');
-            }                        
+            }       
+            
+            // get all parent menus of current one
             $this->current_menus = $this->Menu->getParents($this->menu_id);
             if(current(explode(':', $this->uri->segment(2))) == 'article'){
                 $this->article_alias = end(explode(':', $this->uri->segment(2)));
@@ -66,10 +74,7 @@ class MY_Controller extends CI_Controller {
             
             $menu = $this->Menu->getDetails($this->menu_id);
             
-            
-            /*
-             * If menu type is 'menu' rewrite variable $menu with new menu but save alias from original menu
-             */
+            // If menu type is 'menu' rewrite variable $menu with new menu but save alias from original menu
             if($menu['params']['type'] == 'menu' && !empty($menu['params']['menu_id'])){
                 
                 $this->current_menus[] = $menu['menu_id'];
@@ -78,21 +83,16 @@ class MY_Controller extends CI_Controller {
                 $menu = $this->Menu->getDetails($menu['params']['menu_id']);
                 $menu['alias'] = $alias;
                 
-            }
+            }            
             
-            
-            /*
-             * If menu type is 'component' set route to component and redirect the page 
-             */
+            // If menu type is 'component' set route to component and redirect the page 
             if(preg_match('/^components{1}/', $menu['params']['type'])){                     
                 $this->setRoute($menu);                
             }
             
         }
         
-        /*
-         * If tamplate is assignt to menu load it insted of default one
-         */
+        // If tamplate is assignt to menu load it insted of default one
         if(isset($menu['template']) && $menu['template'] != 'default'){
             $this->template = $menu['template'];
         }
@@ -194,6 +194,15 @@ class MY_Controller extends CI_Controller {
             }
             elseif($include->type == 'content'){
                 $html = str_replace($include, $this->Content->load(), $html);
+            }
+            elseif($include->type == 'header'){
+                $header = $this->Content->header();
+                if(is_object($this->jquery_ext)){
+                    ob_start();
+                    $this->jquery_ext->output();
+                    $header .= ob_get_clean();                     
+                } 
+                $html = str_replace($include, $header, $html);
             }
         }
 

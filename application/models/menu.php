@@ -175,13 +175,13 @@ class Menu extends CI_Model {
             }
             
             $this->db->select('*');
-            $this->db->where('menu_id', $menu['parent_id']);
+            $this->db->where('id', $menu['parent_id']);
             $menu = $this->db->get('menus');  	
             $menu = $menu->result_array();
             
             $menu = $menu[0];
             
-            $menus[] = $menu['menu_id'];
+            $menus[] = $menu['id'];
         
         }
         
@@ -193,24 +193,20 @@ class Menu extends CI_Model {
     {
         
         $query = "SELECT 
-                      menu_id
+                      id
                     FROM
                       menus
                     WHERE
-                      status = 'yes'
-                     AND
-                      (type = 'article'
-                        OR
-                       type = 'component')";
+                      status = 'yes'";
         
         $menus = $this->db->query($query);   	
         $menus = $menus->result_array();
         
         foreach($menus as $menu){
         
-            $menu = self::getDetails($menu['menu_id']);
+            $menu = self::getDetails($menu['id']);
             
-            if($menu['params']['article_id'] == $article_id){
+            if(isset($menu['params']['article_id']) && $menu['params']['article_id'] == $article_id){
                 return $menu;
             }
             

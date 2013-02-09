@@ -180,8 +180,9 @@ class Module extends MY_Model {
             
             $params = self::getDetails($id, 'params');
             if($params['type'] == $data['modules']['params']['type']){
+                
                 foreach($data['modules']['params'] as $key1 => $value1){
-                    if(!is_array($value1) || $key1 == 'display_menus'){
+                    if(!is_array($value1) || $key1 == 'display_menus' || $key1 == 'display_rules'){
                         $params[$key1] = $value1;
                     }
                     else{
@@ -201,7 +202,6 @@ class Module extends MY_Model {
         
         $data['modules']['params'] = json_encode($data['modules']['params']);
         
-        //print_r($this->input->post('params'));
         //echo print_r($data);
         //exit;
         

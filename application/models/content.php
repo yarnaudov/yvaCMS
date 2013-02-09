@@ -116,30 +116,32 @@ class Content extends CI_Model {
             $title .= ' '.$this->Setting->getSiteNameInTitleSeparator().' '.$this->Setting->getSiteName();
         }
         
-        echo "<title>".$title."</title>\n";
+        $header = "<title>".$title."</title>\n";
         
         
         /*
          * generate meta data
          */        
         if(isset($meta_description) && !empty($meta_description)){
-            echo "<meta name=\"description\" content=\"".$meta_description."\" >\n";
+            $header .= "<meta name=\"description\" content=\"".$meta_description."\" >\n";
         }elseif($this->Setting->getMetaDescription()){
-            echo "<meta name=\"description\" content=\"".$this->Setting->getMetaDescription()."\" >\n";
+            $header .= "<meta name=\"description\" content=\"".$this->Setting->getMetaDescription()."\" >\n";
         }
         
         if(isset($meta_keywords) && !empty($meta_keywords)){
-            echo "<meta name=\"keywords\" content=\"".$meta_keywords."\" >\n";
+            $header .= "<meta name=\"keywords\" content=\"".$meta_keywords."\" >\n";
         }elseif($this->Setting->getMetaKeywords()){
-            echo "<meta name=\"keywords\" content=\"".$this->Setting->getMetaKeywords()."\" >\n";
+            $header .= "<meta name=\"keywords\" content=\"".$this->Setting->getMetaKeywords()."\" >\n";
         }
         
         /*
          * robots
          */
         if($this->Setting->getRobots()){
-            echo "<meta name=\"robots\" content=\"".$this->Setting->getRobots()."\" />\n";
+            $header .= "<meta name=\"robots\" content=\"".$this->Setting->getRobots()."\" />\n";
         }
+        
+        return $header;
         
     }
     

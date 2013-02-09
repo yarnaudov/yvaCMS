@@ -95,14 +95,13 @@ class Article extends CI_Model {
     
         $query = "SELECT *
                     FROM
-                      articles
+                      articles a
+                      LEFT JOIN articles_data ad ON (a.id = ad.article_id AND ad.language_id = '".$this->language_id."')                    
                     WHERE
-                      status = 'yes'
+                      a.status = 'yes'
                      AND
-                      (title_".get_lang()." like '%".$search_v."%'
-                        OR
-                       text_".get_lang()." like '%".$search_v."%')
-                    ORDER BY `order`";
+                      (ad.title like '%".$search_v."%' OR ad.text like '%".$search_v."%')
+                    ORDER BY a.`order`";
         
         $articles = $this->db->query($query);  
         $articles = $articles->result_array();        

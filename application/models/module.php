@@ -96,6 +96,18 @@ class Module extends CI_Model {
                 continue;
             }
             
+            /* --- check display rules for module --- */
+            $display_rules = isset($module['params']['display_rules']) ? $module['params']['display_rules'] : array();
+            $continue = true;
+            foreach($display_rules as $display_rule){
+                if(@preg_match('/'.$display_rule.'/', current_url())){
+                    $continue = false; 
+                }
+            }
+            if($continue == true && count($display_rules) > 0){
+                continue;
+            }
+            
             $modules_arr[] = $module; 
             
         }
@@ -106,17 +118,28 @@ class Module extends CI_Model {
     
     function menu_link($menu)
     {
-
+        
         if(preg_match('/^components{1}/', $menu['params']['type'])){
             $menu['params']['type'] = "component";
         }
+        
         /* --- get menu link --- */            
         switch($menu['params']['type']){
             case "article":
             case "articles_list":            
             case "menu":
             case "component":
-                return site_url($menu['alias']);
+                
+                $link = '';
+                
+                $menus = $this->Menu->getParents($menu['id']);
+                $menus = array_reverse($menus);
+                foreach($menus as $menu_id){
+                    $menu = $this->Menu->getDetails($menu_id);
+                    $link .= '/'.$menu['alias'];
+                }
+        
+                return site_url($link);
             break;
             case "external_url":
                 return $menu['params']['url'];

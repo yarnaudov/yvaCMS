@@ -74,14 +74,9 @@ class Setting extends CI_Model {
                 case "meta_description":
                 case "meta_keywords":
                     $data['language_id'] = $this->language_id;
-                    
-                    //$data['value'] = self::getDetails($type, 'value');
-                    //$data['value'][$this->language_id] = $setting;
-                    //$data['value'] = json_encode($data['value']);
                  break;
                 default:
                     $data['language_id'] = NULL;
-                    //$data['value'] = $setting;
                  break;
             }
             

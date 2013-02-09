@@ -116,14 +116,7 @@
                                     </select>
                                 </td>
                             </tr>
-
-                            <tr><td colspan="2" class="empty_line" ></td></tr>
-                            
-                            <tr>
-                                <th><label><?=lang('label_url_suffix');?>:</label></th>
-                                <td><input type="text" name="settings[url_suffix]" value="<?=set_value('settings[url_suffix]', isset($settings['url_suffix']) ? $settings['url_suffix'] : "");?>" ></td>
-                            </tr>
-                            
+                                                        
                         </table>
                       </div>
 	      	              

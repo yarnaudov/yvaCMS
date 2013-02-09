@@ -11,13 +11,11 @@
 <html>
     
     <head>
-        
-        <?=$this->Content->header();?>
+
+        <include type="header" />
         
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8;" />
         <link rel="stylesheet" type="text/css" href="<?=base_url('templates/dynamic/css/style.css');?>" />
-        
-        <?php echo is_object($this->jquery_ext) ? $this->jquery_ext->output() : ""; ?>
         
     </head>
     
@@ -58,6 +56,7 @@
                 <div class="bcnav">
                     <div class="bcnav-left">
                         <div class="bcnav-right clear">
+                            <include type="module" name="navigation" />
                         </div>
                     </div>
                 </div>

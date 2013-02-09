@@ -13,7 +13,7 @@
 <ol>  
 
     <?php foreach($articles as $article){ 
-            $menu = $this->Menu->getByArticle($article['article_id']); ?>
+            $menu = $this->Menu->getByArticle($article['id']); ?>
 
     <li>
         <?php if($menu){ ?>
@@ -21,9 +21,9 @@
         <?php }else{ ?>
         <a href="<?=site_url('article:'.$article['alias']);?>" >
         <?php } ?>
-            <?=$article['title_'.get_lang()];?>
+            <?=$article['title'];?>
         </a>
-        <div><?=word_limiter(strip_tags($article['text_'.get_lang()]), 10);?></div>
+        <div><?=word_limiter(strip_tags($article['text']), 10);?></div>
     </li>
 
     <?php } ?>
