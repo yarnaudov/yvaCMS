@@ -19,6 +19,7 @@
                       <li>
                         <span><?=$display_rule;?></span>
                         <input type="hidden" name="params[display_rules][]" value="<?=$display_rule;?>" >
+                        <img class="handle" src="<?=base_url('img/iconMove.png');?>" >
                         <a class="styled delete" title="<?=lang('label_delete');?>">&nbsp;</a>
                       </li>                                          
                       <?php } ?>
@@ -46,6 +47,7 @@
         var html = '<li>'
                    +'<span>'+rule+'<\/span>'
                    +'<input type="hidden" name="params[display_rules][]" value="'+rule+'" >'
+                   +'<img class="handle" src="'+DOCUMENT_BASE_URL+'/apanel/img/iconMove.png" >'
                    +'<a class="styled delete" title="<?=lang('label_delete');?>">&nbsp;<\/a>'
                    +'<\/li>';
 
@@ -65,7 +67,7 @@
 
   });
   
-  $('ol.rules').sortable();
+  $('ol.rules').sortable({handle : '.handle'});
 
 </script>
                     

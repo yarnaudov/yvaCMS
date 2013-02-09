@@ -48,9 +48,7 @@ class Language extends CI_Model {
         foreach($filters as $key => $value){
             
             if($key == 'search_v'){
-                $filter .= " AND (title like '%".$value."%'
-                                 OR
-                                  description like '%".$value."%' ) ";
+                $filter .= " AND (title like '%".$value."%' OR description like '%".$value."%' ) ";
             }
             else{
                 $filter .= " AND `".$key."` = '".$value."' ";
@@ -254,69 +252,6 @@ class Language extends CI_Model {
 
         return true;
         
-    }
-    
-    public function alterTables($action, $new_abbr, $old_abbr = "")
-    {
-        $this->db->query("BEGIN");
-        
-        $tables['articles'][]         = array('title', 'VARCHAR(500)');
-        $tables['articles'][]         = array('text', 'TEXT');
-        
-        $tables['articles_history'][] = array('title', 'VARCHAR(500)');
-        $tables['articles_history'][] = array('text', 'TEXT');
-        
-        $tables['categories'][]       = array('title', 'VARCHAR(500)');
-        $tables['categories'][]       = array('description', 'VARCHAR(1000)');
-        
-        $tables['images'][]           = array('title', 'VARCHAR(500)');
-        $tables['images'][]           = array('description', 'VARCHAR(1000)');
-        
-        $tables['menus'][]            = array('title', 'VARCHAR(500)');
-        $tables['menus'][]            = array('description', 'VARCHAR(1000)');
-        $tables['menus'][]            = array('meta_keywords', 'VARCHAR(1000)');
-        $tables['menus'][]            = array('meta_description', 'VARCHAR(1000)');
-        
-        $tables['modules'][]          = array('title', 'VARCHAR(500)');
-        $tables['modules'][]          = array('description', 'VARCHAR(1000)');
-        
-        foreach($tables as $table => $columns){
-                        
-            foreach($columns as $column){
-            
-                $query = "ALTER TABLE ".$table;
-
-                switch($action){
-                    case "insert":
-                        $query .= " ADD column ";
-                    break;
-                    case "update":
-                        $query .= " CHANGE column ".$column[0]."_".$old_abbr." ";
-                    break;
-                    case "delete":
-                        $query .= " DROP column ";
-                    break;
-                }
-
-                $query .= $column[0]."_".$new_abbr;
-                if($action != 'delete'){
-                    $query .= " ".$column[1]." CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL";
-                }
-                
-                $result = $this->db->query($query);
-                
-                if($result != true){
-                    $this->db->query("ROLLBACK");
-                    return false;
-                }
-            
-            }
-                
-        }
-        
-        $this->db->query("COMMIT");
-        return true;
- 
     }
     
 }

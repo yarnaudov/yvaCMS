@@ -1,4 +1,6 @@
 
+<?php if(count($this->Language->getLanguages(array('status' => 'yes'))) > 1 ){ ?>
+
 <div class="box" >
     <span class="header" ><?=lang('label_translation');?></span>
 
@@ -31,3 +33,5 @@
     </div>
 
 </div>
+
+<?php } ?>

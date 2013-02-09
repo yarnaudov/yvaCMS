@@ -27,11 +27,11 @@ class Articles extends MY_Controller {
             $this->jquery_ext->add_library("check_actions_add_edit.js");            
                         
             $script = "$('#article_images a.delete').live('click', function(){
-                           $(this).parent().toggle('slow', function() {
+                           $(this).parents('li').toggle('slow', function() {
                                $(this).remove();
                            });
                        });
-                       $('#article_images').sortable();";
+                       $('#article_images').sortable({handle : '.handle'});";
             
             $this->jquery_ext->add_script($script);
             $this->jquery_ext->add_plugin("tinymce");

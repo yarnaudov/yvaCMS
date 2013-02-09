@@ -95,6 +95,7 @@ class Media extends MY_Controller {
         $this->jquery_ext->add_script($script);
         
         if($param == 'article'){
+            
             $script = "$('a.select').unbind('click');
                        $('a.select').click(function(event){
                 
@@ -116,16 +117,25 @@ class Media extends MY_Controller {
                                    html.push('<li>');
                                    html.push('<input type=\"hidden\" name=\"params[images][]\" value=\"'+value+'\" >');
                                    
+                                   html.push('<table><tr>');
+                                   
+                                   html.push('<td class=\"img\" >');
                                    if($(this).hasClass('directory')){
                                        html.push('<img class=\"directory\" src=\"'+DOCUMENT_BASE_URL+'apanel/img/media/iconFolder.png\" >');
                                    }
                                    else{
                                        html.push('<img src=\"'+DOCUMENT_BASE_URL+value+'\" >');
                                    }
+                                   html.push('<\/td>');
                                    
-                                   html.push('<span>'+value+'</span>');
-                                   html.push('<a class=\"styled delete\" >&nbsp;</a>');
-                                   html.push('</li>');
+                                   html.push('<td>'+value+'<\/td>');
+                                   
+                                   html.push('<td class=\"actions\" >');
+                                   html.push('<img class=\"handle\" src=\"'+DOCUMENT_BASE_URL+'apanel/img/iconMove.png\" >');
+                                   html.push('<a class=\"styled delete\" >&nbsp;<\/a>');
+                                   html.push('<\/td>');
+                                   
+                                   html.push('<\/tr><\/table><\/li>');
                                
                                }
                                
@@ -135,7 +145,9 @@ class Media extends MY_Controller {
                            parent.$( '#jquery_ui' ).dialog( 'close' ); 
 
                        });";
+            
             $this->jquery_ext->add_script($script);
+            
         }
         
         $content["content"] = $this->load->view('media/browse', $data, true);		

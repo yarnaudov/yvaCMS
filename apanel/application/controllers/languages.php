@@ -4,7 +4,7 @@ class Languages extends MY_Controller {
     
     public  $extension = 'languages';
     public  $page;
-    private $language_id;
+    public $language_id;
     
     function __construct()
     {

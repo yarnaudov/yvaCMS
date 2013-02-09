@@ -219,14 +219,26 @@
                                 <li>
                                     <input type="hidden" value="<?=$image;?>" name="params[images][]">
                                     
-                                    <?php if(is_dir('../'.$image)){ ?>
-                                    <img class="directory" src="<?=base_url('img/media/iconFolder.png');?>" >
-                                    <?php }else{ ?>
-                                    <img src="<?=base_url('../'.$image);?>" >
-                                    <?php } ?>
-                                    
-                                    <span><?=$image;?></span>
-                                    <a class="styled delete" >&nbsp;</a>
+                                    <table>
+                                        <tr>
+                                            <td class="img" >
+                                                <?php if(is_dir('../'.$image)){ ?>
+                                                <img class="directory" src="<?=base_url('img/media/iconFolder.png');?>" >
+                                                <?php }else{ ?>
+                                                <img src="<?=base_url('../'.$image);?>" >
+                                                <?php } ?>
+                                            </td>
+                                            
+                                            <td><?=$image;?></td>
+                                            
+                                            <td class="actions" >
+                                                <img class="handle" src="<?=base_url('img/iconMove.png');?>" >
+                                                <a class="styled delete" >&nbsp;</a>
+                                            </td>
+                                            
+                                        </tr>
+                                    </table>
+                                                                        
                                 </li>
                                 <?php } ?>
                                 

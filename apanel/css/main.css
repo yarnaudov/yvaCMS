@@ -820,14 +820,16 @@ ol.rules{
     padding-left: 20px;
 }
 ol.rules li{
-    padding: 4px 0;
-    cursor: move;
+    padding: 4px 0;    
 }
 ol.rules li span{
     _float: left;
     margin-top: 3px;
     width: 85%;
     display: inline-block;
+}
+ol.rules li img.handle{
+    cursor: move;   
 }
 ol.rules li a{
     padding: 1px 9px !important;
@@ -866,28 +868,47 @@ ol.rules li a{
 }
 #article_images li{
     overflow: auto;
-    padding-bottom: 8px;
-    cursor: move;
+    padding-bottom: 6px;
+    border-bottom: 1px solid #eee;
+    margin-top: 8px;
 }
-#article_images img{
-    width: 48px;
-    float: left;
-    border: 1px solid #AAAAAA;
-    padding: 1px;
-}
-#article_images img.directory{
+#article_images li:last-child{
     border: none;
 }
-#article_images span{
-    float: left;
-    padding: 10px 4px;
+#article_images li table{
+    width: 100%;
+    border-spacing: 0;
+    border-collapse: collapse;
 }
-#article_images a{
-    float: right;
+#article_images li table{
+    padding: 0;
+}
+#article_images li table td.img{
+    width: 50px;
+    padding-right: 8px;
+}
+#article_images li table td.img img{
+    width: 48px;
+    padding: 1px;
+    border: 1px solid #AAAAAA;
+}
+#article_images li table td.img img.directory{
+    border: none;
+}
+#article_images li table td.actions{
+   width: 50px;
+}
+#article_images li table td.actions a.delete{
     padding: 1px 9px !important;
     width: 0px;
     float: right;
     background-position: 1px center;
+}
+
+#article_images li table td img.handle{
+    cursor: move;
+    margin-right: 4px;
+    margin-top: -1px;
 }
 
 #checkboxes{
