@@ -359,7 +359,7 @@ class Menu extends MY_Model {
         
         $this->db->query('BEGIN');
         
-        if(isset($data['default']) && $data['default'] == 'yes'){
+        if(isset($data['menus']['default']) && $data['menus']['default'] == 'yes'){
             $query = $this->db->update_string('menus', array('default' => 'no'), "`default` = 'yes'");
             $this->db->query($query);
         }

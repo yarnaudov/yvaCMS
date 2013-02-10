@@ -33,7 +33,9 @@
                         </div>                        
 
                         <div class="logo">
-                            <a href="home.html"><img src="<?=base_url(TEMPLATES_DIR.'/it_world/images/logo.gif');?>" alt="" /></a>
+                            <!--
+                            <a href="<?=site_url();?>"><img src="<?=base_url(TEMPLATES_DIR.'/it_world/images/logo.gif');?>" alt="" /></a>
+                            -->
                         </div>
 
                         <div class="slogan">

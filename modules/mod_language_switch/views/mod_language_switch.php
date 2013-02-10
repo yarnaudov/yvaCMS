@@ -1,35 +1,53 @@
-<?php
+<?php if($module['params']['menu_type'] == 'dropdown'){ ?>
 
-echo '<ul>';
-        
-$numb = 0;
-foreach($languages as $abbr => $language){
-    $numb++;  
-    $class = '';
+<select>
     
-    if($numb == 1){
-        $class = 'first';
-    }
-    elseif($numb == count($languages)){
-        $class = 'last';
-    }
-
-    if($this->lang_lib->get() == $abbr){
-        $class = 'current '.$class;
-    }
+    <?php foreach($languages as $language){ ?>
+    <option <?=$language['abbreviation'] == get_lang() ? 'selected' : ''; ?> value="<?=base_url($language['abbreviation'].'/'.$this->uri->uri_string);?>" ><?=$language['title'];?></option>
+    <?php } ?>
     
-    echo '    <li '.($class != '' ? 'class="'.$class.'"' : '').' >';
-    echo '        <a href="'.base_url($abbr.'/'.$this->uri->uri_string).'" >';
-    if($module['params']['images'] == 'yes'){
-        echo '        <img src="'.base_url('modules/mod_language_switch/images/flag_'.$abbr.'.png').'" alt="'.$abbr.'" >';
-    }
-    echo '            <span>'.$language.'</span>';
-    echo '        </a>';
-    echo '    </li>';
+</select>
 
+<?php }elseif($module['params']['menu_type'] == 'list'){ ?>
 
-}
+<ul>
+    
+    <?php $numb = 0;
+          foreach($languages as $language){
+              $numb++;  
+              $class = '';
+    
+              if($numb == 1){
+                  $class = 'first';
+              }
+              elseif($numb == count($languages)){
+                  $class = 'last';
+              }
 
-echo '</ul>';
-        
-?>
+              if($language['abbreviation'] == get_lang()){
+                  $class = 'current '.$class;
+              } ?>
+    
+    <li <?=$class != '' ? 'class="'.$class.'"' : '';?> >
+        <a href="<?=base_url($language['abbreviation'].'/'.$this->uri->uri_string);?>" >
+             
+            <?php if($module['params']['images'] == 'yes'){
+                      if(!empty($language['image'])){
+                          $image = $language['image'];
+                      }else{
+                          $image = 'modules/mod_language_switch/images/flag_'.$language['abbreviation'].'.png';
+                      } ?>
+            
+            <img src="<?=base_url($image);?>" alt="<?=$language['title'];?>" >
+            
+            <?php } ?>
+            
+            <span><?=$language['title'];?></span>
+        </a>
+    </li>
+    
+    <?php } ?>
+    
+</ul>
+
+<?php } ?>

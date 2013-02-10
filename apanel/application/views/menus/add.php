@@ -296,7 +296,7 @@
                                     </td>
                                 </tr>
                                                                 
-                                <?php $this->load->view('templates', array('template' => set_value('template', isset($template) ? $template : ''), 'default' => true)); ?>
+                                <?php $this->load->view('templates', array('name' => 'template', 'template' => set_value('template', isset($template) ? $template : ''), 'default' => true)); ?>
                                 
                                 <tbody id="custom_fields" >
                                 <?php if(count($custom_fields) > 0){

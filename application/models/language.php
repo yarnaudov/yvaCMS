@@ -46,20 +46,30 @@ class Language extends CI_Model {
 
     }
     
-    public function getAll()
+    public function getLanguages($lang_lib = false)
     {
         
         $this->db->select('*');
         $this->db->where('status', 'yes');
         $this->db->order_by('order', 'asc');
-        $languages = $this->db->get('languages');  	
-        $languages = $languages->result_array();
+        $languages = $this->db->get('languages')->result_array();
         
-        foreach($languages as $language){
-            $languages_arr[$language['abbreviation']] = $language['title'];
+        if($lang_lib == true){
+            
+            $languages_arr = array();
+            
+            foreach($languages as $language){
+                $languages_arr[$language['abbreviation']] = $language['title'];
+            }
+            
+            return $languages_arr;
+            
         }
-        
-        return $languages_arr;
+        else{        
+            
+            return $languages;
+            
+        }
         
     }
     

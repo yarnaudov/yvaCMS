@@ -82,7 +82,7 @@
                                 </td>
                             </tr>
                             
-                            <?php $this->load->view('templates', array('template' => set_value('settings[template]', isset($settings['template']) ? $settings['template'] : ''))); ?>
+                            <?php $this->load->view('templates', array('name' => 'settings[template]', 'template' => set_value('settings[template]', isset($settings['template']) ? $settings['template'] : ''))); ?>
                                                         
                         </table>
                       </div>

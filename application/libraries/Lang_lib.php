@@ -24,7 +24,7 @@ class Lang_lib
         }
         
         $lang_abbr     = isset($_COOKIE['lang']) ? $_COOKIE['lang'] : $this->ci->Language->getDefault();
-        $lang_uri_abbr = $this->ci->Language->getAll();
+        $lang_uri_abbr = $this->ci->Language->getLanguages(true);
         
         if(!isset($lang_uri_abbr[$this->lang])){            
             header('Location: '.base_url($lang_abbr));

@@ -116,7 +116,7 @@ class Module extends CI_Model {
         
     }
     
-    function menu_link($menu)
+    function menu_link($menu, $full = true)
     {
         
         if(preg_match('/^components{1}/', $menu['params']['type'])){
@@ -139,10 +139,18 @@ class Module extends CI_Model {
                     $link .= '/'.$menu['alias'];
                 }
         
-                return site_url($link);
+                if($full == true){
+                    return site_url($link);
+                }
+                else{
+                    return $link;
+                }
+                
             break;
             case "external_url":
+                
                 return $menu['params']['url'];
+                
             break;
         }
         

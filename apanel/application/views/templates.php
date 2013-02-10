@@ -4,7 +4,7 @@
     <th><label><?=lang('label_template');?>:</label></th>
     <td>
                 
-        <select name="template" >
+        <select name="<?=$name;?>" >
             
             <?php if(isset($default) && $default == true){ ?>
             <option value="default" ><?=lang('label_default');?></option>

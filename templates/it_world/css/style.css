@@ -96,7 +96,7 @@ h4 a:hover { text-decoration:underline;}
 /*header*/
 #header .logo { position:absolute; left:14px; top:88px;}
 #header .slogan { position:absolute; left:39px; top:227px;}
-#header .breadcrumb { position:absolute; left:39px; top:349px;}
+#header .breadcrumb { position:absolute; left:39px; top:343px;}
 .breadcrumb ul{
         display: inline-block;
         margin: 0 10px;
@@ -134,30 +134,30 @@ h4 a:hover { text-decoration:underline;}
 /*==========================================*/
 
 /*language switch*/
-#header .module_language_switch{
+#header .module_mod_language_switch{
     float: right;
     margin-top: 4px;
 }
-#header .module_language_switch ul{
+#header .module_mod_language_switch ul{
     margin: 0;
     padding: 0;
     list-style: none;
 }
-#header .module_language_switch ul li{
+#header .module_mod_language_switch ul li{
     display: inline-block;
     margin-left: 10px;
 }
-#header .module_language_switch ul li img{
+#header .module_mod_language_switch ul li img{
     margin-right: 4px;
 }
 
-#header .module_search_form{
+#header .module_mod_search_form{
     float: left;
     margin-top: 8px;
     overflow: auto;
     -height: 1%;
 }
-#header .module_search_form button{
+#header .module_mod_search_form button{
     color: #f0f0f0;
     border: 0px solid transparent;
     font-size: 12px;
@@ -168,10 +168,10 @@ h4 a:hover { text-decoration:underline;}
     background-image: url('../images/link1-tail.gif');
     background-position-y: -1px;
 }
-#header .module_search_form button,
-#header .module_search_form input{
+#header .module_mod_search_form button,
+#header .module_mod_search_form input{
     float: left;
 }
-#header .module_search_form input{
+#header .module_mod_search_form input{
     padding: 1px 2px; 
 }

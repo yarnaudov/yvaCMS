@@ -148,28 +148,23 @@ class MY_Controller extends CI_Controller {
                         
         include_once "components/" . $menu['params']['component'] . "/controllers/" . $menu['params']['component'] . ".php";
         
-        $com_route_key   = '(\w{2})/' . $menu['alias'] . '(.*)';
+        $link = $this->Module->menu_link($menu, false);
+        $com_route_key   = '(\w{2})' . $link . '(.*)';
         $com_route_value = $menu['params']['component']::getRoute($menu);
         
-        if( (isset($route[$com_route_key]) && $route[$com_route_key] != $com_route_value && $menu['alias'] != $com_route_value) || !isset($route[$com_route_key]) ){
-
-            $route[$com_route_key] = $com_route_value;
-
-            foreach($route as $key => $value){                    
-                $routes[] = '$route["' . $key . '"] = "' . $value . '";';                        
-            }
+        if(!isset($route[$com_route_key]) || $route[$com_route_key] != $com_route_value){
 
             $data  = "<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');\n\n";
-            $data .= implode("\n", $routes);
+            $data .= '$route["' . $com_route_key . '"] = "' . $com_route_value . '";';
 
             $this->load->helper('file');
             write_file(APPPATH . "cache/routes.php", $data);
-            redirect($menu['alias']);
+            redirect($link);
             
         }
         
         if($this->uri->segment(1) == ''){
-            redirect($menu['alias']);  
+            redirect($link);  
         }
         
     }
