@@ -6,6 +6,8 @@ class Menus extends MY_Controller {
     public  $page;
     private $menu_id;
     
+    public $templates;
+    
     function __construct()
     {
   	
@@ -22,6 +24,8 @@ class Menus extends MY_Controller {
         foreach($this->components as $component => $data){
            $this->_loadComponetLanguages($component);                                                                   
         }
+        
+        $this->templates = parent::_getTemplates();
         
     }
     

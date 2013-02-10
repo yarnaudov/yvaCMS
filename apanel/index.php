@@ -193,6 +193,16 @@ if (defined('ENVIRONMENT'))
 		define('APPPATH', BASEPATH.$application_folder.'/');
 	}
 
+        
+/*
+ * --------------------------------------------------------------------
+ * LOAD SETTINGS FILE
+ * --------------------------------------------------------------------
+ *
+ */
+require_once FCPATH.'../settings.php';        
+        
+        
 /*
  * --------------------------------------------------------------------
  * LOAD THE BOOTSTRAP FILE

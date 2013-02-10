@@ -2,18 +2,16 @@
 <html>
     <head>
         
-        <?=$this->Content->header();?>
+        <include type="header" />
         
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
-        <link rel="stylesheet" type="text/css" href="<?=base_url('templates/it_world/css/style.css');?>" />
-        <link rel="stylesheet" type="text/css" href="<?=base_url('templates/it_world/css/layout.css');?>" />
+        <link rel="stylesheet" type="text/css" href="<?=base_url(TEMPLATES_DIR.'/it_world/css/style.css');?>" />
+        <link rel="stylesheet" type="text/css" href="<?=base_url(TEMPLATES_DIR.'/it_world/css/layout.css');?>" />
         <!--[if lt IE 7]>
-        <link rel="stylesheet" type="text/css" href="<?=base_url('templates/it_world/css/style_ie.css');?>" />
+        <link rel="stylesheet" type="text/css" href="<?=base_url(TEMPLATES_DIR.'/it_world/css/style_ie.css');?>" />
         <![endif]-->
-        
-        <?php echo is_object($this->jquery_ext) ? $this->jquery_ext->output() : ""; ?>
-        
+                
     </head>
     
     <body>
@@ -24,18 +22,18 @@
                 <div id="main">
                 
                     <div id="header">                    
-                        <?=$this->Module->load('search');?>	
+                        <include type="module" name="search" />	
                         
-                        <?=$this->Module->load('language_switch');?>
+                        <include type="module" name="language_switch" />
 
-                        <?=$this->Module->load('top_menu_right');?>
+                        <include type="module" name="top_menu_right" />
                         
                         <div class="main_menu" >
-                            <?=$this->Module->load('main_menu');?>
+                            <include type="module" name="menu" />
                         </div>                        
 
                         <div class="logo">
-                            <a href="home.html"><img src="<?=base_url('templates/it_world/images/logo.gif');?>" alt="" /></a>
+                            <a href="home.html"><img src="<?=base_url(TEMPLATES_DIR.'/it_world/images/logo.gif');?>" alt="" /></a>
                         </div>
 
                         <div class="slogan">
@@ -43,7 +41,7 @@
                         </div>  
                         
                         <div class="breadcrumb">
-                            <?=$this->Module->load('breadcrumb');?>
+                            <include type="module" name="navigation" />
                         </div>
 
                     </div>        
@@ -51,15 +49,15 @@
                     <div id="content">
                         <div class="wrapper">
                             
-                            <?php $sidebar_modules = $this->Module->load('sidebar'); ?>
+                            <?php $sidebar_modules = $this->Module->count('sidebar'); ?>
                             
                             <div class="col-1" <?php echo $sidebar_modules ? '' : 'style="width:100%;"'; ?> >
-                                <?=$this->Content->load();?>
+                                <include type="content" />
                             </div>
                             
                             <?php if($sidebar_modules){ ?>
                             <div class="col-2">
-                                <?=$sidebar_modules;?>
+                                <include type="module" name="sidebar" /> 
                             </div>
                             <?php } ?>
                             

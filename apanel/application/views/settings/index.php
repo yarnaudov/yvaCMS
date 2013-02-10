@@ -82,40 +82,7 @@
                                 </td>
                             </tr>
                             
-                            <tr><td colspan="2" class="empty_line" ></td></tr>
-
-                            <tr>
-                                <th><label><?=lang('label_template');?>:</label></th>
-                                <td>
-                                    <?php $template = set_value('settings[template]', isset($settings['template']) ? $settings['template'] : "");
-                                          $templates_dir = FCPATH.'/../templates/';
-                                          $handle = opendir($templates_dir);  ?>
-                                    <select name="settings[template]" style="width: auto;" >
-                                        <?php while (false !== ($entry = readdir($handle))) {                                                
-                                                if(substr($entry, 0, 1) == "." || !is_dir($templates_dir.$entry)){
-                                                  continue;                                                
-                                                } ?>
-                                        
-                                        <optgroup label="<?=$entry;?>" >
-                                            
-                                            <?php $template_dir = $templates_dir.$entry.'/';
-                                                  $handle2 = opendir($template_dir);
-                                                  while (false !== ($file = readdir($handle2))) { 
-                                                      if(substr($file, 0, 1) == "." || is_dir($template_dir.$file) || !preg_match('/.php$/', $file) ){
-                                                          continue;                                                
-                                                      }
-                                                      $file = str_replace('.php', '', $file); ?>
-                                                
-                                            <option value="<?=$entry.'/'.$file;?>" <?=$template == $entry.'/'.$file ? "selected" : "";?> ><?=$entry.'/'.$file;?></option>
-                                            
-                                            <?php } ?>
-                                        
-                                        </optgroup>
-                                        
-                                        <?php } ?>
-                                    </select>
-                                </td>
-                            </tr>
+                            <?php $this->load->view('templates', array('template' => set_value('settings[template]', isset($settings['template']) ? $settings['template'] : ''))); ?>
                                                         
                         </table>
                       </div>

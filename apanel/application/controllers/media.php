@@ -121,7 +121,7 @@ class Media extends MY_Controller {
                                    
                                    html.push('<td class=\"img\" >');
                                    if($(this).hasClass('directory')){
-                                       html.push('<img class=\"directory\" src=\"'+DOCUMENT_BASE_URL+'apanel/img/media/iconFolder.png\" >');
+                                       html.push('<img class=\"directory\" src=\"'+DOCUMENT_BASE_URL+'".APANEL_DIR."/img/media/iconFolder.png\" >');
                                    }
                                    else{
                                        html.push('<img src=\"'+DOCUMENT_BASE_URL+value+'\" >');
@@ -131,7 +131,7 @@ class Media extends MY_Controller {
                                    html.push('<td>'+value+'<\/td>');
                                    
                                    html.push('<td class=\"actions\" >');
-                                   html.push('<img class=\"handle\" src=\"'+DOCUMENT_BASE_URL+'apanel/img/iconMove.png\" >');
+                                   html.push('<img class=\"handle\" src=\"'+DOCUMENT_BASE_URL+'".APANEL_DIR."/img/iconMove.png\" >');
                                    html.push('<a class=\"styled delete\" >&nbsp;<\/a>');
                                    html.push('<\/td>');
                                    

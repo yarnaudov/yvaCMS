@@ -15,6 +15,8 @@ class Settings extends MY_Controller {
         
         $this->load->helper('form');
         
+        $this->templates = parent::_getTemplates();
+        
     }    
     
     public function _remap($method)

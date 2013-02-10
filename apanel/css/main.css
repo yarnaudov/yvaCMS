@@ -296,6 +296,10 @@ button.rename,
 a.rename{
     background-image: url('../img/iconRename.png');
 }
+button.toggle,
+a.toggle{
+    background-image: url('../img/iconToggle.png');
+}
 
 
 #sub_actions{

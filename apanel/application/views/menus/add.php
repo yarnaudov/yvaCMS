@@ -296,27 +296,7 @@
                                     </td>
                                 </tr>
                                                                 
-                                <tr><td colspan="2" class="empty_line" ></td></tr>
-                                
-                                <tr>	      			
-                                    <th><label><?=lang('label_template');?>:</label></th>
-                                    <td>
-                                        <?php $templates_dir = FCPATH.'/../templates/';
-                                              $handle = opendir($templates_dir);  ?>
-                                        <select name="template" >
-                                            <option value="default" ><?=lang('label_default');?></option>
-                                            <?php while (false !== ($entry = readdir($handle))) { 
-                                                    if(substr($entry, 0, 1) == "." || !is_dir($templates_dir.$entry)){
-                                                      continue;                                                
-                                                    }
-                                                    $template = set_value('template', isset($template) ? $template : ""); ?>
-
-                                            <option value="<?=$entry;?>" <?=$template == $entry ? "selected" : "";?> ><?=$entry;?></option>
-
-                                            <?php } ?>
-                                        </select>
-                                    </td>
-                                </tr>
+                                <?php $this->load->view('templates', array('template' => set_value('template', isset($template) ? $template : ''), 'default' => true)); ?>
                                 
                                 <tbody id="custom_fields" >
                                 <?php if(count($custom_fields) > 0){

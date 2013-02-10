@@ -45,32 +45,24 @@
 | the active record class
 */
 
-$file = FCPATH.'../application/config/database.php';
-if(file_exists($file)){
-    include_once $file;
-}
-else{
+$active_group = 'default';
+$active_record = TRUE;
 
-    $active_group = 'default';
-    $active_record = TRUE;
-
-    $db['default']['hostname'] = 'localhost';
-    $db['default']['username'] = 'root';
-    $db['default']['password'] = '';
-    $db['default']['database'] = 'yva';
-    $db['default']['dbdriver'] = 'mysql';
-    $db['default']['dbprefix'] = '';
-    $db['default']['pconnect'] = TRUE;
-    $db['default']['db_debug'] = TRUE;
-    $db['default']['cache_on'] = FALSE;
-    $db['default']['cachedir'] = '';
-    $db['default']['char_set'] = 'utf8';
-    $db['default']['dbcollat'] = 'utf8_general_ci';
-    $db['default']['swap_pre'] = '';
-    $db['default']['autoinit'] = TRUE;
-    $db['default']['stricton'] = FALSE;
-
-}
+$db['default']['hostname'] = DB_HOST;
+$db['default']['username'] = DB_USER;
+$db['default']['password'] = DB_PASS;
+$db['default']['database'] = DB_NAME;
+$db['default']['dbdriver'] = DB_TYPE;
+$db['default']['dbprefix'] = '';
+$db['default']['pconnect'] = TRUE;
+$db['default']['db_debug'] = TRUE;
+$db['default']['cache_on'] = FALSE;
+$db['default']['cachedir'] = '';
+$db['default']['char_set'] = 'utf8';
+$db['default']['dbcollat'] = 'utf8_general_ci';
+$db['default']['swap_pre'] = '';
+$db['default']['autoinit'] = TRUE;
+$db['default']['stricton'] = FALSE;
 
 /* End of file database.php */
 /* Location: ./application/config/database.php */

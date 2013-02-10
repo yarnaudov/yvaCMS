@@ -9,7 +9,7 @@
                     
                     <div style="overflow: auto;" >
                         <input name="rule" type="text" style="float: left;width: 75%;" >
-                        <button class="styled styled_small toggle add" name="add_rule" type="button" ><?=lang('label_add');?></button>
+                        <button class="styled styled_small add" name="add_rule" type="button" ><?=lang('label_add');?></button>
                     </div>
                     
                     <ol class="rules" >
@@ -47,7 +47,7 @@
         var html = '<li>'
                    +'<span>'+rule+'<\/span>'
                    +'<input type="hidden" name="params[display_rules][]" value="'+rule+'" >'
-                   +'<img class="handle" src="'+DOCUMENT_BASE_URL+'/apanel/img/iconMove.png" >'
+                   +'<img class="handle" src="'+DOCUMENT_BASE_URL+'<?=APANEL_DIR;?>/img/iconMove.png" >'
                    +'<a class="styled delete" title="<?=lang('label_delete');?>">&nbsp;<\/a>'
                    +'<\/li>';
 

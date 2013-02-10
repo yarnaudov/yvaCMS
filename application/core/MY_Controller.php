@@ -177,12 +177,12 @@ class MY_Controller extends CI_Controller {
     function _parseTemplateFile()
     {
                 
-        $template_file = FCPATH . 'templates/'.$this->template.'.php';
+        $template_file = FCPATH . TEMPLATES_DIR.'/'.$this->template.'.php';
         if(!file_exists($template_file)){
             return $this->load->view('template_not_found', '', true);
         }
         
-        $html = $this->load->view('../../templates/'.$this->template, '', true);
+        $html = $this->load->view('../../'.TEMPLATES_DIR.'/'.$this->template, '', true);
         $html2 = str_get_html($html);
     
         foreach($html2->find('include') as $include){

@@ -3,7 +3,7 @@
  /*
   *  set default content templates
   */
-  $this->Content->templates['main'] = '../../templates/'.$this->Settings->getTemplate().'/vews/content/main';
+  $this->Content->templates['main'] = '../../'.TEMPLATES_DIR.'/'.$this->Settings->getTemplate().'/vews/content/main';
  
 ?>
 
@@ -11,12 +11,10 @@
 <html>
     <head>
         
-        <?=$this->Content->header();?>
+        <include type="header" />
         
         <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-        <link rel="stylesheet" type="text/css" href="<?=base_url('templates/le_chic/css/style.css');?>" />
-        
-        <?php echo is_object($this->jquery_ext) ? $this->jquery_ext->output() : ""; ?>
+        <link rel="stylesheet" type="text/css" href="<?=base_url(TEMPLATES_DIR.'/le_chic/css/style.css');?>" />
         
     </head>
 
@@ -59,7 +57,7 @@
                        
             <?=$this->Content->load();?>
 
-            <?php $sidebar_modules = $this->Module->load('sidebar', array('menu' => '../../templates/'.$this->Settings->getTemplate().'/vews/modules/sidebar') );
+            <?php $sidebar_modules = $this->Module->load('sidebar', array('menu' => '../../'.TEMPLATES_DIR.'/'.$this->Settings->getTemplate().'/vews/modules/sidebar') );
                   if($sidebar_modules){ ?>
             <div id="sidebar">
                 <div id="sidebar_top">

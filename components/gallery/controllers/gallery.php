@@ -80,7 +80,6 @@ class Gallery extends MY_Controller {
         }
                 
         echo parent::_parseTemplateFile();
-        //$this->load->view('../../templates/'.$this->template.'/index', isset($this->data) ? $this->data : '');
         
     }
     

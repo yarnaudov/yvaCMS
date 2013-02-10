@@ -253,7 +253,7 @@ class MY_Controller extends CI_Controller{
         
     }
     
-    private function _loadComponetsData()
+    function _loadComponetsData()
     {
         
         $components = array();
@@ -285,7 +285,7 @@ class MY_Controller extends CI_Controller{
         
     }
     
-    private function _loadModulesData()
+    function _loadModulesData()
     {
         
         $modules = array();
@@ -319,7 +319,7 @@ class MY_Controller extends CI_Controller{
     
         $this->load->helper('simple_html_dom');
         
-        $template_file = FCPATH.'/../templates/'.$this->Setting->getTemplate().'.php';
+        $template_file = FCPATH.'/../'.TEMPLATES_DIR.'/'.$this->Setting->getTemplate().'.php';
         $html = file_get_html($template_file);
         
         $data = array();
@@ -338,6 +338,37 @@ class MY_Controller extends CI_Controller{
         }
         
         return $data;
+        
+    }
+    
+    function _getTemplates()
+    {
+       
+        $templates = array();
+       
+        $templates_dir = FCPATH.'/../'.TEMPLATES_DIR.'/';
+        $handle = opendir($templates_dir);
+
+        while (false !== ($template = readdir($handle))) {                                                
+            if(substr($template, 0, 1) == "." || !is_dir($templates_dir.$template)){
+              continue;                                                
+            }
+            
+            $template_dir = $templates_dir.$template.'/';
+            $handle2 = opendir($template_dir);
+            
+            while (false !== ($file = readdir($handle2))) { 
+                if(substr($file, 0, 1) == "." || is_dir($template_dir.$file) || !preg_match('/.php$/', $file) ){
+                    continue;                                                
+                }
+                
+                $templates[$template][] = $template.'/'.str_replace('.php', '', $file);
+                                                                                     
+            }
+                                        
+        }
+        
+        return $templates;
         
     }
     

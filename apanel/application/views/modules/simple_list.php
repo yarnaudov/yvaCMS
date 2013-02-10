@@ -118,7 +118,7 @@ $('.save').click(function(){
     
     }
     
-    parent.tinyMCE.execCommand('mceInsertContent', false, '<img src=\"apanel/img/module.png\" alt=\"'+params+'\" class=\"module\" title=\"'+title+'\" >');
+    parent.tinyMCE.execCommand('mceInsertContent', false, '<img src=\"<?=APANEL_DIR;?>/img/module.png\" alt=\"'+params+'\" class=\"module\" title=\"'+title+'\" >');
     parent.$('#jquery_ui').dialog('close');
 
     return false;

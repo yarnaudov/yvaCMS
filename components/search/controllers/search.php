@@ -36,7 +36,6 @@ class Search extends MY_Controller {
         $this->data['content'] = $this->load->view('search', compact('query', 'articles'), true);
                 
         echo parent::_parseTemplateFile();
-        //$this->load->view('../../templates/'.$this->template.'/index', isset($this->data) ? $this->data : '');
         
     }
     
