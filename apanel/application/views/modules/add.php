@@ -102,9 +102,11 @@
                                               } ?>
                                         <input type="hidden" class="type" name="params[type]" value="<?=$type;?>" >
                                         
-                                        <?php if(!empty($type)){ ?>
-                                        <strong><?=lang('label_'.$type);?></strong> - 
-                                        <?php } ?>
+                                        <span id="type_label" >
+                                            <?php if(!empty($type)){ ?>
+                                            <strong><?=lang('label_'.$type);?></strong> - 
+                                            <?php } ?>
+                                        </span>
                                         
                                         <a href  = "<?=site_url('modules/types');?>" 
                                            class = "load_jquery_ui_iframe" 
@@ -114,9 +116,11 @@
                                     </td>
                                 </tr>
                                 
+                                <tbody id="module_options" >
                                 <?php if(file_exists('modules/' . $type . '/views/apanel_options.php')){
                                 	      include_once 'modules/' . $type . '/views/apanel_options.php';
                                       } ?>
+                                </tbody>
                                
                             </table>
                             

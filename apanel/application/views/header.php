@@ -35,6 +35,8 @@
             var LANG              = '<?=get_lang();?>';
             var TEMPLATE          = '<?=$this->Setting->getTemplate();?>';
             var DOCUMENT_BASE_URL = '<?=base_url();?>../';
+            var base_url          = '<?=base_url();?>';
+            var site_url          = '<?=site_url();?>';
         </script>
         
     </head>

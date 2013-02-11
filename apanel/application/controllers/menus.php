@@ -177,8 +177,16 @@ class Menus extends MY_Controller {
                        event.preventDefault();
                        
                        parent.$('input.type').val($(this).attr('href'));
-                       parent.$('form').submit();
-                       
+
+                       $.get('".site_url('home/ajax/load_menu_type')."?type='+$(this).attr('href'), function(data){                            
+                            parent.$('#type_label').html($(data, '#type_label').html());
+                            parent.$('#menu_options').css('display', 'none');
+                            parent.$('#menu_options').html(data);
+                            parent.$('#menu_options').find('#type_label').remove();
+                            parent.$('#menu_options').toggle('slow');
+                            parent.$( '#jquery_ui' ).dialog( 'close' );
+                       });
+                                              
                    });";
         $this->jquery_ext->add_script($script, 'general');
         

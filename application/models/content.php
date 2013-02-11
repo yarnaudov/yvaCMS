@@ -53,7 +53,7 @@ class Content extends CI_Model {
                 
                 case "article":
                 
-                    $article = $this->Article->getDetails($menu['params']['article_id']);
+                    $article = $this->Article->getDetails(@$menu['params']['article_id']);
                     
                     if($article['show_title'] == 'yes'){
                       $data['title'] = $article['title'];

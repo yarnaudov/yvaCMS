@@ -2,12 +2,12 @@
 
 class mod_custom_menu extends CI_Model{
 	
-	  function run($module)
-	  {
-	  	
-	  	  $data['menu_id'] = $this->menu_id;
+    function run($module)
+    {
+
+        $data['menu_id'] = $this->menu_id;
                 
-        $menus = $module['params']['custom_menus'];
+        $menus = isset($module['params']['custom_menus']) ? $module['params']['custom_menus'] : array();
         
         $menus_arr = array();
         foreach($menus as $key => $menu){
@@ -15,12 +15,11 @@ class mod_custom_menu extends CI_Model{
             $menu = $this->Menu->getDetails($menu);
             
             /* --- check language for menu display --- */
-            if($menu['language_id'] != NULL && $menu['language_id'] != $this->language_id){
+            if($menu['show_in_language'] != NULL && $menu['show_in_language'] != $this->language_id){
                 continue;
             }
             
             $menu['link']   = module::menu_link($menu);
-            $menu['title']  = $menu['title_'.$this->lang_lib->get()];
             $menu['class']  = module::menu_class($menu);
             
             $menus_arr[] = $menu;

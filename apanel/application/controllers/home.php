@@ -88,6 +88,54 @@ class Home extends MY_Controller {
                 $this->load->view('custom_fields/load_fields', compact('custom_fields'));
                 
             break;
+        
+            case "load_menu_type":
+                
+                $this->load->helper('form');
+                
+                $type = $this->input->get('type');
+                
+                if(preg_match('/^components{1}/', $type)){
+                                            
+                    $type_arr = explode('/', $type);
+
+                    $this->_loadComponetLanguages($type_arr[1]);
+                    
+                    $options_file = '../../'.$type_arr[0].'/'.$type_arr[1].'/views/apanel_options';
+
+                    if(count($type_arr) > 2){                                                
+                        $param      = $type_arr[2];
+                        $type_label = lang('com_'.$type_arr[1]).' > '.lang($this->components[$type_arr[1]]['menus'][$type_arr[2]]);
+                    }
+                    else{                                                
+                        $type_label = lang($this->components[$type_arr[1]]['menus'][$type_arr[1]]);
+                    }
+
+                }elseif(!empty($type)){ 
+                    $options_file = 'menus/'.$type;
+                    $type_label   = lang('label_'.$type);
+                }
+                    
+                echo '<span id="type_label" ><strong>'.$type_label.'</strong> - </span>';
+                $this->load->view($options_file, compact('param', isset($param) ? $param : ''));
+                
+            break;
+            
+            case "load_module_type":
+                
+                $this->load->helper('form');
+                
+                $type = $this->input->get('type');
+                
+                $this->_loadModuleLanguage($type);
+                
+                echo '<span id="type_label" ><strong>'.lang('label_'.$type).'</strong> - </span>';
+                
+                if(file_exists('modules/' . $type . '/views/apanel_options.php')){
+                    include_once 'modules/' . $type . '/views/apanel_options.php';
+                }
+                
+            break;
             
         }
         

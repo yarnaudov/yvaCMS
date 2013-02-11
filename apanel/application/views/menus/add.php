@@ -128,9 +128,11 @@
                                         } 
                                         ?>
 
+                                        <span id="type_label" >
                                         <?php if(isset($type_label)){ ?>
                                         <strong><?=$type_label;?></strong> -
                                         <?php } ?>
+                                        </span>
                                         
                                         <input type="hidden" class="type" name="params[type]" value="<?=$type;?>" >
                                                    
@@ -143,9 +145,11 @@
                                     </td>
                                 </tr>
                                 
+                                <tbody id="menu_options" >
                                 <?php if(isset($options_file)){
                                           $this->load->view($options_file, compact('param', isset($param) ? $param : ''));
                                       } ?>
+                                </tbody>
                                                                 
                             </table>
                             

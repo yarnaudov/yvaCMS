@@ -1,3 +1,6 @@
+<?php $this->load->model('Menu');
+      $menus_by_category = $this->Menu->getMenusByCategory(); ?>
+
 <tr><td colspan="2" class="empty_line" ></td></tr>
                                 
 <tr>	      			

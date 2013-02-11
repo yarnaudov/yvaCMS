@@ -1,24 +1,55 @@
 
-<?php if(!empty($error)){ ?>      
-    <div class="error_msg" >
-        <?=$error;?>
-    </div>
-<?php } ?>
+<?php
 
-<!-- start page content -->
-<div id="page_content" class="module_types" >
+$size = count($modules)/2;
+$modules = array_chunk($modules, ceil($size));
+
+?>
+
+<table class="menu_types" >
     
-    <ul>
-    <?php foreach($modules as $module){ ?> 
+    <!--
+    <tr>
+        <th><?=lang('label_general');?></th>
+        <td></td>
+        <th><?=lang('label_components');?></th>
+    </tr>
+    -->
+    
+    <tr>
+        <td>
+   
+            <ul>
+            <?php foreach($modules[0] as $module){ ?> 
+
+                <li>
+                    <a href="<?=$module;?>" class="type" >
+                        <?=lang('label_'.$module);?>
+                    </a>
+                </li>
+
+            <?php } ?>
+            </ul>
+
+        </td>
         
-        <li>
-            <a href="<?=$module;?>" class="type" >
-            	<?=lang('label_'.$module);?>
-            </a>
-        </li>
+        <td>
+   
+            <ul>
+            <?php foreach($modules[1] as $module){ ?> 
+
+                <li>
+                    <a href="<?=$module;?>" class="type" >
+                        <?=lang('label_'.$module);?>
+                    </a>
+                </li>
+
+            <?php } ?>
+            </ul>
+
+        </td>
         
-    <?php } ?>
-    </ul>
-  
-</div>
-<!-- end page content -->
+    </tr>
+    
+</table>
+

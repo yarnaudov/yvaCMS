@@ -157,7 +157,15 @@ class Modules_c extends MY_Controller {
                        event.preventDefault();
 
     	               parent.$('input.type').val($(this).attr('href'));
-                       parent.$('form').submit();
+                       
+                       $.get('".site_url('home/ajax/load_module_type')."?type='+$(this).attr('href'), function(data){                                                                                                             
+                           parent.$('#type_label').html($(data, '#type_label').html());
+                           parent.$('#module_options').css('display', 'none');                           
+                           parent.$('#module_options').html(data);
+                           parent.$('#module_options').find('#type_label').remove();
+                           parent.$('#module_options').toggle('slow');
+                           parent.$( '#jquery_ui' ).dialog( 'close' );
+                       });
                        
                    });";
                    
