@@ -20,16 +20,13 @@
     <th></label></th>
     <td>
         <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false" ></script>
-        <script type="text/javascript" src="<?=base_url('modules/mod_google_map/js/infobox.js');?>" ></script>
+        <script type="text/javascript" >
+          var db_markers = JSON.parse('<?=json_encode($params['markers']);?>');
+        </script>
         <script type="text/javascript" src="<?=base_url('modules/mod_google_map/js/map_options.js');?>" ></script>
         <div id="map_canvas" style="height: 400px;" ></div>
-    </td>
-</tr>
-
-<tr><td colspan="2" class="empty_line" ></td></tr>
-                                
-<tr>	      			
-    <th><label><?=lang('label_mod_google_map_markers');?>:</label></th>
-    <td>
+        
+        <div id="markers" ></div>
+        
     </td>
 </tr>
