@@ -4,4 +4,4 @@
 </script>
 <script type="text/javascript" src="<?=base_url('modules/mod_google_map/js/map_options.js');?>" ></script>
 
-<div id="map_canvas" style="height: 400px;width: 800px;" ></div>
+<div id="map_canvas" style="height: 100%;width: 100%;" ></div>

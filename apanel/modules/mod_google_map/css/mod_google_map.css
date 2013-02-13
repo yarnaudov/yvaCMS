@@ -1,0 +1,38 @@
+
+
+#map_options{
+    text-align: right;
+    background-color: #eee;
+    padding: 4px 10px;
+    border: 1px solid #bbb; 
+    border-bottom: none;
+    overflow: auto;
+}
+#map_options input{
+    border: none;
+    background-color: transparent;
+    text-align: right;
+    font-weight: bold;
+}
+#zoom{
+    float: left;
+}
+#zoom input{
+    width: 18px;
+}
+#center{
+    float: right;
+}
+#center input{
+    width: 146px;
+}
+
+#map_canvas{
+   border: 1px solid #bbb;
+   border-top: 1px solid #ddd;
+   height: 450px;
+}
+
+#marker_description{
+    height: 150px;
+}

@@ -48,6 +48,7 @@
             </div>
 
             <div id="header" class="clear">
+                <include type="module" name="map" />
             </div>
             <div class="header-bottom"></div>
 

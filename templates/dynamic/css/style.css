@@ -510,3 +510,8 @@ div.readmore{
 a.readmore_hide{
 	display: none;
 }
+
+
+.module_mod_google_map .content{
+    height: 400px;
+}

@@ -28,6 +28,21 @@ class Home extends MY_Controller {
         
     }
     
+    public function ajax($action)
+    {
+        
+        switch($action){
+            
+            case "load":
+                
+                $this->load->view($this->input->get('view'));
+                
+            break;
+                    
+        }
+        
+    }
+    
 }
 
 /* End of file home.php */
