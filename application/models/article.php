@@ -48,7 +48,24 @@ class Article extends CI_Model {
         
         $articles_arr = array();
         foreach($articles as $article){
-            $articles_arr[] = self::getDetails($article['id']); 
+            
+            $article = self::getDetails($article['id']);
+            
+            /* --- check language for article display --- */
+            if($article['show_in_language'] != NULL && $article['show_in_language'] != $this->Language->getDetailsByAbbr(get_lang(), 'id')){
+                continue;
+            }            
+
+            /* --- check start end date for article display --- */
+            if($article['start_publishing'] != NULL && $article['start_publishing'] > date('Y-m-d')){
+                continue;
+            }
+            elseif($article['end_publishing'] != NULL && $article['end_publishing'] < date('Y-m-d')){
+                continue;
+            }
+            
+            $articles_arr[] = $article;
+            
         }
         
         return $articles_arr;

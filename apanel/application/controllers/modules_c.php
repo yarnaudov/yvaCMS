@@ -8,6 +8,8 @@ class Modules_c extends MY_Controller {
     public  $layout;
     public  $positions;
     
+    public  $templates;
+    
     private $module_id;
     
     function __construct()
@@ -31,6 +33,8 @@ class Modules_c extends MY_Controller {
          * get positions
          */        
         $this->positions = $this->Module->getPositions(parent::_parseTemplateFile('modules'));
+        
+        $this->templates = parent::_getTemplates('modules');
         
     }
     

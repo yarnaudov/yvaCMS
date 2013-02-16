@@ -19,14 +19,14 @@
         
         <tr>
             <th><label><?=lang('label_title');?>:</label></th>
-            <td><input type="text" name="title" id="marker_title" ></td>
+            <td><input type="text" id="marker_title" ></td>
         </tr>
                             
         <tr><td colspan="2" class="empty_line" ></td></tr> 
         
         <tr>
             <th><label><?=lang('label_description');?>:</label></th>
-            <td><textarea name="description" class="marker_description" id="marker_description" ></textarea></td>
+            <td><textarea class="marker_description" id="marker_description" ></textarea></td>
         </tr>
                             
         <tr><td colspan="2" class="empty_line" ></td></tr> 
@@ -34,7 +34,7 @@
         <tr>	      			
             <th><label><?=lang('label_mod_google_map_icon');?>:</label></th>
             <td>
-                <input class="markerimage" type="text" readonly name="image" id="media" style="width: 58%">
+                <input class="markerimage" type="text" readonly id="media" style="width: 58%">
 
                 <a href="<?=site_url('media/browse');?>" 
                    class = "load_jquery_ui_iframe"

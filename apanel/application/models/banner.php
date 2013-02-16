@@ -280,7 +280,7 @@ class Banner extends CI_Model {
             $status = self::getDetails($banner, 'status');
             
             if($status == 'trash'){
-                $result = $this->db->simple_query("DELETE FROM banners WHERE id = '".$banner."'");
+                $result = true;//$this->db->simple_query("DELETE FROM banners WHERE id = '".$banner."'");
             }
             else{
                 $result = self::changeStatus($banner, 'trash');

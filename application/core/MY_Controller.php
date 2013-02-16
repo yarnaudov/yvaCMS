@@ -93,8 +93,8 @@ class MY_Controller extends CI_Controller {
         }
         
         // If tamplate is assignt to menu load it insted of default one
-        if(isset($menu['template']) && $menu['template'] != 'default'){
-            $this->template = $menu['template'];
+        if(isset($menu['main_template']) && $menu['main_template'] != 'default'){
+            $this->template = $menu['main_template'];
         }
         
         /*

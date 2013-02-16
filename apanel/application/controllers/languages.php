@@ -67,6 +67,40 @@ class Languages extends MY_Controller {
     public function index()
     {
             
+        $script ="$('.default').hover(
+                      function(){
+                      
+                          $(this).append('<img src=\"".base_url('img/iconStar16.png')."\" title=\"".lang('label_make_default')."\" style=\"cursor: pointer;\" >');
+                          
+                          $(this).find('img').click(function(){
+                          
+                              var element_id = $(this).parents('tr').find('.checkbox').val();
+
+                              $('form').append('<input type=\"hidden\" name=\"element_id\" value=\"'+element_id+'\" >');
+                              $('form').append('<input type=\"hidden\" name=\"make_default\" value=\"yes\" >');
+                              $('form').submit();
+                              
+                          });
+                          
+                      },
+                      function(){
+                          $(this).find('img').remove();
+                      }
+                  );";
+        $this->jquery_ext->add_script($script);
+        
+        // make default
+        if(isset($_POST['make_default'])){
+            $result = $this->Language->makeDefault($_POST['element_id']);
+            if($result == true){
+                if($this->page > 1){
+                    $page = "?page=".$this->page;
+                }
+                redirect('languages'.$page);
+                exit();
+            }
+        }
+        
         /*
          *  parent index method handels: 
          *  delete, change status, change order, set order by, set filters, 

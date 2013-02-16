@@ -229,16 +229,17 @@ class Language extends CI_Model {
         $languages = $this->input->post('languages');     
         foreach($languages as $language){
             
-            $status = self::getDetails($language, 'status');
+            $language = self::getDetails($language);
             
-            if($status == 'trash'){
-                $result = $this->db->simple_query("DELETE FROM languages WHERE id = '".$language."'");
-                if($result == true){                                        
-                    //$result = self::alterTables('delete', $abbreviation);
-                }
+            if($language['default'] == 'yes'){
+                $this->session->set_userdata('error_msg', lang('msg_delete_default_language_error'));
+                $result = true;
+            }
+            elseif($status == 'trash'){
+                $result = true;//$this->db->simple_query("DELETE FROM languages WHERE id = '".$language['id']."'");
             }
             else{
-                $result = self::changeStatus($language, 'trash');
+                $result = self::changeStatus($language['id'], 'trash');
             }
             
             if($result != true){
@@ -252,6 +253,30 @@ class Language extends CI_Model {
 
         return true;
         
+    }
+    
+    public function makeDefault($id)
+    {   
+
+        $this->db->query("BEGIN");
+        
+        $query = $this->db->update_string('languages', array('default' => 'no'), "`default` = 'yes'");
+        $result = $this->db->query($query);
+        if($result != true){
+            $this->db->query("ROLLBACK");
+            return false;
+        }
+        
+        $query = $this->db->update_string('languages', array('default' => 'yes'), "id = ".$id);
+        $result = $this->db->query($query);
+        if($result != true){
+            $this->db->query("ROLLBACK");
+            return false;
+        }
+        
+        $this->db->query("COMMIT");
+        return true;
+
     }
     
 }

@@ -2,9 +2,9 @@
 
 class Content extends CI_Model {
     
-    public $templates = array('main'         => 'content/main',
-                              'article'      => 'content/article',
-                              'article_list' => 'content/articles_list');
+    public $templates = array('main'          => 'content/main',
+                              'article'       => 'content/article',
+                              'articles_list' => 'content/articles_list');
         
     public function load($templates = array())
     {
@@ -49,31 +49,42 @@ class Content extends CI_Model {
                 $menu['params']['type'] = "component";
             }
             
+            
+            /*
+             * set content template
+             */
+            $template_file = TEMPLATES_DIR.'/'.$this->Setting->getTemplate().'/../'.$menu['content_template'].'.php';        
+            if(file_exists(FCPATH.$template_file)){
+                $content_template = '../../'.$template_file;
+            }
+            else{
+                $content_template = @$this->templates[$menu['params']['type']];
+            }
+                        
             switch($menu['params']['type']){
                 
                 case "article":
                 
-                    $article = $this->Article->getDetails(@$menu['params']['article_id']);
+                    $article         = $this->Article->getDetails(@$menu['params']['article_id']);                    
+                    $article['text'] = $this->Article->parceText(@$article['text']);
                     
-                    if($article['show_title'] == 'yes'){
-                      $data['title'] = $article['title'];
-                    }
-                    
-                    $data['content'] = $this->Article->parceText(@$article['text']);
+                    $data['content'] = $this->load->view($content_template, compact('article'), true);
                     
                 break;
                 
+                case "articles_list":
+                    
+                    $articles        = $this->Article->getByCategory($menu['params']['category_id']);                    
+                    $data['content'] = $this->load->view($content_template, compact('menu', 'articles'), true);
+                    
+                break;
+            
                 case "component":
                                                
                     $data['content'] = $this->data['content'];
                                         
                 break;
                 
-                case "articles_list":
-                    $articles = $this->Article->getByCategory($menu['params']['category_id']);
-                    $data['content'] = $this->load->view($this->templates['article_list'], compact('menu', 'articles'), true);                    
-                break;
-            
             }
             
         }

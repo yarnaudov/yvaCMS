@@ -6,7 +6,8 @@ class Menus extends MY_Controller {
     public  $page;
     private $menu_id;
     
-    public $templates;
+    public  $templates;
+    public  $content_templates;
     
     function __construct()
     {
@@ -26,6 +27,7 @@ class Menus extends MY_Controller {
         }
         
         $this->templates = parent::_getTemplates();
+        $this->content_templates = parent::_getTemplates('content');
         
     }
     
@@ -109,6 +111,40 @@ class Menus extends MY_Controller {
     public function index()
     {
         
+        $script ="$('.default').hover(
+                      function(){
+                      
+                          $(this).append('<img src=\"".base_url('img/iconStar16.png')."\" title=\"".lang('label_make_default')."\" style=\"cursor: pointer;\" >');
+                          
+                          $(this).find('img').click(function(){
+                          
+                              var element_id = $(this).parents('tr').find('.checkbox').val();
+
+                              $('form').append('<input type=\"hidden\" name=\"element_id\" value=\"'+element_id+'\" >');
+                              $('form').append('<input type=\"hidden\" name=\"make_default\" value=\"yes\" >');
+                              $('form').submit();
+                              
+                          });
+                          
+                      },
+                      function(){
+                          $(this).find('img').remove();
+                      }
+                  );";
+        $this->jquery_ext->add_script($script);
+        
+        // make default
+        if(isset($_POST['make_default'])){
+            $result = $this->Menu->makeDefault($_POST['element_id']);
+            if($result == true){
+                if($this->page > 1){
+                    $page = "?page=".$this->page;
+                }
+                redirect('menus'.$page);
+                exit();
+            }
+        }
+        
         /*
          *  parent index method handels: 
          *  delete, change status, change order, set order by, set filters, 
@@ -158,7 +194,7 @@ class Menus extends MY_Controller {
         
         $data                  = $this->Menu->getDetails($this->menu_id);   
         $data['categories']    = $this->Category->getForDropdown();
-        $data['menus']         = $this->Menu->getForDropdown(array('category_id' => set_value('category', isset($data['category_id']) ? $data['category_id'] : "")));
+        $data['menus']         = $this->Menu->getForDropdown(array('id' => '!'.$this->menu_id, 'category_id' => set_value('category', isset($data['category_id']) ? $data['category_id'] : "")));
         $data['custom_fields'] = $this->Custom_field->getCustomFields(array('extension_key' => set_value('category', isset($data['category_id']) ? $data['category_id'] : ""), 
                                                                             'status'        => 'yes'));
         

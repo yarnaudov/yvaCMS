@@ -3,7 +3,7 @@
  /*
   *  set default content templates
   */
-  //$this->Content->templates['main'] = '../../'.TEMPLATES_DIR.'/'.$this->Setting->getTemplate().'/../vews/content/main';
+  //$this->Content->templates['main'] = '../../'.TEMPLATES_DIR.'/'.$this->Setting->getTemplate().'/../views/content/main';
                                     
 ?>
 

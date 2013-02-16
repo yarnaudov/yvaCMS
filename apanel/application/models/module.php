@@ -159,6 +159,7 @@ class Module extends MY_Model {
         $data['modules']['access']           = $this->input->post('access');
         $data['modules']['show_title']       = $this->input->post('show_title');
         $data['modules']['css_class_sufix']  = $this->input->post('css_class_sufix');
+        $data['modules']['template']         = $this->input->post('template');
         $data['modules']['params']           = $this->input->post('params');
 
         if($data['modules']['show_in_language'] == 'all'){
@@ -362,7 +363,7 @@ class Module extends MY_Model {
             $status = self::getDetails($module, 'status');
             
             if($status == 'trash'){
-                $result = $this->db->simple_query("DELETE FROM modules WHERE id = '".$module."'");
+                $result = true;//$this->db->simple_query("DELETE FROM modules WHERE id = '".$module."'");
             }
             else{
                 $result = self::changeStatus($module, 'trash');

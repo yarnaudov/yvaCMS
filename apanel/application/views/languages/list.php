@@ -100,7 +100,7 @@
                     <?php } ?>
                 </td>
                 <td><?=$language['abbreviation'];?></td>
-                <td>
+                <td <?=$language['default'] == 'no' ? 'class="default"' : '';?> >
                     <?php if($language['default'] == 'yes'){ ?>             
                     <img src="<?=base_url('img/iconStar16.png');?>" >
                     <?php } ?>

@@ -5,7 +5,7 @@
           $image = $this->Album->getImage($album['id']); ?>
     
     <div class="image_small">
-        <a href="<?=current_url();?>/album:<?=$album['id'];?>">
+        <a href="<?=$menu_link;?>/album:<?=$album['id'];?>">
             <img src="<?=base_url('images/thumbs/'.$image['id'].'.'.$image['ext']);?>" alt="<?=$album['title'];?>" >
         </a>
         <div class="description" ><?=$album['title'];?></div>

@@ -275,7 +275,7 @@ class Category extends MY_Model {
             $status = self::getDetails($category, 'status');
             
             if($status == 'trash'){
-                $result = $this->db->simple_query("DELETE FROM categories WHERE category_id = '".$category."'");
+                $result = true;//$this->db->simple_query("DELETE FROM categories WHERE category_id = '".$category."'");
             }
             else{
                 $result = self::changeStatus($category, 'trash');

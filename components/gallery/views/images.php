@@ -5,7 +5,7 @@
 
     <?php if($url1[0] == 'albums'){ ?>
     <div class="navigation">
-        <a href="<?=site_url($alias);?>" ><?=lang('com_gallery_all_albums');?></a>
+        <a href="<?=$menu_link;?>" ><?=lang('com_gallery_all_albums');?></a>
     </div>
     <?php } ?>
     

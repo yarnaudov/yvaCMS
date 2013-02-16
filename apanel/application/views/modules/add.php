@@ -218,6 +218,21 @@
                                     </td>
                                 </tr>
                                 
+                                <tr><td colspan="2" class="empty_line" ></td></tr>
+                                
+                                <tr>	      			
+                                    <th><label><?=lang('label_template');?>:</label></th>
+                                    <td>
+
+                                        <select name="template" >
+                                            <option value="default" ><?=lang('label_default');?></option>                                            
+                                            <?php foreach($this->templates as $template_file ){
+                                                      echo '<option '.($template_file == set_value('template', isset($template) ? $template : "") ? "selected" : "").' value="'.$template_file.'" >'.$template_file.'</option>';
+                                                  } ?>
+                                        </select>
+                                    </td>
+                                </tr>
+                                
                                 <tbody id="custom_fields" >
                                 <?php if(count($custom_fields) > 0){
                                           $this->load->view('custom_fields/load_fields');

@@ -189,4 +189,6 @@ $lang['label_go_to_site']   = 'Отвори сайта';
 $lang['label_history']      = 'История';
 $lang['label_last']         = 'Последно';
 
+$lang['label_make_default'] = 'Направи го основен';
+
 ?>

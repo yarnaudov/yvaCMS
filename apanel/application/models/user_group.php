@@ -215,7 +215,7 @@ class User_group extends CI_Model {
             $status = self::getDetails($group, 'status');
             
             if($status == 'trash'){
-                $result = $this->db->simple_query("DELETE FROM users_groups WHERE id = '".$group."'");
+                $result = true;//$this->db->simple_query("DELETE FROM users_groups WHERE id = '".$group."'");
             }
             else{
                 $result = self::changeStatus($group, 'trash');

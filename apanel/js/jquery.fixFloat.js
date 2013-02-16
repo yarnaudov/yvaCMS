@@ -12,7 +12,7 @@ function fixFloat(elem, id) {
     
     var top = elem.offset().top - parseFloat(elem.css('margin-top').replace(/auto/, 0));
     
-    $(window).scroll(function (event) {
+    $(window).bind('scroll load', function (event) {
       // what the y position of the scroll is
       var y = $(this).scrollTop();
       

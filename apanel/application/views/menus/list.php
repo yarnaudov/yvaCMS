@@ -131,7 +131,7 @@
                         ?>
                 </td>
                 <td><?=$this->Category->getDetails($menu['category_id'], 'title');?></td>
-                <td>
+                <td <?=$menu['default'] == 'no' ? 'class="default"' : '';?> >
                     <?php if($menu['default'] == 'yes'){ ?>             
                     <img src="<?=base_url('img/iconStar16.png');?>" >
                     <?php } ?>

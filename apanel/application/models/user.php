@@ -286,7 +286,7 @@ class User extends CI_Model {
             $status = self::getDetails($user, 'status');
             
             if($status == 'trash'){
-                $result = $this->db->simple_query("DELETE FROM users WHERE id = '".$user."'");
+                $result = true;//$this->db->simple_query("DELETE FROM users WHERE id = '".$user."'");
             }
             else{
                 $result = self::changeStatus($user, 'trash');

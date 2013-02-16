@@ -188,4 +188,6 @@ $lang['label_go_to_site']   = 'Go to site';
 $lang['label_history']      = 'History';
 $lang['label_last']         = 'Last';
 
+$lang['label_make_default'] = 'Make if default';
+
 ?>

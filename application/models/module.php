@@ -35,7 +35,7 @@ class Module extends CI_Model {
     }    
     
     public function load($position, $templates = array())
-    {        
+    {
         
         $templates = array_merge($this->templates, $templates);
                 
@@ -173,12 +173,16 @@ class Module extends CI_Model {
     	
     	ob_start();
     	extract($data);
-    	if(empty($module['template'])){
+        
+        $template_file = TEMPLATES_DIR.'/'.$this->Setting->getTemplate().'/../'.$module['template'].'.php';
+        
+        if(file_exists(FCPATH.$template_file)){
+            include $template_file;
+        }
+    	else{
             include 'modules/' . $module['params']['type'] . '/views/' . $module['params']['type'] . '.php';
         }
-        else{
-            include $module['template'];
-        }
+        
         $content = ob_get_contents();
         ob_end_clean();
         
@@ -197,6 +201,10 @@ class Module extends CI_Model {
 
             include_once 'modules/' . $module['params']['type'] . '/models/' . $module['params']['type'] . '.php';
 
+            if($module['template'] != 'default'){
+                
+            }
+            
             $moduleObj = new $module['params']['type'];
             $content   = $moduleObj->run($module);
 

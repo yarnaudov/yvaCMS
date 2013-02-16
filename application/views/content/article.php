@@ -5,7 +5,7 @@
     <?php } ?>
     
     <div class="content" >
-        <?=$this->Article->parceText(@$article['text']);?>
+        <?=$article['text'];?>
     </div>
     
 </div>

@@ -30,17 +30,22 @@ class Gallery extends MY_Controller {
     public function index($url)
     {
         
-        $url = preg_replace('/'.$this->config->item('url_suffix').'$/', '', $url);
+        $menu = $this->Menu->getDetails($this->menu_id);
+        $menu_link = $this->Module->menu_link($menu);
+        
         $url1 = explode(':', $url);
-        $url2 = $this->uri->segment(2);
-        $url2 = preg_replace('/'.$this->config->item('url_suffix').'$/', '', $url2);
+        
+        $uri = str_replace($menu_link.'/', '', current_url());        
+        $uri = explode('/', $uri);
+        
+        $url2 = current($uri);
         $url2 = explode(':', $url2);     
         
         if(current($url1) == 'album' || current($url2) == 'album'){
             
             if(current($url2) == 'album'){
                 $album_id  = end($url2);
-                $image = $this->uri->segment(3);
+                $image = next($uri);
             }
             else{
                 $album_id  = end($url1);
@@ -55,10 +60,10 @@ class Gallery extends MY_Controller {
                 $image_id  = end($image); 
                 $image     = $this->Image->getDetails($image_id);
                 $image_key = array_search($image, $images);
-                $this->data['content'] = $this->load->view('image', compact('images', 'image_id', 'image', 'image_key', 'url2'), true);
+                $this->data['content'] = $this->load->view('image', compact('menu_link', 'images', 'image_id', 'image', 'image_key', 'url2'), true);
             }
             else{                
-                $this->data['content'] = $this->load->view('images', compact('images', 'url1'), true);
+                $this->data['content'] = $this->load->view('images', compact('menu_link', 'images', 'url1'), true);
             }
             
         }
@@ -75,7 +80,7 @@ class Gallery extends MY_Controller {
                 }
             }
             
-            $this->data['content'] = $this->load->view('albums', compact('albums'), true);
+            $this->data['content'] = $this->load->view('albums', compact('menu_link', 'albums'), true);
             
         }
                 

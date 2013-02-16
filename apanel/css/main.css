@@ -139,30 +139,30 @@ body{
     padding: 1px 1px 0px 1px;
     height: auto;
     width: auto;
-    min-width: 100px;
+    min-width: 120px;
     position: absolute;
     border-radius: 0 0 3px 3px;
     border: 1px solid #aaa;
     border-top: none;
 }
 #menu ul li ul li{
-    height: 22px;
+    overflow: auto;
     float: none;
-    background: #ddd;
+    background: #E7EFEF;
     border-bottom: 1px solid #fff;
 }
 #menu ul li ul li a{
     font-size: 12px;
     color: #fff;
-    padding: 3px 10px;
+    padding: 6px 10px;
     display: block;
     color: #444;
     background-color: transparent !important;
 }
 #menu ul li ul li a:hover{
-    background-color: #aaa !important;
-    text-decoration: none;
-    color: #fff;
+    _background-color: #034577 !important;
+    text-decoration: underline;
+    _color: #fff;
 }
 #menu ul li:hover > ul{
     display: block;

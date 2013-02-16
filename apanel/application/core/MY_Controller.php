@@ -341,31 +341,75 @@ class MY_Controller extends CI_Controller{
         
     }
     
-    function _getTemplates()
+    function _getTemplates($action = 'defaul')
     {
        
         $templates = array();
-       
-        $templates_dir = FCPATH.'/../'.TEMPLATES_DIR.'/';
-        $handle = opendir($templates_dir);
+        
+        if($action == 'modules'){
+                        
+            $templates_dir = FCPATH.'/../'.TEMPLATES_DIR.'/'.$this->Setting->getTemplate().'/../views/modules';
+            
+            if(is_dir($templates_dir)){
+            
+                $handle = opendir($templates_dir);
 
-        while (false !== ($template = readdir($handle))) {                                                
-            if(substr($template, 0, 1) == "." || !is_dir($templates_dir.$template)){
-              continue;                                                
-            }
-            
-            $template_dir = $templates_dir.$template.'/';
-            $handle2 = opendir($template_dir);
-            
-            while (false !== ($file = readdir($handle2))) { 
-                if(substr($file, 0, 1) == "." || is_dir($template_dir.$file) || !preg_match('/.php$/', $file) ){
-                    continue;                                                
+                while (false !== ($file = readdir($handle))) { 
+                    if(substr($file, 0, 1) == "." || is_dir($templates_dir.$file) || !preg_match('/.php$/', $file) ){
+                        continue;                                                
+                    }
+
+                    $templates[] = 'views/modules/'.str_replace('.php', '', $file);
+
                 }
                 
-                $templates[$template][] = $template.'/'.str_replace('.php', '', $file);
-                                                                                     
             }
-                                        
+                        
+        }
+        elseif($action == 'content'){
+                        
+            $templates_dir = FCPATH.'/../'.TEMPLATES_DIR.'/'.$this->Setting->getTemplate().'/../views/content';
+            
+            if(is_dir($templates_dir)){
+            
+                $handle = opendir($templates_dir);
+
+                while (false !== ($file = readdir($handle))) { 
+                    if(substr($file, 0, 1) == "." || is_dir($templates_dir.$file) || !preg_match('/.php$/', $file) ){
+                        continue;                                                
+                    }
+
+                    $templates[] = 'views/content/'.str_replace('.php', '', $file);
+
+                }
+                
+            }
+                        
+        }
+        else{
+        
+            $templates_dir = FCPATH.'/../'.TEMPLATES_DIR.'/';
+            $handle = opendir($templates_dir);
+
+            while (false !== ($template = readdir($handle))) {                                                
+                if(substr($template, 0, 1) == "." || !is_dir($templates_dir.$template)){
+                  continue;                                                
+                }
+
+                $template_dir = $templates_dir.$template.'/';
+                $handle2 = opendir($template_dir);
+
+                while (false !== ($file = readdir($handle2))) { 
+                    if(substr($file, 0, 1) == "." || is_dir($template_dir.$file) || !preg_match('/.php$/', $file) ){
+                        continue;                                                
+                    }
+
+                    $templates[$template][] = $template.'/'.str_replace('.php', '', $file);
+
+                }
+
+            }
+            
         }
         
         return $templates;

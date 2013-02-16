@@ -1,12 +1,14 @@
 
 $(function(){
 
-    var infowindow;
+    var infowindow_content;
+    //var infowindows = new Array();
     $.get(site_url + '/home/ajax/load?view=../../modules/mod_google_map/views/marker_options', function(data){
-        infowindow = new google.maps.InfoWindow({
-            content: data,
-            maxWidth: 500
-        });
+        infowindow_content = data;
+        //infowindow = new google.maps.InfoWindow({
+        //    content: data,
+        //    maxWidth: 500
+        //});
     });
 
     var map;
@@ -30,7 +32,7 @@ $(function(){
             zoom: map_zoom,
             center: new google.maps.LatLng(map_lat, map_lng),
             mapTypeId: google.maps.MapTypeId.ROADMAP,
-            scrollwheel: false,
+            //scrollwheel: false,
             mapTypeControl: false
         };
         map = new google.maps.Map(document.getElementById('map_canvas'), mapOptions);
@@ -109,30 +111,26 @@ $(function(){
 
         google.maps.event.addListener(marker, 'click', function() {
 
+            //infowindow.close();
+
             var content = document.createElement('div');
-            $(content).append(infowindow.content);
+            $(content).append(infowindow_content);
             $(content).find('#position strong').first().html(marker.position.lat());
             $(content).find('#position strong').last().html(marker.position.lng());
             $(content).find('#marker_numb').attr('value', marker.id);
             $(content).find('#marker_title').attr('value', marker.title);
             $(content).find('#marker_description').text(marker.descr);
             $(content).find('#media').attr('value', marker.image);
-            infowindow.content = $(content).html();
-
+            infowindow_content = $(content).html();
+            
+            infowindow = new google.maps.InfoWindow({
+                content: infowindow_content,
+                maxWidth: 500
+            });
+        
             infowindow.open(map, marker);
             
-            tinyMCE.init({
-                mode : "specific_textareas",
-                editor_selector : "marker_description",
-                theme : "advanced",
-                theme_advanced_buttons1 : "bold,italic,underline,separator,strikethrough,justifyleft,justifycenter,justifyright,justifyfull,undo,redo,link,unlink",
-                theme_advanced_buttons2 : "",
-                theme_advanced_buttons3 : "",
-                theme_advanced_toolbar_location : "top",
-                theme_advanced_toolbar_align : "left",
-                height: '100',
-                width: '100%'
-            });
+            setTimeout(setup, 150);// setup();
 
         });
 
@@ -156,18 +154,20 @@ $(function(){
 
         var marker_numb = $('#marker_numb').val();
 
-        var title       = $('#marker_title').val();
-        var description = tinyMCE.activeEditor.getContent();
-        var image       = $('#media').val();
+        var title = $('#marker_title').val();
+        var descr = tinyMCE.activeEditor.getContent();
+        var image = $('#media').val();
+
+        descr = descr.replace('/"/gi', "'");
 
         var marker_div = $('#markers div.marker[lang='+marker_numb+']');
         $(marker_div).find('.marker_title').val(title);
-        $(marker_div).find('.marker_descr').val(description);
+        $(marker_div).find('.marker_descr').val(descr);
         $(marker_div).find('.marker_image').val(image);
 
-        markers[marker_numb].title       = title;
-        markers[marker_numb].description = description;
-        markers[marker_numb].image       = image;
+        markers[marker_numb].title = title;
+        markers[marker_numb].descr = descr;
+        markers[marker_numb].image = image;
 
         if(image != ''){
             image = base_url+'../'+image;
@@ -210,5 +210,23 @@ $(function(){
         }
 
     });
+    
+    function setup() {
+        
+        tinyMCE.init({
+            mode : "specific_textareas",
+            editor_selector : "marker_description",
+            theme : "advanced",
+            theme_advanced_buttons1 : "bold,italic,underline,separator,strikethrough,justifyleft,justifycenter,justifyright,justifyfull,undo,redo,link,unlink",
+            theme_advanced_buttons2 : "",
+            theme_advanced_buttons3 : "",
+            theme_advanced_toolbar_location : "top",
+            theme_advanced_toolbar_align : "left",
+            height: '100',
+            width: '100%'
+        });
+        
+    }
+
 
 });

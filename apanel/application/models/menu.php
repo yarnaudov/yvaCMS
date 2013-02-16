@@ -39,7 +39,7 @@ class Menu extends MY_Model {
         
         $filter = ''; 
         if(!isset($filters['status'])){
-            $filter = " AND status != 'trash'"; 
+            $filter = " AND status != 'trash' "; 
         }
         
         if(substr_count($order_by, 'order')){
@@ -53,6 +53,9 @@ class Menu extends MY_Model {
             }
             elseif($key == 'category'){
                 $filter .= " AND category_id = '".$value."' ";
+            }
+            elseif(preg_match('/^!{1}/', $value)){
+                $filter .= " AND `".$key."` != '".preg_replace('/^!{1}/', '', $value)."' ";
             }
             else{
                 $filter .= " AND `".$key."` = '".$value."' ";
@@ -271,7 +274,8 @@ class Menu extends MY_Model {
         $data['menus']['target']                    = $this->input->post('target');
         $data['menus']['parent_id']                 = $this->input->post('parent');
         $data['menus']['image']                     = $this->input->post('image');
-        $data['menus']['template']                  = $this->input->post('template');    
+        $data['menus']['main_template']             = $this->input->post('main_template');
+        $data['menus']['content_template']          = $this->input->post('content_template');
         $data['menus']['default']                   = $this->input->post('default');
         $data['menus']['description_as_page_title'] = $this->input->post('description_as_page_title');
         $data['menus']['params']                    = json_encode($this->input->post('params'));
@@ -368,7 +372,7 @@ class Menu extends MY_Model {
         $query = $this->db->update_string('menus', $data['menus'], $where);
         $result = $this->db->query($query);
         if($result != true){
-            $this->session->set_userdata('error_msg', lang('msg_save_menu_error')."1");
+            $this->session->set_userdata('error_msg', lang('msg_save_menu_error'));
             $this->db->query('ROLLBACK');
             return $id;
         }
@@ -384,7 +388,7 @@ class Menu extends MY_Model {
         }        
         $this->db->query($query);
         if($result != true){
-            $this->session->set_userdata('error_msg', lang('msg_save_menu_error')."2");
+            $this->session->set_userdata('error_msg', lang('msg_save_menu_error'));
             $this->db->query('ROLLBACK');
             return $id;
         }
@@ -392,7 +396,7 @@ class Menu extends MY_Model {
         // save custom fields data
         $result = $this->Custom_field->saveFieldsValues($id);
         if($result == false){
-            $this->session->set_userdata('error_msg', lang('msg_save_menu_error')."3");
+            $this->session->set_userdata('error_msg', lang('msg_save_menu_error'));
             $this->db->query('ROLLBACK');
             return $id;
         }
@@ -411,13 +415,17 @@ class Menu extends MY_Model {
         $menus = $this->input->post('menus');     
         foreach($menus as $menu){
             
-            $status = self::getDetails($menu, 'status');
+            $menu = self::getDetails($menu);
             
-            if($status == 'trash'){
-                $result = $this->db->simple_query("DELETE FROM menus WHERE id = '".$menu."'");
+            if($menu['default'] == 'yes'){
+                $this->session->set_userdata('error_msg', lang('msg_delete_default_menu_error'));
+                $result = true;
+            }            
+            elseif($menu['status'] == 'trash'){
+                $result = true;//$this->db->simple_query("DELETE FROM menus WHERE id = '".$menu."'");
             }
             else{
-                $result = self::changeStatus($menu, 'trash');
+                $result = self::changeStatus($menu['id'], 'trash');
             }
             
             if($result != true){
@@ -485,6 +493,30 @@ class Menu extends MY_Model {
         else{
             $this->session->set_userdata('error_msg', lang('msg_order_error'));
         }
+
+    }
+    
+    public function makeDefault($id)
+    {   
+
+        $this->db->query("BEGIN");
+        
+        $query = $this->db->update_string('menus', array('default' => 'no'), "`default` = 'yes'");
+        $result = $this->db->query($query);
+        if($result != true){
+            $this->db->query("ROLLBACK");
+            return false;
+        }
+        
+        $query = $this->db->update_string('menus', array('default' => 'yes'), "id = ".$id);
+        $result = $this->db->query($query);
+        if($result != true){
+            $this->db->query("ROLLBACK");
+            return false;
+        }
+        
+        $this->db->query("COMMIT");
+        return true;
 
     }
     

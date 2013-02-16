@@ -300,7 +300,22 @@
                                     </td>
                                 </tr>
                                                                 
-                                <?php $this->load->view('templates', array('name' => 'template', 'template' => set_value('template', isset($template) ? $template : ''), 'default' => true)); ?>
+                                <?php $this->load->view('templates', array('name' => 'main_template', 'template' => set_value('main_template', isset($main_template) ? $main_template : ''), 'default' => true)); ?>
+                                
+                                <tr><td colspan="2" class="empty_line" ></td></tr>
+                                
+                                <tr>	      			
+                                    <th><label><?=lang('label_template');?>:</label></th>
+                                    <td>
+
+                                        <select name="content_template" >
+                                            <option value="default" ><?=lang('label_default');?></option>                                            
+                                            <?php foreach($this->content_templates as $template_file ){
+                                                      echo '<option '.($template_file == set_value('content_template', isset($content_template) ? $content_template : "") ? "selected" : "").' value="'.$template_file.'" >'.$template_file.'</option>';
+                                                  } ?>
+                                        </select>
+                                    </td>
+                                </tr>
                                 
                                 <tbody id="custom_fields" >
                                 <?php if(count($custom_fields) > 0){

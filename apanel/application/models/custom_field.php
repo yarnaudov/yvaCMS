@@ -165,6 +165,8 @@ class Custom_field extends CI_Model {
             
             if($status == 'trash'){
                 
+                $result = true;
+                /*
                 $result = $this->db->simple_query("DELETE FROM custom_fields_values WHERE custom_field_id = '".$custom_field."'");
                 if($result != true){
                     $this->db->query("ROLLBACK");
@@ -175,7 +177,8 @@ class Custom_field extends CI_Model {
                 if($result != true){
                     $this->db->query("ROLLBACK");
                     return false;
-                }
+                }                 
+                */
                 
             }
             else{

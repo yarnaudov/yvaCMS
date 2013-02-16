@@ -70,7 +70,7 @@ class Article extends MY_Model {
         
         $filter = ''; 
         if(!isset($filters['status'])){
-            $filter = " AND status != 'trash'"; 
+            $filter = " AND status != 'trash' "; 
         }
         
         if(substr_count($order_by, 'order')){
@@ -356,7 +356,7 @@ class Article extends MY_Model {
             $status = self::getDetails($article, 'status');
             
             if($status == 'trash'){
-                $result = $this->db->simple_query("DELETE FROM articles WHERE id = '".$article."'");
+                $result = true;//$this->db->simple_query("DELETE FROM articles WHERE id = '".$article."'");
             }
             else{
                 $result = self::changeStatus($article, 'trash');
