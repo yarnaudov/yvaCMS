@@ -182,19 +182,18 @@ class Module extends MY_Model {
             $params = self::getDetails($id, 'params');
             if($params['type'] == $data['modules']['params']['type']){
                 
-                foreach($data['modules']['params'] as $key1 => $value1){
-                    if(!is_array($value1) || $key1 == 'display_menus' || $key1 == 'display_rules' || $key1 == 'custom_menus'){
-                        $params[$key1] = $value1;
+                foreach($data['modules']['params']['multilang'] as $key1 => $value1){
+                    
+                    foreach($value1 as $key2 => $value2){
+                        $params[$key1][$key2] = $value2;
                     }
-                    else{
-                        foreach($value1 as $key2 => $value2){
-                            $params[$key1][$key2] = $value2;
-                        }
-                    }                    
+                        
+                    $data['modules']['params'][$key1] = $params[$key1];
+                    
                 }
                 
-                $data['modules']['params'] = $params;
-                
+                unset($data['modules']['params']['multilang']);
+                                
             }
             
             $data['modules']['updated_by'] =  $_SESSION['user_id'];

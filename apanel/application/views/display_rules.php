@@ -1,5 +1,5 @@
 <div class="box" >
-    <span class="header" ><?=lang('label_advanced');?> <?=lang('label_display');?> rules</span>
+    <span class="header" ><?=lang('label_advanced_display_rules');?></span>
 
     <div class="box_content" >
         <table class="box_table" cellpadding="0" cellspacing="0" >

@@ -71,7 +71,7 @@
 	            
                     <!-- mandatory information  -->
 	            <div class="box" >
-	      	      <span class="header" ><?=lang('label_mandatory');?> <?=lang('label_information');?></span>
+	      	      <span class="header" ><?=lang('label_main_information');?></span>
 	      	      
                       <div class="box_content" >
                         <table class="box_table" cellpadding="0" cellspacing="0" >
@@ -95,7 +95,7 @@
 	            <!-- mandatory information  -->
                     
 	            <div class="box" >
-	      	        <span class="header" ><?=lang('label_advanced');?> <?=lang('label_options');?></span>
+	      	        <span class="header" ><?=lang('label_advanced');?>&nbsp;<?=lang('label_options');?></span>
 	                
                         <div class="box_content" >
                             <table class="box_table" cellpadding="0" cellspacing="0" >
@@ -305,7 +305,7 @@
                                 <tr><td colspan="2" class="empty_line" ></td></tr>
                                 
                                 <tr>	      			
-                                    <th><label><?=lang('label_template');?>:</label></th>
+                                    <th><label><?=lang('label_content_template');?>:</label></th>
                                     <td>
 
                                         <select name="content_template" >

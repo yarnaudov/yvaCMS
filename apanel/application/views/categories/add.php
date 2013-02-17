@@ -73,7 +73,7 @@
 	            
                     <!-- mandatory information  -->
 	            <div class="box" >
-	      	      <span class="header" ><?=lang('label_mandatory');?> <?=lang('label_information');?></span>
+	      	      <span class="header" ><?=lang('label_main_information');?></span>
 	      	      
                       <div class="box_content" >
                         <table class="box_table" cellpadding="0" cellspacing="0" >

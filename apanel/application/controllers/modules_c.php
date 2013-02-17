@@ -162,7 +162,16 @@ class Modules_c extends MY_Controller {
 
     	               parent.$('input.type').val($(this).attr('href'));
                        
-                       $.get('".site_url('home/ajax/load_module_type')."?type='+$(this).attr('href'), function(data){                                                                                                             
+                       $.get('".site_url('home/ajax/load_module_type')."?type='+$(this).attr('href'), function(data){
+                           
+                           if(data.search('script') != -1){
+                                parent.$('.required').each(function(){
+                                    $(this).removeClass('required');
+                                });
+                                parent.$('form').submit();
+                                return;
+                           }
+
                            parent.$('#type_label').html($(data, '#type_label').html());
                            parent.$('#module_options').css('display', 'none');                           
                            parent.$('#module_options').html(data);

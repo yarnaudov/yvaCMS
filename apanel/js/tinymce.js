@@ -17,7 +17,7 @@ $(document).ready(function() {
         height: tmce_height,
         width: '100%',
         
-        content_css : 'templates/'+TEMPLATE+'/css/global.css?' + new Date().getTime(),
+        content_css : 'templates/'+TEMPLATE+'/../css/global.css?' + new Date().getTime(),
         
         gecko_spellcheck : true,
         

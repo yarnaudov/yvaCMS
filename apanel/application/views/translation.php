@@ -17,6 +17,9 @@
             
                         <?php if($this->router->method == 'edit'){ ?>
                         $('select[name=translation]').bind('change', function(){
+                            $('.required').each(function(){
+                                $(this).removeClass('required');
+                            });
                             $('form').append('<input type="hidden" name="uset_posts" value="true" >');
                             $('form').submit();
                         });

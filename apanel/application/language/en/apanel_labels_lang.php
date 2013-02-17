@@ -47,6 +47,8 @@ $lang['label_options']       = 'Options';
 $lang['label_information']   = 'Information';
 $lang['label_metadata']      = 'Metadata';
 $lang['label_advanced']      = 'Advanced';
+$lang['label_advanced_display_rules'] = 'Advanced display rules';
+$lang['label_main_information'] = 'Main information';
 
 $lang['label_alias']         = 'Alias';
 $lang['label_text']          = 'Text';
@@ -80,6 +82,7 @@ $lang['label_select']        = 'Select';
 $lang['label_value']         = 'Value';
 $lang['label_multilang']     = 'Multi-language';
 $lang['label_template']      = 'Template';
+$lang['label_content_template'] = 'Content template';
 
 // jquery UI labels
 $lang['label_error']         = 'Error';

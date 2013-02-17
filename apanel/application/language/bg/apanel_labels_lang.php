@@ -47,6 +47,8 @@ $lang['label_options']       = 'Опции';
 $lang['label_information']   = 'Информация';
 $lang['label_metadata']      = 'Метаданни';
 $lang['label_advanced']      = 'Разширени';
+$lang['label_advanced_display_rules'] = 'Разширни правила за показване';
+$lang['label_main_information'] = 'Основна информация';
 
 $lang['label_alias']         = 'Псевдоним';
 $lang['label_text']          = 'Текст';
@@ -80,6 +82,7 @@ $lang['label_select']        = 'Избери';
 $lang['label_value']         = 'Стойност';
 $lang['label_multilang']     = 'Многоезично';
 $lang['label_template']      = 'Шаблон';
+$lang['label_content_template'] = 'Шаблон за съдържанието';
 
 // jquery UI labels
 $lang['label_error']         = 'Грешка';
