@@ -80,8 +80,12 @@ class Content extends CI_Model {
                 break;
             
                 case "component":
-                                               
-                    $data['content'] = $this->data['content'];
+                    
+                    //include 'components/contact_forms/controllers/contact_forms.php';
+                    //echo modules::run('contact_forms/contact_forms/index');
+                    echo modules::run('contact_forms/index');
+                    //$component = new Contact_forms();
+                    //$data['content'] = $this->data['content'];
                                         
                 break;
                 

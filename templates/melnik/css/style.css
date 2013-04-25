@@ -2,8 +2,10 @@
 body {
   background-color: #FFFFF7;
   color: #693E34;
-  font-family: Georgia, Arial, Helvetica, sans-serif;
-  font-size: 12px;
+  _font-family: Georgia, Arial, Helvetica, sans-serif;
+  _font-family: 'Arimo', sans-serif;
+  font-family: "Trebuchet MS", Arial;
+  font-size: 13px;
   line-height: 1.3;
   margin: 0;
 }
@@ -61,6 +63,8 @@ a img{
 #menu{
 	border-bottom: 1px solid #808080;
 	margin: 10px auto;
+        font-family: 'Arimo', sans-serif;
+        font-size: 12px;
 }
 #menu ul{
 	margin: 0;
@@ -140,11 +144,24 @@ a img{
 	border-radius: 3px 3px 0 0;
 	color: #ffffff;
 }
+#content table td.left .article .content{
+    padding: 0;
+    margin: 0;
+    border: none;
+}
+#content table td.left .content .article .title{
+    padding: 0;
+    background: none;
+    margin: 0;
+    color: inherit;
+}
 
 #map{
-	border: 1px solid #e0e0e0;
-	height: 290px;
-	margin-bottom: 15px;
+    border: 1px solid #e0e0e0;
+    margin-bottom: 15px;
+}
+.module_mod_google_map .content{
+    height: 290px;
 }
 
 

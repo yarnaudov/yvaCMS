@@ -73,9 +73,11 @@
                     <include type="module" name="main_menu" />
                 </div>
          
+                <?php if($this->Module->count('map') > 0){ ?>
                 <div id="map" class="center" >
                     <include type="module" name="map" />
                 </div>
+                <?php } ?>
          
                 <?php if($menu_alias == 'home'){ ?>
                 <div id="image_slider" class="center" >
@@ -104,9 +106,7 @@
                         <tr>
 				     
                             <td class="left" >
-                                <div class="content" >
-                                    <include type="content" />
-                                </div>
+                                <include type="content" />
                             </td>
 				       
                             <td class="right" >

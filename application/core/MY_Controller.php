@@ -87,7 +87,7 @@ class MY_Controller extends CI_Controller {
             
             // If menu type is 'component' set route to component and redirect the page 
             if(preg_match('/^components{1}/', $menu['params']['type'])){                     
-                $this->setRoute($menu);                
+                //$this->setRoute($menu);                
             }
             
         }
