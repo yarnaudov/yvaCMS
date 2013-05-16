@@ -119,8 +119,13 @@ $(document).ready(function() {
         }
         
         var media = $('input[name=folder]').val()+$('.checkbox:checked').val();
-            
-        if(parent.$('#media').attr('name')){
+
+        var target = window.frameElement.getAttribute('target');
+        
+        if(target != null && parent.$('#'+target)){
+            parent.$('#'+target).val(media);       
+        }
+        else if(parent.$('#media')){
             parent.$('#media').val(media);       
         }
         else{

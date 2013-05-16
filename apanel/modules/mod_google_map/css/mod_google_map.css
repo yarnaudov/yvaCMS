@@ -26,6 +26,13 @@
 #center input{
     width: 146px;
 }
+#map_options img{
+    float: right;
+    margin-left: 5px;
+    margin-right: -5px;
+    width: 18px;
+}
+
 
 #map_canvas{
    border: 1px solid #bbb;
@@ -35,4 +42,45 @@
 
 #marker_description{
     height: 130px;
+}
+
+/*
+ * markers info
+ */
+ .marker_info_conteiner{
+    width: 435px;
+    padding: 10px 10px 0 10px;
+ }
+ .marker_info_conteiner div{
+    padding-bottom: 15px;
+    vertical-align: top;
+ }
+ .marker_info_conteiner label{
+    display: block;
+    width: 80px;
+    vertical-align: : top;
+    float: left;
+}
+.marker_info_conteiner span{
+    display: block;
+    foat: right;
+}
+.marker_info_conteiner input{
+    width: 350px;
+    font-weight: normal !important;
+}
+.marker_info_conteiner textarea{
+    width: 350px;
+    height: 60px;
+}
+
+.marker_info_conteiner .defaultSkin table.mceLayout tr.mceFirst td.mceToolbar {
+    border:1px solid #888888;
+}
+.marker_info_conteiner  #marker_description_toolbargroup{
+    padding: 0;
+}
+.marker_info_conteiner .defaultSkin table.mceLayout tr.mceLast td {
+    border:1px solid #888888;
+    border-top: none;
 }

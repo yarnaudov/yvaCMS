@@ -43,7 +43,7 @@ class Modules_c extends MY_Controller {
         
         if ($method == 'add' || $method == 'edit')
         {
-            
+
             $this->load->model('Article');
             $this->load->model('Menu');
             
@@ -70,6 +70,13 @@ class Modules_c extends MY_Controller {
                 if ($this->form_validation->run() == TRUE){
                     
                     $module_id = $this->Module->$method($this->module_id);
+
+                    // check if there is module model and call save method
+                    $module_type = $_POST['params']['type'];                
+                    if(file_exists(FCPATH.'modules/'.$module_type.'/models/'.$module_type.'.php')){
+                        $this->load->model('../../modules/'.$module_type.'/models/'.$module_type);
+                        $this->$module_type->save($module_id);
+                    }
                                                             
                     if(isset($_POST['save'])){
                         redirect('modules/');

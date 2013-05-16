@@ -945,6 +945,20 @@ INSERT INTO `users_groups` (`id`, `title`, `description`, `access`, `status`, `o
 (3, 'Administrators', '', '', 'yes', 3),
 (4, 'Super Administrators', '', '*', 'yes', 4);
 
+
+--
+-- Table structure for table `mod_google_map_markers`
+--
+
+CREATE TABLE IF NOT EXISTS `mod_google_map_markers` (
+  `module_id` int(4) DEFAULT NULL,
+  `lat` varchar(100) NOT NULL,
+  `lng` varchar(100) NOT NULL,
+  `title` varchar(500) NOT NULL,
+  `description` text NOT NULL,
+  `image` varchar(500) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 --
 -- Constraints for dumped tables
 --

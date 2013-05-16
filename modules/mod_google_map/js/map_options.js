@@ -7,7 +7,6 @@ $.get(site_url + '/home/ajax/load?view=../../modules/mod_google_map/views/infowi
 
 var map;
 var markers = new Array();
-var numb = 0;
 
 function initialize() {
     
@@ -25,9 +24,15 @@ function initialize() {
     google.maps.event.addListenerOnce(map, 'idle', function(){
         
         // create markers from database
-        for(var i in map_settings['markers']){
-            createMarker(map_settings['markers'][i], i);
-        }
+        $('#markers div').each(function(index){
+            var marker_info = new Array();
+            marker_info['lat']         = $(this).find('.marker_lat').val();
+            marker_info['lng']         = $(this).find('.marker_lng').val();
+            marker_info['title']       = $(this).find('.marker_title').val();
+            marker_info['description'] = $(this).find('.marker_descr').val();
+            marker_info['image']       = $(this).find('.marker_image').val();
+            createMarker(marker_info, index);
+        });
         
     });
 
@@ -39,13 +44,13 @@ google.maps.event.addDomListener(window, 'load', initialize);
 function createMarker(marker_info, numb){
     
     var image = '';
-    if(marker_info['image'] != ''){
+    if(marker_info['image'] != '' && marker_info['image'] != undefined){
         image = base_url+marker_info['image'];
     }
-    else if(map_settings['markers_image'] != ''){
+    else if(map_settings['markers_image'] != '' && map_settings['markers_image'] != undefined){
         image = base_url+map_settings['markers_image'];
     }
-    
+
     var marker = new google.maps.Marker({
         position: new google.maps.LatLng(marker_info['lat'], marker_info['lng']),
         map: map,
@@ -58,7 +63,7 @@ function createMarker(marker_info, numb){
     var content = document.createElement('div');
     $(content).append(infowindow_content);
     $(content).find('.title').html(marker_info['title']);
-    $(content).find('.descr').html(marker_info['descr']);
+    $(content).find('.descr').html(marker_info['description']);
     content = $(content).html();
     
     infowindows[marker.id] = new google.maps.InfoWindow({
