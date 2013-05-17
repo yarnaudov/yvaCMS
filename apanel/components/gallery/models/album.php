@@ -20,6 +20,8 @@ class Album extends MY_Model {
             return;
         }
 
+        $album[0]['params'] = json_decode($album[0]['params'], true); 
+
         if($field == null){
             return $album[0];
         }
@@ -129,6 +131,7 @@ class Album extends MY_Model {
 
         $data['com_gallery_albums']['status']           = $this->input->post('status');      
         $data['com_gallery_albums']['show_in_language'] = $this->input->post('show_in_language');
+        $data['com_gallery_albums']['params']           = json_encode($this->input->post('params'));
         
         if($data['com_gallery_albums']['show_in_language'] == 'all'){
             $data['com_gallery_albums']['show_in_language'] = NULL;

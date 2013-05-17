@@ -115,7 +115,7 @@ class Image extends MY_Model {
         $data['com_gallery_images']['status']           = $this->input->post('status');      
         $data['com_gallery_images']['show_in_language'] = $this->input->post('show_in_language');
         $data['com_gallery_images']['ext']              =  end(explode(".", $_FILES["file"]["name"]));
-        
+
         if($data['com_gallery_images']['show_in_language'] == 'all'){
             $data['com_gallery_images']['show_in_language'] = NULL;
         }
@@ -123,12 +123,12 @@ class Image extends MY_Model {
             unset($data['com_gallery_images']['ext']);
         }
 
-        if($action == 'insert'){            
+        if($action == 'insert'){
             $data['com_gallery_images']['order']      =  self::getMaxOrder()+1;
             $data['com_gallery_images']['created_by'] =  $_SESSION['user_id'];
             $data['com_gallery_images']['created_on'] =  now();        
         }
-        elseif($action == 'update'){            
+        elseif($action == 'update'){                
             $data['com_gallery_images']['updated_by'] =  $_SESSION['user_id'];
             $data['com_gallery_images']['updated_on'] =  now(); 
         }
@@ -209,9 +209,18 @@ class Image extends MY_Model {
         if($_FILES["file"]["size"] > 0){
             self::upload($id);
         }
-        
+
         $this->session->set_userdata('good_msg', lang('msg_save_image'));
         $this->db->query('COMMIT');
+
+        // if tmp is 1 move image from tmp folder to images folder
+        if($this->input->post('tmp') == 1){
+            $file     = $id.'.'.self::getDetails($id, 'ext');
+            $tmp_file = FCPATH.'../'.$this->config->item('images_tmp_dir').'/'.$file;
+            $img_file = FCPATH.'../'.$this->config->item('images_dir').'/'.$file;
+            rename($tmp_file, $img_file);
+        }
+
         return $id;
 
     }
@@ -300,23 +309,23 @@ class Image extends MY_Model {
     public function upload($id)
     {
         
-        $this->load->helper('resizeImage');
+        $images_dir        = FCPATH.'../'.$this->config->item('images_dir');
+        $images_origin_dir = FCPATH.'../'.$this->config->item('images_origin_dir');
         
-        $images_dir = FCPATH.'../'.$this->config->item('images_dir');
-        $thumbs_dir = FCPATH.'../'.$this->config->item('thumbs_dir');
-        
-        $ext = end(explode(".", $_FILES["file"]["name"]));
-
         if(!file_exists($images_dir)){
             mkdir($images_dir, 0777);
         }
-        if(!file_exists($thumbs_dir)){
-            mkdir($thumbs_dir, 0777);
+
+        if(!file_exists($images_origin_dir)){
+            mkdir($images_origin_dir, 0777);
         }
-        
-        
-        resizeImage($_FILES['file']['tmp_name'], $images_dir.'/'.$id.'.'.$ext, $this->input->post('image_width'), $this->input->post('image_height'));
-        resizeImage($images_dir.'/'.$id.".".$ext, $thumbs_dir.'/'.$id.'.'.$ext, $this->input->post('thumb_width'), $this->input->post('thumb_height'));
+
+        $image = self::getDetails($id);
+
+        $ext = end(explode(".", $_FILES["file"]["name"]));
+
+        move_uploaded_file($_FILES['file']['tmp_name'], $images_dir.'/'.$id.'.'.$ext);
+        move_uploaded_file($_FILES['file']['tmp_name'], $images_origin_dir.'/'.$id.'.'.$ext);
 	      
         
     }

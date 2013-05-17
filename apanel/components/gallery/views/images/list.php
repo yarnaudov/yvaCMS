@@ -102,14 +102,15 @@
                 </td>
                 <td>
                     <a href="<?=site_url('components/gallery/images/edit/'.$image['id']);?>" >
-                        <img class="image" src="<?=base_url('../'.$this->config->item('thumbs_dir').'/'.$image['id'].'.'.$image['ext']);?>" > 
+                        <?php $image_src = FCPATH.'../'.$this->config->item('images_croped_dir').'/'.$image['id'].'.'.$image['ext'];
+                              if(file_exists($image_src)){
+                                  $image_src = base_url('../'.$this->config->item('images_croped_dir').'/'.$image['id'].'.'.$image['ext']);
+                              }
+                              else{
+                                  $image_src = base_url('../'.$this->config->item('images_origin_dir').'/'.$image['id'].'.'.$image['ext']);
+                              } ?>
+                        <img class="image" src="<?=$image_src;?>" > 
                     </a>
-                    <?php $image_data = getimagesize(FCPATH.'../'.$this->config->item('images_dir').'/'.$image['id'].'.'.$image['ext']);
-                          $thumb_data = getimagesize(FCPATH.'../'.$this->config->item('thumbs_dir').'/'.$image['id'].'.'.$image['ext']); ?>
-                    <span class="image_size">
-                        <strong><?=$image_data[0];?></strong>x<strong><?=$image_data[1];?></strong>px,
-                        <strong><?=$thumb_data[0];?></strong>x<strong><?=$thumb_data[1];?></strong>px
-                    </span>
                 </td>
                 <td style="text-align: left;" >
                     <a href="<?=site_url('components/gallery/images/edit/'.$image['id']);?>" >

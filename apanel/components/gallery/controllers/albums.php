@@ -17,6 +17,8 @@ class Albums extends MY_Controller {
         
         $this->load->model('Album');
         $this->load->model('Image');
+
+        $this->load->config('gallery');
         
         parent::_loadComponetLanguages('gallery');
         
@@ -41,9 +43,7 @@ class Albums extends MY_Controller {
                 
             }
             elseif($method == 'edit'){
-                
-                $this->jquery_ext->add_plugin("lightbox");
-                
+                                
                 $script = "$('select[name=translation]').bind('change', function(){
                                $('form').append('<input type=\"hidden\" name=\"uset_posts\" value=\"true\" >');
                                $('form').submit();
@@ -62,6 +62,26 @@ class Albums extends MY_Controller {
                             $('input.text').val($(this).val());
                         });";
             
+            $script .= "$('select.water_mark_type').bind('change default', function(event){
+                        
+                            if($(this).val() == 'image'){
+                                $('#water_mark_text').css('display', 'none');
+                                $('#water_mark_image').css('display', '');
+                            }
+                            else if($(this).val() == 'text'){
+                                $('#water_mark_text').css('display', '');
+                                $('#water_mark_image').css('display', 'none'); 
+                            }
+                            else{
+                                $('#water_mark_text').css('display', 'none');
+                                $('#water_mark_image').css('display', 'none'); 
+                            }
+
+                            $(this).unbind('default');
+
+                        });
+                        $('select.water_mark_type').trigger('default');";
+
             $this->jquery_ext->add_script($script);
             $this->jquery_ext->add_plugin("tinymce");
             $this->jquery_ext->add_library("tinymce.js");

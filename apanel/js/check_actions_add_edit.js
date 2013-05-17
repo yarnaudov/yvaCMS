@@ -20,6 +20,7 @@ $(document).ready(function() {
         $(iframe).attr('frameBorder', 0);
         $(iframe).attr('scrolling', 'no');
         $(iframe).attr('class', $(this).attr('lang'));
+        $(iframe).attr('target', $(this).attr('target'));
         $(iframe).attr('id', 'jquery_ui_iframe');
 
         $(div).append(iframe);            

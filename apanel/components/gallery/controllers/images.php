@@ -13,6 +13,8 @@ class Images extends MY_Controller {
         
         $this->load->model('Image');
         $this->load->model('Album');
+
+        $this->load->config('gallery');
         
         parent::_loadComponetLanguages('gallery');
         
@@ -38,7 +40,7 @@ class Images extends MY_Controller {
             }
             elseif($method == 'edit'){
                 
-                $this->jquery_ext->add_plugin("lightbox");
+                //$this->jquery_ext->add_plugin("lightbox");
                 
                 $script = "$('select[name=translation]').bind('change', function(){
                                $('form').append('<input type=\"hidden\" name=\"uset_posts\" value=\"true\" >');
@@ -61,6 +63,7 @@ class Images extends MY_Controller {
             $this->jquery_ext->add_script($script);
             $this->jquery_ext->add_plugin("tinymce");
             $this->jquery_ext->add_library("tinymce.js");
+            $this->jquery_ext->add_css("../components/gallery/css/gallery.css");
 
             $this->load->helper('form');
             $this->load->library('form_validation');            
@@ -173,7 +176,8 @@ class Images extends MY_Controller {
     public function edit()      
     {
         
-        $data                  = $this->Image->getDetails($this->image_id); 
+        $data                  = $this->Image->getDetails($this->image_id);
+        $data['album_params']  = $this->Album->getDetails($data['album_id'], 'params');
         $data['albums']        = $this->Album->getForDropdown();
         $data['custom_fields'] = $this->Custom_field->getCustomFields(array('status' => 'yes'), '`order`');
         $data['meta']          = '<meta http-equiv="cache-control" content="no-cache">';
@@ -181,6 +185,103 @@ class Images extends MY_Controller {
         $content["content"] = $this->load->view('gallery/images/add', $data, true);		
         $this->load->view('layouts/default', $content);
         
+    }
+
+    public function crop()
+    {
+
+
+        $images_tmp_dir = FCPATH.'../'.$this->config->item('images_tmp_dir');
+        if(!file_exists($images_tmp_dir)){
+            mkdir($images_tmp_dir, 0777);
+        }
+
+        $targ_w = $this->input->post('w');
+        $targ_h = $this->input->post('h');
+        $jpeg_quality = 90;
+
+        $src   = $this->input->post('image');
+        $img_r = imagecreatefromjpeg($src);
+        $dst_r = ImageCreateTrueColor( $targ_w, $targ_h );
+
+        imagecopyresampled($dst_r, $img_r, 0, 0, $_POST['x'], $_POST['y'], $targ_w, $targ_h, $_POST['w'], $_POST['h']);
+
+        $pathinfo = pathinfo($src);
+        $extension = current(explode('?', $pathinfo['extension']));
+        $dst_src = $this->config->item('images_tmp_dir').'/'.$pathinfo['filename'].'.'.$extension;
+
+        //header('Content-type: image/jpeg');
+        imagejpeg($dst_r, FCPATH.'../'.$dst_src, $jpeg_quality);
+
+        echo $dst_src;
+        //imagedestroy($dst_r);
+        //redirect('upload/edit');
+        exit;
+
+    }
+
+    public function rotate()
+    {
+
+        $images_tmp_dir = FCPATH.'../'.$this->config->item('images_tmp_dir');        
+        if(!file_exists($images_tmp_dir)){
+            mkdir($images_tmp_dir, 0777);
+        }
+
+        // File and rotation
+        $image        = $this->input->post('image');
+        $degrees      = $this->input->post('degrees');
+        $jpeg_quality = 90;
+
+        // Load
+        $source = imagecreatefromjpeg($image);
+
+        // Rotate
+        $rotate = imagerotate($source, $degrees, 0);
+
+        // Output
+        $pathinfo = pathinfo($image);
+        $extension = current(explode('?', $pathinfo['extension']));
+        $dst_image = $this->config->item('images_tmp_dir').'/'.$pathinfo['filename'].'.'.$extension;
+
+        imagejpeg($rotate, FCPATH.'../'.$dst_image, $jpeg_quality);
+
+        // Free the memory
+        imagedestroy($source);
+        imagedestroy($rotate);
+
+        echo $dst_image;
+
+        exit;
+
+    }
+
+    public function origin()
+    {
+        
+        $id = $this->input->post('id');
+        $ext = $this->Image->getDetails($id, 'ext');
+
+        $img_file = FCPATH.'../'.$this->config->item('images_origin_dir').'/'.$id.'.'.$ext;
+        $tmp_file = FCPATH.'../'.$this->config->item('images_tmp_dir').'/'.$id.'.'.$ext;
+
+        copy($img_file, $tmp_file);
+
+        echo $this->config->item('images_tmp_dir').'/'.$id.'.'.$ext;
+
+    }
+
+    public function unlink($image)
+    {
+        
+        if(file_exists($image)){
+            unlink($image);
+            return true;
+        }
+        else{
+            return false;
+        }
+
     }
 
 }

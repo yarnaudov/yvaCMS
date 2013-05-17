@@ -79,6 +79,7 @@
                         <table class="box_table" cellpadding="0" cellspacing="0" border="0">
                                                         
                             <tr>
+                                <!--
                                 <th rowspan="5" >
                                     <?php if(isset($id)){ ?>
                                     <a href="<?=base_url('../'.$this->config->item('images_dir').'/'.$id.'.'.$ext);?>" rel="lightbox" title="<?=$title;?>" >
@@ -88,10 +89,12 @@
                                     <img src="<?=base_url('img/no_photo.jpg');?>" >
                                     <?php } ?>
                                 </th>
+                                -->
                                 <th><label class="multilang" ><?=lang('label_title');?>:</label></th>
                                 <td><input type="text" name="title" value="<?=set_value('title', isset($title) ? $title : "");?>" ></td>
                             </tr>
 
+                            <!--
                             <tr><td colspan="2" class="empty_line" ></td></tr>
 
                             <tr>
@@ -139,13 +142,105 @@
                                 <th></th>
                                 <td>* <?=lang('msg_image_info');?></td>
                             </tr>
-                                                        
+                            -->                     
                         </table>
                       </div>
 	      	              
                     </div>
 	            <!-- mandatory information  -->
                     
+                    <div class="box" >
+                        <span class="header" ><?=lang('label_image');?></span>
+                            <div class="box_content" >
+                                <table class="box_table" cellpadding="0" cellspacing="0" border="0" >
+
+                                    <?php if(isset($id)){ ?>
+                                    <tr>
+                                        <td colspan="2" >
+
+                                            <?php $image_src  = base_url('../'.$this->config->item('images_dir').'/'.$id.'.'.$ext);
+                                                  $image_data = getimagesize(FCPATH.'../'.$this->config->item('images_dir').'/'.$id.'.'.$ext); ?>
+
+                                            <img style="width: 100%;" lang="<?=$image_data[0];?>" class="image_" id="jcrop_target" src="<?=$image_src.'?'.time();?>" >
+
+                                            <input type="hidden" id="tmp" name="tmp" value="0" >
+
+                                            <input type="hidden" name="x" id="x" >
+                                            <input type="hidden" name="y" id="y" >
+                                            <input type="hidden" name="x2" id="x2" >
+                                            <input type="hidden" name="y2" id="y2" >
+
+                                            <link rel="stylesheet" href="http://jcrop-cdn.tapmodo.com/v0.9.12/css/jquery.Jcrop.min.css" type="text/css" />
+                                            <script src="http://jcrop-cdn.tapmodo.com/v0.9.12/js/jquery.Jcrop.min.js"></script>
+                                            <script src="<?=base_url('components/gallery/js/crop.js');?>"></script>
+
+                                            <!-- <? //=$this->load->view('gallery/images/upload');?> -->
+                                        </td>
+
+                                    </tr>
+
+                                    <tr><td colspan="2" class="empty_line" ></td></tr>
+
+                                    <tr>
+                                        <td colspan="2">
+
+                                            <span><?=lang('com_gallery_label_aspect_ratio');?>:</span>
+                                            <select id="aspectRatio" name="params[aspect_ratio]" style="width: 50px;" >
+                                                <?=create_options_array($this->config->item('aspect_ratio'), set_value('params[aspect_ratio]', isset($album_params['aspect_ratio']) ? $album_params['aspect_ratio'] : ""));?>
+                                            </select>
+
+                                            <input type="hidden" id="min_width"  value="<?=isset($album_params['min_width']) ? $album_params['min_width'] : '';?>" >
+                                            <input type="hidden" id="min_height" value="<?=isset($album_params['min_height']) ? $album_params['min_height'] : '';?>" >
+                                            <input type="hidden" id="max_width"  value="<?=isset($album_params['max_width']) ? $album_params['max_width'] : '';?>" >
+                                            <input type="hidden" id="max_height" value="<?=isset($album_params['max_height']) ? $album_params['max_height'] : '';?>" >
+
+                                            <span><?=lang('com_gallery_label_width');?>: </span><input type="text" readonly name="w" id="w" style="width: 30px;" >
+                                            <span><?=lang('com_gallery_label_height');?>: </span><input type="text" readonly name="h" id="h" style="width: 30px;" >
+                                            <button class="styled styled_small crop" type="button" lang="<?=site_url('components/gallery/images/crop');?>" ><?=lang('com_gallery_label_crop');?></button>
+
+                                            &nbsp;&nbsp;|&nbsp;&nbsp;
+
+                                            <select id="degrees" style="width: 50px;" >
+                                                <?=create_options_array($this->config->item('rotate_degrees'), isset($params['rotate_degree']) ? $params['rotate_degree'] : '');?>
+                                            </select>
+                                            <button class="styled styled_small rotate" type="button" lang="<?=site_url('components/gallery/images/rotate');?>" ><?=lang('com_gallery_label_rotate');?></button>
+                                            
+                                            &nbsp;&nbsp;|&nbsp;&nbsp;
+
+                                            <?php $image_data = getimagesize(FCPATH.'../'.$this->config->item('images_origin_dir').'/'.$id.'.'.$ext); ?>
+                                            <button class="styled styled_small origin" type="button" size="<?=$image_data[0];?>" desc="<?=$id;?>" lang="<?=site_url('components/gallery/images/origin/');?>" ><?=lang('com_gallery_label_load_original');?></button>
+                                            <button class="styled styled_small rename" type="button" onclick="$('.file_conteiner').toggle('slow');" ><?=lang('com_gallery_label_change');?></button>
+
+
+                                        </td>
+
+                                    </tr>
+
+                                    <?php } ?>
+
+                                    <tbody class="file_conteiner" <?=(isset($id) ? 'style="display: none;"' : '');?> >
+
+                                        <?php if(isset($id)){ ?>
+                                        <tr><td colspan="2" class="empty_line" >&nbsp;<hr/>&nbsp;</td></tr>
+                                        <?php } ?>
+
+                                        <tr>                                            
+                                            <th><label><?=lang('label_file');?>: </label></th>
+                                            <td>
+                                                <div class="input_file" >
+                                                    <input type="file" name="file" size="30" class="file">
+                                                    <button type="button" class="styled" >Browse</button>
+                                                    <input type="text" class="text">
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                    </tbody>
+
+                                </table>
+                            </div>
+                    </div>
+
 	            
                     <div class="box" >
 	      	        <span class="header multilang" ><?=lang('label_description');?></span>
@@ -244,18 +339,6 @@
                         
                         <div class="box_content" >
                             <table class="box_table" cellpadding="0" cellspacing="0" >
-
-                                <tr>	      			
-                                    <th><label><?=lang('label_size');?>:</label></th>
-                                    <td>
-                                        <?php $image_data = getimagesize(FCPATH.'../'.$this->config->item('images_dir').'/'.$id.'.'.$ext);
-                                              $thumb_data = getimagesize(FCPATH.'../'.$this->config->item('thumbs_dir').'/'.$id.'.'.$ext); ?>
-                                        <span class="image_size">
-                                            <strong><?=$image_data[0];?></strong>x<strong><?=$image_data[1];?></strong>px,
-                                            <strong><?=$thumb_data[0];?></strong>x<strong><?=$thumb_data[1];?></strong>px
-                                        </span>
-                                    </td>
-                                </tr>
                                 
                                 <tr>	      			
                                     <th><label><?=lang('label_created_by');?>:</label></th>

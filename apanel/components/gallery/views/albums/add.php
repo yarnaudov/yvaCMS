@@ -152,6 +152,157 @@
                                         </select>
                                     </td>
                                 </tr>
+
+                                <tr><td colspan="2" class="empty_line" ></td></tr>
+
+                                <tr>
+                                    <td colspan="2" class="empty_line">
+                                        <fieldset style="border:none;border-top: 1px solid #aaa;padding-left: 10px;">
+                                            <legend style="font-weight: bold;padding: 0 5px;"><?=lang('com_gallery_label_water_crop_settings');?></legend>
+                                        </fieldset>
+                                    </td>
+                                </tr>
+
+                                <tr><td colspan="2" class="empty_line" ></td></tr>
+
+                                <tr>                    
+                                    <th><label><?=lang('com_gallery_label_min_width');?>:</label></th>
+                                    <td>
+                                        <input type="text" name="params[min_width]" value="<?=set_value('params[min_width]', isset($params['min_width']) ? $params['min_width'] : "");?>" >
+                                    </td>
+                                </tr>
+
+                                <tr><td colspan="2" class="empty_line" ></td></tr>
+
+                                <tr>                    
+                                    <th><label><?=lang('com_gallery_label_min_height');?>:</label></th>
+                                    <td>
+                                        <input type="text" name="params[min_height]" value="<?=set_value('params[min_height]', isset($params['min_height']) ? $params['min_height'] : "");?>" >
+                                    </td>
+                                </tr>
+
+                                <tr><td colspan="2" class="empty_line" ></td></tr>
+
+                                <tr>                    
+                                    <th><label><?=lang('com_gallery_label_max_width');?>:</label></th>
+                                    <td>
+                                        <input type="text" name="params[max_width]" value="<?=set_value('params[max_width]', isset($params['max_width']) ? $params['max_width'] : "");?>" >
+                                    </td>
+                                </tr>
+
+                                <tr><td colspan="2" class="empty_line" ></td></tr>
+
+                                <tr>                    
+                                    <th><label><?=lang('com_gallery_label_max_height');?>:</label></th>
+                                    <td>
+                                        <input type="text" name="params[max_height]" value="<?=set_value('params[max_height]', isset($params['max_height']) ? $params['max_height'] : "");?>" >
+                                    </td>
+                                </tr>
+
+                                <tr><td colspan="2" class="empty_line" ></td></tr>
+
+                                <tr>                    
+                                    <th><label><?=lang('com_gallery_label_aspect_ratio');?>:</label></th>
+                                    <td>
+                                        <select name="params[aspect_ratio]" >
+                                            <?=create_options_array($this->config->item('aspect_ratio'), set_value('params[aspect_ratio]', isset($params['aspect_ratio']) ? $params['aspect_ratio'] : ""));?>
+                                        </select>
+                                    </td>
+                                </tr>
+
+                                <tr><td colspan="2" class="empty_line" ></td></tr>
+
+                                <tr>
+                                    <td colspan="2" class="empty_line">
+                                        <fieldset style="border:none;border-top: 1px solid #aaa;padding-left: 10px;">
+                                            <legend style="font-weight: bold;padding: 0 5px;"><?=lang('com_gallery_label_water_mark');?></legend>
+                                        </fieldset>
+                                    </td>
+                                </tr>
+
+                                <tr><td colspan="2" class="empty_line" ></td></tr>
+
+                                <tr>                    
+                                    <th><label><?=lang('label_type');?>:</label></th>
+                                    <td>
+                                        <?php $water_mark_type = set_value('params[water_mark_type]', isset($params['water_mark_type']) ? $params['water_mark_type'] : ""); ?>
+                                        <select class="water_mark_type" name="params[water_mark_type]" >
+                                            <option value="" >- - -</option>
+                                            <option value="text"  <?=$water_mark_type == 'text'  ? 'selected' : '';?> ><?=lang('label_text');?></option>
+                                            <option value="image" <?=$water_mark_type == 'image' ? 'selected' : '';?> ><?=lang('label_image');?></option>
+                                        </select>
+                                    </td>
+                                </tr>
+
+                                <tr><td colspan="2" class="empty_line" ></td></tr>
+
+                                <tbody id="water_mark_image" style="display: none;" >
+
+                                    <tr>                    
+                                        <th><label><?=lang('label_image');?>:</label></th>
+                                        <td>
+                                            <input class="image" type="text" readonly name="params[water_mark_image]" id="media" value="<?=set_value('params[water_mark_image]', isset($params['water_mark_image']) ? $params['water_mark_image'] : "");?>" style="width: 58%">
+                                           
+                                            <a href  = "<?=site_url('media/browse');?>" 
+                                               class = "load_jquery_ui_iframe"
+                                               title = "<?=lang('label_browse').' '.lang('label_media');?>"
+                                               lang  = "dialog-media-browser" ><?=lang('label_select');?></a>&nbsp;|&nbsp;<a href  = "#"
+                                                                                                                             class = "clear_jquery_ui_inputs"
+                                                                                                                             lang  = "image" ><?=lang('label_clear');?></a>
+                                                                                    
+                                        </td>
+                                    </tr>
+
+                                    <tr><td colspan="2" class="empty_line" ></td></tr>
+
+                                </tbody>
+
+                                <tbody id="water_mark_text" style="display: none;" >
+
+                                    <tr>                    
+                                        <th><label><?=lang('label_text');?>:</label></th>
+                                        <td>
+                                            <input type="text" name="params[water_mark_text]" value="<?=set_value('params[water_mark_text]', isset($params['water_mark_text']) ? $params['water_mark_text'] : "");?>" >
+                                        </td>
+                                    </tr>
+
+                                    <tr><td colspan="2" class="empty_line" ></td></tr>
+
+                                    <tr>                    
+                                        <th><label><?=lang('label_size');?>:</label></th>
+                                        <td>
+                                            <input type="text" name="params[water_mark_size]" value="<?=set_value('params[water_mark_size]', isset($params['water_mark_size']) ? $params['water_mark_size'] : "");?>" >
+                                        </td>
+                                    </tr>
+
+                                    <tr><td colspan="2" class="empty_line" ></td></tr>
+
+                                    <tr>
+                                        <th><label><?=lang('com_gallery_label_font');?>:</label></th>
+                                        <td>                                              
+                                            <input class="water_mark_font" type="text" readonly name="params[water_mark_font]" id="water_mark_font" value="<?=set_value('params[water_mark_font]', isset($params['water_mark_font']) ? $params['water_mark_font'] : "");?>" style="width: 58%">
+                                            <a href   = "<?=site_url('media/browse');?>" 
+                                               class  = "load_jquery_ui_iframe"
+                                               title  = "<?=lang('label_browse').' '.lang('label_media');?>"
+                                               lang   = "dialog-media-browser"
+                                               target = "water_mark_font" ><?=lang('label_select');?></a>&nbsp;|&nbsp;<a href  = "#"
+                                                                                                                         class = "clear_jquery_ui_inputs"
+                                                                                                                         lang  = "water_mark_font" ><?=lang('label_clear');?></a>
+                                        </td>
+                                    </tr>
+
+                                    <tr><td colspan="2" class="empty_line" ></td></tr>
+
+                                </tbody>
+
+                                <tr>                    
+                                    <th><label><?=lang('label_position');?>:</label></th>
+                                    <td>
+                                        <select name="params[water_mark_position]" >
+                                            <?=create_options_array($this->config->item('water_mark_positions'), set_value('params[water_mark_position]', isset($params['water_mark_position']) ? $params['water_mark_position'] : ""));?>
+                                        </select>
+                                    </td>
+                                </tr>
   
                             </table>
                         </div>
