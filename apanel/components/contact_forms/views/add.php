@@ -95,70 +95,75 @@
                         <div class="box_content" >
                             <table class="box_table fields form_fields" cellpadding="0" cellspacing="0" >
 
-                                <?php $fields = set_value('fields', isset($fields) ? $fields : "");
-                                      $fields[0] = array();
-                                      ksort($fields);
-                                      foreach($fields as $number => $field){ ?>
-                                <tbody id="field<?=$number;?>" <?=$number == 0 ? 'style="display: none;"' : '';?> >
-                                             
-                                    <tr>
-                                        <td colspan="2" >
-                                            <fieldset>
-                                                <legend>
-                                                    <?=lang('label_field');?> 
-                                                    <span><?=$number;?></span>
-                                                </legend>
-                                                <div class="button" >
-                                                    <a class="styled delete" lang="field<?=$number;?>" title="<?=lang('label_delete');?>" >&nbsp;</a>    
-                                                </div>                                                
-                                            </fieldset>
-                                        </td>     
-                                    </tr>    
+                                <tr>
+                                    <td>
+                                        <ul id="form_fields">
+                                            <?php $fields = set_value('fields', isset($fields) ? $fields : "");
+                                                  for($key = 1; $key < count($fields)+1; $key++){ ?>
+                                            <li>
 
+                                                <table>
+                                                    
+                                                    <tr>
+                                                        <td colspan="2" >
+                                                            <fieldset>
+                                                                <legend>
+                                                                    <?=lang('label_field');?> 
+                                                                    <span><?=$key;?></span>
+                                                                </legend>
+                                                                <div class="button" >
+                                                                    <img src="<?=base_url('img/iconMove.png');?>" class="handle" alt="move" >
+                                                                    <a class="styled delete" title="<?=lang('label_delete');?>" >&nbsp;</a>    
+                                                                </div>                                                
+                                                            </fieldset>
+                                                        </td>     
+                                                    </tr>    
 
+                                                    <tr>	      			
+                                                        <th><label><?=lang('label_label');?>:</label></th>
+                                                        <td>
+                                                            <input type="text" name="fields[<?=$key;?>][label]" value="<?=set_value('fields['.$key.'][label]', isset($fields[$key]['label']) ? $fields[$key]['label'] : "");?>" >
+                                                        </td>
+                                                    </tr>
 
-                                    <tr>	      			
-                                        <th><label><?=lang('label_type');?>:</label></th>
-                                        <td>
-                                            <select name="fields[<?=$number;?>][type]" >
-                                                <?=create_options_array($this->config->item('custom_field_types'), set_value('fields['.$number.'][type]', isset($fields[$number]['type']) ? $fields[$number]['type'] : ""));?>
-                                            </select>
-                                        </td>
-                                    </tr>
+                                                    <tr><td colspan="2" class="empty_line" ></td></tr>
 
-                                    <tr><td colspan="2" class="empty_line" ></td></tr>
+                                                    <tr>	      			
+                                                        <th><label><?=lang('label_type');?>:</label></th>
+                                                        <td>
+                                                            <?php $type = set_value('fields['.$key.'][type]', isset($fields[$key]['type']) ? $fields[$key]['type'] : ""); ?>
+                                                            <select name="fields[<?=$key;?>][type]" class="type" >
+                                                                <?=create_options_array($this->config->item('custom_field_types'), set_value('fields['.$key.'][type]', isset($fields[$key]['type']) ? $fields[$key]['type'] : ""));?>
+                                                            </select>
+                                                        </td>
+                                                    </tr>
 
-                                    <tr>	      			
-                                        <th><label><?=lang('label_label');?>:</label></th>
-                                        <td>
-                                            <input type="text" name="fields[<?=$number;?>][label]" value="<?=set_value('fields['.$number.'][label]', isset($fields[$number]['label']) ? $fields[$number]['label'] : "");?>" >
-                                        </td>
-                                    </tr>
+                                                    <tbody class="params" >
+                                                    <?php $type == "" ? $type = "text" : "";
+                                                          $this->load->view('contact_forms/'.$type); ?>                      
+                                                    </tbody>
 
-                                    <tr><td colspan="2" class="empty_line" ></td></tr>
+                                                    <tr><td colspan="2" class="empty_line" ></td></tr>
 
-                                    <tr>	      			
-                                        <th><label><?=lang('label_value');?>:</label></th>
-                                        <td>
-                                            <textarea name="fields[<?=$number;?>][value]" ><?=set_value('fields['.$number.'][value]', isset($fields[$number]['value']) ? $fields[$number]['value'] : "");?></textarea>
-                                        </td>
-                                    </tr>
+                                                    <tr>	      			
+                                                        <th><label><?=lang('label_mandatory');?>:</label></th>
+                                                        <td>
+                                                            <select name="fields[<?=$key;?>][mandatory]" >
+                                                                <?=create_options_array($this->config->item('mandatory_options'), set_value('fields['.$key.'][mandatory]', isset($fields[$key]['mandatory']) ? $fields[$key]['mandatory'] : ""));?>
+                                                            </select>
+                                                        </td>
+                                                    </tr>
 
-                                    <tr><td colspan="2" class="empty_line" ></td></tr>
+                                                    <tr><td colspan="2" class="empty_line" >&nbsp;</td></tr>
+                                                    
+                                                </table>
 
-                                    <tr>	      			
-                                        <th><label><?=lang('label_mandatory');?>:</label></th>
-                                        <td>
-                                            <select name="fields[<?=$number;?>][mandatory]" >
-                                                <?=create_options_array($this->config->item('mandatory_options'), set_value('fields['.$number.'][mandatory]', isset($fields[$number]['mandatory']) ? $fields[$number]['mandatory'] : ""));?>
-                                            </select>
-                                        </td>
-                                    </tr>
-                                    
-                                    <tr><td colspan="2" class="empty_line" >&nbsp;</td></tr>
-                                
-                                </tbody>
-                                <?php } ?>
+                                            </li>
+                                            <?php } ?>
+                                        </ul>
+                                        
+                                    </td>
+                                </tr>
                                 
                             </table>
                             
