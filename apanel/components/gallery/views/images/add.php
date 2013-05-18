@@ -161,7 +161,7 @@
                                             <?php $image_src  = base_url('../'.$this->config->item('images_dir').'/'.$id.'.'.$ext);
                                                   $image_data = getimagesize(FCPATH.'../'.$this->config->item('images_dir').'/'.$id.'.'.$ext); ?>
 
-                                            <img style="width: 100%;" lang="<?=$image_data[0];?>" class="image_" id="jcrop_target" src="<?=$image_src.'?'.time();?>" >
+                                            <img style="width: 100%;" data-width="<?=$image_data[0];?>" data-height="<?=$image_data[1];?>" class="image_" id="jcrop_target" src="<?=$image_src.'?'.time();?>" >
 
                                             <input type="hidden" id="tmp" name="tmp" value="0" >
 
@@ -203,7 +203,7 @@
                                             <select id="degrees" style="width: 50px;" >
                                                 <?=create_options_array($this->config->item('rotate_degrees'), isset($params['rotate_degree']) ? $params['rotate_degree'] : '');?>
                                             </select>
-                                            <button class="styled styled_small rotate" type="button" lang="<?=site_url('components/gallery/images/rotate');?>" ><?=lang('com_gallery_label_rotate');?></button>
+                                            <button class="styled styled_small rotate" type="button" data-url="<?=site_url('components/gallery/images/rotate');?>" ><?=lang('com_gallery_label_rotate');?></button>
                                             
                                             &nbsp;&nbsp;|&nbsp;&nbsp;
 
@@ -229,9 +229,12 @@
                                             <td>
                                                 <div class="input_file" >
                                                     <input type="file" name="file" size="30" class="file">
-                                                    <button type="button" class="styled" >Browse</button>
+                                                    <button type="button" class="styled" >Browse</button>                                                    
                                                     <input type="text" class="text">
                                                 </div>
+                                                <?php if(isset($id)){ ?>
+                                                <button type="button" class="styled styled_small" id="btn_change_image" data-url="<?=site_url('components/gallery/images/change/'.$id);?>" ><?=lang('com_gallery_label_change');?></button>
+                                                <?php } ?>
                                             </td>
                                         </tr>
 

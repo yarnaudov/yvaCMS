@@ -187,6 +187,23 @@ class Images extends MY_Controller {
         
     }
 
+    public function change()
+    {
+
+        $ext = end(explode(".", $_FILES["file"]["name"]));
+        $tmp_file = $this->config->item('images_tmp_dir').'/'.$this->image_id.'.'.$ext;
+        move_uploaded_file($_FILES['file']['tmp_name'], FCPATH.'../'.$tmp_file);
+
+        $image_data = getimagesize(FCPATH.'../'.$tmp_file);
+
+        $image['width']  = $image_data[0];
+        $image['height'] = $image_data[1];
+        $image['src']    = $tmp_file;
+
+        echo json_encode($image);
+
+    }
+
     public function crop()
     {
 
@@ -213,7 +230,15 @@ class Images extends MY_Controller {
         //header('Content-type: image/jpeg');
         imagejpeg($dst_r, FCPATH.'../'.$dst_src, $jpeg_quality);
 
-        echo $dst_src;
+        $image_data = getimagesize(FCPATH.'../'.$dst_src);
+
+        $image['width']  = $image_data[0];
+        $image['height'] = $image_data[1];
+        $image['src']    = $dst_src;
+
+        echo json_encode($image);
+
+        //echo $dst_src;
         //imagedestroy($dst_r);
         //redirect('upload/edit');
         exit;
@@ -229,28 +254,36 @@ class Images extends MY_Controller {
         }
 
         // File and rotation
-        $image        = $this->input->post('image');
+        $image_src    = $this->input->post('image_src');
         $degrees      = $this->input->post('degrees');
         $jpeg_quality = 90;
 
         // Load
-        $source = imagecreatefromjpeg($image);
+        $source = imagecreatefromjpeg($image_src);
 
         // Rotate
         $rotate = imagerotate($source, $degrees, 0);
 
         // Output
-        $pathinfo = pathinfo($image);
+        $pathinfo  = pathinfo($image_src);
         $extension = current(explode('?', $pathinfo['extension']));
-        $dst_image = $this->config->item('images_tmp_dir').'/'.$pathinfo['filename'].'.'.$extension;
+        $tmp_image = $this->config->item('images_tmp_dir').'/'.$pathinfo['filename'].'.'.$extension;
 
-        imagejpeg($rotate, FCPATH.'../'.$dst_image, $jpeg_quality);
+        imagejpeg($rotate, FCPATH.'../'.$tmp_image, $jpeg_quality);
 
         // Free the memory
         imagedestroy($source);
         imagedestroy($rotate);
 
-        echo $dst_image;
+        $image_data = getimagesize(FCPATH.'../'.$tmp_image);
+
+        $image['width']  = $image_data[0];
+        $image['height'] = $image_data[1];
+        $image['src']    = $tmp_image;
+
+        echo json_encode($image);
+
+        //echo $dst_image;
 
         exit;
 
@@ -267,7 +300,15 @@ class Images extends MY_Controller {
 
         copy($img_file, $tmp_file);
 
-        echo $this->config->item('images_tmp_dir').'/'.$id.'.'.$ext;
+        $image_data = getimagesize($tmp_file);
+
+        $image['width']  = $image_data[0];
+        $image['height'] = $image_data[1];
+        $image['src']    = $this->config->item('images_tmp_dir').'/'.$id.'.'.$ext;
+
+        echo json_encode($image);
+
+        exit;
 
     }
 
