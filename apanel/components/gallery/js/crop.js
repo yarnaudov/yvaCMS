@@ -142,8 +142,9 @@ $(function(){
 
         $('body').append('<iframe id="iframe_change_image"><iframe>');
         $('#iframe_change_image').load(function(){
-            alert('done uploading image');
-            alert($(this).contents());
+            //alert('done uploading image');
+            var data = $(this).contents().find('span').html();
+            $(this).remove();
             $('form[name=add]').attr('target', '');
             $('form[name=add]').attr('action', form_origin_action);
             var image = JSON.parse(data);

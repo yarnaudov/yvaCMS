@@ -200,7 +200,7 @@ class Images extends MY_Controller {
         $image['height'] = $image_data[1];
         $image['src']    = $tmp_file;
 
-        echo json_encode($image);
+        echo "<span>".json_encode($image)."</span>";
 
     }
 
