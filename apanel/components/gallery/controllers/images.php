@@ -187,6 +187,22 @@ class Images extends MY_Controller {
         
     }
 
+    public function quickadd()
+    {
+
+        $this->jquery_ext->add_plugin("validation");
+        $this->jquery_ext->add_library("check_actions_add_edit.js");
+
+        $this->load->helper('form');
+        $this->load->library('form_validation');
+
+        $data = array();
+
+        $content["content"] = $this->load->view('gallery/images/quickadd', $data, true);     
+        $this->load->view('layouts/default', $content);
+
+    }
+
     public function change()
     {
 
