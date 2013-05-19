@@ -18,3 +18,19 @@ table.fields fieldset a{
     float: right;
     background-position: 1px center;
 }
+
+ul#form_fields{
+    list-style: none;
+}
+
+ul#form_fields li img{
+    cursor: move;
+}
+ul#form_fields li.ui-sortable-helper{
+    background-color: #eee;
+    padding: 10px 10px 0 10px;
+    border: 1px dashed #aaa;
+}
+ul#form_fields li.ui-sortable-helper fieldset div.button{
+    background-color: #eee;
+}
