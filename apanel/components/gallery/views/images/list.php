@@ -102,14 +102,8 @@
                 </td>
                 <td>
                     <a href="<?=site_url('components/gallery/images/edit/'.$image['id']);?>" >
-                        <?php $image_src = FCPATH.'../'.$this->config->item('images_croped_dir').'/'.$image['id'].'.'.$image['ext'];
-                              if(file_exists($image_src)){
-                                  $image_src = base_url('../'.$this->config->item('images_croped_dir').'/'.$image['id'].'.'.$image['ext']);
-                              }
-                              else{
-                                  $image_src = base_url('../'.$this->config->item('images_origin_dir').'/'.$image['id'].'.'.$image['ext']);
-                              } ?>
-                        <img class="image" src="<?=$image_src;?>" > 
+                        <?php $image_src = base_url('../'.$this->config->item('images_dir').'/'.$image['id'].'.'.$image['ext']); ?>
+                        <img class="image" src="<?=$image_src.'?'.time();?>" > 
                     </a>
                 </td>
                 <td style="text-align: left;" >

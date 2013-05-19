@@ -12,7 +12,7 @@ $(function(){
     }
     setImageWidth();
 
-    function refreshImage(image, timeout1, timeout2){
+    function refreshImage(image, timeout1, timeout2, tmp){
 
         jcrop_api.destroy();
         $('#jcrop_target').removeAttr('style');
@@ -20,7 +20,7 @@ $(function(){
         $('#jcrop_target').attr('data-height', image['height']);
         $('#jcrop_target').css('width', '100%');
         $('#jcrop_target').attr('src', base_url + '../' + image['src'] + '?' + new Date().getTime());
-        $('#tmp').val(1);
+        $('#tmp').val(tmp);
 
         setTimeout(setImageWidth, timeout1);               
         setTimeout(initJcrop, timeout2);
@@ -81,7 +81,7 @@ $(function(){
 
         $.post(url, {id: id}, function(data){
             var image = JSON.parse(data);
-            refreshImage(image, 300, 500);           
+            refreshImage(image, 300, 500, 1);           
         });
 
     });
@@ -112,7 +112,7 @@ $(function(){
 
         $.post(url, {image: image, x: x, y: y, w: w, h: h}, function(data){
             var image = JSON.parse(data);
-            refreshImage(image, 300, 500);
+            refreshImage(image, 300, 500, 1);
              $('#w').val('');
              $('#h').val('');
         });
@@ -129,7 +129,7 @@ $(function(){
         
         $.post(url, {image_src: image_src, degrees: degrees}, function(data){
             var image = JSON.parse(data);
-            refreshImage(image, 0, 100);
+            refreshImage(image, 0, 100, 1);
         });
         
     });
@@ -140,6 +140,10 @@ $(function(){
 
         var form_action = $(this).attr('data-url');
 
+        if($('input[name=file]').val() == ''){
+            return false;
+        }
+
         $('body').append('<iframe id="iframe_change_image"><iframe>');
         $('#iframe_change_image').load(function(){
             //alert('done uploading image');
@@ -148,12 +152,25 @@ $(function(){
             $('form[name=add]').attr('target', '');
             $('form[name=add]').attr('action', form_origin_action);
             var image = JSON.parse(data);
-            refreshImage(image, 0, 100);
+            refreshImage(image, 0, 100, 2);
+            $('button.change').trigger('click');           
+
         });
 
         $('form[name=add]').attr('target', 'iframe_change_image');
         $('form[name=add]').attr('action', form_action);
         $('form[name=add]').submit();
+
+
+    });
+
+    $('button.change').click(function(){
+
+        $('.file_conteiner').toggle('slow', function(){
+            if($(this).css('display') == 'none'){
+                $('.input_file input').val('');
+            }
+        });
 
 
     });

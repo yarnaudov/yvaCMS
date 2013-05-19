@@ -214,11 +214,21 @@ class Image extends MY_Model {
         $this->db->query('COMMIT');
 
         // if tmp is 1 move image from tmp folder to images folder
+        $file     = $id.'.'.self::getDetails($id, 'ext');
         if($this->input->post('tmp') == 1){
-            $file     = $id.'.'.self::getDetails($id, 'ext');
+            
             $tmp_file = FCPATH.'../'.$this->config->item('images_tmp_dir').'/'.$file;
             $img_file = FCPATH.'../'.$this->config->item('images_dir').'/'.$file;
             rename($tmp_file, $img_file);
+
+        }
+        elseif($this->input->post('tmp') == 2){
+            
+            $tmp_file    = FCPATH.'../'.$this->config->item('images_tmp_dir').'/'.$file;
+            $img_file    = FCPATH.'../'.$this->config->item('images_dir').'/'.$file;
+            $origin_file = FCPATH.'../'.$this->config->item('images_origin_dir').'/'.$file;
+            rename($tmp_file, $img_file);
+            copy($img_file, $origin_file);
         }
 
         return $id;

@@ -209,7 +209,7 @@
 
                                             <?php $image_data = getimagesize(FCPATH.'../'.$this->config->item('images_origin_dir').'/'.$id.'.'.$ext); ?>
                                             <button class="styled styled_small origin" type="button" size="<?=$image_data[0];?>" desc="<?=$id;?>" lang="<?=site_url('components/gallery/images/origin/');?>" ><?=lang('com_gallery_label_load_original');?></button>
-                                            <button class="styled styled_small rename" type="button" onclick="$('.file_conteiner').toggle('slow');" ><?=lang('com_gallery_label_change');?></button>
+                                            <button class="styled styled_small change" type="button" ><?=lang('com_gallery_label_change');?></button>
 
 
                                         </td>
