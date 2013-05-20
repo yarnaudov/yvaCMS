@@ -106,7 +106,7 @@ class Contact_form extends MY_Model {
         $data['com_contacts_forms_data']['language_id'] = $this->language_id;
         
         $fields = $this->input->post('fields');
-        unset($fields[0]);
+        //unset($fields[0]);
         $data['com_contacts_forms_data']['fields']      = json_encode($fields);
         
         $data['com_contacts_forms']['status']           = $this->input->post('status');    

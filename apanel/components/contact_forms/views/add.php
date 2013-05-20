@@ -99,7 +99,8 @@
                                     <td>
                                         <ul id="form_fields">
                                             <?php $fields = set_value('fields', isset($fields) ? $fields : "");
-                                                  for($key = 1; $key < count($fields)+1; $key++){ ?>
+                                                  //print_r($fields);
+                                                  for($key = 1; $key < count($fields); $key++){ ?>
                                             <li>
 
                                                 <table>
@@ -132,7 +133,7 @@
                                                         <th><label><?=lang('label_type');?>:</label></th>
                                                         <td>
                                                             <?php $type = set_value('fields['.$key.'][type]', isset($fields[$key]['type']) ? $fields[$key]['type'] : ""); ?>
-                                                            <select name="fields[<?=$key;?>][type]" class="type" >
+                                                            <select name="fields[<?=$key;?>][type]" data-key="<?=$key;?>" class="type" >
                                                                 <?=create_options_array($this->config->item('custom_field_types'), set_value('fields['.$key.'][type]', isset($fields[$key]['type']) ? $fields[$key]['type'] : ""));?>
                                                             </select>
                                                         </td>
@@ -140,7 +141,8 @@
 
                                                     <tbody class="params" >
                                                     <?php $type == "" ? $type = "text" : "";
-                                                          $this->load->view('contact_forms/'.$type); ?>                      
+                                                          $action = $type;
+                                                          $this->load->view('contact_forms/'.$type, compact('fields', 'key', 'action')); ?>                      
                                                     </tbody>
 
                                                     <tr><td colspan="2" class="empty_line" ></td></tr>

@@ -2,12 +2,16 @@
 $(document).ready(function() {
     
     $('select.type').live('change', function(){
+        
         var params = $(this).parents('li').find('.params');
-        $.get(site_url+'/home/ajax/load?view=contact_forms/'+$(this).val(), function(data){
+        var key = $(this).parents('fieldset').find('legend span').html();
+        alert(key);
+        $.get(site_url+'/home/ajax/load?view=contact_forms/'+$(this).val(), {key: key}, function(data){
             $(params).css('display', 'none');
             $(params).html(data);
             $(params).toggle('slow');
         });
+        
    });
                        
     function replaceAll( text, old_string, new_string ){
@@ -49,6 +53,8 @@ $(document).ready(function() {
         
         if($(li).css('display') == 'none'){
 
+            $(li).find('select').find('option:first').attr('selected', true).trigger('change');
+            $(li).find('input[type=text]').val('');
             $(li).toggle(250);
 
         }else{
@@ -66,7 +72,8 @@ $(document).ready(function() {
             $(clone_li).find('fieldset legend span').html(number);
             $(clone_li).find('fieldset a').attr('lang', 'field'+number);
             
-            $(clone_li).find('select.type option:first').attr('selected', true).trigger('change');
+            $(clone_li).find('select').find('option:first').attr('selected', true).trigger('change');
+            $(clone_li).find('input[type=text]').val('');
             $(clone_li).toggle(250);
 
         }
