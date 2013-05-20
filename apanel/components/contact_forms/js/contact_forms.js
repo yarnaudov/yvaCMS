@@ -4,8 +4,8 @@ $(document).ready(function() {
     $('select.type').live('change', function(){
         
         var params = $(this).parents('li').find('.params');
-        var key = $(this).parents('fieldset').find('legend span').html();
-        alert(key);
+        var key = $(this).parents('li').find('fieldset legend span').html();
+        //alert(key);
         $.get(site_url+'/home/ajax/load?view=contact_forms/'+$(this).val(), {key: key}, function(data){
             $(params).css('display', 'none');
             $(params).html(data);

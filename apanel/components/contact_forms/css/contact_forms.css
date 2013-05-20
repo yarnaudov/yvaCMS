@@ -48,7 +48,7 @@ ul#form_fields > li.ui-sortable-helper fieldset div.button{
     padding-bottom: 6px;
     height: 20px;    
 }
-.checkboxes li img{
+.checkboxes li img.handle{
     cursor: move;
 }
 .checkboxes li input[type=checkbox],
@@ -64,9 +64,7 @@ ul#form_fields > li.ui-sortable-helper fieldset div.button{
     margin-right: 4px;
 }
 .checkboxes a{
-    float: right;
     padding: 1px 9px !important;
     width: 0px;
-    float: right;
     background-position: 1px center;
 }
