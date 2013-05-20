@@ -39,16 +39,7 @@ class Contact_forms extends MY_Controller {
                            });";
                 
             }
-            
-            $script .= "$('select.type').live('change', function(){
-                            var params = $(this).parents('li').find('.params');
-                            $.get('".site_url('home/ajax/load')."?view=contact_forms/'+$(this).val(), function(data){
-                                $(params).css('display', 'none');
-                                $(params).html(data);
-                                $(params).toggle('slow');
-                            });
-                       });";
-            
+                        
             $this->jquery_ext->add_script($script);
             $this->jquery_ext->add_plugin("tinymce");
             $this->jquery_ext->add_library("tinymce.js");

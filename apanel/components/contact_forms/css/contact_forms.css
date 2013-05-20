@@ -22,15 +22,51 @@ table.fields fieldset a{
 ul#form_fields{
     list-style: none;
 }
+ul#form_fields li{
+    overflow: hidden;
+}
 
 ul#form_fields li img{
     cursor: move;
+    float: left;
+    margin-top: -1px;
 }
-ul#form_fields li.ui-sortable-helper{
+ul#form_fields > li.ui-sortable-helper{
     background-color: #eee;
     padding: 10px 10px 0 10px;
     border: 1px dashed #aaa;
 }
-ul#form_fields li.ui-sortable-helper fieldset div.button{
+ul#form_fields > li.ui-sortable-helper fieldset div.button{
     background-color: #eee;
+}
+
+.checkboxes{
+    list-style: none;
+}
+.checkboxes li{
+    overflow: auto;
+    padding-bottom: 6px;
+    height: 20px;    
+}
+.checkboxes li img{
+    cursor: move;
+}
+.checkboxes li input[type=checkbox],
+.checkboxes li input[type=radio]{
+    margin-top: 4px;
+    display: inline-block;
+    width: 16px !important;
+    float: left;
+}
+.checkboxes li input[type=text]{
+    width: 70%;   
+    float: left;
+    margin-right: 4px;
+}
+.checkboxes a{
+    float: right;
+    padding: 1px 9px !important;
+    width: 0px;
+    float: right;
+    background-position: 1px center;
 }

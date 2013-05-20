@@ -6,7 +6,7 @@
 <tr>
     <th><label><?=lang('label_options');?>:</label></th>
     <td>
-        <ul id="checkboxes" >
+        <ul class="checkboxes" >
             <?php $options   = set_value('params[options]',   isset($params['options'])   ? $params['options']   : "");
                   $labels    = set_value('params[labels]',    isset($params['labels'])    ? $params['labels']    : "");
                   $optgroups = set_value('params[optgroups]', isset($params['optgroups']) ? $params['optgroups'] : "");
@@ -23,7 +23,7 @@
                 
                 <img src="<?=base_url('img/iconMove.png');?>" class="handle" alt="move" >
                 
-                <a class="styled delete" title="<?=lang('label_delete');?>" >&nbsp;</a>
+                <a class="styled delete delete_option" title="<?=lang('label_delete');?>" >&nbsp;</a>
             </li>
             <?php } ?>
         </ul>
@@ -35,93 +35,6 @@
 <tr>
     <th></th>
     <td>
-        <a class="styled add" ><?=lang('label_add');?></a>
-        <script type="text/javascript" >
-    
-            $('a.delete').die('click');
-            $('input.option').die('click change');
-            $('input.optgroup').die('click change');
-    
-            $('a.add').click(function(event){
-
-                event.preventDefault();
-
-                var li = $('#checkboxes li').first();
-
-                if($(li).css('display') == 'none'){
-
-                    $('#checkboxes li').first().removeAttr('style');
-
-                }else{
-
-                    var clone_li = $(li).clone();
-
-                    $(clone_li).css('display', 'none');
-                    $(clone_li).find('input.text').val('');
-                    $(clone_li).find('input.option').removeAttr('checked');
-                    $(clone_li).find('input.option').removeAttr('disabled');
-                    $(clone_li).find('input.optgroup').removeAttr('checked');
-                    $('#checkboxes').append(clone_li);
-
-                    $(clone_li).toggle(250);
-
-                }
-
-            });
-    
-            $('a.delete').live('click', function(event){
-
-                event.preventDefault();
-
-                $(this).parent().toggle('slow', function() {
-                    if($('#checkboxes li').length > 1){
-                        $(this).remove();
-                    }
-                    else{
-                        $(this).toggle('slow');
-                    }
-                });
-
-            });
-    
-            $('input.option').live('click change', function(){
-              
-                $('input.option').each(function(){
-       
-                    if($(this).is(':checked')){
-                        $(this).parent().find('input.option_hidden').attr('disabled', true);
-                    }
-                    else{
-                        $(this).parent().find('input.option_hidden').removeAttr('disabled'); 
-                    }
-
-                });
-
-            });
-
-            $('input.optgroup').live('click change', function(){
-
-                if($(this).is(':checked')){
-                    $(this).parent().find('input.text').css('font-weight', 'bold');
-                    $(this).parent().find('input.option').attr('disabled', true);
-                    $(this).parent().find('input.optgroup_hidden').attr('disabled', true);
-                }
-                else{
-                    $(this).parent().find('input.text').css('font-weight', 'normal');
-                    $(this).parent().find('input.option').removeAttr('disabled');
-                    $(this).parent().find('input.optgroup_hidden').removeAttr('disabled');
-                }
-                
-            });
-
-            $('input.option').first().trigger('change');
-            
-            $('input.optgroup').each(function(){
-                $(this).trigger('change');
-            });
-            
-            $('#checkboxes').sortable({ handle: ".handle" });
-    
-        </script>
+        <a class="styled add add_option" ><?=lang('label_add');?></a>
     </td>
 </tr>

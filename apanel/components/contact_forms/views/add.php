@@ -113,7 +113,7 @@
                                                                 </legend>
                                                                 <div class="button" >
                                                                     <img src="<?=base_url('img/iconMove.png');?>" class="handle" alt="move" >
-                                                                    <a class="styled delete" title="<?=lang('label_delete');?>" >&nbsp;</a>    
+                                                                    <a class="styled delete delete_field" title="<?=lang('label_delete');?>" >&nbsp;</a>    
                                                                 </div>                                                
                                                             </fieldset>
                                                         </td>     
@@ -171,7 +171,7 @@
                                     
                                 <tr>
                                     <td colspan="2" >
-                                        <a class="styled add" ><?=lang('label_add');?></a>
+                                        <a class="styled add" id="add_field" ><?=lang('label_add');?></a>
                                     </td>
                                 </tr>
                                 

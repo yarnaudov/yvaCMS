@@ -1,1 +1,1 @@
-<?php $this->load->view('custom_fields/checkbox', array('input_type' => 'radio', 'action' => 'dropdown')); ?>
+<?php $this->load->view('contact_forms/checkbox', array('input_type' => 'radio', 'action' => 'dropdown')); ?>
