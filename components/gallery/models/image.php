@@ -74,4 +74,41 @@ class Image extends CI_Model {
 
     }
     
+    public function getImageUrl($id, $width = null, $height = null)
+    {
+        
+        $ext = self::getDetails($id, 'ext');
+        $image_dir = 'images/'.$width.'x'.$height.'/';
+        
+        if(file_exists(FCPATH . $image_dir . $id . '.' . $ext)){
+            
+            return base_url($image_dir .  $id . '.' . $ext);
+            
+        }
+        else{
+            
+            if(!file_exists(FCPATH . $image_dir)){
+                mkdir(FCPATH . $image_dir, 0777);
+            }
+            
+            $config['image_library']  = 'gd2';
+            $config['source_image']   = FCPATH . 'images/'.$id.'.'.$ext;
+            $config['create_thumb']   = TRUE;
+            $config['thumb_marker']   = $width.'x'.$height.'/';
+            $config['maintain_ratio'] = TRUE;
+            $config['width']	      = $width;
+            $config['height']	      = $height;
+
+            
+            $this->load->library('image_lib', $config);
+            $this->image_lib->resize();
+            
+            return base_url($image_dir .  $id . '.' . $ext);
+            
+        }
+        
+        return "hahaha";
+        
+    }
+    
 }

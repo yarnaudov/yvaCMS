@@ -13,7 +13,7 @@
     
     <div class="image_small">
         <a href="<?=current_url();?>/image:<?=$image['id'];?>">
-            <img src="<?=base_url('images/thumbs/'.$image['id'].'.'.$image['ext']);?>" alt="<?=$image['title'];?>" >
+            <img src="<?=base_url('images/'.$image['id'].'.'.$image['ext']);?>" alt="<?=$image['title'];?>" >
         </a>
         <div class="description" ><?=$image['title'];?></div>
     </div>
