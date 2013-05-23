@@ -26,7 +26,7 @@ ul#form_fields li{
     overflow: hidden;
 }
 
-ul#form_fields li img{
+ul#form_fields li img.handle{
     cursor: move;
     float: left;
     margin-top: -1px;
@@ -67,4 +67,7 @@ ul#form_fields > li.ui-sortable-helper fieldset div.button{
     padding: 1px 9px !important;
     width: 0px;
     background-position: 1px center;
+}
+.box .ui-datepicker-trigger{
+    float: left;
 }

@@ -9,6 +9,8 @@ class Content extends CI_Model {
     public function load($templates = array())
     {
         
+        $data['content'] = '';
+        
         $templates = array_merge($this->templates, $templates);
                 
         if($this->article_alias){
@@ -83,9 +85,11 @@ class Content extends CI_Model {
                     
                     //include 'components/contact_forms/controllers/contact_forms.php';
                     //echo modules::run('contact_forms/contact_forms/index');
-                    echo modules::run('contact_forms/index');
+                    //echo modules::run('contact_forms/index');
                     //$component = new Contact_forms();
-                    //$data['content'] = $this->data['content'];
+                    $data['content'] = $this->data['content'];
+                    //$this->load->module('contact_forms/contact_forms');
+                    //$this->contact_forms->index(1);
                                         
                 break;
                 

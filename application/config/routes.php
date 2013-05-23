@@ -41,7 +41,7 @@
 $route['default_controller'] = "home";
 $route['404_override'] = '';
 
-//include_once APPPATH . '/cache/routes.php';
+include_once APPPATH . '/cache/routes.php';
 
 $route['(\w{2})/load/(.*)'] = $route['default_controller'].'/load/$2';
 
