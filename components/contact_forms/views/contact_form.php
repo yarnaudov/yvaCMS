@@ -15,7 +15,7 @@
     
     
     <?php foreach($contact_form['fields'] as $number => $field){ 
-              
+              //print_r($field);
               $class = '';
               switch($field['mandatory']){
                   case "yes": 
@@ -39,10 +39,36 @@
             <?=$field['mandatory'] != 'no' ? '*' : '';?>
         </label>
         <?php switch($field['type']){ 
-                case "text":
+            
+                case "text":                
+                    echo '<input class="'.$class.'" type="'.$field['type'].'" name="field'.$number.'" value="'.$field['value'].'" >'; 
+                  break;
+            
                 case "checkbox":
                 case "radio":
-                    echo '<input class="'.$class.'" type="'.$field['type'].'" name="field'.$number.'" value="'.$field['value'].'" >'; 
+                    
+                    $name_sufix = $field['type'] == 'checkbox' ? '[]' : '';
+
+                    echo '<ul>';
+                    foreach($field['options'] as $key => $option){
+
+                        $checked = '';
+                        if($option == 1){
+                            $checked = 'checked';
+                        }
+
+                        echo '<li>';
+                        echo '<input type="'.$field['type'].'" 
+                                     name="field'.$number.$name_sufix.'" 
+                                     id="option'.$number.$key.'" 
+                                     value="'.$key.'" 
+                                     '.$checked.'
+                                     class="'.$class.'" >';
+                        echo '<label for="option'.$number.$key.'" >'.$field['labels'][$key].'</label>';
+                        echo '</li>';
+                    }
+                    echo '</ul>';
+                    
                   break;
              
                 case "textarea":
@@ -50,12 +76,40 @@
                   break;
                 
                 case "dropdown":
+                    
                     echo '<select class="'.$class.'" name="field'.$number.'" >';
-                    $options = explode(',', $field['value']);
-                    foreach($options as $option){
-                        echo '<option value="'.$option.'" >'.$option.'</option>';
+                    foreach($field['options'] as $key => $option){
+
+                        $selected = '';
+                        if($option == 1){
+                            $selected = 'selected';
+                        }
+
+                        if($field['optgroups'][$key] == 1){
+                            if($optgroup == true){
+                                echo '</optgroup>';
+                            }
+                            $optgroup = true;
+                            echo '<optgroup label="'.$field['labels'][$key].'" >';
+                        }
+                        else{
+                            echo '<option '.$selected.' value="'.$key.'" >'.$field['labels'][$key].'</option>';   
+                        }
+
+                        if($key+1 == count($field['options']) && $optgroup == true){
+                            echo '</optgroup>';
+                        }
+
                     }
-                    echo '</select>'; 
+                    echo '</select>';
+                    /*
+                    echo '<select class="'.$class.'" name="field'.$number.'" >';
+                    //$options = explode(',', $field['value']);
+                    foreach($field['options'] as $key => $option){
+                        echo '<option value="'.$option.'" >'.$field['labels'][$key].'</option>';
+                    }
+                    echo '</select>';
+                    */
                   break;
               
                 case "date":
