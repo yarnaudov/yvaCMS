@@ -335,8 +335,7 @@ class Image extends MY_Model {
         $ext = end(explode(".", $_FILES["file"]["name"]));
 
         move_uploaded_file($_FILES['file']['tmp_name'], $images_dir.'/'.$id.'.'.$ext);
-        move_uploaded_file($_FILES['file']['tmp_name'], $images_origin_dir.'/'.$id.'.'.$ext);
-	      
+        copy($images_dir.'/'.$id.'.'.$ext, $images_origin_dir.'/'.$id.'.'.$ext);
         
     }
     

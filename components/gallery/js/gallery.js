@@ -25,7 +25,7 @@ $(document).ready(function() {
     });
     
     
-    $('#big_image').load(function(){
+    $('#big_image').on('load', function(){
         //alert('image loaded!');
         $('a.image img').attr('src', $(this).attr('src'));
     });
@@ -46,10 +46,9 @@ $(document).ready(function() {
             
             $('a.image').attr('href', $('a.image', data).attr('href'));
             
-            var src = $('a.image img', data).attr('src');
-            $('a.image img').attr('src', src);            
-            $('#big_image').attr('src', src.replace('images/thumbs/', 'images/'));
-
+            $('a.image img').attr('src', $('a.image img', data).attr('src'));           
+            $('#big_image').attr('src', $('#big_image', data).attr('src'));
+            
         });
     }
     

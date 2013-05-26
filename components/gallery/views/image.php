@@ -1,7 +1,7 @@
 
 <?php 
 
-//$alias = '';
+$alias = '';
 if($url2[0] == 'album'){
     $alias = implode(':', $url2);
 }
@@ -31,7 +31,7 @@ if($url2[0] == 'album'){
         </div>
         
         <a class="image" href="<?=$menu_link.'/'.$alias.'/image:'.$next_id;?>#image" >
-            <img src="<?=base_url('images/thumbs/'.$image['id'].'.'.$image['ext']);?>" alt="<?=$image['title'];?>" >
+            <img src="<?=$this->Image->getImageUrl($image['id'], 150, 100);/*base_url('images/thumbs/'.$image['id'].'.'.$image['ext']);*/?>" alt="<?=$image['title'];?>" >
         </a>
         
         <div class="description" >
@@ -40,6 +40,6 @@ if($url2[0] == 'album'){
         
     </div>
     
-    <img src="<?=base_url('images/'.$image['id'].'.'.$image['ext']);?>" alt="<?=$image['title'];?>" id="big_image" style="display: none;" >
+    <img src="<?=$this->Image->getImageUrl($image['id'], 600, 600);/*base_url('images/'.$image['id'].'.'.$image['ext']);?>" alt="<?=$image['title'];*/?>" id="big_image" style="display: none;" >
 
 </div>
