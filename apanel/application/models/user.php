@@ -205,7 +205,7 @@ class User extends CI_Model {
         $where = "id = ".$id; 
         $query = $this->db->update_string('users', $data, $where);
         $result = $this->db->query($query);
-        if($result == true){
+        if($result != true){
             $this->session->set_userdata('error_msg', lang('msg_save_user_error'));
             $this->db->query('ROLLBACK');
             return $id;

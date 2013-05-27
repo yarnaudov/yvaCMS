@@ -53,7 +53,7 @@ class Users extends MY_Controller {
                     $this->form_validation->set_rules('password2', lang('label_confirm').' '.lang('label_password2'), 'required'); 
                 }
                 elseif($method == 'edit'){
-                    $this->form_validation->set_rules('user', lang('label_user'), 'required|is_unique_edit[users.user.user_id.'.$this->user_id.']');                    
+                    $this->form_validation->set_rules('user', lang('label_user'), 'required|is_unique_edit[users.user.id.'.$this->user_id.']');                    
                 }
             
                 if ($this->form_validation->run() == TRUE){
