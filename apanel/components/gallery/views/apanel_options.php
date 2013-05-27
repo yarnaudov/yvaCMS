@@ -1,12 +1,17 @@
 
 <?php 
-echo $param;
+//echo $param;
 $this->load->language('components/com_gallery_labels');
 $this->load->model('gallery/Album');
 $albums_arr = $this->Album->getAlbums();
 
 $albums = set_value('params[albums]', isset($params['albums']) ? $params['albums'] : "");
 !is_array($albums) ? $albums = array() : '';
+
+$albums_dropdown = array();
+foreach($albums_arr as $album){
+    $albums_dropdown[$album['id']] = $album['title'];
+}
 
 ?>
 
@@ -15,6 +20,8 @@ $albums = set_value('params[albums]', isset($params['albums']) ? $params['albums
 <tr>	      			
     <th><label><?=lang('com_gallery_label_albums');?>:</label></th>
     <td>
+        
+        <?php if($param == 'albums'){ ?>
         <div class="menu_list">
             <table class="menu_list" cellspacing="0" cellpadding="0">
                 
@@ -57,11 +64,14 @@ $albums = set_value('params[albums]', isset($params['albums']) ? $params['albums
 
         </script>
         
-        <!--
+        <?php }else{ ?>        
+        
         <select name="params[album_id]" >
             <option value="none" >- - -</option>
-            <?=create_options('com_gallery_albums', 'album_id', 'title_'.$this->Language->getDefault(), set_value('params[album_id]', isset($params['album_id']) ? $params['album_id'] : ""));?>
+            <?=create_options_array($albums_dropdown, set_value('params[album_id]', isset($params['album_id']) ? $params['album_id'] : ""));?>
         </select>
-        -->
+        
+        <?php } ?>
+        
     </td>
 </tr>

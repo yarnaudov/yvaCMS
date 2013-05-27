@@ -91,7 +91,10 @@ class Gallery extends MY_Controller {
     public function getRoute($menu)
     {
 
-        if($menu['params']['albums'][0] == "*"){
+        if(isset($menu['params']['album_id'])){
+            return $menu['params']['component']."/album:".$menu['params']['album_id']."/$2";
+        }
+        elseif($menu['params']['albums'][0] == "*"){
             return $menu['params']['component']."/albums:*$2";
         }
         elseif(count($menu['params']['albums']) == 1){
