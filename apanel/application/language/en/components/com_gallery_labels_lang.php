@@ -3,15 +3,16 @@
 // component name
 $lang['com_gallery'] = 'Gallery';
 
-$lang['com_gallery_label_gallery'] = 'Gallery';
+$lang['com_gallery_label_gallery']    = 'Gallery';
 
 // Albums
-$lang['com_gallery_label_albums']  = 'Albums';
-$lang['com_gallery_label_album']   = 'Album';
+$lang['com_gallery_label_albums']     = 'Albums';
+$lang['com_gallery_label_one_albums'] = 'One album';
+$lang['com_gallery_label_album']      = 'Album';
 
 // Images
-$lang['com_gallery_label_images']  = 'Images';
-$lang['com_gallery_label_image']   = 'Image';
+$lang['com_gallery_label_images']     = 'Images';
+$lang['com_gallery_label_image']      = 'Image';
 
 $lang['com_gallery_label_water_crop_settings'] = 'Crop settings';
 $lang['com_gallery_label_aspect_ratio']  = 'Aspect ratio';

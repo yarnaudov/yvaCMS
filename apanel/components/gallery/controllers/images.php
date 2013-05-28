@@ -175,7 +175,7 @@ class Images extends MY_Controller {
 	
     public function edit()      
     {
-        self::remove_resized('a');
+        //$this->Image->removeResized('1.jpg');
         $data                  = $this->Image->getDetails($this->image_id);
         $data['album_params']  = $this->Album->getDetails($data['album_id'], 'params');
         $data['albums']        = $this->Album->getForDropdown();
@@ -326,25 +326,6 @@ class Images extends MY_Controller {
 
         exit;
 
-    }
-
-    public function remove_resized($image)
-    {
-
-        $images_dir = FCPATH.'/../'.$this->config->item('images_dir').'/';
-        $handle = opendir($images_dir);
-
-        while (false !== ($dir = readdir($handle))) {                                                
-            if(substr($dir, 0, 1) == "." || !is_dir($images_dir.$dir) || !preg_match('/^[0-9]{1,4}x{1}[0-9]{1,4}$/', $dir)){
-              continue;                                                
-            }
-
-            if(file_exists($images_dir.$dir.$image)){
-                unlink($images_dir.$dir.$image);
-            }
-        
-        }
-            
     }
     
     public function unlink($image)

@@ -214,23 +214,23 @@ class Image extends MY_Model {
         $this->db->query('COMMIT');
 
         // if tmp is 1 move image from tmp folder to images folder
-        $file     = $id.'.'.self::getDetails($id, 'ext');
-        if($this->input->post('tmp') == 1){
+        $file = $id.'.'.self::getDetails($id, 'ext');
+        if($this->input->post('tmp') == 1 || $this->input->post('tmp') == 2){
             
             $tmp_file = FCPATH.'../'.$this->config->item('images_tmp_dir').'/'.$file;
             $img_file = FCPATH.'../'.$this->config->item('images_dir').'/'.$file;
-            rename($tmp_file, $img_file);
-
-        }
-        elseif($this->input->post('tmp') == 2){
             
-            $tmp_file    = FCPATH.'../'.$this->config->item('images_tmp_dir').'/'.$file;
-            $img_file    = FCPATH.'../'.$this->config->item('images_dir').'/'.$file;
-            $origin_file = FCPATH.'../'.$this->config->item('images_origin_dir').'/'.$file;
             rename($tmp_file, $img_file);
-            copy($img_file, $origin_file);
-        }
+            
+            if($this->input->post('tmp') == 2){            
+                $origin_file = FCPATH.'../'.$this->config->item('images_origin_dir').'/'.$file;
+                copy($img_file, $origin_file); 
+            }
+            
+            self::removeResized($file);
 
+        }
+        
         return $id;
 
     }
@@ -337,6 +337,25 @@ class Image extends MY_Model {
         move_uploaded_file($_FILES['file']['tmp_name'], $images_dir.'/'.$id.'.'.$ext);
         copy($images_dir.'/'.$id.'.'.$ext, $images_origin_dir.'/'.$id.'.'.$ext);
         
+    }
+    
+    public function removeResized($image)
+    {
+
+        $images_dir = FCPATH.'/../'.$this->config->item('images_dir').'/';
+        $handle = opendir($images_dir);
+
+        while (false !== ($dir = readdir($handle))) {                                                
+            if(substr($dir, 0, 1) == "." || !is_dir($images_dir.$dir) || !preg_match('/^[0-9]{1,4}x{1}[0-9]{1,4}$/', $dir)){
+              continue;                                                
+            }
+
+            if(file_exists($images_dir.$dir.'/'.$image)){
+                unlink($images_dir.$dir.'/'.$image);
+            }
+        
+        }
+            
     }
     
 }
