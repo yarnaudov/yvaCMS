@@ -99,8 +99,11 @@
                                     <td>
                                         <ul id="form_fields">
                                             <?php $fields = set_value('fields', isset($fields) ? $fields : "");
-                                                  //print_r($fields);
-                                                  for($key = 1; $key < count($fields); $key++){ ?>
+                                                  
+                                                  $count_fields = count($fields)-1;
+                                                  $count_fields == 0 ? $count_fields = 1 : '';
+                                                  
+                                                  for($key = 1; $key <= $count_fields; $key++){ ?>
                                             <li>
 
                                                 <table>

@@ -147,7 +147,7 @@ class Contact_form extends MY_Model {
         $id = $this->db->insert_id();
         
         // save data in com_contact_forms_data table
-        $data['com_contact_forms_data']['contact_form_id'] = $id;
+        $data['com_contacts_forms_data']['contact_form_id'] = $id;
         $query = $this->db->insert_string('com_contacts_forms_data', $data['com_contacts_forms_data']);
         $result = $this->db->query($query);        
         if($result != true){
