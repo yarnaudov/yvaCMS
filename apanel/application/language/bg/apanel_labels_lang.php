@@ -66,6 +66,7 @@ $lang['label_created_on']    = 'Създаден(а) на';
 $lang['label_updated_by']    = 'Променен(а) от';
 $lang['label_updated_on']    = 'Променен(а) на';
 $lang['label_file']          = 'Файл';
+$lang['label_files']         = 'Файлове';
 $lang['label_size']          = 'Размер';
 
 $lang['label_image']         = 'Снимка';

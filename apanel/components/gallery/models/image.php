@@ -104,7 +104,7 @@ class Image extends MY_Model {
 
     }
   
-    public function prepareData($action)
+    public function prepareData($action, $key = false)
     {
                  
         $data['com_gallery_images_data']['title']       = $this->input->post('title');
@@ -114,7 +114,13 @@ class Image extends MY_Model {
         $data['com_gallery_images']['album_id']         = $this->input->post('album');
         $data['com_gallery_images']['status']           = $this->input->post('status');      
         $data['com_gallery_images']['show_in_language'] = $this->input->post('show_in_language');
-        $data['com_gallery_images']['ext']              =  end(explode(".", $_FILES["file"]["name"]));
+        
+        if($key === false){
+            $data['com_gallery_images']['ext'] = end(explode(".", $_FILES["file"]["name"]));
+        }
+        else{
+            $data['com_gallery_images']['ext'] = end(explode(".", $_FILES["files"]["name"][$key]));
+        }
 
         if($data['com_gallery_images']['show_in_language'] == 'all'){
             $data['com_gallery_images']['show_in_language'] = NULL;
@@ -137,10 +143,10 @@ class Image extends MY_Model {
 
     }
 
-    public function add()
+    public function add($key = false)
     {      
         
-        $data = self::prepareData('insert');
+        $data = self::prepareData('insert', $key);
 
         $this->db->query('BEGIN');
         
@@ -165,7 +171,7 @@ class Image extends MY_Model {
             return $id;
         }
                 
-        self::upload($id);
+        self::upload($id, $key);
         
         $this->session->set_userdata('good_msg', lang('msg_save_image'));
         $this->db->query('COMMIT');
@@ -316,7 +322,7 @@ class Image extends MY_Model {
         
     }
     
-    public function upload($id)
+    public function upload($id, $key = false)
     {
         
         $images_dir        = FCPATH.'../'.$this->config->item('images_dir');
@@ -331,10 +337,19 @@ class Image extends MY_Model {
         }
 
         $image = self::getDetails($id);
+        
+        if($key === false){
+            $name     = $_FILES["file"]["name"];
+            $tmp_name = $_FILES['file']['tmp_name'];
+        }
+        else{
+            $name     = $_FILES["files"]["name"][$key];
+            $tmp_name = $_FILES['files']['tmp_name'][$key];
+        }
+        
+        $ext = end(explode(".", $name));
 
-        $ext = end(explode(".", $_FILES["file"]["name"]));
-
-        move_uploaded_file($_FILES['file']['tmp_name'], $images_dir.'/'.$id.'.'.$ext);
+        move_uploaded_file($tmp_name, $images_dir.'/'.$id.'.'.$ext);
         copy($images_dir.'/'.$id.'.'.$ext, $images_origin_dir.'/'.$id.'.'.$ext);
         
     }

@@ -66,6 +66,7 @@ $lang['label_created_on']    = 'Created on';
 $lang['label_updated_by']    = 'Updated by';
 $lang['label_updated_on']    = 'Updated on';
 $lang['label_file']          = 'File';
+$lang['label_files']         = 'Files';
 $lang['label_size']          = 'Size';
 
 $lang['label_image']         = 'Image';

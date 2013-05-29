@@ -23,6 +23,8 @@ class Images extends MY_Controller {
         $this->page     = isset($_GET['page']) ? $_GET['page'] : 1;        
         $this->image_id = $this->uri->segment(5);
         
+        $this->jquery_ext->add_library("../components/gallery/js/gallery.js");
+        
     }
     
     public function _remap($method)
@@ -189,14 +191,75 @@ class Images extends MY_Controller {
 
     public function quickadd()
     {
+        //print_r($_FILES);
+        
+        $this->jquery_ext->add_plugin("validation");
+        $this->jquery_ext->add_library("check_actions_add_edit.js");
+        
+        $this->load->helper('form');
+        $this->load->library('form_validation');            
 
+        if(isset($_POST['save']) || isset($_POST['apply'])){   
+
+            $this->form_validation->set_rules('title', lang('label_title'), 'required');
+
+            if ($this->form_validation->run() == TRUE){
+                //print_r($_FILES['files']['name']);
+                for($key = 0; $key < count($_FILES['files']['name']); $key++){
+                //echo $key."<---<br/>";
+                    /*
+                     * check image file 
+                     */
+                    $ext = end(explode(".", $_FILES['files']['name'][$key]));
+
+                    if($_FILES['files']["size"][$key] == 0){
+                        @$msg .= $name." - ".lang('msg_image_empty_file')."<br/>";
+                    }
+
+                    if($_FILES["files"]["size"][$key] > 0){
+
+                        if($_FILES["files"]["size"][$key] > $this->config->item('max_image_size')){                        
+                            @$msg .= str_replace('{max_size}', (($this->config->item('max_image_size')/1024)/1024)."MB", $_FILES['files']['name'][$key]." - ".lang('msg_image_max_file'))."<br/>";                        
+                        }
+                        elseif(!in_array(strtolower($ext), $this->config->item('allowed_image_ext'))){
+                            @$msg .= str_replace('{allowed_ext}', implode(", ", $this->config->item('allowed_image_ext')), $_FILES['files']['name'][$key]." - ".lang('msg_image_allowed_ext'))."<br/>";
+                        }
+                        
+                    }
+
+                    if(isset($msg)){
+                        $this->session->set_userdata('error_msg', $msg);
+                    }
+                    else{
+                        
+                        $image_id = $this->Image->add($key);
+                        
+                    }
+                    
+                }
+                
+                if(isset($_POST['save'])){
+                    redirect('components/gallery/images/');
+                }
+                elseif(isset($_POST['apply'])){
+                    redirect('components/gallery/images/quickadd');
+                }
+
+                exit();
+                
+            }
+
+        }
+        
+        
         $this->jquery_ext->add_plugin("validation");
         $this->jquery_ext->add_library("check_actions_add_edit.js");
 
         $this->load->helper('form');
         $this->load->library('form_validation');
 
-        $data = array();
+        $data['albums']        = $this->Album->getForDropdown();
+        $data['custom_fields'] = $this->Custom_field->getCustomFields(array('status' => 'yes'), '`order`');
 
         $content["content"] = $this->load->view('gallery/images/quickadd', $data, true);     
         $this->load->view('layouts/default', $content);
@@ -205,7 +268,9 @@ class Images extends MY_Controller {
 
     public function change()
     {
-
+        
+        // TODO change the ext in the database upon save!
+        
         $ext = end(explode(".", $_FILES["file"]["name"]));
         $tmp_file = $this->config->item('images_tmp_dir').'/'.$this->image_id.'.'.$ext;
         move_uploaded_file($_FILES['file']['tmp_name'], FCPATH.'../'.$tmp_file);

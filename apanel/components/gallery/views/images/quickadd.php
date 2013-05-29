@@ -75,7 +75,7 @@
                                                         
                             <tr>
                                 <th><label class="multilang" ><?=lang('label_title');?>:</label></th>
-                                <td><input type="text" name="title" value="<?=set_value('title', isset($title) ? $title : "");?>" ></td>
+                                <td><input class="required" type="text" name="title" value="<?=set_value('title', isset($title) ? $title : "");?>" ></td>
                             </tr>
 
                         </table>
@@ -90,16 +90,13 @@
                                 <table class="box_table" cellpadding="0" cellspacing="0" border="0" >
 
                                     <tr>                                            
-                                        <th><label><?=lang('label_file');?>: </label></th>
+                                        <th><label><?=lang('label_files');?>: </label></th>
                                         <td>
                                             <div class="input_file" >
-                                                <input type="file" name="file" size="30" class="file">
+                                                <input type="file" name="files[]" size="30" class="file" multiple >
                                                 <button type="button" class="styled" >Browse</button>                                                    
                                                 <input type="text" class="text">
                                             </div>
-                                            <?php if(isset($id)){ ?>
-                                            <button type="button" class="styled styled_small" id="btn_change_image" data-url="<?=site_url('components/gallery/images/change/'.$id);?>" ><?=lang('com_gallery_label_change');?></button>
-                                            <?php } ?>
                                         </td>
                                     </tr>
 
