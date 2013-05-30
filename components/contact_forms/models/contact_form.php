@@ -45,37 +45,37 @@ class Contact_form extends CI_Model {
         }
         
         $subject = lang('msg_cf_mail_subject');
-        $subject = str_replace('{site_name}', $this->Settings->getSiteName(), $subject);
-        $subject = str_replace('{contact_form}', $contact_form['title_'.get_lang()], $subject);
+        $subject = str_replace('{site_name}', $this->Setting->getSiteName(), $subject);
+        $subject = str_replace('{contact_form}', $contact_form['title'], $subject);
         
         $message_body = lang('msg_cf_mail_body_top');
-        $message_body = str_replace('{contact_form}', $contact_form['title_'.get_lang()], $message_body);
+        $message_body = str_replace('{contact_form}', $contact_form['title'], $message_body);
         foreach($contact_form['fields'] as $number => $field){
             
             if($number == 'captcha'){
                 continue;
             }
             
-            $message_body .= '<strong>'.$field['label_'.get_lang()].'</strong>: '.$_POST['field'.$number].'<br/>';
+            $message_body .= '<strong>'.$field['label'].'</strong>: '.$_POST['field'.$number].'<br/>';
             
         }
         
         
         require_once APPPATH.'libraries/swift/swift_required.php';
            
-        $mailer = $this->Settings->getMailer();
+        $mailer = $this->Setting->getMailer();
            
         if($mailer == 'smtp'){
                 
-            $transport = Swift_SmtpTransport::newInstance($this->Settings->getSSMTHost(), $this->Settings->getSSMTPort());
+            $transport = Swift_SmtpTransport::newInstance($this->Setting->getSSMTHost(), $this->Setting->getSSMTPort());
 
-            $ssmt_security = $this->Settings->getSSMTSecurity();
+            $ssmt_security = $this->Setting->getSSMTSecurity();
             if(!empty($ssmt_security)){
                 $transport->setEncryption($ssmt_security);
             }
 
-            $ssmt_user = $this->Settings->getSSMTUser();
-            $ssmt_pass = $this->Settings->getSSMTPass();
+            $ssmt_user = $this->Setting->getSSMTUser();
+            $ssmt_pass = $this->Setting->getSSMTPass();
 
             if(!empty($ssmt_user)){
                 $transport->setUsername($ssmt_user);
@@ -84,7 +84,7 @@ class Contact_form extends CI_Model {
             
         }
         elseif($mailer == 'sendmail'){
-            $transport = Swift_SendmailTransport::newInstance($this->Settings->getSendmail() . ' -bs');
+            $transport = Swift_SendmailTransport::newInstance($this->Setting->getSendmail() . ' -bs');
         }
         else{    
             $transport = Swift_MailTransport::newInstance();
@@ -99,7 +99,7 @@ class Contact_form extends CI_Model {
         ->setSubject($subject)
 
         // Set the From address with an associative array
-        ->setFrom(array($this->Settings->getFromEmail() => $this->Settings->getFromName()));
+        ->setFrom(array($this->Setting->getFromEmail() => $this->Setting->getFromName()));
 
         // Set the To addresses with an associative array
         $message->setTo($to);
@@ -126,13 +126,13 @@ class Contact_form extends CI_Model {
         //echo "--->".$result."<---------<br/>";
         
         if($result == 1){
-            $this->session->set_userdata('contact_form_msg', lang('msg_cf_send'));
+            $this->session->set_flashdata('contact_form_msg', lang('msg_cf_send'));
         }
         else{
-            $this->session->set_userdata('contact_form_msg', lang('msg_cf_error'));
+            $this->session->set_flashdata('contact_form_msg', lang('msg_cf_error'));
         }
         
-        redirect($this->uri->segment(1));
+        redirect(current_url());
         exit;
         
     }

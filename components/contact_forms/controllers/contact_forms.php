@@ -61,7 +61,7 @@ class Contact_forms extends MY_Controller {
         //echo $this->router->fetch_method()."<----<br/>";
         
         //echo print_r($this->uri->segments)."<--<br/>";
-        
+        	
         if(isset($_POST['send'])){
             $this->Contact_form->_send($contact_form_id);
         }

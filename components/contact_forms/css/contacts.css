@@ -1,47 +1,47 @@
-#contactForm{
+.contactForm{
     
 }
-#contactForm div{
+.contactForm div{
     padding-bottom: 4px;
     overflow: auto;
 }
-#contactForm div ul{
+.contactForm div ul{
     list-style: none;
     margin: 0;
     padding: 0;
     display: inline-block;
     width: 500px;
 }
-#contactForm div ul li{
+.contactForm div ul li{
     overflow: auto;
 }
-#contactForm div ul li input{
+.contactForm div ul li input{
     float: left;
 }
-#contactForm div ul li label{
+.contactForm div ul li label{
     float: left;   
 }
-#contactForm div > label{
+.contactForm div > label{
     display: inline-block;
     width: 120px;
     vertical-align: top;
 }
-#contactForm div input[type=text]{
+.contactForm div input[type=text]{
     width: 500px;
     padding: 1px;
 }
-#contactForm div textarea{
+.contactForm div textarea{
     width: 500px;
     height: 120px;
 }
 
-#contactForm div label.error{
+.contactForm div label.error{
     display: block;
     margin-left: 84px;
     width: 500px;
     color: #f00;
     font-style: italic;
 }
-#contactForm div input.error,
-#contactForm div textarea.error{
+.contactForm div input.error,
+.contactForm div textarea.error{
     border: 1px solid #f00;

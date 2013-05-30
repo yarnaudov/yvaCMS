@@ -1,6 +1,5 @@
 
-<?php $contact_form_msg = $this->session->userdata('contact_form_msg');
-      $this->session->unset_userdata('contact_form_msg');
+<?php $contact_form_msg = $this->session->flashdata('contact_form_msg');
       if(!empty($contact_form_msg)){ ?>
 
           <?=$contact_form_msg;?>
@@ -11,7 +10,7 @@
         $captcha = $contact_form['fields']['captcha'];
         unset($contact_form['fields']['captcha']); ?>
 
-<form method="post" action="<?=current_url();?>" id="contactForm" >
+<form method="post" action="<?=current_url();?>" class="contactForm" id="contactForm_<?=$contact_form['id'];?>" >
     
     
     <?php foreach($contact_form['fields'] as $number => $field){ 
@@ -127,9 +126,11 @@
     <div>
         <label>&nbsp;</label>
         <img id="siimage" style="margin-right: 15px;width: 200px;height: 70px;" src="<?=base_url();?>/plugins/securimage/securimage_show.php?sid=<?php echo md5(uniqid()) ?>" alt="CAPTCHA Image" />
+	<!--
         <object type="application/x-shockwave-flash" data="<?=base_url();?>/plugins/securimage/securimage_play.swf?bgcol=#ffffff&amp;icon_file=./images/audio_icon.gif&amp;audio_file=<?=base_url();?>/plugins/securimage/securimage_play.php" width="19" height="19" >
-        <param name="movie" value="<?=base_url();?>/plugins/securimage/securimage_play.swf?bgcol=#ffffff&amp;icon_file=./images/audio_icon.gif&amp;audio_file=<?=base_url();?>/plugins/securimage/securimage_play.php" />
+	    <param name="movie" value="<?=base_url();?>/plugins/securimage/securimage_play.swf?bgcol=#ffffff&amp;icon_file=./images/audio_icon.gif&amp;audio_file=<?=base_url();?>/plugins/securimage/securimage_play.php" />
         </object>
+        -->
         &nbsp;
         <a tabindex="-1" style="border-style: none;" href="#" id="refresh_image" title="Refresh Image" onclick="document.getElementById('siimage').src = '<?=base_url();?>/plugins/securimage/securimage_show.php?sid=' + Math.random(); this.blur(); return false">
             <img src="<?=base_url();?>plugins/securimage/images/refresh.gif" alt="Reload Image" onclick="this.blur()" align="bottom" border="0" />

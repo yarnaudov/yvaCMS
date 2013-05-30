@@ -78,7 +78,7 @@
 
                             <tr>
                                 <th><label class="multilang" ><?=lang('label_title');?>:</label></th>
-                                <td><input type="text" name="title" value="<?=set_value('title', isset($title) ? $title : "");?>" ></td>
+                                <td><input class="required" type="text" name="title" value="<?=set_value('title', isset($title) ? $title : "");?>" ></td>
                             </tr>
 
                         </table>
@@ -261,7 +261,7 @@
                                 <tr>	      			
                                     <th><label><?=lang('label_email_to');?>:</label></th>
                                     <td>
-                                        <textarea name="to" ><?=set_value('to', isset($to) ? $to : "");?></textarea>
+                                        <textarea class="required email" name="to" ><?=set_value('to', isset($to) ? $to : "");?></textarea>
                                     </td>
                                 </tr>
                                 
