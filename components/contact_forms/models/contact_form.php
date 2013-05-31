@@ -60,7 +60,9 @@ class Contact_form extends CI_Model {
                 
               case 'checkbox':              
                   
-                  foreach($_POST['field'.$number] as $post){
+                  $posts = isset($_POST['field'.$number]) ? $_POST['field'.$number] : array();
+                  
+                  foreach($posts as $post){
                       $values[] = $field['labels'][$post];
                   }
                   $value = implode(", ", $values);
@@ -69,11 +71,11 @@ class Contact_form extends CI_Model {
           
               case 'dropdown':
               case 'radio':
-                 $value = $field['labels'][$_POST['field'.$number]];                 
+                 $value = isset($_POST['field'.$number]) ? $field['labels'][$_POST['field'.$number]] : '';
               break;
             
               default:
-                  $value = $_POST['field'.$number];
+                  $value = isset($_POST['field'.$number]) ? $_POST['field'.$number] : '';
               break;
           
             }
@@ -81,7 +83,7 @@ class Contact_form extends CI_Model {
             $message_body .= '<strong>'.$field['label'].'</strong>: '.$value.'<br/>';
             
         }
-        echo $message_body;exit;
+
         require_once APPPATH.'libraries/swift/swift_required.php';
            
         $mailer = $this->Setting->getMailer();
