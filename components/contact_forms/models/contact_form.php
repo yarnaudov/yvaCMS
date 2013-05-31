@@ -58,8 +58,7 @@ class Contact_form extends CI_Model {
             
             switch($field['type']){
                 
-              case 'checkbox':
-              case 'radio':
+              case 'checkbox':              
                   
                   foreach($_POST['field'.$number] as $post){
                       $values[] = $field['labels'][$post];
@@ -69,6 +68,7 @@ class Contact_form extends CI_Model {
               break;
           
               case 'dropdown':
+              case 'radio':
                  $value = $field['labels'][$_POST['field'.$number]];                 
               break;
             
@@ -81,7 +81,7 @@ class Contact_form extends CI_Model {
             $message_body .= '<strong>'.$field['label'].'</strong>: '.$value.'<br/>';
             
         }
-        
+        echo $message_body;exit;
         require_once APPPATH.'libraries/swift/swift_required.php';
            
         $mailer = $this->Setting->getMailer();
