@@ -24,7 +24,19 @@ $(document).ready(function() {
     function reorderFields(){
        
         $('#form_fields > li').each(function(index){
-
+	    
+	    $(this).find('input[type=text]').each(function(){
+		$(this).attr('value', $(this).val());
+	    });
+	    
+	    $(this).find('input:checked').each(function(){
+		$(this).attr('checked', true);
+	    });
+	    
+	    $(this).find('select option:selected').each(function(){
+		$(this).attr('selected', true);
+	    });
+	    
             var html = $(this).html();
 
             var number = $(this).find('fieldset legend span').html();
@@ -73,7 +85,7 @@ $(document).ready(function() {
             $(clone_li).find('fieldset a').attr('lang', 'field'+number);
             
             $(clone_li).find('select').find('option:first').attr('selected', true).trigger('change');
-            $(clone_li).find('input[type=text]').val('');
+            $(clone_li).find('input[type=text]').attr('value', '');
             $(clone_li).toggle(250);
 
         }
