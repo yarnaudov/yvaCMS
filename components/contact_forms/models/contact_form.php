@@ -56,10 +56,33 @@ class Contact_form extends CI_Model {
                 continue;
             }
             
-            $message_body .= '<strong>'.$field['label'].'</strong>: '.$_POST['field'.$number].'<br/>';
+            switch($field['type']){
+                
+              case 'checkbox':
+              case 'radio':
+                  
+                  foreach($_POST['field'.$number] as $post){
+                      $values[] = $field['labels'][$post];
+                  }
+                  $value = implode(", ", $values);
+                  
+              break;
+          
+              case 'dropdown':
+                 $value = $field['labels'][$_POST['field'.$number]];                 
+              break;
+            
+              default:
+                  $value = $_POST['field'.$number];
+              break;
+          
+            }
+            
+            $message_body .= '<strong>'.$field['label'].'</strong>: '.$value.'<br/>';
             
         }
-        
+        echo $message_body;
+        exit;
         
         require_once APPPATH.'libraries/swift/swift_required.php';
            
