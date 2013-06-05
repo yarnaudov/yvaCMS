@@ -182,6 +182,8 @@ class Module extends MY_Model {
             $params = self::getDetails($id, 'params');
             if($params['type'] == $data['modules']['params']['type']){
                 
+		!isset($data['modules']['params']['multilang']) ? $data['modules']['params']['multilang'] = array() : '';
+		
                 foreach($data['modules']['params']['multilang'] as $key1 => $value1){
                     
                     foreach($value1 as $key2 => $value2){

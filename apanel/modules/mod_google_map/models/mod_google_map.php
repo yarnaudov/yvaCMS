@@ -7,6 +7,7 @@ class mod_google_map extends MY_Model {
         echo "Save module";
 
         $markers = $this->input->post('markers');
+	!is_array($markers) ? $markers = array() : '';
 
         $this->db->query('DELETE FROM mod_google_map_markers WHERE module_id = '.$module_id);
 
