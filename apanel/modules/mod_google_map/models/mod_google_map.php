@@ -4,7 +4,7 @@ class mod_google_map extends MY_Model {
 
     public function save($module_id)
     {
-        echo "Save module";
+        //echo "Save module";
 
         $markers = $this->input->post('markers');
 	!is_array($markers) ? $markers = array() : '';
