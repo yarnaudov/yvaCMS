@@ -4,7 +4,8 @@ class mod_google_map extends CI_Model{
 	
     function run($module)
     {
-
+	
+	$data['id']     = $module['id'];
         $data['params'] = $module['params'];
         $data['params']['markers'] = self::getMarkers($module['id']);
 
