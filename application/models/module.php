@@ -174,7 +174,7 @@ class Module extends CI_Model {
     	ob_start();
     	extract($data);
         
-        $template_file = TEMPLATES_DIR.'/'.$this->Setting->getTemplate().'/../'.$module['template'].'.php';
+        $template_file = TEMPLATES_DIR.'/'.$this->Setting->getTemplate('main').'/'.$module['template'].'.php';
         
         if(file_exists(FCPATH.$template_file)){
             include $template_file;
