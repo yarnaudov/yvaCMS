@@ -34,7 +34,7 @@ class Content extends CI_Model {
             if(isset($templates[$menu['alias']])){
                 $menu['template'] = $templates[$menu['alias']];
             }
-            elseif(!isset($templates[$menu['params']['type']])){
+            elseif(isset($templates[$menu['params']['type']])){
                 $menu['template'] = $templates[$menu['params']['type']];
             }
                         
