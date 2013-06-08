@@ -348,7 +348,7 @@ class MY_Controller extends CI_Controller{
         
         if($action == 'modules'){
                         
-            $templates_dir = FCPATH.'/../'.TEMPLATES_DIR.'/'.$this->Setting->getTemplate().'/../views/modules';
+            $templates_dir = FCPATH.'/../'.TEMPLATES_DIR.'/'.$this->Setting->getTemplate('main').'/views/modules';
             
             if(is_dir($templates_dir)){
             
@@ -368,7 +368,7 @@ class MY_Controller extends CI_Controller{
         }
         elseif($action == 'content'){
                         
-            $templates_dir = FCPATH.'/../'.TEMPLATES_DIR.'/'.$this->Setting->getTemplate().'/../views/content';
+            $templates_dir = FCPATH.'/../'.TEMPLATES_DIR.'/'.$this->Setting->getTemplate('main').'/views/content';
             
             if(is_dir($templates_dir)){
             

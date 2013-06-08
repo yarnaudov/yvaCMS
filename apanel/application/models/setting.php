@@ -43,10 +43,17 @@ class Setting extends CI_Model {
         
     }
     
-    public function getTemplate()
+    public function getTemplate($type = null)
     {    
-    	$settings = self::getSettings();    
-        return $settings['template']; 
+    	$settings = self::getSettings();
+        
+        if($type == 'main'){
+            $template = explode("/", $settings['template']);
+            return current($template);
+        }       
+        
+        return $settings['template'];
+        
     }
     
     public function check($data)
