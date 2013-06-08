@@ -55,7 +55,7 @@ class Content extends CI_Model {
             /*
              * set content template
              */
-            $template_file = TEMPLATES_DIR.'/'.$this->Setting->getTemplate().'/../'.$menu['content_template'].'.php';        
+            $template_file = TEMPLATES_DIR.'/'.$this->Setting->getTemplate('main').'/'.$menu['content_template'].'.php';        
             if(file_exists(FCPATH.$template_file)){
                 $content_template = '../../'.$template_file;
             }

@@ -79,8 +79,13 @@ class Setting extends CI_Model {
         return $this->settings['robots'];
     }
     
-    public function getTemplate()
+    public function getTemplate($type = null)
     {        
+        if($type == 'main'){
+            $template = explode("/", $this->settings['template']);
+            return current($template);
+        } 
+        
         return $this->settings['template']; 
     }
     
