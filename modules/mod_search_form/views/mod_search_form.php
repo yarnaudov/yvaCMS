@@ -1,23 +1,19 @@
-<?php
+<form action="<?=site_url('search');?>" method="post" >
+    <div>
 
-echo '<form action="'.site_url('search').'" method="post" >';
-echo '    <div>';
+        <?php if(isset($module['params']['label'][$this->language_id])){ ?>
+        <label><?=$module['params']['label'][$this->language_id];?></label>
+        <?php } ?>
 
-if(isset($module['params']['label'][$this->language_id])){
-echo '        <label>'.$module['params']['label'][$this->language_id].'</label>';
-}
+        <input type="text" 
+               name="search_v" 
+               value="<?=@$module['params']['field_text'][$this->language_id];?>"
+               onfocus="if(this.value == '<?=@$module['params']['field_text'][$this->language_id];?>'){this.value = '';}"
+               onblur="if(this.value == ''){this.value='<?=@$module['params']['field_text'][$this->language_id];?>';}" >
 
-echo '        <input type="text" 
-                        name="search_v" 
-                        value="'.@$module['params']['field_text'][$this->language_id].'"
-                        onfocus="" 
-                        onblur="" >';
+        <?php if($module['params']['show_button'] == 'yes'){ ?>
+        <button type="submit" name="search" ><?=@$module['params']['button_text'][$this->language_id];?></button>
+        <?php } ?>
 
-if($module['params']['show_button'] == 'yes'){
-echo '        <button type="submit" name="search" >'.@$module['params']['button_text'][$this->language_id].'</button>';
-}
-
-echo '    </div>';
-echo '</form>';
-        
-?>
+    </div>
+</form>
