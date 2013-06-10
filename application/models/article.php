@@ -21,7 +21,7 @@ class Article extends CI_Model {
         }
         
         $article[0]['params'] = json_decode($article[0]['params'], true); 
-        $article[0]           = array_merge($article[0], $this->Custom_field->getValues($id, 'articles'));
+        $article[0]           = array_merge($article[0], $this->Custom_field->getValues('articles', $id));
         
         if($field == null){
             return $article[0];
@@ -32,7 +32,7 @@ class Article extends CI_Model {
 
     }
     
-    public function getByCategory($category_id)
+    public function getByCategory($category_id, $filter = FALSE)
     {
         
         if(empty($category_id)){
@@ -50,7 +50,23 @@ class Article extends CI_Model {
         foreach($articles as $article){
             
             $article = self::getDetails($article['id']);
-            
+	 
+	    if(isset($_GET['filter']) && $filter == $_GET['filter']){
+
+		foreach($_GET as $key => $value){
+		    if($key == 'search_v'){
+			$pattern = "/".$value."/iu";
+			if(!preg_match($pattern, $article['title']) && !preg_match($pattern, $article['text'])){
+			    continue(2);
+			}
+		    }
+		    elseif(isset($article[$key]) && $article[$key] != $value){
+			continue(2);
+		    }
+		}
+	    
+	    }
+	    
             /* --- check language for article display --- */
             if($article['show_in_language'] != NULL && $article['show_in_language'] != $this->Language->getDetailsByAbbr(get_lang(), 'id')){
                 continue;

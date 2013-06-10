@@ -76,7 +76,7 @@ class Content extends CI_Model {
                 
                 case "articles_list":
                     
-                    $articles        = $this->Article->getByCategory($menu['params']['category_id']);                    
+                    $articles        = $this->Article->getByCategory($menu['params']['category_id'], 'menu'.$menu['id']);                    
                     $data['content'] = $this->load->view($content_template, compact('menu', 'articles'), true);
                     
                 break;
