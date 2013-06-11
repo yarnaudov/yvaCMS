@@ -43,6 +43,15 @@ class Home extends MY_Controller {
         
     }
     
+    public function banners($id)
+    {
+
+	$this->Banner->statistic($id, 2);
+	
+	redirect($this->input->get('url'));
+	
+    }
+    
 }
 
 /* End of file home.php */
