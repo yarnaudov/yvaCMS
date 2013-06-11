@@ -38,7 +38,7 @@
 |
 */
 
-$route['default_controller'] = "home";
+$route['default_controller'] = "main";
 $route['404_override'] = '';
 
 include_once APPPATH . '/cache/routes.php';
