@@ -195,6 +195,7 @@ class Banner extends CI_Model {
 	    $data['user_referrer'] = $this->agent->referrer();
 	}
 	
+	$data['banner_id'] = $id;
 	$data['ip'] = $this->input->ip_address();
 	$data['created_on'] = date('Y-m-d H:i:s');
 	$data['type'] = $type;
