@@ -21,11 +21,11 @@ class Banner extends CI_Model {
 
     }
     
-    public function load($category_alias, $all = true)
+    public function load($position, $all = true, $templates = array())
     {
         
-        $banners = self::_getBanners($category_alias);
-        
+        $banners = self::_getBanners($position);
+ 
         // get random only one banner and load only it
         if($all == false){
             $key = array_rand($banners);
@@ -34,14 +34,14 @@ class Banner extends CI_Model {
         
         $banner_html = '';
         foreach($banners as $banner){
-            
-            $banner_html .= '<div class="banner banner_'.$banner['type'].'" >';
+    
+            $banner_html .= '<div class="banner banner_'.$banner['params']['type'].'" >';
             
             if($banner['show_title'] == 'yes'){
                 $banner_html .= '<div class="title" >'.$banner['title'].'</div>';
             }
 
-            switch($banner['type']){
+            switch($banner['params']['type']){
                 case "image":
                     $banner_html .= self::_image($banner);
                 break;
@@ -59,22 +59,16 @@ class Banner extends CI_Model {
             $banner_html .= '</div>';
                       
         }
-        
+  
         return $banner_html;
         
     }
     
-    function _getBanners($category_alias)
+    function _getBanners($position)
     {
         
-        $category_id = @$this->Category->getByAlias($category_alias, 'banners', 'category_id');
-        
-        if(empty($category_id)){
-            return array();
-        }
-        
         $this->db->select('*');
-        $this->db->where('category_id', $category_id);
+        $this->db->where('position', $position);
         $this->db->where('status', 'yes');
         $this->db->order_by('order', 'asc');
         $banners = $this->db->get('banners');  	
@@ -83,20 +77,20 @@ class Banner extends CI_Model {
         $banners_arr = array();
         foreach($banners as $banner){
             
-            $banner['custom_fields'] = $this->Custom_field->getValues('banners', $banner['banner_id']);
+            $banner['custom_fields'] = $this->Custom_field->getValues('banners', $banner['id']);
             
             /* --- check menus for module display --- */
             $banner['params'] = json_decode($banner['params'], true);            
-            if($banner['display_in'] == 'on_selected' && !in_array($this->menu_id, $banner['params']['display_menus'])){
+            if($banner['params']['display_in'] == 'on_selected' && !in_array($this->menu_id, $banner['params']['display_menus'])){
                 continue;
             }
-            elseif($banner['display_in'] == 'all_except_selected' && in_array($this->menu_id, $banner['params']['display_menus'])){
+            elseif($banner['params']['display_in'] == 'all_except_selected' && in_array($this->menu_id, $banner['params']['display_menus'])){
                 continue;
             }
             
             
             /* --- check language for banner display --- */
-            if($banner['language_id'] != NULL && $banner['language_id'] != $this->Language->getDetailsByAbbr(get_lang(), 'language_id')){
+            if($banner['show_in_language'] != NULL && $banner['show_in_language'] != $this->Language->getDetailsByAbbr(get_lang(), 'id')){
                 continue;
             }
             

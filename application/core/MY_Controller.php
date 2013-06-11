@@ -185,7 +185,7 @@ class MY_Controller extends CI_Controller {
                 $html = str_replace($include, $this->Module->load($include->name), $html);
             }
             elseif($include->type == 'banner'){
-                $html = str_replace($include, '[-----banner-----]', $html);
+                $html = str_replace($include, $this->Banner->load($include->name), $html);
             }
             elseif($include->type == 'content'){
                 $html = str_replace($include, $this->Content->load(), $html);
