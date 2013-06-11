@@ -959,6 +959,24 @@ CREATE TABLE IF NOT EXISTS `mod_google_map_markers` (
   `image` varchar(500) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+
+--
+-- Table structure for table `banners_statistics`
+--
+
+
+CREATE TABLE IF NOT EXISTS `banners_statistics` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `banner_id` int(11) NOT NULL,
+  `type` tinyint(1) NOT NULL COMMENT '1 - impresion, 2 - click',
+  `created_on` datetime NOT NULL,
+  `ip` varchar(15) NOT NULL,
+  `user_agent` varchar(500) NOT NULL,
+  `user_referrer` varchar(1000) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `banner_id` (`banner_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
 --
 -- Constraints for dumped tables
 --
@@ -1100,6 +1118,12 @@ ALTER TABLE `users`
   ADD CONSTRAINT `users_ibfk_1` FOREIGN KEY (`user_group_id`) REFERENCES `users_groups` (`id`) ON UPDATE CASCADE,
   ADD CONSTRAINT `users_ibfk_2` FOREIGN KEY (`created_by`) REFERENCES `users` (`id`) ON UPDATE CASCADE,
   ADD CONSTRAINT `users_ibfk_3` FOREIGN KEY (`updated_by`) REFERENCES `users` (`id`) ON UPDATE CASCADE;
+
+--
+-- Constraints for table `banners_statistics`
+--
+ALTER TABLE `banners_statistics`
+  ADD CONSTRAINT `banners_statistics_ibfk_1` FOREIGN KEY (`banner_id`) REFERENCES `banners` (`id`) ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
