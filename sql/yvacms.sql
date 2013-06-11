@@ -977,6 +977,23 @@ CREATE TABLE IF NOT EXISTS `banners_statistics` (
   KEY `banner_id` (`banner_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
+
+--
+-- Table structure for table `articles_statistics`
+--
+
+CREATE TABLE IF NOT EXISTS `articles_statistics` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `article_id` int(11) NOT NULL,
+  `created_on` datetime NOT NULL,
+  `ip` varchar(15) NOT NULL,
+  `user_agent` varchar(500) NOT NULL,
+  `user_referrer` varchar(1000) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `article_id` (`article_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
+
+
 --
 -- Constraints for dumped tables
 --
@@ -1124,6 +1141,13 @@ ALTER TABLE `users`
 --
 ALTER TABLE `banners_statistics`
   ADD CONSTRAINT `banners_statistics_ibfk_1` FOREIGN KEY (`banner_id`) REFERENCES `banners` (`id`) ON UPDATE CASCADE;
+
+--
+-- Constraints for table `articles_statistics`
+--
+ALTER TABLE `articles_statistics`
+  ADD CONSTRAINT `articles_statistics_ibfk_1` FOREIGN KEY (`article_id`) REFERENCES `articles` (`id`) ON UPDATE CASCADE;
+
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

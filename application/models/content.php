@@ -16,12 +16,20 @@ class Content extends CI_Model {
         if($this->article_alias){
             
             $article = $this->Article->getByAlias($this->article_alias);            
-            
-            if(@$article['show_title'] == 'yes'){
-              $data['title'] = $article['title'];
+            if(empty($article)){
+                $data['content'] = lang('msg_article_not_found');
             }
-            
-            $data['content'] = $this->Article->parceText(@$article['text']);
+            else{
+                
+                if($article['show_title'] == 'yes'){
+                  $data['title'] = $article['title'];
+                }
+
+                $data['content'] = $this->Article->parceText($article['text']);
+
+                $this->Article->statistic($article['id']);
+                
+            }
             
         }
         elseif($this->menu_id == 'search'){ // stupid fix for search component to work with no menu assigned to it
@@ -67,10 +75,12 @@ class Content extends CI_Model {
                 
                 case "article":
                 
-                    $article         = $this->Article->getDetails(@$menu['params']['article_id']);                    
-                    $article['text'] = $this->Article->parceText(@$article['text']);
+                    $article         = $this->Article->getDetails($menu['params']['article_id']);                    
+                    $article['text'] = $this->Article->parceText($article['text']);
                     
                     $data['content'] = $this->load->view($content_template, compact('article'), true);
+                    
+                    $this->Article->statistic($article['id']);
                     
                 break;
                 
@@ -82,14 +92,8 @@ class Content extends CI_Model {
                 break;
             
                 case "component":
-                    
-                    //include 'components/contact_forms/controllers/contact_forms.php';
-                    //echo modules::run('contact_forms/contact_forms/index');
-                    //echo modules::run('contact_forms/index');
-                    //$component = new Contact_forms();
+
                     $data['content'] = $this->data['content'];
-                    //$this->load->module('contact_forms/contact_forms');
-                    //$this->contact_forms->index(1);
                                         
                 break;
                 

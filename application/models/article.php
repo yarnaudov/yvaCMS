@@ -356,4 +356,35 @@ class Article extends CI_Model {
         
     }
     
+    function statistic($id)
+    {
+	
+	$this->load->library('user_agent');
+	
+	# get user agent
+	if ($this->agent->is_browser()){
+	    $data['user_agent'] = $this->agent->browser().' '.$this->agent->version();
+	}
+	elseif ($this->agent->is_robot()){
+	    $data['user_agent'] = $this->agent->robot();
+	}
+	elseif ($this->agent->is_mobile()){
+	    $data['user_agent'] = $this->agent->mobile();
+	}
+	else{
+	    $data['user_agent'] = 'Unidentified User Agent';
+	}
+	
+	if($this->agent->is_referral()){
+	    $data['user_referrer'] = $this->agent->referrer();
+	}
+	
+	$data['article_id'] = $id;
+	$data['ip'] = $this->input->ip_address();
+	$data['created_on'] = date('Y-m-d H:i:s');
+	
+	$this->db->insert('articles_statistics', $data);
+	
+    }
+    
 }
