@@ -334,7 +334,7 @@ class MY_Controller extends CI_Controller{
         }
         
         if($type != null){
-            return $data[$type];
+            return isset($data[$type]) ? $data[$type] : array();
         }
         
         return $data;
