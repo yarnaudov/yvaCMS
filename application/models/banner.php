@@ -116,7 +116,7 @@ class Banner extends CI_Model {
     function _image($banner)
     {
         
-        $banner_html  = '<a href="'.site_url($this->config->item('default_controller').'/banners/'.$banner['id']).'?url='.$banner['params']['link'].'" target="blank" >';
+        $banner_html  = '<a href="'.site_url($this->router->routes['default_controller'].'/banners/'.$banner['id']).'?url='.$banner['params']['link'].'" target="blank" >';
         $banner_html .= '    <img src="'.base_url($banner['params']['image']).'" >';
         $banner_html .= '</a>';
         
@@ -148,7 +148,7 @@ class Banner extends CI_Model {
 	$html = str_get_html($banner['params']['html']);
 	foreach($html->find('a') as $key => $a){
                 
-	    $a->href = site_url($this->config->item('default_controller').'/banners/'.$banner['id']).'?url='.$a->href;
+	    $a->href = site_url($this->router->routes['default_controller'].'/banners/'.$banner['id']).'?url='.$a->href;
 	    $html->find('a', $key)->href = $a->href;
 	    $html->find('a', $key)->target = 'blank';
                         
@@ -161,7 +161,7 @@ class Banner extends CI_Model {
     function _link($banner)
     {
         
-        $banner_html  = '<a href="'.site_url($this->config->item('default_controller').'/banners/'.$banner['id']).'?url='.$banner['params']['link'].'" target="blank" >';
+        $banner_html  = '<a href="'.site_url($this->router->routes['default_controller'].'/banners/'.$banner['id']).'?url='.$banner['params']['link'].'" target="blank" >';
         $banner_html .=     $banner['params']['text'];
         $banner_html .= '</a>';
         
