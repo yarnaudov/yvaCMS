@@ -92,7 +92,7 @@ class Content extends CI_Model {
                 break;
             
                 case "component":
-
+		 
                     $data['content'] = $this->data['content'];
                                         
                 break;

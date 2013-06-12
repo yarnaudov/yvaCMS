@@ -12,7 +12,7 @@
     <?php foreach($images as $image){ ?>
     
     <div class="image_small">
-        <a href="<?=current_url();?>/image:<?=$image['id'];?>">
+        <a href="<?=current_url();?>/image/<?=$image['id'];?>">
             <img src="<?=$this->Image->getImageUrl($image['id'], 150, 100);/*base_url('images/'.$image['id'].'.'.$image['ext']);*/?>" alt="<?=$image['title'];?>" >
         </a>
         <div class="description" ><?=$image['title'];?></div>

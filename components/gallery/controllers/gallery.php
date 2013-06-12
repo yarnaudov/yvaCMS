@@ -35,31 +35,26 @@ class Gallery extends MY_Controller {
         
         $url1 = explode(':', $url);
         
-        $uri = str_replace($menu_link.'/', '', current_url());        
-        $uri = explode('/', $uri);
+        $uri = str_replace($menu_link.'/', '', current_url());	
+        $uri = explode('/', $uri);    
         
-        $url2 = current($uri);
-        $url2 = explode(':', $url2);     
-        
-        if(current($url1) == 'album' || current($url2) == 'album'){
+        if(current($url1) == 'album' || @$uri[0] == 'album'){
             
-            if(current($url2) == 'album'){
-                $album_id  = end($url2);
-                $image = next($uri);
+            if(@$uri[0] == 'album'){
+                $album_id  = $uri[1];
             }
             else{
                 $album_id  = end($url1);
                 $image = $this->uri->segment(2);
             }
-            
-            $image = explode(':', $image);
-            
+                        
             $images = $this->Image->getImages(array('album_id' => $album_id), '`order`');
             
-            if(current($image) == 'image'){
-                $image_id  = end($image); 
+            if(@$uri[0] == 'image' || @$uri[2] == 'image'){
+                $image_id  = isset($uri[3]) ? $uri[3] : $uri[1]; 
                 $image     = $this->Image->getDetails($image_id);
                 $image_key = array_search($image, $images);
+		$url2 = array($uri[0], $uri[1]);
                 $this->data['content'] = $this->load->view('image', compact('menu_link', 'images', 'image_id', 'image', 'image_key', 'url2'), true);
             }
             else{                

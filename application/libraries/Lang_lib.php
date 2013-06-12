@@ -43,11 +43,6 @@ class Lang_lib
         
     }
     
-    function get()
-    {
-        return $this->lang;
-    }
-    
 }
 
 function get_lang()
