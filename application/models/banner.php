@@ -188,12 +188,11 @@ class Banner extends CI_Model {
 	    $data['user_agent'] = 'Unidentified User Agent';
 	}
 	
-	if($type == 1){
-	    $data['user_referrer'] = $_SERVER['QUERY_STRING'] ? current_url().'?'.$_SERVER['QUERY_STRING'] : current_url();
-	}
-	elseif($type == 2 && $this->agent->is_referral()){
+	if($this->agent->is_referral()){
 	    $data['user_referrer'] = $this->agent->referrer();
 	}
+	
+	$data['page_url'] = $_SERVER['QUERY_STRING'] ? current_url().'?'.$_SERVER['QUERY_STRING'] : current_url();
 	
 	$data['banner_id'] = $id;
 	$data['ip'] = $this->input->ip_address();

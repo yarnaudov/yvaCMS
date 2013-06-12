@@ -973,6 +973,7 @@ CREATE TABLE IF NOT EXISTS `banners_statistics` (
   `ip` varchar(15) NOT NULL,
   `user_agent` varchar(500) NOT NULL,
   `user_referrer` varchar(1000) NOT NULL,
+  `page_url` varchar(1000) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `banner_id` (`banner_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
@@ -989,6 +990,7 @@ CREATE TABLE IF NOT EXISTS `articles_statistics` (
   `ip` varchar(15) NOT NULL,
   `user_agent` varchar(500) NOT NULL,
   `user_referrer` varchar(1000) NOT NULL,
+  `page_url` varchar(1000) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `article_id` (`article_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;

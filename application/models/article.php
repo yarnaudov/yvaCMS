@@ -379,6 +379,8 @@ class Article extends CI_Model {
 	    $data['user_referrer'] = $this->agent->referrer();
 	}
 	
+	$data['page_url'] = $_SERVER['QUERY_STRING'] ? current_url().'?'.$_SERVER['QUERY_STRING'] : current_url();
+	
 	$data['article_id'] = $id;
 	$data['ip'] = $this->input->ip_address();
 	$data['created_on'] = date('Y-m-d H:i:s');
