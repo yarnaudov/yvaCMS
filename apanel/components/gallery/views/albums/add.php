@@ -241,12 +241,13 @@
                                     <tr>                    
                                         <th><label><?=lang('label_image');?>:</label></th>
                                         <td>
-                                            <input class="image" type="text" readonly name="params[water_mark_image]" id="media" value="<?=set_value('params[water_mark_image]', isset($params['water_mark_image']) ? $params['water_mark_image'] : "");?>" style="width: 58%">
+                                            <input class="image" type="text" readonly name="params[water_mark_image]" id="album_font" value="<?=set_value('params[water_mark_image]', isset($params['water_mark_image']) ? $params['water_mark_image'] : "");?>" style="width: 58%">
                                            
                                             <a href  = "<?=site_url('media/browse');?>" 
                                                class = "load_jquery_ui_iframe"
                                                title = "<?=lang('label_browse').' '.lang('label_media');?>"
-                                               lang  = "dialog-media-browser" ><?=lang('label_select');?></a>&nbsp;|&nbsp;<a href  = "#"
+                                               lang  = "dialog-media-browser"
+					       target = "album_font" ><?=lang('label_select');?></a>&nbsp;|&nbsp;<a href  = "#"
                                                                                                                              class = "clear_jquery_ui_inputs"
                                                                                                                              lang  = "image" ><?=lang('label_clear');?></a>
                                                                                     

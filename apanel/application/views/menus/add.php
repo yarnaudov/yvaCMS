@@ -288,14 +288,15 @@
                                 <tr>	      			
                                     <th><label><?=lang('label_image');?>:</label></th>
                                     <td>
-                                        <input class="image" type="text" readonly name="image" id="media" value="<?=set_value('image', isset($image) ? $image : "");?>" style="width: 58%">
+                                        <input class="image" type="text" readonly name="image" id="menu_image" value="<?=set_value('image', isset($image) ? $image : "");?>" style="width: 58%">
                                        
                                         <a href="<?=site_url('media/browse');?>" 
                                            class = "load_jquery_ui_iframe"
                                            title="<?=lang('label_browse').' '.lang('label_media');?>"
-                                           lang  = "dialog-media-browser" ><?=lang('label_select');?></a>&nbsp;|&nbsp;<a href  = "#"
-                                                                                                                         class = "clear_jquery_ui_inputs"
-                                                                                                                         lang  = "image" ><?=lang('label_clear');?></a>
+                                           lang  = "dialog-media-browser"
+					   target = "menu_image" ><?=lang('label_select');?></a>&nbsp;|&nbsp;<a href  = "#"
+                                                                                                                class = "clear_jquery_ui_inputs"
+                                                                                                                lang  = "image" ><?=lang('label_clear');?></a>
                                                                                 
                                     </td>
                                 </tr>

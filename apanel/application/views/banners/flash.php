@@ -3,14 +3,15 @@
 <tr>	      			
     <th><label><?=lang('label_flash');?>:</label></th>
     <td>
-        <input class="flash" type="text" readonly name="params[flash]" id="media" value="<?=set_value('params[flash]', isset($params['flash']) ? $params['flash'] : "");?>" style="width: 58%">
+        <input class="flash" type="text" readonly name="params[flash]" id="banner_flash" value="<?=set_value('params[flash]', isset($params['flash']) ? $params['flash'] : "");?>" style="width: 58%">
 
         <a href  = "<?=site_url('media/browse');?>" 
            class = "load_jquery_ui_iframe"
            title="<?=lang('label_browse').' '.lang('label_media');?>"
-           lang  = "dialog-media-browser" ><?=lang('label_select');?></a>&nbsp;|&nbsp;<a href  = "#"
-                                                                                         class = "clear_jquery_ui_inputs"
-                                                                                         lang  = "flash" ><?=lang('label_clear');?></a>
+           lang  = "dialog-media-browser"
+	   target = "banner_flash" ><?=lang('label_select');?></a>&nbsp;|&nbsp;<a href  = "#"
+                                                                                  class = "clear_jquery_ui_inputs"
+                                                                                  lang  = "flash" ><?=lang('label_clear');?></a>
 
     </td>
 </tr>

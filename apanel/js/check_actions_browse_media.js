@@ -106,7 +106,7 @@ $(document).ready(function() {
     });
     
     $('a.select').bind('click', function(){
-        
+
         if($('.checkbox:checked').length == 0){
             $( '#dialog-edit1' ).dialog( 'open' );
             $( '.ui-widget-overlay' ).css('opacity', '0');
@@ -124,9 +124,6 @@ $(document).ready(function() {
         
         if(target != null && parent.$('#'+target)){
             parent.$('#'+target).val(media);       
-        }
-        else if(parent.$('#media')){
-            parent.$('#media').val(media);       
         }
         else{
             

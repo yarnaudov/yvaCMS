@@ -67,14 +67,15 @@
 <tr>	      			
     <th><label><?=lang('label_mod_google_map_markers_icon');?>:</label></th>
     <td>
-        <input class="markers_image" type="text" readonly name="params[markers_image]" id="media" value="<?=set_value('params[markers_image]', isset($params['markers_image']) ? $params['markers_image'] : "");?>" style="width: 58%">
+        <input class="markers_image" type="text" readonly name="params[markers_image]" id="markers_image" value="<?=set_value('params[markers_image]', isset($params['markers_image']) ? $params['markers_image'] : "");?>" style="width: 58%">
 
         <a href="<?=site_url('media/browse');?>" 
            class = "load_jquery_ui_iframe"
            title="<?=lang('label_browse').' '.lang('label_media');?>"
-           lang  = "dialog-media-browser" ><?=lang('label_select');?></a>&nbsp;|&nbsp;<a href  = "#"
-                                                                                         class = "clear_jquery_ui_inputs"
-                                                                                         lang  = "markers_image" ><?=lang('label_clear');?></a>
+           lang  = "dialog-media-browser"
+	   target = "markers_image" ><?=lang('label_select');?></a>&nbsp;|&nbsp;<a href  = "#"
+                                                                                   class = "clear_jquery_ui_inputs"
+                                                                                   lang  = "markers_image" ><?=lang('label_clear');?></a>
 
     </td>
 </tr>
