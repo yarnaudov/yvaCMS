@@ -95,9 +95,14 @@
 	            </div>
                     
                     <div class="box" >
-	      	        <span class="header" ><?=lang('label_form_fields');?></span>
+	      	        <span class="header" >
+			    <?=lang('label_form_fields');?>
+			    <a id="toggle_fields" href="#" data-show="<?=lang('label_show_fields');?>" data-hide="<?=lang('label_hide_fields');?>" >
+				<?=isset($id) ? lang('label_show_fields') : lang('label_hide_fields'); ?>
+			    </a>
+			</span>
 	                
-                        <div class="box_content" >
+                        <div class="box_content" <?=isset($id) ? 'style="display: none"' : ''; ?> >
                             <table class="box_table fields form_fields" cellpadding="0" cellspacing="0" >
 
                                 <tr>

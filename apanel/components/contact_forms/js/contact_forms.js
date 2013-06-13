@@ -193,4 +193,21 @@ $(document).ready(function() {
             
     $('.checkboxes').sortable({ handle: ".handle" });
     
+    $('#toggle_fields').click(function(event){
+	
+	event.preventDefault();
+	
+	$(this).parents('.box').find('.box_content').toggle(function(){
+	    
+	    if($(this).css('display') == 'none'){
+	       $('#toggle_fields').html($('#toggle_fields').attr('data-show'));
+	    }
+	    else{
+	       $('#toggle_fields').html($('#toggle_fields').attr('data-hide')); 
+	    }
+	    
+	});
+	
+    });
+    
 });

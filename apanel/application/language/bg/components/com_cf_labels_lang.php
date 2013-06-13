@@ -22,4 +22,7 @@ $lang['label_text_under']    = 'Текст под формата';
 $lang['label_msg_success']   = 'Съобщение при успех';
 $lang['label_msg_error']     = 'Съобщение при грешка';
 
+$lang['label_show_fields']   = 'Покажи полетата';
+$lang['label_hide_fields']   = 'Скрии полетата';
+
 ?>

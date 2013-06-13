@@ -71,3 +71,8 @@ ul#form_fields > li.ui-sortable-helper fieldset div.button{
 .box .ui-datepicker-trigger{
     float: left;
 }
+
+#toggle_fields{
+    float: right;
+    font-weight: normal;
+}

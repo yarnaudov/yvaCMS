@@ -20,4 +20,7 @@ $lang['label_text_under']    = 'Text under the form';
 $lang['label_msg_success']   = 'Message on success';
 $lang['label_msg_error']     = 'Message on error';
 
+$lang['label_show_fields']   = 'Show fields';
+$lang['label_hide_fields']   = 'Hide fields';
+
 ?>
