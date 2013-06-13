@@ -398,6 +398,8 @@ CREATE TABLE IF NOT EXISTS `com_contacts_forms_data` (
   `language_id` int(4) NOT NULL,
   `title` varchar(500) NOT NULL,
   `description` varchar(1000) NOT NULL,
+  `text_above` text NOT NULL,
+  `text_under` text NOT NULL,
   `msg_success` varchar(1000) NOT NULL,
   `msg_error` varchar(1000) NOT NULL,
   `fields` varchar(1000) NOT NULL,

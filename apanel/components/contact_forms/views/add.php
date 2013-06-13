@@ -297,7 +297,7 @@
 				<tr><td colspan="2" class="empty_line" ></td></tr>
                                 
                                 <tr>	      			
-                                    <th><label><?=lang('label_msg_success');?>:</label></th>
+                                    <th><label class="multilang" ><?=lang('label_msg_success');?>:</label></th>
                                     <td>
                                         <textarea name="msg_success" ><?=set_value('msg_success', isset($msg_success) ? $msg_success : "");?></textarea>
                                     </td>
@@ -306,7 +306,7 @@
 				<tr><td colspan="2" class="empty_line" ></td></tr>
                                 
                                 <tr>	      			
-                                    <th><label><?=lang('label_msg_error');?>:</label></th>
+                                    <th><label class="multilang" ><?=lang('label_msg_error');?>:</label></th>
                                     <td>
                                         <textarea name="msg_error" ><?=set_value('msg_error', isset($msg_error) ? $msg_error : "");?></textarea>
                                     </td>
