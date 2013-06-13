@@ -216,4 +216,38 @@ class Articles extends MY_Controller {
         
     }
     
+    public function statistics()
+    {
+	
+	$this->jquery_ext->add_library("flot/jquery.flot.min.js");
+	$this->jquery_ext->add_library("flot/jquery.flot.resize.min.js");
+	$this->jquery_ext->add_library("flot/jquery.flot.pie.js");
+	
+	$script = "p = $.plot($('#plotContainer'), data, {
+			series: typeChartSettings,
+			shadowSize: 0,
+			grid: {
+				hoverable: true,
+				clickable: true,
+				color: '#333333',
+				borderWidth: 0.4
+			},
+			xaxis: {
+				alignTicksWithAxis: 1,
+				ticks: axisTicks,
+				tickSize: 1
+			},
+			yaxis:{
+				min:0
+			}
+
+		});
+		$('plotContainer').UseTooltip();";
+	$this->jquery_ext->add_script($script);
+	
+	$content = $this->load->view('articles/statistics', '', true);
+        $this->load->view('layouts/simple', compact('content'));
+	
+    }
+    
 }
