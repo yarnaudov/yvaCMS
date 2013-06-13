@@ -16,4 +16,10 @@ $lang['label_email_bcc']     = 'Bcc';
 
 $lang['label_mandatory'] = 'Задължително';
 
+$lang['label_text_above']    = 'Текст над формата';
+$lang['label_text_under']    = 'Текст под формата';
+
+$lang['label_msg_success']   = 'Съобщение при успех';
+$lang['label_msg_error']     = 'Съобщение при грешка';
+
 ?>

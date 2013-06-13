@@ -149,10 +149,12 @@ class Contact_form extends CI_Model {
         //echo "--->".$result."<---------<br/>";
         
         if($result == 1){
-            $this->session->set_flashdata('contact_form_msg', lang('msg_cf_send'));
+	    $msg = !empty($contact_form['msg_success']) ? $contact_form['msg_success'] : lang('msg_cf_send');
+            $this->session->set_flashdata('contact_form_msg', $msg);
         }
         else{
-            $this->session->set_flashdata('contact_form_msg', lang('msg_cf_error'));
+	    $msg = !empty($contact_form['msg_error']) ? $contact_form['msg_error'] : lang('msg_cf_error');
+            $this->session->set_flashdata('contact_form_msg', $msg);
         }
         
         redirect(current_url());

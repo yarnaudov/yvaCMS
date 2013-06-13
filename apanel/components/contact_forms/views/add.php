@@ -87,7 +87,12 @@
                     </div>
 	            <!-- mandatory information  -->
                     
-                    
+                    <div class="box" >
+	      	        <span class="header multilang" ><?=lang('label_text_above');?></span>
+                        <div class="editor_div" >
+                          <textarea name="text_above" class="editor"  ><?=set_value('text_above', isset($text_above) ? $text_above : "");?></textarea>
+                        </div>                        
+	            </div>
                     
                     <div class="box" >
 	      	        <span class="header" ><?=lang('label_form_fields');?></span>
@@ -205,13 +210,19 @@
                         </div>
                             
                     </div>
+		    
+		    <div class="box" >
+	      	        <span class="header multilang" ><?=lang('label_text_under');?></span>
+                        <div class="editor_div" >
+                          <textarea name="text_under" class="editor"  ><?=set_value('text_under', isset($text_under) ? $text_under : "");?></textarea>
+                        </div>                        
+	            </div>
 	            
                     <div class="box" >
 	      	        <span class="header multilang" ><?=lang('label_description');?></span>
                         <div class="editor_div" >
                           <textarea name="description" class="editor"  ><?=set_value('description', isset($description) ? $description : "");?></textarea>
-                        </div>
-                        
+                        </div>                        
 	            </div>
 	      
                 </td>
@@ -280,6 +291,24 @@
                                     <th><label><?=lang('label_email_bcc');?>:</label></th>
                                     <td>
                                         <textarea name="bcc" ><?=set_value('bcc', isset($bcc) ? $bcc : "");?></textarea>
+                                    </td>
+                                </tr>
+				
+				<tr><td colspan="2" class="empty_line" ></td></tr>
+                                
+                                <tr>	      			
+                                    <th><label><?=lang('label_msg_success');?>:</label></th>
+                                    <td>
+                                        <textarea name="msg_success" ><?=set_value('msg_success', isset($msg_success) ? $msg_success : "");?></textarea>
+                                    </td>
+                                </tr>
+				
+				<tr><td colspan="2" class="empty_line" ></td></tr>
+                                
+                                <tr>	      			
+                                    <th><label><?=lang('label_msg_error');?>:</label></th>
+                                    <td>
+                                        <textarea name="msg_error" ><?=set_value('msg_error', isset($msg_error) ? $msg_error : "");?></textarea>
                                     </td>
                                 </tr>
                                 

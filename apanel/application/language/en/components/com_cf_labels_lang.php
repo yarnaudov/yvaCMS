@@ -14,4 +14,10 @@ $lang['label_email_to']      = 'Email To';
 $lang['label_email_cc']      = 'Cc';
 $lang['label_email_bcc']     = 'Bcc';
 
+$lang['label_text_above']    = 'Text above the form';
+$lang['label_text_under']    = 'Text under the form';
+
+$lang['label_msg_success']   = 'Message on success';
+$lang['label_msg_error']     = 'Message on error';
+
 ?>

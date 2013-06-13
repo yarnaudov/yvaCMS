@@ -42,7 +42,7 @@ class Contact_form extends MY_Model {
         foreach($filters as $key => $value){
             
             if($key == 'search_v'){
-                $filter .= " AND (title like '%".$value."%' OR description like '%".$value."%' ) ";
+                $filter .= " AND (title like '%".$value."%' OR description like '%".$value."%' OR text_above like '%".$value."%' OR text_under like '%".$value."%') ";
             }
             else{
                 $filter .= " AND `".$key."` = '".$value."' ";
@@ -102,7 +102,11 @@ class Contact_form extends MY_Model {
     {
         
         $data['com_contacts_forms_data']['title']       = $this->input->post('title');
-        $data['com_contacts_forms_data']['description'] = $this->input->post('description');        
+        $data['com_contacts_forms_data']['description'] = $this->input->post('description');      
+	$data['com_contacts_forms_data']['text_above']  = $this->input->post('text_above');
+	$data['com_contacts_forms_data']['text_under']  = $this->input->post('text_under');
+	$data['com_contacts_forms_data']['msg_success'] = $this->input->post('msg_success');
+	$data['com_contacts_forms_data']['msg_error']   = $this->input->post('msg_error');
         $data['com_contacts_forms_data']['language_id'] = $this->language_id;
         
         $fields = $this->input->post('fields');
