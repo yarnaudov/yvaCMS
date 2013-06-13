@@ -49,14 +49,7 @@ class Modules_c extends MY_Controller {
             
             $this->jquery_ext->add_plugin("validation");
             $this->jquery_ext->add_library("check_actions_add_edit.js");
-            $this->jquery_ext->add_plugin("codemirror");
-            
-            $script = "try{
-                         var editor = CodeMirror.fromTextArea(document.getElementById('code'), {mode: 'text/html', tabMode: 'indent', lineNumbers: true});
-                       }
-                       catch(err){}";
-                        
-            $this->jquery_ext->add_script($script);
+
             $this->jquery_ext->add_plugin("tinymce");
             $this->jquery_ext->add_library("tinymce.js");
 

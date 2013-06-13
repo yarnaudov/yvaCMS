@@ -1,4 +1,18 @@
-<tr><td colspan="2" class="empty_line" ></td></tr>
+<tr>
+    <td colspan="2" class="empty_line" >
+	<?php $this->jquery_ext->add_plugin("codemirror"); ?>
+            
+        <script>
+	    $(function(){
+		try{
+		    var editor = CodeMirror.fromTextArea(document.getElementById('code'), {mode: 'text/html', tabMode: 'indent', lineNumbers: true});
+		}
+		catch(err){}	    
+	    });
+	</script>
+	
+    </td>
+</tr>
                                 
 <tr>	      			
     <th><label><?=lang('label_html');?>:</label></th>
