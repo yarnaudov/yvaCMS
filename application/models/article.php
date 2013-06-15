@@ -323,7 +323,7 @@ class Article extends CI_Model {
                 $content = '<iframe class="load_module_iframe" src="'.site_url('load/module/'.$id).'" ></iframe>';
             }
             else{                
-                $content = Module::_load_module($id);            
+                $content = $this->Module->load($id, 2);            
             }
             
             if(preg_match('/^popup/', $type)){

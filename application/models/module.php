@@ -34,19 +34,19 @@ class Module extends CI_Model {
 
     }    
     
-    public function load($position, $templates = array())
+    public function load($position, $type = 1, $templates = array())
     {
         
         $templates = array_merge($this->templates, $templates);
                 
-        $modules = self::_getModules($position);
+        $modules = self::_getModules($position, $type);
 
         $module_html = '';
         foreach($modules as $module){
             
             $module['template'] = isset($templates[$module['params']['type']]) ? $templates[$module['params']['type']] : "";
             
-            $content = Module::_load_module($module['id']);
+            $content = $this->Module->_load_module($module['id']);
                 
             $module_html .= $this->load->view($templates['main'], compact('module', 'content'), true); 
                       
@@ -56,20 +56,26 @@ class Module extends CI_Model {
         
     }
     
-    function _getModules($position)
+    function _getModules($position, $type = 1)
     {
         
         if(empty($position)){
             return array();
         }
         
-        $this->db->select('id');
-        $this->db->where('position', $position);
+        
+        $this->db->select('id');        
+        if($type == 1){
+            $this->db->where('position', $position);
+        }
+        else{
+            $this->db->where('id', $position);
+        }
         $this->db->where('status', 'yes');
         $this->db->order_by('order', 'asc');
         $modules = $this->db->get('modules');  	
-        $modules = $modules->result_array();           
-
+        $modules = $modules->result_array();
+        
         $modules_arr = array();
         foreach($modules as $module){
                        
