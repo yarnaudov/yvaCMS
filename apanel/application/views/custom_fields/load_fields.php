@@ -99,6 +99,17 @@ foreach($custom_fields as $custom_field){
         case 'date':
             echo '<input '.$required.' type="text" class="datepicker" name="field'.$custom_field['id'].'" value="'.$set_value.'" >';
           break;
+      
+        case 'media':
+	    echo '<input '.$required.' class="image" type="text" readonly name="field'.$custom_field['id'].'" id="custom_field_media" value="'.$set_value.'" style="width: 58%">';                                       
+	    echo '<a href="'.site_url('media/browse').'" 
+		     class = "load_jquery_ui_iframe"
+		     title="'.lang('label_browse').' '.lang('label_media').'"
+		     lang  = "dialog-media-browser"
+		     target = "custom_field_media" >'.lang('label_select').'</a>&nbsp;|&nbsp;<a href  = "#"
+												class = "clear_jquery_ui_inputs"
+												lang  = "image" >'.lang('label_clear').'</a>';
+          break;
         
     }
     
