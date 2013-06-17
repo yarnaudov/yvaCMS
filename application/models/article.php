@@ -88,6 +88,60 @@ class Article extends CI_Model {
         
     }
     
+    public function getMostPopular($filter = FALSE)
+    {
+	
+	$this->db->select('articles.id, count(articles_statistics.id) AS views');
+	$this->db->from('articles');
+	$this->db->join('articles_statistics', 'articles.id = articles_statistics.article_id', 'left');
+        $this->db->where('status', 'yes');
+	$this->db->group_by('articles.id');
+        $this->db->order_by('views', 'desc');
+	$this->db->order_by('order', 'asc');
+        $articles = $this->db->get()->result_array();
+	
+	$articles_arr = array();
+        foreach($articles as $article){
+            
+            $article = self::getDetails($article['id']);
+	 
+	    if(isset($_GET['filter']) && $filter == $_GET['filter']){
+
+		foreach($_GET as $key => $value){
+		    if($key == 'search_v'){
+			$pattern = "/".$value."/iu";
+			if(!preg_match($pattern, $article['title']) && !preg_match($pattern, $article['text'])){
+			    continue(2);
+			}
+		    }
+		    elseif(isset($article[$key]) && $article[$key] != $value){
+			continue(2);
+		    }
+		}
+	    
+	    }
+	    
+            /* --- check language for article display --- */
+            if($article['show_in_language'] != NULL && $article['show_in_language'] != $this->Language->getDetailsByAbbr(get_lang(), 'id')){
+                continue;
+            }            
+
+            /* --- check start end date for article display --- */
+            if($article['start_publishing'] != NULL && $article['start_publishing'] > date('Y-m-d')){
+                continue;
+            }
+            elseif($article['end_publishing'] != NULL && $article['end_publishing'] < date('Y-m-d')){
+                continue;
+            }
+            
+            $articles_arr[] = $article;
+            
+        }
+        
+        return $articles_arr;
+	
+    }
+    
     public function getByAlias($alias, $field = null)
     {
         

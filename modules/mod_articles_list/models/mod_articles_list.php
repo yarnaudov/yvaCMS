@@ -6,7 +6,13 @@ class mod_articles_list extends CI_Model{
     {
 	  	
         $data['article_alias'] = $this->article_alias;
-        $data['articles']      = $this->Article->getByCategory($module['params']['category_id']);
+	
+	if($module['params']['category_id'] == 'most_popular'){
+	    $data['articles'] = $this->Article->getMostPopular();
+	}
+	else{
+	    $data['articles'] = $this->Article->getByCategory($module['params']['category_id']);
+	}
                
         return module::loadContent($module, $data);
 	  	

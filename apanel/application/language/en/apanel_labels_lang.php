@@ -195,4 +195,6 @@ $lang['label_last']         = 'Last';
 
 $lang['label_make_default'] = 'Make if default';
 
+$lang['label_most_popular'] = 'Most popular';
+
 ?>
