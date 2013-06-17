@@ -320,20 +320,20 @@ class Article extends CI_Model {
             }
             
             if($type == 'popup_iframe'){
-                $content = '<iframe class="load_module_iframe" src="'.site_url('load/module/'.$module_id).'" ></iframe>';
+                $content = '<iframe class="load_module_iframe" src="'.site_url('load/module/'.$id).'" ></iframe>';
             }
             else{                
-                $content = Module::_load_module($module_id);            
+                $content = $this->Module->load($id, 2);            
             }
             
             if(preg_match('/^popup/', $type)){
                 
                 $content = '<a href  = "'.site_url('articles').'" 
                                class = "load_jquery_ui" 
-                               lang  = "dialog-'.$module_id.'" >'.$label.'</a>
+                               lang  = "dialog-'.$id.'" >'.$label.'</a>
 
                                 <!-- start jquery UI -->
-                                <div id    = "dialog-'.$module_id.'"
+                                <div id    = "dialog-'.$id.'"
                                      class = "jquery_ui"
                                      title = "'.$label.'" >'.$content.'</div>';
                                 
