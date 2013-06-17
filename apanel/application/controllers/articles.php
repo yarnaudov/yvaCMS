@@ -219,33 +219,25 @@ class Articles extends MY_Controller {
     public function statistics()
     {
 	
-	$this->jquery_ext->add_library("flot/jquery.flot.min.js");
-	$this->jquery_ext->add_library("flot/jquery.flot.resize.min.js");
-	$this->jquery_ext->add_library("flot/jquery.flot.pie.js");
+	$statistics = $this->Article->getStatistics(7);
 	
-	$script = "p = $.plot($('#plotContainer'), data, {
-			series: typeChartSettings,
-			shadowSize: 0,
-			grid: {
-				hoverable: true,
-				clickable: true,
-				color: '#333333',
-				borderWidth: 0.4
-			},
-			xaxis: {
-				alignTicksWithAxis: 1,
-				ticks: axisTicks,
-				tickSize: 1
-			},
-			yaxis:{
-				min:0
-			}
-
-		});
-		$('plotContainer').UseTooltip();";
-	$this->jquery_ext->add_script($script);
+	foreach($statistics as $statistic){
+	    
+	    $date = current(explode(" ", $statistic['created_on']));
+	    
+	    if(!isset($line1[$date])){
+		$line1[$date] = 1;
+	    }
+	    else{
+		$line1[$date]++;
+	    }
+	}
 	
-	$content = $this->load->view('articles/statistics', '', true);
+	print_r($line1);
+	
+	$this->jquery_ext->add_plugin("jqplot");
+	
+	$content = $this->load->view('articles/statistics', compact('line1'), true);
         $this->load->view('layouts/simple', compact('content'));
 	
     }

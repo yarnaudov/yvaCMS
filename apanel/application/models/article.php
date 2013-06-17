@@ -65,6 +65,20 @@ class Article extends MY_Model {
 
     }
     
+    public function getStatistics($id)
+    {
+
+        $this->db->select('*');
+        $this->db->where('article_id', $id);
+
+        $article = $this->db->get('articles_statistics');  	
+        $article = $article->result_array();
+        
+        return $article;
+
+    }
+    
+    
     public function getArticles($filters = array(), $order_by = "", $limit = "")
     {
         

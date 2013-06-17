@@ -91,6 +91,16 @@ $config['jquery_ext']['libraries']['codemirror']         = array("path"  => 'cod
                                                                                   'lib/codemirror.css')
                                                                  );
 
+$config['jquery_ext']['libraries']['jqplot']             = array("path"  => 'jqplot/',
+                                                                 "files" => array('jquery.jqplot.min.js',
+                                                                                  'plugins/jqplot.canvasTextRenderer.min.js',
+                                                                                  'plugins/jqplot.canvasAxisLabelRenderer.min.js',
+										  'plugins/jqplot.dateAxisRenderer.min.js',
+										  'plugins/jqplot.highlighter.min.js',
+                                                                                  'plugins/jqplot.cursor.min.js',
+                                                                                  'jquery.jqplot.min.css')
+                                                                 );
+
 /*
 |------------------------------------------------------------------------------
 | Autoload libraries
