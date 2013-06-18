@@ -221,24 +221,29 @@ class Articles extends MY_Controller {
 	
 	$statistics = $this->Article->getStatistics(7);
 	
-	foreach($statistics as $statistic){
+	foreach($statistics as $key => $statistic){
 	    
 	    $date = current(explode(" ", $statistic['created_on']));
 	    
 	    if(!isset($line1[$date])){
-		$line1[$date] = 1;
+		$line1[$date] = array($date, 1);
 	    }
 	    else{
-		$line1[$date]++;
+		$line1[$date][1]++;
 	    }
 	}
+        
+        foreach($line1 as $k => $v){
+            $line1[] = $v;
+            unset($line1[$k]);
+        }
 	
-	print_r($line1);
+	//print_r($line1);
 	
 	$this->jquery_ext->add_plugin("jqplot");
 	
 	$content = $this->load->view('articles/statistics', compact('line1'), true);
-        $this->load->view('layouts/simple', compact('content'));
+        $this->load->view('layouts/default', compact('content'));
 	
     }
     
