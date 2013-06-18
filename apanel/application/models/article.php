@@ -68,13 +68,18 @@ class Article extends MY_Model {
     public function getStatistics($id)
     {
 
-        $this->db->select('*');
+	$this->db->select('articles.id');
+	$this->db->select('DATE_FORMAT(articles_statistics.created_on, "%Y-%m-%d") AS created_on', FALSE);
+	$this->db->select('count(articles_statistics.id) AS views');
+	$this->db->from('articles');
+	$this->db->join('articles_statistics', 'articles.id = articles_statistics.article_id', 'left');
         $this->db->where('article_id', $id);
-
-        $article = $this->db->get('articles_statistics');  	
-        $article = $article->result_array();
+	$this->db->group_by('created_on');
+        $this->db->order_by('views', 'desc');
+	$this->db->order_by('order', 'asc');
+	$statistics = $this->db->get()->result_array();
         
-        return $article;
+        return $statistics;
 
     }
     

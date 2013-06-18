@@ -218,31 +218,58 @@ class Articles extends MY_Controller {
     
     public function statistics()
     {
-	
-	$statistics = $this->Article->getStatistics(7);
-	
-	foreach($statistics as $key => $statistic){
-	    
-	    $date = current(explode(" ", $statistic['created_on']));
-	    
-	    if(!isset($line1[$date])){
-		$line1[$date] = array($date, 1);
-	    }
-	    else{
-		$line1[$date][1]++;
-	    }
-	}
-        
-        foreach($line1 as $k => $v){
-            $line1[] = $v;
-            unset($line1[$k]);
+	//$this->session->unset_userdata('articles_statistics_filters');
+	// set filters
+        if(isset($_POST['search'])){
+            $filters = array();
+            foreach($_POST['filters'] as $name => $value){
+                if(!empty($value) && $value != 'none'){
+                    $filters[$name] = $value;
+                }
+            }            
+            $this->session->set_userdata('articles_statistics_filters', $filters);
+            redirect('articles/statistics');
+            exit();
         }
+	$data['filters'] = $this->session->userdata('articles_statistics_filters') == '' ? array() : $this->session->userdata('articles_statistics_filters');
 	
-	//print_r($line1);
+	if(!isset($data['filters']['start_date'])){
+	    $data['filters']['start_date'] = date('Y-m-d', strtotime("last Monday"));
+	    $data['filters']['end_date'] = date('Y-m-d', strtotime("next sunday"));
+	}
+	//print_r($data['filters']);
+	
+	
+	// create sub actions menu
+	$parent_id = $this->Ap_menu->getDetails($this->current_menu, 'parent_id');
+        $data['sub_menu'] = $this->Ap_menu->getSubActions($parent_id);
+	
+	$articles = $this->Article->getArticles();
+	foreach($articles as $article){
+	    $data['articles'][$article['id']] = $article['title'];
+	}
+	
+	if(isset($data['filters']['article'])){
+	    $statistics = $this->Article->getStatistics($data['filters']['article']);
+	}
+	else{
+	    $statistics = $line1 = array();
+	}
+	
+	foreach($statistics as $statistic){
+	    
+	    $line1[] = array($statistic['created_on'], $statistic['views']);
+	    
+	}
+	
+	$data['line1'] = $line1;
+	
+	// load custom jquery script
+        $this->jquery_ext->add_library("check_actions.js"); 
 	
 	$this->jquery_ext->add_plugin("jqplot");
 	
-	$content = $this->load->view('articles/statistics', compact('line1'), true);
+	$content = $this->load->view('articles/statistics', $data, true);
         $this->load->view('layouts/default', compact('content'));
 	
     }
