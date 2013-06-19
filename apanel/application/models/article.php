@@ -87,8 +87,7 @@ class Article extends MY_Model {
 	
         return $statistics;
 
-    }
-    
+    }    
     
     public function getArticles($filters = array(), $order_by = "", $limit = "")
     {

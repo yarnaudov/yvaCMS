@@ -30,9 +30,9 @@
 	<div id="filter_content" >
 		
             <div class="search" >
-		<label><?=lang('label_start_date');?>:</label>
+		<label><?=lang('label_from');?>:</label>
 		<input type="text" class="start_date datepicker" name="filters[start_date]" value="<?=$filters['start_date'];?>" >
-		<label><?=lang('label_end_date');?>:</label>
+		<label><?=lang('label_to');?>:</label>
 		<input type="text" class="end_date datepicker" name="filters[end_date]" value="<?=$filters['end_date'];?>" >
                 <button class="styled" type="submit" name="search" ><?=lang('label_show');?></button>
             </div>
@@ -105,16 +105,7 @@
 	    $(window).on('resize load', function() {
 		plot1.replot();
 	    });
-	    /*
-	    $('.datepicker').datepicker({
-		showOn: 'focus',
-		dateFormat: 'yy-mm-dd',
-		buttonImage: '<?=base_url('img/iconCalendar.png');?>',
-		buttonImageOnly: true
-	    });
-	    $(".start_date").datepicker( "option", "maxDate", "0");
-	    $(".end_date").datepicker( "option", "maxDate", "0");
-	    */
+
 	    $( ".start_date" ).datepicker({
 		showOn: 'focus',
 		dateFormat: 'yy-mm-dd',
@@ -181,15 +172,27 @@
 		<?php foreach($statistic['details'] as $detail){ ?>
 		<tr>
 		    <td><?=end(explode(" ", $detail['created_on']));?></td>
-		    <td><?=$detail['ip'];?></td>
+		    <td>
+                        <a href="http://whatismyipaddress.com/ip/<?=$detail['ip'];?>" target="_blank" ><?=$detail['ip'];?></a>
+                    </td>
 		    <td><?=$detail['user_agent'];?></td>
-		    <td style="text-align: left;" ><?=$detail['page_url'];?></td>
-		    <td style="text-align: left;" ><?=$detail['user_referrer'];?></td>
+		    <td style="text-align: left;" >
+                        <a href="<?=$detail['page_url'];?>" target="_blank" ><?=$detail['page_url'];?></a>
+                    </td>
+		    <td style="text-align: left;" >
+                        <a href="<?=$detail['user_referrer'];?>" target="_blank" ><?=$detail['user_referrer'];?></a>
+                    </td>
 		</tr>
 		<?php } ?>
-            
+                
             <?php } ?>
 		
+            <tr>
+                <th colspan="2" ><?=lang('label_total');?></th>
+                <th><?=$total_views;?></th>
+                <th colspan="6" ></th>
+            </tr>
+                
 	    <?php if(count($statistics) == 0){ ?>
 	    <tr>
                 <td colspan="8" >No data to display</td>

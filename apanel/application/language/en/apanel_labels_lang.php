@@ -205,5 +205,7 @@ $lang['label_time']          = 'Time';
 $lang['label_page_url']      = 'Page';
 $lang['label_user_refferer'] = 'Page Refferer';
 $lang['label_show']          = 'Show';
+$lang['label_total']         = 'Total';
+$lang['label_to']            = 'To';
 
 ?>

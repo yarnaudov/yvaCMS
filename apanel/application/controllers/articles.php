@@ -234,11 +234,9 @@ class Articles extends MY_Controller {
 	$data['filters'] = $this->session->userdata('articles_statistics_filters') == '' ? array() : $this->session->userdata('articles_statistics_filters');
 	
 	if(!isset($data['filters']['start_date'])){
-	    $data['filters']['start_date'] = date('Y-m-d', strtotime("last Monday"));
-	    $data['filters']['end_date'] = date('Y-m-d', strtotime("next sunday"));
+	    $data['filters']['start_date'] = date('Y-m-d', strtotime("-7 days"));
+	    $data['filters']['end_date'] = date('Y-m-d');
 	}
-	//print_r($data['filters']);
-	
 	
 	// create sub actions menu
 	$parent_id = $this->Ap_menu->getDetails($this->current_menu, 'parent_id');
@@ -252,12 +250,15 @@ class Articles extends MY_Controller {
 	$statistics = $this->Article->getStatistics($data['filters']);
 	
         $data['max_views'] = 0;
+        $data['total_views'] = 0;
 	$line1 = array();
 	foreach($statistics as $statistic){
 	    
             if($statistic['views'] > $data['max_views']){
                 $data['max_views'] = $statistic['views'];
             }
+            
+            $data['total_views'] += $statistic['views'];
             
 	    $line1[] = array($statistic['date'], $statistic['views']);
 	    
@@ -284,8 +285,8 @@ class Articles extends MY_Controller {
 	    
 	}
 	
-	//print_r($statistics);
-        $data['statistics'] = $statistics;
+	//print_r($line1);        
+        $data['statistics'] = array_reverse($statistics);;
 	$data['line1'] = $line1;
 	
 	// load custom jquery script

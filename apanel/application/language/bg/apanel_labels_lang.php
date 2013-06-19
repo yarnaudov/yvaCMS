@@ -206,5 +206,6 @@ $lang['label_time']          = 'Време';
 $lang['label_page_url']      = 'Страница';
 $lang['label_user_refferer'] = 'Предишна страница';
 $lang['label_show']          = 'Покажи';
-
+$lang['label_total']         = 'Общо';
+$lang['label_to']            = 'До';
 ?>
