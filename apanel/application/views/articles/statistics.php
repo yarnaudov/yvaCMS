@@ -119,34 +119,36 @@
         <table class="list" cellpadding="0" cellspacing="2" >
             
             <tr>
-                <th style="width:3%;"  rowspan="2" >#</th>
-                <th style="width:12%;" rowspan="2" ><?=lang('label_date');?></th>
-                <th style="width:3%;"  rowspan="2" >Прочетена</th>
-                <th style="width:82%;" colspan="4" >Детайли</th>
+                <th style="width:1%;"  rowspan="2" >#</th>
+                <th style="width:10%;" rowspan="2" ><?=lang('label_date');?></th>
+                <th style="width:7%;"  rowspan="2" ><?=lang('label_read');?></th>
+                <th style="width:82%;" colspan="5" ><?=lang('label_details');?></th>
             </tr>
             
             <tr>
-                <th style="width:3%;"  >IP</th>
-                <th style="width:3%;"  >User Agent</th>
-                <th style="width:3%;"  >Page URL</th>
-                <th style="width:82%;" >User Reffer</th>
+		<th style="width:6%;"  ><?=lang('label_time');?></th>
+                <th style="width:10%;" >IP</th>
+                <th style="width:12%;" ><?=lang('label_user_agent');?></th>
+                <th style="width:30%;" ><?=lang('label_page_url');?></th>
+                <th style="width:42%;" ><?=lang('label_user_refferer');?></th>
             </tr>
             
             <?php foreach($statistics as $numb => $statistic){ ?>
             <tr>
                 <td rowspan="<?=$statistic['views']+1;?>" ><?=($numb+1);?></td>
-                <td rowspan="<?=$statistic['views']+1;?>" ><?=$statistic['created_on'];?></td>
+                <td rowspan="<?=$statistic['views']+1;?>" ><?=$statistic['date'];?></td>
                 <td rowspan="<?=$statistic['views']+1;?>" ><?=$statistic['views'];?></td>
             </tr>
             
-            <?php for($i = 1; $i <= $statistic['views']; $i++){ ?>
-            <tr>
-                <td></td>
-                <td><?=$statistic['details'];?></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <?php } ?>
+		<?php foreach($statistic['details'] as $detail){ ?>
+		<tr>
+		    <td><?=end(explode(" ", $detail['created_on']));?></td>
+		    <td><?=$detail['ip'];?></td>
+		    <td><?=$detail['user_agent'];?></td>
+		    <td><?=$detail['user_referrer'];?></td>
+		    <td><?=$detail['page_url'];?></td>
+		</tr>
+		<?php } ?>
             
             <?php } ?>
             

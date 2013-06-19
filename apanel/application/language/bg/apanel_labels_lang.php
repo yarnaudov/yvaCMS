@@ -198,4 +198,12 @@ $lang['label_make_default'] = 'Направи го основен';
 
 $lang['label_most_popular'] = 'Най-четени';
 
+//statistics
+$lang['label_read']          = 'Прочетена';
+$lang['label_details']       = 'Детайли';
+$lang['label_user_agent']    = 'Браузър';
+$lang['label_time']          = 'Време';
+$lang['label_page_url']      = 'Страница';
+$lang['label_user_refferer'] = 'Предишна страница';
+
 ?>

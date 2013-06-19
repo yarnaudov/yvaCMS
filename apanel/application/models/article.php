@@ -68,19 +68,23 @@ class Article extends MY_Model {
     public function getStatistics($filters)
     {
 
-	$this->db->select('articles.id');
-	$this->db->select('DATE_FORMAT(articles_statistics.created_on, "%Y-%m-%d") AS created_on', FALSE);
-	$this->db->select('count(articles_statistics.id) AS views');
-        $this->db->select('group_concat(concat(user_agent, " - ", page_url), "<br/>") AS details', FALSE);
-	$this->db->from('articles');
-	$this->db->join('articles_statistics', 'articles.id = articles_statistics.article_id', 'left');
-        $this->db->where('article_id', $filters['article']);
-        $this->db->where('articles_statistics.created_on >=', $filters['start_date']);
-        $this->db->where('articles_statistics.created_on <=', $filters['end_date']);
-	$this->db->group_by('created_on');
-        $this->db->order_by('created_on', 'asc');
+	$this->db->select('DATE_FORMAT(ast.created_on, "%Y-%m-%d") AS date', FALSE);
+	$this->db->select('count(ast.id) AS views');
+	$this->db->from('articles a');
+	$this->db->join('articles_statistics ast', 'a.id = ast.article_id', 'left');
+        $this->db->where('ast.article_id', $filters['article']);
+        $this->db->where('ast.created_on >=', $filters['start_date']);
+        $this->db->where('ast.created_on <=', $filters['end_date']);
+	$this->db->group_by('date');
+        $this->db->order_by('date', 'asc');
 	$statistics = $this->db->get()->result_array();
+	
+	foreach($statistics as $key => $statistic){
+	    $statistics[$key]['details'] = $this->db->query("SELECT * FROM articles_statistics WHERE article_id = '".$filters['article']."' AND created_on LIKE '".$statistic['date']."%' ")->result_array();	    
+	}
         
+	//print_r($statistics);
+	
         return $statistics;
 
     }

@@ -197,4 +197,12 @@ $lang['label_make_default'] = 'Make if default';
 
 $lang['label_most_popular'] = 'Most popular';
 
+//statistics
+$lang['label_read']          = 'Read';
+$lang['label_details']       = 'Details';
+$lang['label_user_agent']    = 'Browser';
+$lang['label_time']          = 'Time';
+$lang['label_page_url']      = 'Page';
+$lang['label_user_refferer'] = 'Page Refferer';
+
 ?>

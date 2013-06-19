@@ -263,7 +263,7 @@ class Articles extends MY_Controller {
                 $data['max_views'] = $statistic['views'];
             }
             
-	    $line1[] = array($statistic['created_on'], $statistic['views']);
+	    $line1[] = array($statistic['date'], $statistic['views']);
 	    
 	}
 	//print_r($statistics);
