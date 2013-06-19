@@ -72,9 +72,9 @@ class Article extends MY_Model {
 	$this->db->select('count(ast.id) AS views');
 	$this->db->from('articles a');
 	$this->db->join('articles_statistics ast', 'a.id = ast.article_id', 'left');
-        $this->db->where('ast.article_id', $filters['article']);
-        $this->db->where('ast.created_on >=', $filters['start_date']);
-        $this->db->where('ast.created_on <=', $filters['end_date']);
+        $this->db->where('ast.article_id', @$filters['article']);
+        $this->db->where('ast.created_on >=', $filters['start_date'].' 00:00:00');
+        $this->db->where('ast.created_on <=', $filters['end_date'].' 23:59:59');
 	$this->db->group_by('date');
         $this->db->order_by('date', 'asc');
 	$statistics = $this->db->get()->result_array();

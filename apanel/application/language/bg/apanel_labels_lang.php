@@ -205,5 +205,6 @@ $lang['label_user_agent']    = 'Браузър';
 $lang['label_time']          = 'Време';
 $lang['label_page_url']      = 'Страница';
 $lang['label_user_refferer'] = 'Предишна страница';
+$lang['label_show']          = 'Покажи';
 
 ?>

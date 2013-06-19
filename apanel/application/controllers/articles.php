@@ -248,15 +248,11 @@ class Articles extends MY_Controller {
 	foreach($articles as $article){
 	    $data['articles'][$article['id']] = $article['title'];
 	}
-	
-	if(isset($data['filters']['article'])){
-	    $statistics = $this->Article->getStatistics($data['filters']);
-	}
-	else{
-	    $statistics = $line1 = array();
-	}
+
+	$statistics = $this->Article->getStatistics($data['filters']);
 	
         $data['max_views'] = 0;
+	$line1 = array();
 	foreach($statistics as $statistic){
 	    
             if($statistic['views'] > $data['max_views']){
@@ -266,6 +262,28 @@ class Articles extends MY_Controller {
 	    $line1[] = array($statistic['date'], $statistic['views']);
 	    
 	}
+	
+	//print_r($line1);
+	
+	$date     = $data['filters']['start_date'];
+	$end_date = $data['filters']['end_date'];
+	while($date <= $end_date){
+	    
+	    $exists = FALSE;
+	    foreach($line1 as $v){
+		if(in_array($date, $v) == TRUE){
+		    $exists = TRUE;
+		}
+	    }
+	    
+	    if($exists == FALSE){
+		$line1[] = array($date, 0);
+	    }
+	    
+	    $date = date('Y-m-d', strtotime('+1 day', strtotime($date)));
+	    
+	}
+	
 	//print_r($statistics);
         $data['statistics'] = $statistics;
 	$data['line1'] = $line1;

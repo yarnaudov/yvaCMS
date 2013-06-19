@@ -30,11 +30,11 @@
 	<div id="filter_content" >
 		
             <div class="search" >
-		<label>Start date:</label>
-		<input type="text" class="start_end_dates datepicker" name="filters[start_date]" value="<?=$filters['start_date'];?>" >
-		<label>End date:</label>
-		<input type="text" class="start_end_dates datepicker" name="filters[end_date]" value="<?=$filters['end_date'];?>" >
-                <button class="styled" type="submit" name="search" ><?=lang('label_search');?></button>
+		<label><?=lang('label_start_date');?>:</label>
+		<input type="text" class="start_date datepicker" name="filters[start_date]" value="<?=$filters['start_date'];?>" >
+		<label><?=lang('label_end_date');?>:</label>
+		<input type="text" class="end_date datepicker" name="filters[end_date]" value="<?=$filters['end_date'];?>" >
+                <button class="styled" type="submit" name="search" ><?=lang('label_show');?></button>
             </div>
 		
             <div class="filter" >
@@ -48,21 +48,22 @@
 		
 	</div>
 	
-	<div id="chart1" style="height:300px;"></div>
-
-	<!--<?php '<pre>'.print_r($line1).'</pre>'; ?>-->
+	<br/>
+	<div id="chart1" style="height:300px;margin-right: -7px;"></div>
 	
 	<script class="code" type="text/javascript">
 	    
 	    var line1= JSON.parse('<?=json_encode($line1);?>');
-	    console.log(line1);
+	    //console.log(line1);
 	    var plot1 = $.jqplot ('chart1', [line1], {
+		seriesColors: [ "#0D82DB", "#EAA228"],
 		axes:{
 		    xaxis:{
 			renderer: $.jqplot.DateAxisRenderer,
 			tickOptions:{
-                            formatString:'%b&nbsp;%#d',
-                            markSize: 1
+                            formatString:'%d/%m',
+                            markSize: 1,
+			    fontSize: '9pt'
                         },
 			min: '<?=$filters['start_date'];?>',
 			max: '<?=$filters['end_date'];?>',
@@ -70,18 +71,21 @@
 		    },
 		    yaxis:{
                         tickOptions:{
-                            markSize: 0
+                            markSize: 0,
+			    fontSize: '9pt'
                         },
                         min: 0,
                         max: <?=($max_views+1);?>
 		    }
 		},
 		series:[{
-                    lineWidth: 1
+                    lineWidth: 1,
+		    label: 'Прочитания'
                 }],
 		highlighter: {
 		    show: true,
-		    sizeAdjust: 7.5
+		    sizeAdjust: 10.0,
+		    lineWidthAdjust: 5.5
 		},
 		cursor: {
 		    show: false
@@ -89,17 +93,51 @@
                 grid: {
                     borderWidth: 0,
                     shadow: false
-                }
+                },
+		legend: {
+		    show: true,
+		    location: 'ne',     // compass direction, nw, n, ne, e, se, s, sw, w.
+		    xoffset: 12,        // pixel offset of the legend box from the x (or x2) axis.
+		    yoffset: 12,        // pixel offset of the legend box from the y (or y2) axis.
+		}
 	    });
 	    
-	    $('.start_end_dates').datepicker({
+	    $(window).on('resize load', function() {
+		plot1.replot();
+	    });
+	    /*
+	    $('.datepicker').datepicker({
 		showOn: 'focus',
 		dateFormat: 'yy-mm-dd',
 		buttonImage: '<?=base_url('img/iconCalendar.png');?>',
 		buttonImageOnly: true
 	    });
+	    $(".start_date").datepicker( "option", "maxDate", "0");
+	    $(".end_date").datepicker( "option", "maxDate", "0");
+	    */
+	    $( ".start_date" ).datepicker({
+		showOn: 'focus',
+		dateFormat: 'yy-mm-dd',
+		numberOfMonths: 1,
+		onClose: function( selectedDate ) {
+		  $( ".end_date" ).datepicker( "option", "minDate", selectedDate );
+		}
+	    });
+	    $( ".end_date" ).datepicker({
+		showOn: 'focus',
+		dateFormat: 'yy-mm-dd',
+		numberOfMonths: 1,
+		maxDate: 0,
+		onClose: function( selectedDate ) {
+		  $( ".start_date" ).datepicker( "option", "maxDate", selectedDate );
+		}
+	    });
+	    
+	    $( ".start_date" ).datepicker( "option", "maxDate", "<?=$filters['end_date'];?>" );
+	    $( ".end_date" ).datepicker( "option", "minDate", "<?=$filters['start_date'];?>" );
 		    
 	</script>
+	
         
         <style>
             .search{
@@ -145,12 +183,18 @@
 		    <td><?=end(explode(" ", $detail['created_on']));?></td>
 		    <td><?=$detail['ip'];?></td>
 		    <td><?=$detail['user_agent'];?></td>
-		    <td><?=$detail['user_referrer'];?></td>
-		    <td><?=$detail['page_url'];?></td>
+		    <td style="text-align: left;" ><?=$detail['page_url'];?></td>
+		    <td style="text-align: left;" ><?=$detail['user_referrer'];?></td>
 		</tr>
 		<?php } ?>
             
             <?php } ?>
+		
+	    <?php if(count($statistics) == 0){ ?>
+	    <tr>
+                <td colspan="8" >No data to display</td>
+            </tr>
+	    <?php } ?>
             
         </table>
 
