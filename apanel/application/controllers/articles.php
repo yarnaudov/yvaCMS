@@ -250,18 +250,24 @@ class Articles extends MY_Controller {
 	}
 	
 	if(isset($data['filters']['article'])){
-	    $statistics = $this->Article->getStatistics($data['filters']['article']);
+	    $statistics = $this->Article->getStatistics($data['filters']);
 	}
 	else{
 	    $statistics = $line1 = array();
 	}
 	
+        $data['max_views'] = 0;
 	foreach($statistics as $statistic){
 	    
+            if($statistic['views'] > $data['max_views']){
+                $data['max_views'] = $statistic['views'];
+            }
+            
 	    $line1[] = array($statistic['created_on'], $statistic['views']);
 	    
 	}
-	
+	//print_r($statistics);
+        $data['statistics'] = $statistics;
 	$data['line1'] = $line1;
 	
 	// load custom jquery script

@@ -48,7 +48,7 @@
 		
 	</div>
 	
-	<div id="chart1" style="height:300px; width:100%;"></div>
+	<div id="chart1" style="height:300px;"></div>
 
 	<!--<?php '<pre>'.print_r($line1).'</pre>'; ?>-->
 	
@@ -60,23 +60,36 @@
 		axes:{
 		    xaxis:{
 			renderer: $.jqplot.DateAxisRenderer,
-			tickOptions:{formatString:'%b&nbsp;%#d'},
+			tickOptions:{
+                            formatString:'%b&nbsp;%#d',
+                            markSize: 1
+                        },
 			min: '<?=$filters['start_date'];?>',
 			max: '<?=$filters['end_date'];?>',
 			tickInterval: '1 day'
 		    },
 		    yaxis:{
-		    
+                        tickOptions:{
+                            markSize: 0
+                        },
+                        min: 0,
+                        max: <?=($max_views+1);?>
 		    }
 		},
-		series:[{lineWidth: 2}],
+		series:[{
+                    lineWidth: 1
+                }],
 		highlighter: {
 		    show: true,
 		    sizeAdjust: 7.5
 		},
 		cursor: {
 		    show: false
-		}
+		},
+                grid: {
+                    borderWidth: 0,
+                    shadow: false
+                }
 	    });
 	    
 	    $('.start_end_dates').datepicker({
@@ -87,6 +100,57 @@
 	    });
 		    
 	</script>
+        
+        <style>
+            .search{
+                float: right !important;
+            }
+            .search label{
+                float: left;
+                display: block;
+                margin: 3px 3px 0 10px;
+            }
+            .filter{
+                float: left !important;
+            }
+        </style>
+        
+        <br/><br/>
+        <table class="list" cellpadding="0" cellspacing="2" >
+            
+            <tr>
+                <th style="width:3%;"  rowspan="2" >#</th>
+                <th style="width:12%;" rowspan="2" ><?=lang('label_date');?></th>
+                <th style="width:3%;"  rowspan="2" >Прочетена</th>
+                <th style="width:82%;" colspan="4" >Детайли</th>
+            </tr>
+            
+            <tr>
+                <th style="width:3%;"  >IP</th>
+                <th style="width:3%;"  >User Agent</th>
+                <th style="width:3%;"  >Page URL</th>
+                <th style="width:82%;" >User Reffer</th>
+            </tr>
+            
+            <?php foreach($statistics as $numb => $statistic){ ?>
+            <tr>
+                <td rowspan="<?=$statistic['views']+1;?>" ><?=($numb+1);?></td>
+                <td rowspan="<?=$statistic['views']+1;?>" ><?=$statistic['created_on'];?></td>
+                <td rowspan="<?=$statistic['views']+1;?>" ><?=$statistic['views'];?></td>
+            </tr>
+            
+            <?php for($i = 1; $i <= $statistic['views']; $i++){ ?>
+            <tr>
+                <td></td>
+                <td><?=$statistic['details'];?></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <?php } ?>
+            
+            <?php } ?>
+            
+        </table>
 
     </div>
     <!-- end page content -->
