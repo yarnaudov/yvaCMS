@@ -2,11 +2,43 @@
 
 class mod_html extends CI_Model{
 	
-	  function run($module)
-	  {
-	  	
-	  	  return $module['params']['html'];
-	  	
-	  }
+    function run($module)
+    {
+	
+	$this->load->helper('simple_html_dom');
+        
+        $html = str_get_html($module['params']['html']);
+
+	/*
+	 * fix links to full path
+	 */
+	foreach($html->find('a') as $key => $a){
+
+	    if(!preg_match('/^http:\/\//', $a->href) && !preg_match('/^mailto:/', $a->href)){
+
+		$a->href = site_url($a->href);                
+		$html->find('a', $key)->href = $a->href; 
+
+	    }
+
+	}
+	
+	/*
+	 * fix links to full path special for HTML5 map 
+	 */
+	foreach($html->find('area') as $key => $a){
+
+	    if(!preg_match('/^http:\/\//', $a->href) && !preg_match('/^mailto:/', $a->href)){
+
+		$a->href = site_url($a->href);                
+		$html->find('area', $key)->href = $a->href; 
+
+	    }
+
+	}
+	
+	return $html;
+
+    }
     
 }
