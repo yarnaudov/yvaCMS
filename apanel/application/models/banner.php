@@ -23,6 +23,31 @@ class Banner extends CI_Model {
 
     }
   
+    public function getStatistics($filters)
+    {
+
+	$this->db->select('DATE_FORMAT(bst.created_on, "%Y-%m-%d") AS date', FALSE);
+	$this->db->select('bst.type');
+	$this->db->select('count(bst.id) AS views');
+	$this->db->from('banners b');
+	$this->db->join('banners_statistics bst', 'b.id = bst.banner_id', 'left');
+        $this->db->where('bst.banner_id', @$filters['banner']);
+        $this->db->where('bst.created_on >=', $filters['start_date'].' 00:00:00');
+        $this->db->where('bst.created_on <=', $filters['end_date'].' 23:59:59');
+	$this->db->group_by('date, type');
+        $this->db->order_by('date', 'asc');
+	$statistics = $this->db->get()->result_array();
+	
+	foreach($statistics as $key => $statistic){
+	    $statistics[$key]['details'] = $this->db->query("SELECT * FROM banners_statistics WHERE banner_id = '".$filters['banner']."' AND created_on LIKE '".$statistic['date']."%' ")->result_array();	    
+	}
+        
+	//print_r($statistics);
+	
+        return $statistics;
+
+    } 
+    
     public function getBanners($filters = array(), $order_by = "", $limit = "")
     {
         
