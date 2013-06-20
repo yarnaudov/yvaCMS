@@ -87,12 +87,10 @@
 		},
 		series:[
 		{
-                    lineWidth: 1,
-		    label: '<?=lang('label_impressions');?>'
+                    lineWidth: 1
                 },
 		{
-		    lineWidth: 1,
-		    label: '<?=lang('label_clicks');?>'
+		    lineWidth: 1
 		}],
 		highlighter: {
 		    show: true,
@@ -109,8 +107,10 @@
 		legend: {
 		    show: true,
 		    location: 'ne',
-		    xoffset: 10,
-		    yoffset: 10
+		    marginTop: 10,
+		    marginRight: 10,
+		    labels: ['<?=lang('label_impressions');?>', '<?=lang('label_clicks');?>'],
+		    fontSize: '12pt'
 		}
 	    });
 	    
@@ -118,9 +118,9 @@
 		plot1.replot();
 	    });
 	    
-	    $('input[type=checkbox]').on('load', function(){
+	    $('input[type=checkbox]').on('click load', function(event){
 		plot1.series[$(this).val()-1].show = $(this).is(':checked');
-		plot1.replot();
+		plot1.replot();		
 	    });
 	    $('input[type=checkbox]').trigger('load');
 
@@ -156,10 +156,21 @@
                 float: left;
                 display: block;
                 margin: 3px 3px 0 10px;
-            }
+            }	    
             .filter{
                 float: left !important;
             }
+	    .filter input{
+		float: left;
+		margin: 3px 0 0 10px;
+	    }
+	    .filter label,
+	    .filter select{
+		float: left;
+	    }
+	    .filter label{
+		margin: 2px 0 0 2px;
+	    }
         </style>
         
         <br/><br/>

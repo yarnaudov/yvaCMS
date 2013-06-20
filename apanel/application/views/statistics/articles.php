@@ -80,7 +80,7 @@
 		},
 		series:[{
                     lineWidth: 1,
-		    label: 'Прочитания'
+		    label: '<?=lang('label_read');?>'
                 }],
 		highlighter: {
 		    show: true,
