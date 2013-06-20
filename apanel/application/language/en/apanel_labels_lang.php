@@ -207,5 +207,9 @@ $lang['label_user_refferer'] = 'Page Refferer';
 $lang['label_show']          = 'Show';
 $lang['label_total']         = 'Total';
 $lang['label_to']            = 'To';
+$lang['label_impressions']   = 'Impressions';
+$lang['label_clicks']        = 'Clicks';
+$lang['label_stat_type_1']   = 'Impression';
+$lang['label_stat_type_2']   = 'Click';
 
 ?>

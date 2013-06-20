@@ -208,4 +208,8 @@ $lang['label_user_refferer'] = 'Предишна страница';
 $lang['label_show']          = 'Покажи';
 $lang['label_total']         = 'Общо';
 $lang['label_to']            = 'До';
+$lang['label_impressions']   = 'Импресии';
+$lang['label_clicks']        = 'Кликове';
+$lang['label_stat_type_1']   = 'Импресия';
+$lang['label_stat_type_2']   = 'Клик';
 ?>

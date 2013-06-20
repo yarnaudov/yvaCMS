@@ -104,9 +104,10 @@ class Statistics extends MY_Controller {
 	$statistics = $this->Banner->getStatistics($data['filters']);
 	$data['statistics'] = array_reverse($statistics);
 	
-        $data['max_views']   = 0;
-        $data['total_views'] = 0;
-	$data['line1']       = array();
+        $data['max_views']         = 0;
+        $data['total_impressions'] = 0;
+	$data['total_clicks']      = 0;
+	$data['line1'] = $data['line2'] = array();
 	
 	foreach($statistics as $statistic){
 	    
@@ -114,14 +115,11 @@ class Statistics extends MY_Controller {
                 $data['max_views'] = $statistic['views'];
             }
             
-            $data['total_views'] += $statistic['views'];
-            
-	    if($statistic['type'] == 1){
-		$data['line1'][] = array($statistic['date'], $statistic['views']);
-	    }
-	    else{
-		$data['line2'][] = array($statistic['date'], $statistic['views']);
-	    }
+	    $data['line1'][] = array($statistic['date'], $statistic['impressions']);
+	    $data['total_impressions'] += $statistic['impressions'];
+
+	    $data['line2'][] = array($statistic['date'], $statistic['clicks']);
+	    $data['total_clicks'] += $statistic['clicks'];
 	    
 	}
 	

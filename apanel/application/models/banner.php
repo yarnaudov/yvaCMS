@@ -38,13 +38,28 @@ class Banner extends CI_Model {
         $this->db->order_by('date', 'asc');
 	$statistics = $this->db->get()->result_array();
 	
+	$statistics_arr = array();
 	foreach($statistics as $key => $statistic){
-	    $statistics[$key]['details'] = $this->db->query("SELECT * FROM banners_statistics WHERE banner_id = '".$filters['banner']."' AND created_on LIKE '".$statistic['date']."%' ")->result_array();	    
+	    
+	    if(!isset($statistics_arr[$statistic['date']])){
+		
+		$statistics_arr[$statistic['date']] = $statistic;
+		$statistics_arr[$statistic['date']]['details'] = $this->db->query("SELECT * FROM banners_statistics WHERE banner_id = '".$filters['banner']."' AND created_on LIKE '".$statistic['date']."%' ")->result_array();	    
+		$statistics_arr[$statistic['date']]['impressions'] = 0;
+		$statistics_arr[$statistic['date']]['clicks']      = 0;
+		
+	    }
+	    
+	    if($statistic['type'] == 1){
+		$statistics_arr[$statistic['date']]['impressions'] = $statistic['views'];
+	    }
+	    else{
+		$statistics_arr[$statistic['date']]['clicks'] = $statistic['views'];
+	    }
+	    
 	}
-        
-	//print_r($statistics);
 	
-        return $statistics;
+        return $statistics_arr;
 
     } 
     

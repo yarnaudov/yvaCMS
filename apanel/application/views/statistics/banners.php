@@ -43,6 +43,12 @@
                     <option value="none" > - <?=lang('label_select');?> <?=lang('label_banner');?> - </option>
                     <?=create_options_array($banners, isset($filters['banner']) ? $filters['banner'] : "");?>
                 </select>
+		
+		<input type="checkbox" name="filters[type][]" value="1" <?=in_array(1, $filters['type']) ? 'checked' : '';?> >
+		<label><?=lang('label_impressions');?></label>
+				
+		<input type="checkbox" name="filters[type][]" value="2" <?=in_array(2, $filters['type']) ? 'checked' : '';?> >
+		<label><?=lang('label_clicks');?></label>
 
             </div>
 		
@@ -82,11 +88,11 @@
 		series:[
 		{
                     lineWidth: 1,
-		    label: 'Импресии'
+		    label: '<?=lang('label_impressions');?>'
                 },
 		{
 		    lineWidth: 1,
-		    label: 'Кликове'
+		    label: '<?=lang('label_clicks');?>'
 		}],
 		highlighter: {
 		    show: true,
@@ -102,15 +108,21 @@
                 },
 		legend: {
 		    show: true,
-		    location: 'ne',     // compass direction, nw, n, ne, e, se, s, sw, w.
-		    xoffset: 12,        // pixel offset of the legend box from the x (or x2) axis.
-		    yoffset: 12,        // pixel offset of the legend box from the y (or y2) axis.
+		    location: 'ne',
+		    xoffset: 10,
+		    yoffset: 10
 		}
 	    });
 	    
 	    $(window).on('resize load', function() {
 		plot1.replot();
 	    });
+	    
+	    $('input[type=checkbox]').on('load', function(){
+		plot1.series[$(this).val()-1].show = $(this).is(':checked');
+		plot1.replot();
+	    });
+	    $('input[type=checkbox]').trigger('load');
 
 	    $( ".start_date" ).datepicker({
 		showOn: 'focus',
@@ -156,11 +168,13 @@
             <tr>
                 <th style="width:1%;"  rowspan="2" >#</th>
                 <th style="width:10%;" rowspan="2" ><?=lang('label_date');?></th>
-                <th style="width:7%;"  rowspan="2" ><?=lang('label_read');?></th>
-                <th style="width:82%;" colspan="5" ><?=lang('label_details');?></th>
+                <th style="width:7%;"  rowspan="2" ><?=lang('label_impressions');?></th>
+		<th style="width:7%;"  rowspan="2" ><?=lang('label_clicks');?></th>
+                <th style="width:75%;" colspan="6" ><?=lang('label_details');?></th>
             </tr>
             
             <tr>
+		<th style="width:6%;"  ><?=lang('label_type');?></th>
 		<th style="width:6%;"  ><?=lang('label_time');?></th>
                 <th style="width:10%;" >IP</th>
                 <th style="width:12%;" ><?=lang('label_user_agent');?></th>
@@ -168,15 +182,19 @@
                 <th style="width:42%;" ><?=lang('label_user_refferer');?></th>
             </tr>
             
-            <?php foreach($statistics as $numb => $statistic){ ?>
+            <?php $numb = 0;
+		  foreach($statistics as $statistic){
+		      $numb++; ?>
             <tr>
-                <td rowspan="<?=$statistic['views']+1;?>" ><?=($numb+1);?></td>
-                <td rowspan="<?=$statistic['views']+1;?>" ><?=$statistic['date'];?></td>
-                <td rowspan="<?=$statistic['views']+1;?>" ><?=$statistic['views'];?></td>
+                <td rowspan="<?=count($statistic['details'])+1;?>" ><?=$numb;?></td>
+                <td rowspan="<?=count($statistic['details'])+1;?>" ><?=$statistic['date'];?></td>
+                <td rowspan="<?=count($statistic['details'])+1;?>" ><?=$statistic['impressions'];?></td>
+		<td rowspan="<?=count($statistic['details'])+1;?>" ><?=$statistic['clicks'];?></td>
             </tr>
             
 		<?php foreach($statistic['details'] as $detail){ ?>
 		<tr>
+		    <td><?=lang('label_stat_type_'.$detail['type']);?></td>
 		    <td><?=end(explode(" ", $detail['created_on']));?></td>
 		    <td>
                         <a href="http://whatismyipaddress.com/ip/<?=$detail['ip'];?>" target="_blank" ><?=$detail['ip'];?></a>
@@ -195,7 +213,8 @@
 		
             <tr>
                 <th colspan="2" ><?=lang('label_total');?></th>
-                <th><?=$total_views;?></th>
+                <th><?=$total_impressions;?></th>
+		 <th><?=$total_clicks;?></th>
                 <th colspan="6" ></th>
             </tr>
                 
