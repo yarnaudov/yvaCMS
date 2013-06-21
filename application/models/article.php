@@ -215,7 +215,7 @@ class Article extends CI_Model {
         
         $elements = array(0 => array('video', array('src', 'poster')));
         
-        $html = fix_links($module['params']['html'], $elements);
+        $html = fix_links($text, $elements);
 
         
         
