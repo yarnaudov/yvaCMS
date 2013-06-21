@@ -205,6 +205,7 @@ class Article extends CI_Model {
         }
         
         $this->load->helper('simple_html_dom');
+        $this->load->helper('fix_links');
         
         $html = str_get_html($text);
         
@@ -212,20 +213,10 @@ class Article extends CI_Model {
         $readmore   = count($html->find('hr.readmore'));
         $modules    = $html->find('img.module');
         
-            
-        /*
-         * fix images src to full path
-         */
-        foreach($html->find('img') as $key => $img){
-            
-            if(!preg_match('/^http:\/\//', $img->src)){
-                
-                $img->src = base_url($img->src);                
-                $html->find('img', $key)->src = $img->src;    
-                
-            }
-            
-        }
+        $elements = array(0 => array('video', array('src', 'poster')));
+        
+        $html = fix_links($module['params']['html'], $elements);
+
         
         
         /*
@@ -240,39 +231,7 @@ class Article extends CI_Model {
                 $html->find('object', $key)->find('param[name=src]', 0)->value = $object->data;
             }
             
-        }
-        
-        /*
-         * fix object data and src to full path
-         */
-        foreach($html->find('video') as $key => $video){
-        
-            if(!preg_match('/^http:\/\//', $video->src)){
-                
-                $video->src = base_url($video->src);                
-                $html->find('video', $key)->src = $video->src;
-                
-                $video->poster = base_url($video->poster);
-                $html->find('video', $key)->poster = $video->poster;
-            }
-            
-        }
-        
-        
-        /*
-         * fix links to full path
-         */
-        foreach($html->find('a') as $key => $a){
-                        
-            if(!preg_match('/^http:\/\//', $a->href) && !preg_match('/^mailto:/', $a->href)){
-                
-                $a->href = site_url($a->href);                
-                $html->find('a', $key)->href = $a->href; 
-                
-            }
-                        
-        }
-        
+        }       
    
         if($pagebreaks > 0){
             
