@@ -37,6 +37,20 @@ class mod_html extends CI_Model{
 
 	}
 	
+        /*
+         * fix images src to full path
+         */
+        foreach($html->find('img') as $key => $img){
+            
+            if(!preg_match('/^http:\/\//', $img->src)){
+                
+                $img->src = base_url($img->src);                
+                $html->find('img', $key)->src = $img->src;    
+                
+            }
+            
+        }
+        
 	return $html;
 
     }
