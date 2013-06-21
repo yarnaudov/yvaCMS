@@ -207,16 +207,15 @@ class Article extends CI_Model {
         $this->load->helper('simple_html_dom');
         $this->load->helper('fix_links');
         
+        $elements = array(0 => array('video', array('src', 'poster')));
+        
+        $html = fix_links($text, $elements);
+        
         $html = str_get_html($text);
         
         $pagebreaks = count($html->find('hr.pagebreak'));
         $readmore   = count($html->find('hr.readmore'));
         $modules    = $html->find('img.module');
-        
-        $elements = array(0 => array('video', array('src', 'poster')));
-        
-        $html = fix_links($text, $elements);
-
         
         
         /*
