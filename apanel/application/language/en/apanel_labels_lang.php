@@ -121,6 +121,9 @@ $lang['label_checkbox_field'] = 'Checkbox';
 $lang['label_radio_field']    = 'Radio';
 $lang['label_date_field']     = 'Date field';
 $lang['label_media_field']    = 'Media field';
+$lang['label_location_field'] = 'Location field';
+
+$lang['label_location'] = 'Location';
 
 $lang['label_all']           = 'All';
 

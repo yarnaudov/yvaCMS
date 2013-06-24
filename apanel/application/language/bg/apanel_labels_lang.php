@@ -121,6 +121,9 @@ $lang['label_checkbox_field'] = 'Отметката';
 $lang['label_radio_field']    = 'Радио';
 $lang['label_date_field']     = 'Избор на дата';
 $lang['label_media_field']    = 'Избор на медиа';
+$lang['label_location_field'] = 'Местоположение';
+
+$lang['label_location'] = 'Местоположение';
 
 
 $lang['label_all']           = 'Всички';

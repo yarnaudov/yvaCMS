@@ -23,7 +23,9 @@ foreach($custom_fields as $custom_field){
     echo '  <th><label '.($custom_field['multilang'] == "yes" ? "class=multilang" : "").' >'.$custom_field['title'].':</label></th>';
     echo '  <td class="custom_field" >';
     
-    $set_value = set_value('field'.$custom_field['id'], isset(${'field'.$custom_field['id']}) ? ${'field'.$custom_field['id']} : "");
+    if($custom_field['type'] != 'location'){
+	$set_value = set_value('field'.$custom_field['id'], isset(${'field'.$custom_field['id']}) ? ${'field'.$custom_field['id']} : "");
+    }
     
     switch($custom_field['type']){
         
@@ -110,7 +112,87 @@ foreach($custom_fields as $custom_field){
 												class = "clear_jquery_ui_inputs"
 												lang  = "image" >'.lang('label_clear').'</a>';
           break;
-        
+     
+	case 'location':
+	  
+	    $zoom = set_value('field'.$custom_field['id'].'[zoom]', isset(${'field'.$custom_field['id']}->zoom) ? ${'field'.$custom_field['id']}->zoom : "");
+	    $lat  = set_value('field'.$custom_field['id'].'[lng]',  isset(${'field'.$custom_field['id']}->lat)  ? ${'field'.$custom_field['id']}->lat  : "");
+	    $lng  = set_value('field'.$custom_field['id'].'[lng]',  isset(${'field'.$custom_field['id']}->lng)  ? ${'field'.$custom_field['id']}->lng  : "");
+	    
+	    echo '<input type="hidden" name="field'.$custom_field['id'].'[zoom]" class="zoom'.$custom_field['id'].'" value="'.$zoom.'" >';
+	    echo '<input type="hidden" name="field'.$custom_field['id'].'[lat]"  class="lat'.$custom_field['id'].'"  value="'.$lat.'">';
+	    echo '<input type="hidden" name="field'.$custom_field['id'].'[lng]"  class="lng'.$custom_field['id'].'"  value="'.$lng.'" >';
+	    
+	    echo '<div id="map_canvas'.$custom_field['id'].'" style="border: 1px solid #888; height: 180px;"></div>';
+	    
+	    echo '<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false" ></script>';
+	    echo '<script type="text/javascript">
+	    
+	    var marker'.$custom_field['id'].';
+
+	    function initialize'.$custom_field['id'].'() {
+
+		if($("input.zoom'.$custom_field['id'].'").val() == "" || $("input.lat'.$custom_field['id'].'").val() == "" || $("input.lng'.$custom_field['id'].'").val() == ""){
+		    map_zoom = parseInt('.$custom_field['params']['zoom'].');
+		    map_lat  = '.$custom_field['params']['lat'].';
+		    map_lng  = '.$custom_field['params']['lng'].';
+		}
+		else{
+		    map_zoom = parseInt($("input.zoom'.$custom_field['id'].'").val());
+		    map_lat  = $("input.lat'.$custom_field['id'].'").val();
+		    map_lng  = $("input.lng'.$custom_field['id'].'").val();
+		}
+
+		var mapOptions = {
+		    zoom: map_zoom,
+		    center: new google.maps.LatLng(map_lat, map_lng),
+		    mapTypeId: google.maps.MapTypeId.ROADMAP,
+		    mapTypeControl: false
+		};
+	
+		map'.$custom_field['id'].' = new google.maps.Map(document.getElementById("map_canvas'.$custom_field['id'].'"), mapOptions);
+
+		google.maps.event.addListenerOnce(map'.$custom_field['id'].', "idle", function(){
+		    
+		    google.maps.event.trigger(map'.$custom_field['id'].', "zoom_changed");
+
+		    if($("input.lat'.$custom_field['id'].'").val() != "" && $("input.lng'.$custom_field['id'].'").val() != ""){
+			marker = new google.maps.Marker({
+			    position: new google.maps.LatLng($("input.lat'.$custom_field['id'].'").val(), $("input.lng'.$custom_field['id'].'").val()),
+			    map: map'.$custom_field['id'].'
+			});
+		    }
+
+		});
+	
+		google.maps.event.addListener(map'.$custom_field['id'].', "zoom_changed", function() {    
+		    $("input.zoom'.$custom_field['id'].'").val(map'.$custom_field['id'].'.getZoom());
+		});
+
+		google.maps.event.addListener(map'.$custom_field['id'].', "click", function(e) {
+
+		    $("input.lat'.$custom_field['id'].'").val(e.latLng.lat());
+		    $("input.lng'.$custom_field['id'].'").val(e.latLng.lng());
+
+		    if(marker'.$custom_field['id'].' != undefined){
+			marker'.$custom_field['id'].'.setMap(null);
+		    }
+
+		    marker'.$custom_field['id'].' = new google.maps.Marker({
+			position: new google.maps.LatLng(e.latLng.lat(), e.latLng.lng()),
+			map: map'.$custom_field['id'].'
+		    });
+
+		});
+
+	    }
+
+	    google.maps.event.addDomListener(window, "load", initialize'.$custom_field['id'].');
+	
+	</script>';
+	    
+	  break;
+      
     }
     
     echo '  </td>';

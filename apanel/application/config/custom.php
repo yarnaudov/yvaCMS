@@ -37,7 +37,8 @@ $config['custom_field_types'] = array('text'            => 'label_text_field',
                                       'checkbox'        => 'label_checkbox_field',
                                       'radio'           => 'label_radio_field',
                                       'date'            => 'label_date_field',
-				      'media'           => 'label_media_field');
+				      'media'           => 'label_media_field',
+				      'location'        => 'label_location_field');
 
 $config['module_display']     = array('all'                 => 'label_all_pages', 
                                       'on_selected'         => 'label_on_selected',
