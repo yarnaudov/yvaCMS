@@ -382,4 +382,67 @@ class Module extends MY_Model {
         
     }
     
+    public function copy()
+    {
+        
+        $this->db->query("BEGIN");
+        
+        $modules = $this->input->post('modules');     
+        foreach($modules as $module_id){
+            
+	    $module = $this->db->get_where('modules', array('id' => $module_id))->row_array();
+	    
+	    $module['order'] = self::getMaxOrder($module['position'])+1;
+	    $module['created_by'] = $_SESSION['user_id'];
+            $module['created_on'] = now();
+	    unset($module['id'], $module['updated_by'], $module['updated_on']);
+	    
+            $result = $this->db->insert('modules', $module);                        
+            if($result != true){
+		$this->session->set_userdata('error_msg', lang('msg_copy_module_error'));
+                $this->db->query("ROLLBACK");
+                return false;
+            }
+	    
+	    $id = $this->db->insert_id();
+	    
+	    $module_data = $this->db->get_where('modules_data', array('module_id' => $module_id))->result_array();
+	    foreach($module_data as $data){
+		$data['module_id'] = $id;
+		$result = $this->db->insert('modules_data', $data);                        
+		if($result != true){
+		    $this->session->set_userdata('error_msg', lang('msg_copy_module_error'));
+		    $this->db->query("ROLLBACK");
+		    return false;
+		}
+	    }
+	    
+	    $custom_fields = $this->Custom_field->getCustomFields(array('status' => 'yes'), '`order`');
+	    foreach($custom_fields as $custom_field){
+		
+		$custom_field_data = $this->db->get_where('custom_fields_values', array('custom_field_id' => $custom_field['id'], 'element_id' => $module_id))->result_array();
+		
+		foreach($custom_field_data as $data){
+		    
+		    $data['element_id'] = $id;
+		    
+		    $result = $this->db->insert('custom_fields_values', $data);                        
+		    if($result != true){
+			$this->session->set_userdata('error_msg', lang('msg_copy_module_error'));
+			$this->db->query("ROLLBACK");
+			return false;
+		    }
+		
+		}
+		
+	    }
+	    
+        }
+        
+	$this->session->set_userdata('good_msg', lang('msg_copy_module'));
+        $this->db->query("COMMIT");
+        return true;
+        
+    }
+    
 }

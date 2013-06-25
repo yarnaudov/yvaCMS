@@ -9,8 +9,12 @@ $lang['msg_save_article']            = 'The article was saved successfully';
 $lang['msg_save_article_error']      = 'An error occurred while saving this article';
 $lang['msg_copy_article']            = 'The articles were copied successfully';
 $lang['msg_copy_article_error']      = 'An error occurred while copying these articles';
+
 $lang['msg_save_menu']               = 'The menu was saved successfully';
 $lang['msg_save_menu_error']         = 'An error occurred while saving this menu';
+$lang['msg_copy_menu']               = 'The menus were copied successfully';
+$lang['msg_copy_menu_error']         = 'An error occurred while copying these menus';
+
 $lang['msg_delete_default_menu_error'] = 'The default menu can not be deleted';
 $lang['msg_save_category']           = 'The category was saved successfully';
 $lang['msg_save_category_error']     = 'An error occurred while saving this category';
@@ -25,8 +29,12 @@ $lang['msg_save_user']               = 'The user was saved successfully';
 $lang['msg_save_user_error']         = 'An error occurred while saving this user';
 $lang['msg_save_group']              = 'The group was saved successfully';
 $lang['msg_save_group_error']        = 'An error occurred while saving this group';
+
 $lang['msg_save_module']             = 'The module was saved successfully';
 $lang['msg_save_module_error']       = 'An error occurred while saving this module';
+$lang['msg_copy_module']             = 'The modules were copied successfully';
+$lang['msg_copy_module_error']       = 'An error occurred while copying these modules';
+
 $lang['msg_save_settings']           = 'The settings were saved successfully';
 $lang['msg_save_settings_error']     = 'An error occurred while saving these settings';
 

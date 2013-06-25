@@ -338,4 +338,56 @@ class Banner extends CI_Model {
         
     }
     
+    public function copy()
+    {
+        
+        $this->db->query("BEGIN");
+        
+        $banners = $this->input->post('banners');     
+        foreach($banners as $banner_id){
+            
+	    $banner = $this->db->get_where('banners', array('id' => $banner_id))->row_array();
+	    
+	    $banner['order'] = self::getMaxOrder($banner['position'])+1;
+	    $banner['created_by'] = $_SESSION['user_id'];
+            $banner['created_on'] = now();
+	    unset($banner['id'], $banner['updated_by'], $banner['updated_on']);
+	    
+            $result = $this->db->insert('banners', $banner);                        
+            if($result != true){
+		$this->session->set_userdata('error_msg', lang('msg_copy_banner_error'));
+                $this->db->query("ROLLBACK");
+                return false;
+            }
+	    
+	    $id = $this->db->insert_id();
+	    
+	    $custom_fields = $this->Custom_field->getCustomFields(array('status' => 'yes'), '`order`');
+	    foreach($custom_fields as $custom_field){
+		
+		$custom_field_data = $this->db->get_where('custom_fields_values', array('custom_field_id' => $custom_field['id'], 'element_id' => $banner_id))->result_array();
+		
+		foreach($custom_field_data as $data){
+		    
+		    $data['element_id'] = $id;
+		    
+		    $result = $this->db->insert('custom_fields_values', $data);                        
+		    if($result != true){
+			$this->session->set_userdata('error_msg', lang('msg_copy_banner_error'));
+			$this->db->query("ROLLBACK");
+			return false;
+		    }
+		
+		}
+		
+	    }
+	    
+        }
+        
+	$this->session->set_userdata('good_msg', lang('msg_copy_banner'));
+        $this->db->query("COMMIT");
+        return true;
+        
+    }
+    
 }

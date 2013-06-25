@@ -13,6 +13,7 @@
 		
             <a href="<?=site_url('banners/add');?>"  class="styled add"    ><?=lang('label_add');?></a>
             <a href="<?=site_url('banners/edit');?>" class="styled edit"   ><?=lang('label_edit');?></a>
+	    <a href="<?=site_url('banners');?>"      class="styled copy"   ><?=lang('label_copy');?></a>
             <a href="<?=site_url('banners');?>"      class="styled delete" ><?=lang('label_delete');?></a>
             <a href="<?=site_url();?>"               class="styled cancel" ><?=lang('label_cancel');?></a>
 		
@@ -172,5 +173,8 @@
 
 <div id="dialog-delete" title="<?=lang('label_confirm');?>" >
 	<p><?=lang('msg_delete_confirm');?></p>
+</div>
+<div id="dialog-copy" title="<?=lang('label_confirm');?>" >
+    <p><?=lang('msg_copy_confirm');?></p>
 </div>
 <!-- end jquery UI -->

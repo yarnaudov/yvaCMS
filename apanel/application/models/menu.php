@@ -440,6 +440,70 @@ class Menu extends MY_Model {
         
     }
     
+    public function copy()
+    {
+        
+        $this->db->query("BEGIN");
+        
+        $menus = $this->input->post('menus');     
+        foreach($menus as $menu_id){
+            
+	    $menu = $this->db->get_where('menus', array('id' => $menu_id))->row_array();
+	    
+	    $menu['alias'] = $menu['alias']."_copy";
+	    $menu['order'] = self::getMaxOrder($menu['category_id'], $menu['parent_id'])+1;
+	    $menu['created_by'] = $_SESSION['user_id'];
+            $menu['created_on'] = now();
+	    unset($menu['id'], $menu['updated_by'], $menu['updated_on']);
+	    
+            $result = $this->db->insert('menus', $menu);                        
+            if($result != true){
+		$this->session->set_userdata('error_msg', lang('msg_copy_menu_error'));
+                $this->db->query("ROLLBACK");
+                return false;
+            }
+	    
+	    $id = $this->db->insert_id();
+            
+	    $menu_data = $this->db->get_where('menus_data', array('menu_id' => $menu_id))->result_array();
+	    foreach($menu_data as $data){
+		$data['menu_id'] = $id;
+		$result = $this->db->insert('menus_data', $data);                        
+		if($result != true){
+		    $this->session->set_userdata('error_msg', lang('msg_copy_menu_error'));
+		    $this->db->query("ROLLBACK");
+		    return false;
+		}
+	    }
+	    
+	    $custom_fields = $this->Custom_field->getCustomFields(array('status' => 'yes'), '`order`');
+	    foreach($custom_fields as $custom_field){
+		
+		$custom_field_data = $this->db->get_where('custom_fields_values', array('custom_field_id' => $custom_field['id'], 'element_id' => $menu_id))->result_array();
+		
+		foreach($custom_field_data as $data){
+		    
+		    $data['element_id'] = $id;
+		    
+		    $result = $this->db->insert('custom_fields_values', $data);                        
+		    if($result != true){
+			$this->session->set_userdata('error_msg', lang('msg_copy_menu_error'));
+			$this->db->query("ROLLBACK");
+			return false;
+		    }
+		
+		}
+		
+	    }
+	    
+        }
+        
+	$this->session->set_userdata('good_msg', lang('msg_copy_menu'));
+        $this->db->query("COMMIT");
+        return true;
+        
+    }
+    
     public function changeStatus($id, $status)
     {   
 
