@@ -38,6 +38,7 @@ class Custom_fields extends MY_Controller {
             
             $this->jquery_ext->add_plugin("validation");
             $this->jquery_ext->add_library("check_actions_add_edit.js");
+	    $this->jquery_ext->add_library("custom_fields.js");
             
             if ($method == 'add'){
                 
