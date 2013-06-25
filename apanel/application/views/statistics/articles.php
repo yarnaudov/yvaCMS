@@ -142,6 +142,9 @@
             .filter{
                 float: left !important;
             }
+	    .filter select{
+		max-width: 300px;
+	    }
         </style>
         
         <br/><br/>

@@ -44,10 +44,10 @@
                     <?=create_options_array($banners, isset($filters['banner']) ? $filters['banner'] : "");?>
                 </select>
 		
-		<input type="checkbox" name="filters[type][]" value="1" <?=in_array(1, $filters['type']) ? 'checked' : '';?> >
+		<input type="checkbox" name="filters[type][]" value="1" <?=@in_array(1, $filters['type']) ? 'checked' : '';?> >
 		<label><?=lang('label_impressions');?></label>
 				
-		<input type="checkbox" name="filters[type][]" value="2" <?=in_array(2, $filters['type']) ? 'checked' : '';?> >
+		<input type="checkbox" name="filters[type][]" value="2" <?=@in_array(2, $filters['type']) ? 'checked' : '';?> >
 		<label><?=lang('label_clicks');?></label>
 
             </div>
