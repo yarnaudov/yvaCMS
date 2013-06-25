@@ -398,6 +398,70 @@ class Article extends MY_Model {
         
     }
     
+    public function copy()
+    {
+        
+        $this->db->query("BEGIN");
+        
+        $articles = $this->input->post('articles');     
+        foreach($articles as $article_id){
+            
+	    $article = $this->db->get_where('articles', array('id' => $article_id))->row_array();
+	    
+	    $article['alias'] = $article['alias']."_copy";
+	    $article['order'] = self::getMaxOrder($article['category_id'])+1;
+	    $article['created_by'] = $_SESSION['user_id'];
+            $article['created_on'] = now();
+	    unset($article['id'], $article['updated_by'], $article['updated_on']);
+	    
+            $result = $this->db->insert('articles', $article);                        
+            if($result != true){
+		$this->session->set_userdata('error_msg', lang('msg_copy_article_error'));
+                $this->db->query("ROLLBACK");
+                return false;
+            }
+	    
+	    $id = $this->db->insert_id();
+            
+	    $article_data = $this->db->get_where('articles_data', array('article_id' => $article_id))->result_array();
+	    foreach($article_data as $data){
+		$data['article_id'] = $id;
+		$result = $this->db->insert('articles_data', $data);                        
+		if($result != true){
+		    $this->session->set_userdata('error_msg', lang('msg_copy_article_error'));
+		    $this->db->query("ROLLBACK");
+		    return false;
+		}
+	    }
+	    
+	    $custom_fields = $this->Custom_field->getCustomFields(array('status' => 'yes'), '`order`');
+	    foreach($custom_fields as $custom_field){
+		
+		$custom_field_data = $this->db->get_where('custom_fields_values', array('custom_field_id' => $custom_field['id'], 'element_id' => $article_id))->result_array();
+		
+		foreach($custom_field_data as $data){
+		    
+		    $data['element_id'] = $id;
+		    
+		    $result = $this->db->insert('custom_fields_values', $data);                        
+		    if($result != true){
+			$this->session->set_userdata('error_msg', lang('msg_copy_article_error'));
+			$this->db->query("ROLLBACK");
+			return false;
+		    }
+		
+		}
+		
+	    }
+	    
+        }
+        
+	$this->session->set_userdata('good_msg', lang('msg_copy_article'));
+        $this->db->query("COMMIT");
+        return true;
+        
+    }
+    
     private function _saveHistory($id)
     {
        

@@ -1,5 +1,17 @@
 $(document).ready(function() {
 	  
+	  
+    if(LANG == 'bg'){
+	var CLOSE = 'Затвори';
+	var DELETE = 'Изтрии';
+	var COPY = 'Копирай';
+    }
+    else{
+	var CLOSE = 'Close';
+	var DELETE = 'Delete';
+	var COPY = 'Copy';
+    }
+	  
     $( "#dialog:ui-dialog" ).dialog( "destroy" );
 
     /*
@@ -10,11 +22,12 @@ $(document).ready(function() {
         resizable: false,
         modal: true,
         position: ['top', 100],
-        buttons: {
-            "OK": function() {
+        buttons: [{
+            text: CLOSE,
+	    click: function() {
                 $( this ).dialog( "close" );
             }
-        }
+        }]
     });
 	  
     $( "#dialog-edit2" ).dialog({
@@ -22,11 +35,12 @@ $(document).ready(function() {
         resizable: false,
         modal: true,
         position: ['top', 100],
-        buttons: {
-            "OK": function() {
+        buttons: [{
+            text: CLOSE,
+	    click: function() {
                 $( this ).dialog( "close" );
             }
-        }
+        }]
     });
 	  
     $( "#dialog-delete" ).dialog({
@@ -34,16 +48,45 @@ $(document).ready(function() {
         resizable: false,
         modal: true,
         position: ['top', 100],
-        buttons: {
-            "Ok": function() {
-                $('form').append('<input type="hidden" name="delete" >');
-                $('form').submit();
-                $( this ).dialog( "close" );
-            },
-            "Cancel": function(){
-                $( this ).dialog( "close" );
-            }
-        }
+        buttons: [
+	    {
+		text: DELETE,
+		click: function() {
+		    $('form').append('<input type="hidden" name="delete" >');
+		    $('form').submit();
+		    $( this ).dialog( "close" );
+		}
+	    },
+	    {
+		text: CLOSE,
+		click: function(){
+		    $( this ).dialog( "close" );
+		}
+	    }
+	]
+    });
+    
+    $( "#dialog-copy" ).dialog({
+        autoOpen: false,
+        resizable: false,
+        modal: true,
+        position: ['top', 100],
+        buttons: [
+	    {
+		text: COPY,
+		click: function() {
+		    $('form').append('<input type="hidden" name="copy" >');
+		    $('form').submit();
+		    $( this ).dialog( "close" );
+		}
+	    },
+	    {
+		text: CLOSE,
+		click: function(){
+		    $( this ).dialog( "close" );
+		}
+	    }
+	]
     });
 	  	  
     $('a.edit').live('click', function(){
@@ -75,6 +118,20 @@ $(document).ready(function() {
         }
 
         $( "#dialog-delete" ).dialog( "open" );
+        return false;
+
+    });
+    
+    $('a.copy').live('click', function(){
+
+        if($(".checkbox:checked").length == 0){
+
+            $( "#dialog-edit1" ).dialog( "open" );
+            return false;
+
+        }
+
+        $( "#dialog-copy" ).dialog( "open" );
         return false;
 
     });

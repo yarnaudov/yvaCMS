@@ -3,9 +3,12 @@
 $lang['msg_select_item']             = '<br/>Please select item';
 $lang['msg_select_one_item']         = '<br/>Please select only one item';
 $lang['msg_delete_confirm']          = 'Are you sure you want to delete selected items?';
+$lang['msg_copy_confirm']          = 'Are you sure you want to copy selected items?';
 
 $lang['msg_save_article']            = 'The article was saved successfully';
 $lang['msg_save_article_error']      = 'An error occurred while saving this article';
+$lang['msg_copy_article']            = 'The articles were copied successfully';
+$lang['msg_copy_article_error']      = 'An error occurred while copying these articles';
 $lang['msg_save_menu']               = 'The menu was saved successfully';
 $lang['msg_save_menu_error']         = 'An error occurred while saving this menu';
 $lang['msg_delete_default_menu_error'] = 'The default menu can not be deleted';

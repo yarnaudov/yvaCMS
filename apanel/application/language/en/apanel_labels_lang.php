@@ -19,6 +19,7 @@ $lang['label_settings']      = 'Settings';
 $lang['label_add']           = 'add';
 $lang['label_edit']          = 'edit';
 $lang['label_delete']        = 'delete';
+$lang['label_copy']          = 'copy';
 $lang['label_cancel']        = 'cancel';
 $lang['label_save']          = 'save';
 $lang['label_apply']         = 'apply';

@@ -19,6 +19,7 @@ $lang['label_settings']      = 'Настройки';
 $lang['label_add']           = 'добавяне';
 $lang['label_edit']          = 'редактиране';
 $lang['label_delete']        = 'изтриване';
+$lang['label_copy']          = 'копиране';
 $lang['label_cancel']        = 'отказ';
 $lang['label_save']          = 'запазване';
 $lang['label_apply']         = 'прилагане';

@@ -162,14 +162,23 @@ class MY_Controller extends CI_Controller{
     {
         
         $page = "";
+	if($this->page > 1){
+	    $page = "?page=".$this->page;
+	}
         
         // delete
         if(isset($_POST['delete'])){
             $result = $model->delete();
+            if($result == true){                
+                redirect($redirect.$page);
+                exit();
+            }
+        }
+	
+	// copy
+        if(isset($_POST['copy'])){
+            $result = $model->copy();
             if($result == true){
-                if($this->page > 1){
-                    $page = "?page=".$this->page;
-                }
                 redirect($redirect.$page);
                 exit();
             }
@@ -179,9 +188,6 @@ class MY_Controller extends CI_Controller{
         if(isset($_POST['change_status'])){
             $result = $model->changeStatus($_POST['element_id'], $_POST['change_status']);
             if($result == true){
-                if($this->page > 1){
-                    $page = "?page=".$this->page;
-                }
                 redirect($redirect.$page);
                 exit();
             }
