@@ -216,4 +216,15 @@ $lang['label_impressions']   = 'Импресии';
 $lang['label_clicks']        = 'Кликове';
 $lang['label_stat_type_1']   = 'Импресия';
 $lang['label_stat_type_2']   = 'Клик';
+
+$lang['label_number'] = 'Брой';
+
+// order options
+$lang['order_asc']       = 'Възходящ ред';
+$lang['order_desc']      = 'Низходящ ред';
+$lang['created_on_asc']  = 'Най-старите първи';
+$lang['created_on_desc'] = 'Най-новите първи';
+$lang['updated_on_asc']  = 'Последно променените последни';
+$lang['updated_on_desc'] = 'Последно променените първи';
+
 ?>

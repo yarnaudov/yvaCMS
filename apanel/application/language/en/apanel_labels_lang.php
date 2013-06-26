@@ -216,4 +216,14 @@ $lang['label_clicks']        = 'Clicks';
 $lang['label_stat_type_1']   = 'Impression';
 $lang['label_stat_type_2']   = 'Click';
 
+$lang['label_number'] = 'Number';
+
+// order options
+$lang['order_asc']       = 'Order Ascending';
+$lang['order_desc']      = 'Order Descending ';
+$lang['created_on_asc']  = 'Oldest first';
+$lang['created_on_desc'] = 'Newest first';
+$lang['updated_on_asc']  = 'Last updated last';
+$lang['updated_on_desc'] = 'Last updated first';
+
 ?>

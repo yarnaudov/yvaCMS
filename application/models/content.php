@@ -84,17 +84,10 @@ class Content extends CI_Model {
                 
                 case "articles_list":
                     
-		    $articles = array();
-
-		    foreach($menu['params']['categories'] as $category){
-
-			if($category == 'most_popular'){
-			    $articles = $articles+$this->Article->getMostPopular('menu'.$menu['id']);
-			}
-			else{
-			    $articles = $articles+$this->Article->getByCategory($category, 'menu'.$menu['id']);
-			}
-
+		    $articles = $this->Article->getByCategory($menu['params']['categories'], $menu['params']['order'], $menu['params']['number'], 'menu'.$menu['id']);
+		    
+		    if(in_array('most_popular', $menu['params']['categories'])){
+			$articles = $articles+$this->Article->getMostPopular($menu['params']['order'], $menu['params']['number']);
 		    }
 		                      
                     $data['content'] = $this->load->view($content_template, compact('menu', 'articles'), true);

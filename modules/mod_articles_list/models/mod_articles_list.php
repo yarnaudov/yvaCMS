@@ -8,15 +8,10 @@ class mod_articles_list extends CI_Model{
         $data['article_alias'] = $this->article_alias;
 	$data['articles'] = array();
 
-	foreach($module['params']['categories'] as $category){
+	$data['articles'] = $this->Article->getByCategory($module['params']['categories'], $module['params']['order'], $module['params']['number']);
 	
-	    if($category == 'most_popular'){
-		$data['articles'] = $data['articles']+$this->Article->getMostPopular();
-	    }
-	    else{
-		$data['articles'] = $data['articles']+$this->Article->getByCategory($category);
-	    }
-               
+	if(in_array('most_popular', $module['params']['categories'])){
+	    $data['articles'] = $data['articles']+$this->Article->getMostPopular($module['params']['order'], $module['params']['number']);
 	}
 	
         return module::loadContent($module, $data);

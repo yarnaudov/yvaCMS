@@ -32,17 +32,23 @@ class Article extends CI_Model {
 
     }
     
-    public function getByCategory($category_id, $filter = FALSE)
+    public function getByCategory($categories, $order = 'order ASC', $limit = 'all', $filter = FALSE)
     {
         
-        if(empty($category_id)){
+        if(empty($categories)){
             return array();
         }
         
         $this->db->select('id');
-        $this->db->where('category_id', $category_id);
+        $this->db->where_in('category_id', $categories);
         $this->db->where('status', 'yes');
-        $this->db->order_by('order', 'asc');
+	
+        $this->db->order_by($order, '', false);
+	
+	if($limit != 'all'){
+	    $this->db->limit($limit);
+	}
+	
         $articles = $this->db->get('articles');  	
         $articles = $articles->result_array();
         
@@ -88,7 +94,7 @@ class Article extends CI_Model {
         
     }
     
-    public function getMostPopular($filter = FALSE)
+    public function getMostPopular($order = 'order ASC', $limit = 'all', $filter = FALSE)
     {
 	
 	$this->db->select('articles.id, count(articles_statistics.id) AS views');
@@ -96,8 +102,14 @@ class Article extends CI_Model {
 	$this->db->join('articles_statistics', 'articles.id = articles_statistics.article_id', 'left');
         $this->db->where('status', 'yes');
 	$this->db->group_by('articles.id');
-        $this->db->order_by('views', 'desc');
-	$this->db->order_by('order', 'asc');
+	
+	$this->db->order_by('views', 'desc');
+	$this->db->order_by($order, '', false);
+	
+	if($limit != 'all'){
+	    $this->db->limit($limit);
+	}
+	
         $articles = $this->db->get()->result_array();
 	
 	$articles_arr = array();
