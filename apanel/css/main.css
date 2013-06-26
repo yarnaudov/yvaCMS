@@ -660,6 +660,7 @@ button.toggle{
  div.menu_list{
      max-height: 250px;
      overflow-y: scroll;
+     border: 1px solid #888;
  }
  table.menu_list th{
      background-color: #e5e5e5;
@@ -668,7 +669,7 @@ button.toggle{
      font-weight: normal;
  }
  table.menu_list td{
-     padding: 2px 0 0 0;
+     padding: 2px 0 0 2px;
      vertical-align: top;
  }
  table.menu_list td input{
