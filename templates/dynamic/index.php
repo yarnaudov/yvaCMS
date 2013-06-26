@@ -3,8 +3,8 @@
  /*
   *  set default content templates
   */
-  //$this->Content->templates['main'] = '../../'.TEMPLATES_DIR.'/'.$this->Setting->getTemplate().'/../views/content/main';
-                                    
+  $this->Content->templates['article'] = '../../'.TEMPLATES_DIR.'/'.$this->Setting->getTemplate('main').'/views/content/article';
+               
 ?>
 
 <!DOCTYPE html>

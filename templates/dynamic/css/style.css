@@ -515,3 +515,22 @@ a.readmore_hide{
 .module_mod_google_map .content{
     height: 400px;
 }
+
+.article .content #images_canvas{
+    overflow: auto;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.article .content #images_canvas li{
+    float: left;
+}
+.article .content #images_canvas li img{
+    width: 150px;
+    border: 1px solid #aaa;
+    padding: 1px 2px 2px 1px;
+    margin-right: 10px;
+}
+.article .content #images_canvas li:last-child img{
+    margin-right: 0;
+}

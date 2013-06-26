@@ -15,17 +15,15 @@ class Content extends CI_Model {
                 
         if($this->article_alias){
             
-            $article = $this->Article->getByAlias($this->article_alias);            
+            $article = $this->Article->getByAlias($this->article_alias);    
+
             if(empty($article)){
                 $data['content'] = lang('msg_article_not_found');
             }
             else{
-                
-                if($article['show_title'] == 'yes'){
-                  $data['title'] = $article['title'];
-                }
 
-                $data['content'] = $this->Article->parceText($article['text']);
+                $article['text'] = $this->Article->parceText($article['text']);
+		$data['content'] = $this->load->view($this->templates['article'], compact('article'), true);
 
                 $this->Article->statistic($article['id']);
                 

@@ -165,7 +165,7 @@ class Article extends CI_Model {
         }
         
         $article[0]['params'] = json_decode($article[0]['params'], true); 
-        $article[0]           = array_merge($article[0], $this->Custom_field->getValues($article[0]['id'], 'articles'));
+        $article[0]           = array_merge($article[0], $this->Custom_field->getValues('articles', $article[0]['id']));
         
         
         if($field == null){
