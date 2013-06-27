@@ -920,7 +920,6 @@ ol.rules li a{
     list-style: none;
 }
 #checkboxes li{
-    overflow: auto;
     padding-bottom: 6px;
     height: 20px;    
 }
@@ -935,7 +934,7 @@ ol.rules li a{
     float: left;
 }
 #checkboxes li input[type=text]{
-    width: 70%;   
+    width: 64%;   
     float: left;
     margin-right: 4px;
 }
