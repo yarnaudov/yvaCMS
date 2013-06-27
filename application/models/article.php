@@ -32,7 +32,7 @@ class Article extends CI_Model {
 
     }
     
-    public function getByCategory($categories, $order = 'order ASC', $limit = 'all', $filter = FALSE)
+    public function getByCategory($categories, $order = 'order ASC', $limit = 'all', $filter = false)
     {
         
         if(empty($categories)){
@@ -57,20 +57,9 @@ class Article extends CI_Model {
             
             $article = self::getDetails($article['id']);
 	 
-	    if(isset($_GET['filter']) && $filter == $_GET['filter']){
-
-		foreach($_GET as $key => $value){
-		    if($key == 'search_v'){
-			$pattern = "/".$value."/iu";
-			if(!preg_match($pattern, $article['title']) && !preg_match($pattern, $article['text'])){
-			    continue(2);
-			}
-		    }
-		    elseif(isset($article[$key]) && $article[$key] != $value){
-			continue(2);
-		    }
-		}
-	    
+	    /* --- check filters --- */
+	    if(self::_checkFilters($filter, $article) == false){
+		continue;
 	    }
 	    
             /* --- check language for article display --- */
@@ -94,7 +83,7 @@ class Article extends CI_Model {
         
     }
     
-    public function getMostPopular($order = 'order ASC', $limit = 'all', $filter = FALSE)
+    public function getMostPopular($order = 'order ASC', $limit = 'all', $filter = false)
     {
 	
 	$this->db->select('articles.id, count(articles_statistics.id) AS views');
@@ -117,20 +106,9 @@ class Article extends CI_Model {
             
             $article = self::getDetails($article['id']);
 	 
-	    if(isset($_GET['filter']) && $filter == $_GET['filter']){
-
-		foreach($_GET as $key => $value){
-		    if($key == 'search_v'){
-			$pattern = "/".$value."/iu";
-			if(!preg_match($pattern, $article['title']) && !preg_match($pattern, $article['text'])){
-			    continue(2);
-			}
-		    }
-		    elseif(isset($article[$key]) && $article[$key] != $value){
-			continue(2);
-		    }
-		}
-	    
+	    /* --- check filters --- */
+	    if(self::_checkFilters($filter, $article) == false){
+		continue;
 	    }
 	    
             /* --- check language for article display --- */
@@ -151,6 +129,30 @@ class Article extends CI_Model {
         }
         
         return $articles_arr;
+	
+    }
+    
+    private function _checkFilters($filter, $article)
+    {
+
+	if($filter == $this->input->get_post('filter') || $this->input->get_post('filter') == 'all'){
+
+	    $get_post = $_GET+$_POST;
+	    
+	    foreach($get_post as $key => $value){
+		if($key == 'search_v'){
+		    $pattern = "/".$value."/iu";
+		    if(!preg_match($pattern, $article['title']) && !preg_match($pattern, $article['text'])){		
+			return false;
+		    }
+		}
+		elseif(isset($article[$key]) && $article[$key] != $value){
+		    return false;
+		}
+	    }
+	}
+	
+	return true;
 	
     }
     
