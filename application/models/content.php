@@ -82,6 +82,7 @@ class Content extends CI_Model {
                         
                     }
                     else{
+                        $article['show_title'] = 'no';
                         $article['text'] = lang('msg_article_not_selected');
                     }
                     
