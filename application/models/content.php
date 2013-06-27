@@ -73,12 +73,19 @@ class Content extends CI_Model {
                 
                 case "article":
                 
-                    $article         = $this->Article->getDetails($menu['params']['article_id']);                    
-                    $article['text'] = $this->Article->parceText($article['text']);
+                    if(!empty($menu['params']['article_id'])){
+                    
+                        $article         = $this->Article->getDetails($menu['params']['article_id']);                    
+                        $article['text'] = $this->Article->parceText($article['text']);
+                        
+                        $this->Article->statistic($article['id']);
+                        
+                    }
+                    else{
+                        $article = array();
+                    }
                     
                     $data['content'] = $this->load->view($content_template, compact('article'), true);
-                    
-                    $this->Article->statistic($article['id']);
                     
                 break;
                 
