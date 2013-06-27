@@ -82,7 +82,7 @@ class Content extends CI_Model {
                         
                     }
                     else{
-                        $article = array();
+                        $article['text'] = lang('msg_article_not_selected');
                     }
                     
                     $data['content'] = $this->load->view($content_template, compact('article'), true);
