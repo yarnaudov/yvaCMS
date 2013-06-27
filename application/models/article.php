@@ -225,7 +225,7 @@ class Article extends CI_Model {
         
         $html = fix_links($text, $elements);
         
-        $html = str_get_html($text);
+        $html = str_get_html($html);
         
         $pagebreaks = count($html->find('hr.pagebreak'));
         $readmore   = count($html->find('hr.readmore'));

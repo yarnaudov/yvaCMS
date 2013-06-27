@@ -70,7 +70,7 @@ class Custom_field extends CI_Model {
 		
 		$custom_fields[$key]['extension_keys'] = json_decode($custom_field['extension_keys'], true);
 		
-		if(!in_array($filters['extension_key'], $custom_fields[$key]['extension_keys']) ){
+		if(@!in_array($filters['extension_key'], $custom_fields[$key]['extension_keys']) ){
 		    unset($custom_fields[$key]);
 		}
 	    
