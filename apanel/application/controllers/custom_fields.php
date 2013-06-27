@@ -137,19 +137,19 @@ class Custom_fields extends MY_Controller {
         
         if(in_array('categories/'.$this->extension, $this->sub_menu)){
             $data['extension_keys_label'] = 'category';
-            $data['extension_keys']       = $this->Category->getForDropdown();
+            $data['extension_keys_arr']   = $this->Category->getForDropdown();
         }
         elseif($this->extension == 'modules'){
             $data['extension_keys_label'] = 'position';
-            $data['extension_keys']       = $this->Module->getPositions(parent::_parseTemplateFile('modules'));
+            $data['extension_keys_arr']   = $this->Module->getPositions(parent::_parseTemplateFile('modules'));
         }
         elseif($this->extension == 'banners'){
             $data['extension_keys_label'] = 'position';
-            $data['extension_keys']       = $this->Banner->getPositions(parent::_parseTemplateFile('banners'));
+            $data['extension_keys_arr']   = $this->Banner->getPositions(parent::_parseTemplateFile('banners'));
         }
         elseif($this->extension == 'users'){
             $data['extension_keys_label'] = 'group';
-            $data['extension_keys']       = $this->User_group->getForDropdown();
+            $data['extension_keys_arr']   = $this->User_group->getForDropdown();
         }
          
         $content["content"] = $this->load->view('custom_fields/add', $data, true);		
@@ -163,19 +163,19 @@ class Custom_fields extends MY_Controller {
         
         if(in_array('categories/'.$this->extension, $this->sub_menu)){
             $data['extension_keys_label'] = 'category';
-            $data['extension_keys']       = $this->Category->getForDropdown();
+            $data['extension_keys_arr']   = $this->Category->getForDropdown();
         }
         elseif($this->extension == 'modules'){
             $data['extension_keys_label'] = 'position';
-            $data['extension_keys']       = $this->Module->getPositions(parent::_parseTemplateFile('modules'));
+            $data['extension_keys_arr']   = $this->Module->getPositions(parent::_parseTemplateFile('modules'));
         }
         elseif($this->extension == 'banners'){
             $data['extension_keys_label'] = 'position';
-            $data['extension_keys']       = $this->Banner->getPositions(parent::_parseTemplateFile('banners'));
+            $data['extension_keys_arr']   = $this->Banner->getPositions(parent::_parseTemplateFile('banners'));
         }
         elseif($this->extension == 'users'){
             $data['extension_keys_label'] = 'group';
-            $data['extension_keys']       = $this->User_group->getForDropdown();
+            $data['extension_keys_arr']   = $this->User_group->getForDropdown();
         }
 
         $content["content"] = $this->load->view('custom_fields/add', $data, true);		

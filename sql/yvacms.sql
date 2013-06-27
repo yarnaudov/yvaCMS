@@ -584,7 +584,7 @@ INSERT INTO `com_pull_answers` (`id`, `pull_id`, `title`, `votes`, `status`) VAL
 
 CREATE TABLE IF NOT EXISTS `custom_fields` (
   `id` int(4) NOT NULL AUTO_INCREMENT,
-  `extension_key` varchar(50) DEFAULT NULL,
+  `extension_keys` varchar(500) DEFAULT NULL,
   `title` varchar(500) NOT NULL,
   `description` varchar(1000) NOT NULL,
   `multilang` enum('yes','no') NOT NULL,

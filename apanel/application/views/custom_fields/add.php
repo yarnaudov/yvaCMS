@@ -118,15 +118,36 @@
                         <div class="box_content" >
                             <table class="box_table" cellpadding="0" cellspacing="0" >
 
-                                <?php if(isset($extension_keys)){ ?>
+                                <?php if(isset($extension_keys_arr)){ ?>
                                 
                                 <tr>	      			
                                     <th><label><?=lang('label_'.$extension_keys_label);?>:</label></th>
                                     <td>
-                                        <select name="extension_key" >
-                                            <option value="all" ><?=lang('label_all');?></option>
-                                            <?=create_options_array($extension_keys, set_value('extension_key', isset($extension_key) ? $extension_key : ""));?>
-                                        </select>
+					
+					<div class="menu_list" >
+					    <table class="menu_list" cellpadding="0" cellspacing="0" >
+						
+						<?php $extension_keys = set_value('extension_keys', isset($extension_keys) ? $extension_keys : "");
+						      foreach($extension_keys_arr as $extension_id => $extension){ 
+							  $checked = "";
+							  if(@in_array($extension_id, $extension_keys)){
+							      $checked = "checked";
+							  } ?>
+
+						<tr>
+						    <td style="width: 1%;" >
+							<input type="checkbox" style="width:16px;" <?=$checked;?> name="extension_keys[]" id="custom_menu<?=$extension_id;?>" value="<?=$extension_id;?>" >
+						    </td>
+						    <td>
+							<label for="custom_menu<?=$extension_id;?>" ><?=$extension;?></label>
+						    </td>
+						</tr>
+
+						<?php } ?>
+
+					    </table>
+					</div>
+					
                                     </td>
                                 </tr>
                                 

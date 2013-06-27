@@ -16,6 +16,7 @@ class Custom_field extends CI_Model {
         }
         
         $custom_field[0]['params'] = json_decode($custom_field[0]['params'], true);
+	$custom_field[0]['extension_keys'] = json_decode($custom_field[0]['extension_keys'], true);
 
         if($field == null){
             return $custom_field[0];
@@ -28,7 +29,7 @@ class Custom_field extends CI_Model {
   
     public function getCustomFields($filters = array(), $order_by = "`order`", $limit = "")
     {
-        
+
         $filter = '';
         if(!isset($filters['status'])){
             $filter = " AND status != 'trash'";
@@ -40,7 +41,7 @@ class Custom_field extends CI_Model {
                 $filter .= " AND (title like '%".$value."%' OR description  like '%".$value."%' )";            
             }
             elseif($key == 'extension_key'){
-                $filter .= " AND (`extension_key` = '".$value."' OR `extension_key` is NULL) ";
+            //    $filter .= " AND (`extension_key` = '".$value."' OR `extension_key` is NULL) ";
             }
             else{
                 $filter .= " AND `".$key."` = '".$value."' ";
@@ -61,9 +62,20 @@ class Custom_field extends CI_Model {
         //echo $query."<br/>";
 
         $custom_fields = $this->db->query($query)->result_array();
-        
+
         foreach($custom_fields as $key => $custom_field){
-            $custom_fields[$key]['params'] = json_decode($custom_field['params'], true);
+            $custom_fields[$key]['params'] = json_decode($custom_field['params'], true);	    
+	
+	    if(isset($filters['extension_key']) && $custom_field['extension_keys'] != NULL){
+		
+		$custom_fields[$key]['extension_keys'] = json_decode($custom_field['extension_keys'], true);
+		
+		if(!in_array($filters['extension_key'], $custom_fields[$key]['extension_keys']) ){
+		    unset($custom_fields[$key]);
+		}
+	    
+	    }
+	    
         }
 
         return $custom_fields;
@@ -85,18 +97,20 @@ class Custom_field extends CI_Model {
     public function prepareData($action)
     {
                  
-        $data['title']         = $this->input->post('title');
-        $data['description']   = $this->input->post('description');
-        $data['type']          = $this->input->post('type');
-	$data['status']        = $this->input->post('status');
-        $data['multilang']     = $this->input->post('multilang');        
-        $data['required']      = $this->input->post('required'); 
-        $data['params']        = json_encode($this->input->post('params'));
-        $data['extension_key'] = $this->input->post('extension_key');
-
-        if($data['extension_key'] == 'all'){
-            $data['extension_key'] = NULL;
-        }
+        $data['title']       = $this->input->post('title');
+        $data['description'] = $this->input->post('description');
+        $data['type']        = $this->input->post('type');
+	$data['status']      = $this->input->post('status');
+        $data['multilang']   = $this->input->post('multilang');        
+        $data['required']    = $this->input->post('required'); 
+        $data['params']      = json_encode($this->input->post('params'));
+	
+	if(is_array($this->input->post('extension_keys'))){
+	    $data['extension_keys'] = json_encode($this->input->post('extension_keys'));
+	}
+	else{
+	    $data['extension_keys'] = NULL;
+	}
         
         if($action == 'insert'){
             $data['extension']  = $this->extension;
