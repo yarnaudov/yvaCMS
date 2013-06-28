@@ -99,14 +99,14 @@ class Content extends CI_Model {
                         if(in_array('most_popular', $menu['params']['categories'])){
                             $articles = $articles+$this->Article->getMostPopular($menu['params']['order'], $menu['params']['number'], 'menu'.$menu['id']);
                         }
+			
+			$data['content'] = $this->load->view($content_template, compact('menu', 'articles'), true);
                     
                     }
                     else{
-                       $articles = array(); 
+		       $data['content'] = lang('msg_category_not_selected');
                     }
-		                      
-                    $data['content'] = $this->load->view($content_template, compact('menu', 'articles'), true);
-                    
+		    
                 break;
             
                 case "component":
