@@ -24,4 +24,19 @@ class Category extends CI_Model {
         
     }
     
+    public function getCategories($extension)
+    {
+        
+        $this->db->select('*');        
+        $this->db->join('categories_data' , 'categories.id = categories_data.category_id', 'LEFT');
+        $this->db->where('extension', $extension);
+        $this->db->where('language_id = '.$this->language_id);
+        $this->db->where('status', 'yes');
+        $this->db->order_by('order', 'asc');
+        $categories = $this->db->get('categories')->result_array();  	
+
+        return $categories;
+
+    }
+    
 }
