@@ -43,7 +43,9 @@ class Menu extends CI_Model {
                       menus m
                       LEFT JOIN menus_data md ON (m.id = md.menu_id AND md.language_id = '".$this->language_id."')
                     WHERE
-                      m.alias = '".$alias."' ";
+                      m.alias = '".$alias."'
+		     AND
+                      m.status = 'yes'";
         
         $menu = $this->db->query($query);  	
         $menu = $menu->result_array();
