@@ -54,6 +54,15 @@ class Custom_fields extends MY_Controller {
                 
             $script = "$('select[name=type]').change(function(){
                            $.get('".site_url('home/ajax/load')."?view=custom_fields/'+$(this).val(), function(data){
+			       
+			       if(data.search('script') != -1){
+                                   parent.$('.required').each(function(){
+                                       $(this).removeClass('required');
+                                   });
+                                   parent.$('form').submit();
+                                   return;
+                               }
+			    
                                $('#params').css('display', 'none');
                                $('#params').html(data);
                                $('#params').toggle('slow');

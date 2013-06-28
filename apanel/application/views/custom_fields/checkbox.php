@@ -8,6 +8,7 @@
     <td>
         <ul id="checkboxes" >
             <?php $options   = set_value('params[options]',   isset($params['options'])   ? $params['options']   : "");
+		  !is_array($options) ? $options = array(0) : '';
                   $labels    = set_value('params[labels]',    isset($params['labels'])    ? $params['labels']    : "");
                   $optgroups = set_value('params[optgroups]', isset($params['optgroups']) ? $params['optgroups'] : "");
                   foreach($options as $key => $option){ ?>
