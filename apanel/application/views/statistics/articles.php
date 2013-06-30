@@ -151,54 +151,28 @@
         <table class="list" cellpadding="0" cellspacing="2" >
             
             <tr>
-                <th style="width:1%;"  rowspan="2" >#</th>
-                <th style="width:10%;" rowspan="2" ><?=lang('label_date');?></th>
-                <th style="width:7%;"  rowspan="2" ><?=lang('label_read');?></th>
-                <th style="width:82%;" colspan="5" ><?=lang('label_details');?></th>
-            </tr>
-            
-            <tr>
-		<th style="width:6%;"  ><?=lang('label_time');?></th>
-                <th style="width:10%;" >IP</th>
-                <th style="width:12%;" ><?=lang('label_user_agent');?></th>
-                <th style="width:30%;" ><?=lang('label_page_url');?></th>
-                <th style="width:42%;" ><?=lang('label_user_refferer');?></th>
+                <th style="width:1%;"  >#</th>
+                <th style="width:30%;" ><?=lang('label_date');?></th>
+                <th style="width:69%;"  ><?=lang('label_read');?></th>
             </tr>
             
             <?php foreach($statistics as $numb => $statistic){ ?>
             <tr>
-                <td rowspan="<?=$statistic['views']+1;?>" ><?=($numb+1);?></td>
-                <td rowspan="<?=$statistic['views']+1;?>" ><?=$statistic['date'];?></td>
-                <td rowspan="<?=$statistic['views']+1;?>" ><?=$statistic['views'];?></td>
+                <td><?=($numb+1);?></td>
+                <td><?=$statistic['date'];?></td>
+                <td><a class="details" href="<?=site_url('statistics/details/article/'.$filters['article'].'/'.$statistic['date']);?>" ><?=$statistic['views'];?></a></td>
             </tr>
-            
-		<?php foreach($statistic['details'] as $detail){ ?>
-		<tr>
-		    <td><?=end(explode(" ", $detail['created_on']));?></td>
-		    <td>
-                        <a href="http://whatismyipaddress.com/ip/<?=$detail['ip'];?>" target="_blank" ><?=$detail['ip'];?></a>
-                    </td>
-		    <td><?=$detail['user_agent'];?></td>
-		    <td style="text-align: left;" >
-                        <a href="<?=$detail['page_url'];?>" target="_blank" ><?=$detail['page_url'];?></a>
-                    </td>
-		    <td style="text-align: left;" >
-                        <a href="<?=$detail['user_referrer'];?>" target="_blank" ><?=$detail['user_referrer'];?></a>
-                    </td>
-		</tr>
-		<?php } ?>
                 
             <?php } ?>
 		
             <tr>
-                <th colspan="2" ><?=lang('label_total');?></th>
-                <th><?=$total_views;?></th>
-                <th colspan="6" ></th>
+                <th colspan="2" ></th>
+                <th><?=lang('label_total');?>: <?=$total_views;?></th>
             </tr>
                 
 	    <?php if(count($statistics) == 0){ ?>
 	    <tr>
-                <td colspan="8" >No data to display</td>
+                <td colspan="3" >No data to display</td>
             </tr>
 	    <?php } ?>
             
@@ -208,3 +182,8 @@
     <!-- end page content -->
     
 </form>
+
+<!-- start jquery UI -->
+<div id="dialog-statistic-details" title="<?=lang('label_details');?>" >
+    <p></p>
+</div>

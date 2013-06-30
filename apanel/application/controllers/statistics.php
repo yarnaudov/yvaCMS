@@ -23,6 +23,29 @@ class Statistics extends MY_Controller {
             $method = 'index';
         }
         
+        $script = "$('#dialog-statistic-details').dialog({
+                        autoOpen: false,
+                        resizable: false,
+                        modal: true,
+                        position: ['top', 100],
+                        width: 'auto'
+                    });
+                    $('.details').click(function(event){
+                    
+                        event.preventDefault();
+                        
+                        var url = $(this).attr('href');
+                  
+                        $.get(url, function(data){
+                            
+                            $('#dialog-statistic-details p').html(data);
+                            $('#dialog-statistic-details').dialog('open');
+                                                        
+                        });
+                                                
+                    });";
+        $this->jquery_ext->add_script($script);
+        
         $this->jquery_ext->add_library("select_active_menu.js");
         $this->$method();
 
@@ -180,6 +203,39 @@ class Statistics extends MY_Controller {
 	
 	return $data;
 	
+    }
+    
+    public function details()
+    {
+        
+        $type = $this->uri->segment(3);
+        $id   = $this->uri->segment(4);
+        $date = $this->uri->segment(5);
+        
+        $filters['start_date'] = $date;
+        $filters['end_date']   = $date;
+        
+        if($type == 'article'){
+            $filters['article'] = $id;
+            $this->load->model('Article');
+            $statistics = $this->Article->getStatistics($filters);
+            $details = $statistics[0]['details'];
+        }
+        elseif($type == 'banner'){
+            $filters['banner'] = $id;
+            $this->load->model('Banner');
+            $statistics = $this->Banner->getStatistics($filters);
+            $statistics = current($statistics);
+            $details = $statistics['details'];
+            foreach($details as $key => $detail){
+                if($detail['type'] != $this->uri->segment(6)){
+                    unset($details[$key]);
+                }
+            }
+        }
+                
+        $this->load->view('statistics/details', array('details' => $details));
+                
     }
 	
 }

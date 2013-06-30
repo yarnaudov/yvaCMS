@@ -177,48 +177,21 @@
         <table class="list" cellpadding="0" cellspacing="2" >
             
             <tr>
-                <th style="width:1%;"  rowspan="2" >#</th>
-                <th style="width:10%;" rowspan="2" ><?=lang('label_date');?></th>
-                <th style="width:7%;"  rowspan="2" ><?=lang('label_impressions');?></th>
-		<th style="width:7%;"  rowspan="2" ><?=lang('label_clicks');?></th>
-                <th style="width:75%;" colspan="6" ><?=lang('label_details');?></th>
-            </tr>
-            
-            <tr>
-		<th style="width:6%;"  ><?=lang('label_type');?></th>
-		<th style="width:6%;"  ><?=lang('label_time');?></th>
-                <th style="width:10%;" >IP</th>
-                <th style="width:12%;" ><?=lang('label_user_agent');?></th>
-                <th style="width:30%;" ><?=lang('label_page_url');?></th>
-                <th style="width:42%;" ><?=lang('label_user_refferer');?></th>
+                <th style="width:1%;"  >#</th>
+                <th style="width:10%;" ><?=lang('label_date');?></th>
+                <th style="width:7%;"  ><?=lang('label_impressions');?></th>
+		<th style="width:7%;"  ><?=lang('label_clicks');?></th>
             </tr>
             
             <?php $numb = 0;
 		  foreach($statistics as $statistic){
 		      $numb++; ?>
             <tr>
-                <td rowspan="<?=count($statistic['details'])+1;?>" ><?=$numb;?></td>
-                <td rowspan="<?=count($statistic['details'])+1;?>" ><?=$statistic['date'];?></td>
-                <td rowspan="<?=count($statistic['details'])+1;?>" ><?=$statistic['impressions'];?></td>
-		<td rowspan="<?=count($statistic['details'])+1;?>" ><?=$statistic['clicks'];?></td>
+                <td><?=$numb;?></td>
+                <td><?=$statistic['date'];?></td>
+                <td><a class="details" href="<?=site_url('statistics/details/banner/'.$filters['banner'].'/'.$statistic['date'].'/1');?>" ><?=$statistic['impressions'];?></a></td>
+		<td><a class="details" href="<?=site_url('statistics/details/banner/'.$filters['banner'].'/'.$statistic['date'].'/2');?>" ><?=$statistic['clicks'];?></a></td>
             </tr>
-            
-		<?php foreach($statistic['details'] as $detail){ ?>
-		<tr>
-		    <td><?=lang('label_stat_type_'.$detail['type']);?></td>
-		    <td><?=end(explode(" ", $detail['created_on']));?></td>
-		    <td>
-                        <a href="http://whatismyipaddress.com/ip/<?=$detail['ip'];?>" target="_blank" ><?=$detail['ip'];?></a>
-                    </td>
-		    <td><?=$detail['user_agent'];?></td>
-		    <td style="text-align: left;" >
-                        <a href="<?=$detail['page_url'];?>" target="_blank" ><?=$detail['page_url'];?></a>
-                    </td>
-		    <td style="text-align: left;" >
-                        <a href="<?=$detail['user_referrer'];?>" target="_blank" ><?=$detail['user_referrer'];?></a>
-                    </td>
-		</tr>
-		<?php } ?>
                 
             <?php } ?>
 		
@@ -226,7 +199,6 @@
                 <th colspan="2" ><?=lang('label_total');?></th>
                 <th><?=$total_impressions;?></th>
 		 <th><?=$total_clicks;?></th>
-                <th colspan="6" ></th>
             </tr>
                 
 	    <?php if(count($statistics) == 0){ ?>
@@ -241,3 +213,8 @@
     <!-- end page content -->
     
 </form>
+
+<!-- start jquery UI -->
+<div id="dialog-statistic-details" title="<?=lang('label_details');?>" >
+    <p></p>
+</div>

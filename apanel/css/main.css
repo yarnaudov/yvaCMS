@@ -342,24 +342,24 @@ a.toggle{
 /*
  * start list table
  */
-#page_content table.list{
+table.list{
     width: 100%;
     border: 1px solid #BBBBBB;
 }
-#page_content table.list .odd{
+table.list .odd{
     background-color: #F5F7F7;
 }
-#page_content table.list tr.highlight,
-#page_content table.list tr.selected{
+table.list tr.highlight,
+table.list tr.selected{
     background-color: #EDF5F5; 
 }
-#page_content table.list th{
+table.list th{
     background-color: #E7EFEF;    
     text-align: center;
     padding: 4px 18px;
     border-bottom: 1px solid #888;
 }
-#page_content table.list td{
+table.list td{
     border: 1px solid #BBBBBB;
     border-top: none;
     border-left: none;
@@ -367,38 +367,38 @@ a.toggle{
     vertical-align: middle;
     text-align: center;
 }
-#page_content table.list td .description{
+table.list td .description{
     color: #555;
 }
-#page_content table.list td .description .head{
+table.list td .description .head{
     text-transform: lowercase;
 }
-#page_content table.list td .description .content{
+table.list td .description .content{
     color: #888;
 }
 
-#page_content table.list td .status_img,
-#page_content table.list td .order_img{
+table.list td .status_img,
+table.list td .order_img{
     cursor: pointer;
 }
-#page_content table.list th.sortable{
+table.list th.sortable{
     cursor: pointer;
 }
-#page_content table.list th.sortable:hover{
+table.list th.sortable:hover{
     background-color: #D7DFDF;
 }
-#page_content table.list th.sorted,
-#page_content table.list th.sorted_desc{
+table.list th.sorted,
+table.list th.sorted_desc{
     background-repeat: no-repeat;
     background-position: 5px center;
 }
-#page_content table.list th.sorted{
+table.list th.sorted{
     background-image: url('../img/iconArrowDown.png');
 }
-#page_content table.list th.sorted_desc{
+table.list th.sorted_desc{
     background-image: url('../img/iconArrowUp.png');
 }
-#page_content table.list td span.order_span{
+table.list td span.order_span{
     display: inline-block;
     width: 12px;
 }
@@ -969,4 +969,9 @@ td.custom_field ul li{
     height: 180px;
     border: 1px solid #888;
     padding: 1px;
+}
+
+#dialog-statistic-details p{
+    max-height: 406px;
+    overflow: auto;
 }

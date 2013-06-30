@@ -11,7 +11,8 @@ $config['no_login']           = array('',
                                       'menus/types',
                                       'banners/types',
                                       'articles/history',
-                                      'articles/images');
+                                      'articles/images',
+                                      'statistics/details');
 
 $config['yes_no']             = array('yes'             => 'label_yes', 
                                       'no'              => 'label_no');
