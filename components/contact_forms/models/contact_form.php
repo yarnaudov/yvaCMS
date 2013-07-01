@@ -31,7 +31,7 @@ class Contact_form extends CI_Model {
 
     }
     
-    function _send($contact_form_id)
+    private function _send($contact_form_id)
     {
         
         $contact_form = self::getDetails($contact_form_id);
@@ -151,6 +151,7 @@ class Contact_form extends CI_Model {
         if($result == 1){
 	    $msg = !empty($contact_form['msg_success']) ? $contact_form['msg_success'] : lang('msg_cf_send');
             $this->session->set_flashdata('contact_form_msg', $msg);
+	    self::_save_in_db();
         }
         else{
 	    $msg = !empty($contact_form['msg_error']) ? $contact_form['msg_error'] : lang('msg_cf_error');
@@ -160,6 +161,11 @@ class Contact_form extends CI_Model {
         redirect(current_url());
         exit;
         
+    }
+    
+    private function _save_in_db()
+    {
+	
     }
     
 }

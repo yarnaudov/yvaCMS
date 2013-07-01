@@ -5,6 +5,12 @@ class Main extends MY_Controller {
     public function index()
     {        
         
+	if(isset($_POST['add_comment'])){
+	    //echo "add comment to article";
+	    $this->Article->addComment();
+	    exit;
+	}
+	
         echo parent::_parseTemplateFile();
         
     }

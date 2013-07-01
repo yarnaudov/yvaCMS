@@ -417,4 +417,25 @@ class Article extends CI_Model {
 	
     }
     
+    function addComment()
+    {
+	
+	$data['article_id'] = $this->input->post('article_id', true);
+	
+	if(empty($data['article_id'])){
+	    return FALSE;	    
+	}
+	
+	//if(isset($_SESSION['user_id'])){
+	//    $data['created_by'] = '';
+	//}
+	
+	$data['created_on'] = date('Y-m-d H:i:s');
+	$data['name']       = $this->input->post('name', true);
+	$data['comment']    = $this->input->post('comment', true);
+	
+	$this->db->insert('articles_comments', $data);
+	
+    }
+    
 }

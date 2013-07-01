@@ -999,6 +999,19 @@ CREATE TABLE IF NOT EXISTS `articles_statistics` (
 
 
 --
+-- Table structure for table `articles_comments`
+--
+CREATE TABLE IF NOT EXISTS `articles_comments` (
+  `id` int(4) NOT NULL AUTO_INCREMENT,
+  `article_id` int(4) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `comment` text NOT NULL,
+  `created_by` int(4) DEFAULT NULL,
+  `created_on` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
+
+--
 -- Constraints for dumped tables
 --
 
