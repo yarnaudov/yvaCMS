@@ -30,13 +30,13 @@
 		<input type="hidden" name="article_id" value="<?=$article['id'];?>" >
 
 		<div>
-		    <label>Име:</label>
-		    <input type="text" name="name" >
+		    <label><?=lang('label_name');?>: *</label>
+		    <input type="text" name="name" class="required" >
 		</div>
 
 		<div>
-		    <label>Коментар:</label>
-		    <textarea name="comment" ></textarea>
+		    <label><?=lang('label_comment');?>: *</label>
+		    <textarea name="comment" class="required" ></textarea>
 		</div>
 
 		<div>
@@ -54,13 +54,14 @@
 
 		<div>
 
-		    <label><?=lang('label_cf_enter_code');?>: *</label>
+		    <label><?=lang('label_enter_code');?>: *</label>
 		    <input type="text" name="ct_captcha" class="required" style="width: 200px;" />
 
 		</div>
 
 		<div>
-		    <button class="add_comment" name="add_comment" >Добави коментар</button>
+		    <button class="add_comment" name="add_comment" ><?=lang('label_add_comment');?></button>
+		    <button type="reset" ><?=lang('label_clear');?></button>
 		</div>
 
 	    </form>

@@ -24,7 +24,7 @@ function check_captcha(form){
 		var label = $(form.ct_captcha).parent().find('label.error');
 		if(label.html()){
 		    label.html(data);
-		    label.css('display', 'block');
+		    $(label).toggle();
 		}
 		else{
 		    $(form.ct_captcha).parent().append('<label class="error" for="ct_captcha" generated="true">'+data+'</label>');                           
