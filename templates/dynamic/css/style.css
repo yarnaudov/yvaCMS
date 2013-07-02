@@ -568,8 +568,22 @@ a.readmore_hide{
    float: left;
    width: 100%;
 }
+.comments_form div{
+    padding: 5px 0;
+}
 .comments_form label{
-    display: block;
+    display: inline-block;
     width: 120px;
-    float: left;
+    vertical-align: top;
+}
+.comments_form label.error{
+    color: red;
+    width: auto !important;
+}
+.comments_form input{
+    width: 200px;   
+}
+.comments_form textarea{
+    width: 525px;   
+    height: 100px;
 }

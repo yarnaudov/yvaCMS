@@ -58,6 +58,7 @@
 		</div>
 
 		<div class="buttons" >
+		    <label>&nbsp;</label>
 		    <button class="add_comment" name="add_comment" ><?=lang('label_add_comment');?></button>
 		    <button type="reset" ><?=lang('label_clear');?></button>
 		</div>
