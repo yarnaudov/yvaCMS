@@ -74,7 +74,7 @@ class Content extends CI_Model {
                 case "article":
                 
                     if(!empty($menu['params']['article_id'])){
-                    
+		
                         $article         = $this->Article->getDetails($menu['params']['article_id']);                    
                         $article['text'] = $this->Article->parceText($article['text']);
                         

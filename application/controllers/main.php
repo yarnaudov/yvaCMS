@@ -5,9 +5,10 @@ class Main extends MY_Controller {
     public function index()
     {        
         
+	# add comment to article
 	if(isset($_POST['add_comment'])){
-	    //echo "add comment to article";
 	    $this->Article->addComment();
+	    redirect(current_url());
 	    exit;
 	}
 	
@@ -56,6 +57,22 @@ class Main extends MY_Controller {
 	
 	redirect($this->input->get('url'));
 	
+    }
+    
+    public function check_captcha()
+    {
+        
+        require_once BASEPATH . '../plugins/securimage/securimage.php';
+
+        $image = new Securimage();
+        if ($image->check($_POST['code']) == true) {
+            echo 1;
+        } else {
+            echo lang('msg_captcha_code_err');
+        }
+        
+        exit;
+        
     }
     
 }

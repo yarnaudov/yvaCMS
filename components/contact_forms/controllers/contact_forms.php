@@ -14,6 +14,7 @@ class Contact_forms extends MY_Controller {
         
         
         $this->jquery_ext->add_plugin('validation');
+	$this->jquery_ext->add_library('check_captcha.js');
         $this->jquery_ext->add_library('../components/contact_forms/js/contacts.js');
         $this->jquery_ext->add_css('../components/contact_forms/css/contacts.css');
         
@@ -21,7 +22,7 @@ class Contact_forms extends MY_Controller {
         /*
          * load validation library language file
          */
-        $file = 'jquery/plugins/validation/localization/messages_'.get_lang().'.js';
+        $file = 'validation/localization/messages_'.get_lang().'.js';
         if(file_exists('js/'.$file)){
             $this->jquery_ext->add_library($file);
         }

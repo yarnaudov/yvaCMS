@@ -91,6 +91,22 @@ class MY_Controller extends CI_Controller {
             }
             
         }
+	
+	// load validation js if article is loaded
+	if($this->article_alias || $menu['params']['type'] == 'article'){
+	    
+	    $this->jquery_ext->add_plugin('validation');
+	    $this->jquery_ext->add_library('check_captcha.js');
+
+	    /*
+	     * load validation library language file
+	     */
+	    $file = 'validation/localization/messages_'.get_lang().'.js';
+	    if(file_exists('js/'.$file)){
+		$this->jquery_ext->add_library($file);
+	    }
+	
+	}
         
         // If tamplate is assignt to menu load it insted of default one
         if(isset($menu['main_template']) && $menu['main_template'] != 'default'){

@@ -14,20 +14,22 @@ class Article extends CI_Model {
                       a.id = '".$id."' ";
         
         $article = $this->db->query($query);
-        $article = $article->result_array();
+        $article = $article->row_array();
 
         if(empty($article)){
             return;
         }
         
-        $article[0]['params'] = json_decode($article[0]['params'], true); 
-        $article[0]           = array_merge($article[0], $this->Custom_field->getValues('articles', $id));
+        $article['params'] = json_decode($article['params'], true); 
+        $article           = array_merge($article, $this->Custom_field->getValues('articles', $id));
+	
+	$article['comments'] = $this->db->get_where('articles_comments', array('article_id' => $id))->result_array();
         
         if($field == null){
-            return $article[0];
+            return $article;
         }
         else{  	
-            return $article[0][$field];
+            return $article[$field];
         }
 
     }
@@ -164,7 +166,7 @@ class Article extends CI_Model {
         }
         
         $query = "SELECT 
-                      *
+                      a.id
                     FROM
                       articles a
                       LEFT JOIN articles_data ad ON (a.id = ad.article_id AND ad.language_id = '".$this->language_id."')
@@ -174,21 +176,20 @@ class Article extends CI_Model {
                       a.status = 'yes'";
         
         $article = $this->db->query($query);
-        $article = $article->result_array();
+        $article = $article->row_array();
 
         if(empty($article)){
             return;
         }
         
-        $article[0]['params'] = json_decode($article[0]['params'], true); 
-        $article[0]           = array_merge($article[0], $this->Custom_field->getValues('articles', $article[0]['id']));
-        
+	$article = self::getDetails($article['id']);
+	        
         
         if($field == null){
-            return $article[0];
+            return $article;
         }
         else{  	
-            return $article[0][$field];
+            return $article[$field];
         }
         
     }    
