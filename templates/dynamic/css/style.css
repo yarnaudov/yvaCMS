@@ -534,3 +534,42 @@ a.readmore_hide{
 .article .content #images_canvas li:last-child img{
     margin-right: 0;
 }
+
+/* articles comments */
+.comments{
+    
+}
+.comments_list{
+    border-top: 1px solid;
+}
+.comments_list ul{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.comments_list ul li{
+   display: block;
+   padding: 10px 0;
+   overflow: auto;
+   border-bottom: 1px solid #eee;
+}
+.comments_list ul li:last-child{
+  border-bottom: none;   
+}
+.comments_list .name{
+   float: left;
+   font-weight: bold;
+}
+.comments_list .date{
+   float: right;   
+}
+.comments_list .comment{
+   diasplay: block;
+   float: left;
+   width: 100%;
+}
+.comments_form label{
+    display: block;
+    width: 120px;
+    float: left;
+}

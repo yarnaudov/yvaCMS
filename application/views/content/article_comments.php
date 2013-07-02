@@ -16,7 +16,7 @@
 		<?php } ?>
 		
 		<?php if(count($article['comments']) == 0){ ?>
-		<li>Няма коментари. Бъди първият</li>
+		<li><?=lang('msg_no_comments');?></li>
 		<?php } ?>
 	    
 	    </ul>
@@ -41,7 +41,7 @@
 
 		<div>
 		    <label>&nbsp;</label>
-		    <img id="siimage" style="margin-right: 15px;width: 200px;height: 70px;" src="<?=base_url();?>/plugins/securimage/securimage_show.php?sid=<?php echo md5(uniqid()) ?>" alt="CAPTCHA Image" />
+		    <img id="siimage" src="<?=base_url();?>/plugins/securimage/securimage_show.php?sid=<?php echo md5(uniqid()) ?>" alt="CAPTCHA Image" />
 		    <object type="application/x-shockwave-flash" data="<?=base_url();?>/plugins/securimage/securimage_play.swf?bgcol=#ffffff&amp;icon_file=./images/audio_icon.gif&amp;audio_file=<?=base_url();?>/plugins/securimage/securimage_play.php" width="19" height="19" >
 			<param name="movie" value="<?=base_url();?>/plugins/securimage/securimage_play.swf?bgcol=#ffffff&amp;icon_file=./images/audio_icon.gif&amp;audio_file=<?=base_url();?>/plugins/securimage/securimage_play.php" />
 		    </object>
@@ -53,13 +53,11 @@
 		</div>
 
 		<div>
-
 		    <label><?=lang('label_enter_code');?>: *</label>
-		    <input type="text" name="ct_captcha" class="required" style="width: 200px;" />
-
+		    <input type="text" name="ct_captcha" class="required captcha_input" />
 		</div>
 
-		<div>
+		<div class="buttons" >
 		    <button class="add_comment" name="add_comment" ><?=lang('label_add_comment');?></button>
 		    <button type="reset" ><?=lang('label_clear');?></button>
 		</div>
@@ -67,6 +65,7 @@
 	    </form>
 	    
 	    <script type="text/javascript" >
+		
 		$(document).ready(function() {
 		    
 		    $(".commentForm").validate({
