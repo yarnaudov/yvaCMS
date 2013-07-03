@@ -23,7 +23,7 @@ class Article extends CI_Model {
         $article['params'] = json_decode($article['params'], true); 
         $article           = array_merge($article, $this->Custom_field->getValues('articles', $id));
 	
-	$article['comments'] = $this->db->get_where('articles_comments', array('article_id' => $id))->result_array();
+	$article['comments'] = $this->db->order_by('created_on', 'DESC')->get_where('articles_comments', array('article_id' => $id))->result_array();
         
         if($field == null){
             return $article;
