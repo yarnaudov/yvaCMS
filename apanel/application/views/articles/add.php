@@ -195,6 +195,17 @@
                                         </select>
                                     </td>
                                 </tr>
+				
+				<tr><td colspan="2" class="empty_line" ></td></tr>
+                                
+                                <tr>	      			
+                                    <th><label><?=lang('label_show_comments');?>:</label></th>
+                                    <td>
+                                        <select name="params[show_comments]" >
+                                            <?=create_options_array($this->config->item('yes_no'), set_value('params[show_comments]', isset($params['show_comments']) ? $params['show_comments'] : ""));?>
+                                        </select>
+                                    </td>
+                                </tr>
                                 
                                 <tbody id="custom_fields" >
                                 <?php if(count($custom_fields) > 0){

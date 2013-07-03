@@ -153,6 +153,7 @@ $lang['label_from']          = 'From';
 $lang['label_display_module_in'] = 'Display module in';
 $lang['label_display_banner_in'] = 'Display banner in';
 $lang['label_show_title']        = 'Show title';
+$lang['label_show_comments']     = 'Show comments';
 $lang['label_label']             = 'Label';
 $lang['label_field_text']        = 'Field text';
 $lang['label_button_text']       = 'Button text';

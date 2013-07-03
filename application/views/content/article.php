@@ -8,6 +8,8 @@
         <?=$article['text'];?>
     </div>
    
-    <?=$this->load->view('content/article_comments');?>
+    <?php if($article['params']['show_comments'] == 'yes'){
+	      $this->load->view('content/article_comments');
+          } ?>
     
 </div>
