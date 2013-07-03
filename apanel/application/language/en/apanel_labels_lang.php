@@ -199,7 +199,8 @@ $lang['label_last']         = 'Last';
 
 $lang['label_make_default'] = 'Make if default';
 
-$lang['label_most_popular'] = 'Most popular';
+$lang['label_most_popular']   = 'Most popular';
+$lang['label_most_commented'] = 'Most commented';
 
 //statistics
 $lang['label_read']          = 'Read';

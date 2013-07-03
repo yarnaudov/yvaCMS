@@ -44,4 +44,24 @@ $(document).ready(function() {
         return false;
     });
     
+    $('.categories_list input').live('click load', function(event){
+        console.log(event.type);
+        var value = $(this).val();
+        console.log(value);
+        if(value == 'most_popular' || value == 'most_commented'){
+            $('.categories_list input:not([value^=most_])').attr('disabled', $(this).is(':checked'));
+            
+            if(value == 'most_popular'){
+                $('.categories_list input[value=most_commented]').removeAttr('checked');
+            }
+            else if(value == 'most_commented'){
+                $('.categories_list input[value=most_popular]').removeAttr('checked');
+            }
+            
+        }
+        
+    });
+
+    $('.categories_list input[value=most_commented]').trigger('load');
+     
 });
