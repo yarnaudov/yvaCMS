@@ -1,4 +1,4 @@
-<?php
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 // labels
 $lang['label_read_more']      = 'Прочети още';
@@ -17,4 +17,3 @@ $lang['msg_category_not_selected'] = 'Не е избрана категория!
 $lang['msg_captcha_code_err']      = 'Грешно въведен код';
 $lang['msg_no_comments']           = 'Все още няма коментари. Бъди първият.';
 
-?>

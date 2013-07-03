@@ -8,6 +8,7 @@ class MY_Controller extends CI_Controller {
     public $article_alias;
     
     public $template;
+    public $template_main;
     public $data;
     
     function __construct()
@@ -29,17 +30,23 @@ class MY_Controller extends CI_Controller {
         
         $this->load->helper('simple_html_dom');
         
-        $this->load->language('system');
-        
         $this->language_id = $this->Language->getDetailsByAbbr(get_lang(), 'id');
         
         $this->load->model('Setting');
-        
         
         /*
          * Set settings
          */
         $this->template = $this->Setting->getTemplate();
+	$this->template_main = $this->Setting->getTemplate('main');
+	
+	# load system language
+	$this->load->language('system');
+	
+	# load template language if exists
+	if(file_exists(TEMPLATES_DIR . '/' . $this->template_main . '/language/' . get_lang() . '/template_lang.php')){
+	    $this->load->language('template');
+	}
 
         $uri = explode('/', $this->uri->uri_string());
         $uri = array_reverse($uri);

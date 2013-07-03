@@ -1,4 +1,4 @@
-<?php
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 // labels
 $lang['label_read_more']      = 'Read more';
@@ -17,4 +17,3 @@ $lang['msg_category_not_selected'] = 'No category selected!';
 $lang['msg_captcha_code_err']      = 'You have entered wrong code';
 $lang['msg_no_comments']           = 'No comments yet. Be the first.';
 
-?>

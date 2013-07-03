@@ -24,9 +24,14 @@ class MY_Lang extends MX_Lang {
         list($path, $_langfile) = Modules::find($langfile.'_lang', $_module, 'language/'.$idiom.'/');
 
         if ($path === FALSE) {
-
-            if ($lang = parent::load($langfile, $lang, $return, $add_suffix, $alt_path)) 
+	
+	    # try to load the language from template directory first
+	    if($lang = parent::load($langfile, $lang, $return, $add_suffix, TEMPLATES_DIR . '/' . CI::$APP->template_main . '/')){
+		return $lang;
+	    }
+            else if ($lang = parent::load($langfile, $lang, $return, $add_suffix, $alt_path)){
                 return $lang;
+	    }
 
         } else {
 
