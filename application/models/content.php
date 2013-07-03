@@ -94,12 +94,16 @@ class Content extends CI_Model {
                     
                     if(isset($menu['params']['categories'])){
                         
-                        $articles = $this->Article->getByCategory($menu['params']['categories'], $menu['params']['order'], $menu['params']['number'], 'menu'.$menu['id']);
-
                         if(in_array('most_popular', $menu['params']['categories'])){
-                            $articles = $articles+$this->Article->getMostPopular($menu['params']['order'], $menu['params']['number'], 'menu'.$menu['id']);
+                            $articles = $this->Article->getMostPopular($menu['params']['order'], $menu['params']['number'], 'menu'.$menu['id']);
                         }
-			
+			elseif(in_array('most_commented', $menu['params']['categories'])){
+                            $articles = $this->Article->getMostCommented($menu['params']['order'], $menu['params']['number'], 'menu'.$menu['id']);
+                        }
+			else{
+			    $articles = $this->Article->getByCategory($menu['params']['categories'], $menu['params']['order'], $menu['params']['number'], 'menu'.$menu['id']);
+			}
+						
 			$data['content'] = $this->load->view($content_template, compact('menu', 'articles'), true);
                     
                     }

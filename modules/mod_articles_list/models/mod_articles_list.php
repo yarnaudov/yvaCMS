@@ -9,10 +9,14 @@ class mod_articles_list extends CI_Model{
 	
 	if(isset($module['params']['categories'])){
 
-	    $data['articles'] = $this->Article->getByCategory($module['params']['categories'], $module['params']['order'], $module['params']['number'], 'module'.$module['id']);
-
 	    if(in_array('most_popular', $module['params']['categories'])){
-		$data['articles'] = $data['articles']+$this->Article->getMostPopular($module['params']['order'], $module['params']['number'], 'module'.$module['id']);
+		$data['articles'] = $this->Article->getMostPopular($module['params']['order'], $module['params']['number'], 'module'.$module['id']);
+	    }
+	    elseif(in_array('most_commented', $module['params']['categories'])){
+		$data['articles'] = $this->Article->getMostCommented($module['params']['order'], $module['params']['number'], 'module'.$module['id']);
+	    }
+	    else{
+		$data['articles'] = $this->Article->getByCategory($module['params']['categories'], $module['params']['order'], $module['params']['number'], 'module'.$module['id']);
 	    }
 	    
 	}

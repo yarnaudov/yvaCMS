@@ -5,9 +5,10 @@
     <td>
 	
         <?php $categories = $this->Category->getForDropdown('articles');
-	      $categories['most_popular'] = '- '.lang('label_most_popular').' -'; ?>
+	      $categories['most_popular'] = '- '.lang('label_most_popular').' -';
+	      $categories['most_commented'] = '- '.lang('label_most_commented').' -'; ?>
 	
-	<div class="menu_list" >
+	<div class="menu_list categories_list" >
             <table class="menu_list" cellpadding="0" cellspacing="0" >    
                                                       
                 <?php $sel_categories = set_value('params[categories]', isset($params['categories']) ? $params['categories'] : "");

@@ -63,19 +63,6 @@ class Article extends CI_Model {
 	    if(self::_checkFilters($filter, $article) == false){
 		continue;
 	    }
-	    
-            /* --- check language for article display --- */
-            if($article['show_in_language'] != NULL && $article['show_in_language'] != $this->Language->getDetailsByAbbr(get_lang(), 'id')){
-                continue;
-            }            
-
-            /* --- check start end date for article display --- */
-            if($article['start_publishing'] != NULL && $article['start_publishing'] > date('Y-m-d')){
-                continue;
-            }
-            elseif($article['end_publishing'] != NULL && $article['end_publishing'] < date('Y-m-d')){
-                continue;
-            }
             
             $articles_arr[] = $article;
             
@@ -112,20 +99,43 @@ class Article extends CI_Model {
 	    if(self::_checkFilters($filter, $article) == false){
 		continue;
 	    }
-	    
-            /* --- check language for article display --- */
-            if($article['show_in_language'] != NULL && $article['show_in_language'] != $this->Language->getDetailsByAbbr(get_lang(), 'id')){
-                continue;
-            }            
-
-            /* --- check start end date for article display --- */
-            if($article['start_publishing'] != NULL && $article['start_publishing'] > date('Y-m-d')){
-                continue;
-            }
-            elseif($article['end_publishing'] != NULL && $article['end_publishing'] < date('Y-m-d')){
-                continue;
-            }
             
+            $articles_arr[] = $article;
+            
+        }
+        
+        return $articles_arr;
+	
+    }
+    
+    public function getMostCommented($order = 'order ASC', $limit = 'all', $filter = false)
+    {
+	
+	$this->db->select('articles.id, count(articles_comments.id) AS comments');
+	$this->db->from('articles');
+	$this->db->join('articles_comments', 'articles.id = articles_comments.article_id', 'left');
+        $this->db->where('status', 'yes');
+	$this->db->group_by('articles.id');
+	
+	$this->db->order_by('comments', 'desc');
+	$this->db->order_by($order, '', false);
+	
+	if($limit != 'all'){
+	    $this->db->limit($limit);
+	}
+	
+        $articles = $this->db->get()->result_array();
+	
+	$articles_arr = array();
+        foreach($articles as $article){
+            
+            $article = self::getDetails($article['id']);
+	 
+	    /* --- check filters --- */
+	    if(self::_checkFilters($filter, $article) == false){
+		continue;
+	    }
+	    
             $articles_arr[] = $article;
             
         }
@@ -152,6 +162,19 @@ class Article extends CI_Model {
 		    return false;
 		}
 	    }
+	}
+	
+	/* --- check language for article display --- */
+	if($article['show_in_language'] != NULL && $article['show_in_language'] != $this->Language->getDetailsByAbbr(get_lang(), 'id')){
+	    return false;
+	}            
+
+	/* --- check start end date for article display --- */
+	if($article['start_publishing'] != NULL && $article['start_publishing'] > date('Y-m-d')){
+	    return false;
+	}
+	elseif($article['end_publishing'] != NULL && $article['end_publishing'] < date('Y-m-d')){
+	    return false;
 	}
 	
 	return true;

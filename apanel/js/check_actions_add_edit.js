@@ -44,24 +44,33 @@ $(document).ready(function() {
         return false;
     });
     
-    $('.categories_list input').live('click load', function(event){
-        console.log(event.type);
-        var value = $(this).val();
-        console.log(value);
-        if(value == 'most_popular' || value == 'most_commented'){
-            $('.categories_list input:not([value^=most_])').attr('disabled', $(this).is(':checked'));
+    function categories_list(element, event){
+	
+	if($(element).is(':checked') == false && event.type == 'load'){
+	   return; 
+	}
+	
+        var value = $(element).val();
+	
+	$('.categories_list input:not([value^=most_])').attr('disabled', $(element).is(':checked'));
             
-            if(value == 'most_popular'){
-                $('.categories_list input[value=most_commented]').removeAttr('checked');
-            }
-            else if(value == 'most_commented'){
-                $('.categories_list input[value=most_popular]').removeAttr('checked');
-            }
-            
-        }
+	if(value == 'most_popular' && $(element).is(':checked')){
+	    $('.categories_list input[value=most_commented]').removeAttr('checked');
+	}
+	else if(value == 'most_commented' && $(element).is(':checked')){
+	    $('.categories_list input[value=most_popular]').removeAttr('checked');
+	}
         
+    }
+    
+    $('.categories_list input[value^=most_]').live('click', function(event){
+	categories_list(this, event);
+    });
+    
+    $('.categories_list input[value^=most_]').on('load', function(event){
+	categories_list(this, event);
     });
 
-    $('.categories_list input[value=most_commented]').trigger('load');
+    $('.categories_list input[value^=most_]').trigger('load');
      
 });
