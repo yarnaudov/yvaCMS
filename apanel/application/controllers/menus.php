@@ -74,10 +74,10 @@ class Menus extends MY_Controller {
                 $this->form_validation->set_rules('title', lang('label_title'), 'required');
                 
                 if($method == 'add'){
-                    $this->form_validation->set_rules('alias', lang('label_alias'), 'required|is_unique[menus.alias]');
+                    $this->form_validation->set_rules('alias', lang('label_alias'), 'required|is_unique[menus.alias]|callback_alias_check_forbiden');
                 }
                 elseif($method == 'edit'){
-                    $this->form_validation->set_rules('alias', lang('label_alias'), 'required|is_unique_edit[menus.alias.id.'.$this->menu_id.']');
+                    $this->form_validation->set_rules('alias', lang('label_alias'), 'required|is_unique_edit[menus.alias.id.'.$this->menu_id.']|callback_alias_check_forbiden');
                 }
                 
                 if ($this->form_validation->run() == TRUE){
@@ -245,6 +245,18 @@ class Menus extends MY_Controller {
         $content["content"] = $this->load->view('menus/types', $data, true);
         $this->load->view('layouts/simple_ajax', $content);
         
+    }
+    
+    public function alias_check_forbiden($alias)
+    {
+	
+	if($alias == 'search' || $alias == 'ajax' || $alias == 'load'){
+	    $this->form_validation->set_message('alias_check_forbiden', lang('alias_check_forbiden'));
+	    return FALSE;
+	}
+	
+	return TRUE;
+	
     }
     
 }
