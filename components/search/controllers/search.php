@@ -7,7 +7,7 @@ class Search extends MY_Controller {
         
         parent::__construct();
         
-        $this->load->language('search');
+        $this->load->language('components/search');
         
         if(!isset($_GET['query'])){
             redirect(current_url().'?query='.urlencode($this->input->post('search_v')));

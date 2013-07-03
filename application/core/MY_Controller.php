@@ -100,7 +100,7 @@ class MY_Controller extends CI_Controller {
         }
 	
 	// load validation js if article is loaded
-	if($this->article_alias || $menu['params']['type'] == 'article'){
+	if($this->article_alias || @$menu['params']['type'] == 'article'){
 	    
 	    $this->jquery_ext->add_plugin('validation');
 	    $this->jquery_ext->add_library('check_captcha.js');

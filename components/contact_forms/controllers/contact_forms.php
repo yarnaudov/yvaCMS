@@ -10,7 +10,7 @@ class Contact_forms extends MY_Controller {
         
         $this->load->model('Contact_form');
         
-        $this->load->language('com_cf');
+        $this->load->language('components/com_cf');
         
         
         $this->jquery_ext->add_plugin('validation');

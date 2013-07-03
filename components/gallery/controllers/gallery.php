@@ -6,7 +6,7 @@ class Gallery extends MY_Controller {
     function __construct() {
         parent::__construct();
         
-        $this->load->language('gallery');
+        $this->load->language('components/gallery');
         
         $this->load->model('Album');
         $this->load->model('Image');

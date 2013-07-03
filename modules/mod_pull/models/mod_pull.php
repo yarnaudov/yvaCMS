@@ -6,7 +6,7 @@ class mod_pull extends CI_Model{
     {
 	  	  
         $this->load->model('pulls/Pull');
-        $this->load->language('mod_pull');
+        $this->load->language('modules/mod_pull');
 
         $data['pull'] = $this->Pull->getDetails($module['params']['pull_id']);
                 
