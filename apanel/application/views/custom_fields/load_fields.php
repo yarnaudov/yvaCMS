@@ -115,9 +115,9 @@ foreach($custom_fields as $custom_field){
      
 	case 'location':
 	  
-	    $zoom = set_value('field'.$custom_field['id'].'[zoom]', isset(${'field'.$custom_field['id']}->zoom) ? ${'field'.$custom_field['id']}->zoom : "");
-	    $lat  = set_value('field'.$custom_field['id'].'[lng]',  isset(${'field'.$custom_field['id']}->lat)  ? ${'field'.$custom_field['id']}->lat  : "");
-	    $lng  = set_value('field'.$custom_field['id'].'[lng]',  isset(${'field'.$custom_field['id']}->lng)  ? ${'field'.$custom_field['id']}->lng  : "");
+	    $zoom = set_value('field'.$custom_field['id'].'[zoom]', isset(${'field'.$custom_field['id']}['zoom']) ? ${'field'.$custom_field['id']}['zoom'] : "");
+	    $lat  = set_value('field'.$custom_field['id'].'[lng]',  isset(${'field'.$custom_field['id']}['lat'])  ? ${'field'.$custom_field['id']}['lat']  : "");
+	    $lng  = set_value('field'.$custom_field['id'].'[lng]',  isset(${'field'.$custom_field['id']}['lng'])  ? ${'field'.$custom_field['id']}['lng']  : "");
 	    
 	    echo '<input type="hidden" name="field'.$custom_field['id'].'[zoom]" class="zoom'.$custom_field['id'].'" value="'.$zoom.'" >';
 	    echo '<input type="hidden" name="field'.$custom_field['id'].'[lat]"  class="lat'.$custom_field['id'].'"  value="'.$lat.'">';

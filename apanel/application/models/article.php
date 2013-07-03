@@ -21,8 +21,8 @@ class Article extends MY_Model {
         }
         
         $article[0]['params'] = json_decode($article[0]['params'], true); 
-        $article[0]           = array_merge($article[0], $this->Custom_field->getFieldsValues($id));
-        
+        $article[0]           = array_merge($article[0], json_decode(json_encode($this->Custom_field->getFieldsValues($id)), true));
+   
         if($field == null){
             return $article[0];
         }
@@ -41,6 +41,9 @@ class Article extends MY_Model {
 
         $article = $this->db->get('articles_history');  	
         $article = $article->result_array();
+	
+	$article[0]['params'] = json_decode($article[0]['params'], true); 
+        $article[0]           = array_merge($article[0], json_decode($article[0]['custom_fields'], true));
 
         if($field == null){
             return $article[0];
@@ -465,6 +468,8 @@ class Article extends MY_Model {
     private function _saveHistory($id)
     {
        
+	$custom_fields = $this->Custom_field->getFieldsValues($id);
+	
         $result = $this->db->query("INSERT 
                                       INTO 
                                         articles_history 
@@ -476,6 +481,8 @@ class Article extends MY_Model {
                                          a.show_in_language,
                                          a.start_publishing,
                                          a.end_publishing,
+					 a.show_title,
+					 a.params,
                                          a.created_by,
                                          a.created_on,
                                          a.updated_by,
@@ -483,7 +490,8 @@ class Article extends MY_Model {
                                          ad.title,
                                          ad.text,
                                          a.status,
-                                         a.`order`
+                                         a.`order`,
+					 '".mysql_real_escape_string(json_encode($custom_fields))."' AS custom_fields
                                        FROM
                                          articles a
                                          JOIN articles_data ad ON (a.id = ad.article_id AND ad.language_id = ".$this->language_id.")
