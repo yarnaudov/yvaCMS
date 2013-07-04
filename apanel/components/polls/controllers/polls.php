@@ -1,9 +1,9 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Pulls extends MY_Controller {
+class Polls extends MY_Controller {
 
     public  $page;
-    private $pull_id;
+    private $poll_id;
     
     function __construct()
     {
@@ -12,12 +12,12 @@ class Pulls extends MY_Controller {
         
         $this->load->config('config');
         
-        $this->load->model('Pull');
+        $this->load->model('Poll');
         
-        parent::_loadComponetLanguages('pulls');
+        parent::_loadComponetLanguages('polls');
                 
         $this->page    = isset($_GET['page']) ? $_GET['page'] : 1;                
-        $this->pull_id = $this->uri->segment(4);
+        $this->poll_id = $this->uri->segment(4);
                     
     }
     
@@ -49,8 +49,8 @@ class Pulls extends MY_Controller {
             $this->jquery_ext->add_script($script);
             $this->jquery_ext->add_plugin("tinymce");
             $this->jquery_ext->add_library("tinymce.js");
-            $this->jquery_ext->add_library("../components/pulls/js/pulls.js");
-            $this->jquery_ext->add_css("../components/pulls/css/pulls.css");
+            $this->jquery_ext->add_library("../components/polls/js/polls.js");
+            $this->jquery_ext->add_css("../components/polls/css/polls.css");
 
             $this->load->helper('form');
             $this->load->library('form_validation');            
@@ -61,14 +61,14 @@ class Pulls extends MY_Controller {
             
                 if ($this->form_validation->run() == TRUE){
                     
-                    $pull_id = $this->Pull->$method($this->pull_id);
+                    $poll_id = $this->Poll->$method($this->poll_id);
                                                             
                     if(isset($_POST['save'])){
-                        redirect('components/pulls');
+                        redirect('components/polls');
                         exit();
                     }
                     elseif(isset($_POST['apply'])){
-                        redirect('components/pulls/edit/'.$pull_id);
+                        redirect('components/polls/edit/'.$poll_id);
                         exit();
                     }
                     
@@ -89,18 +89,18 @@ class Pulls extends MY_Controller {
          *  delete, change status, change order, set order by, set filters, 
          *  clear filter, set limit, get sub menus, set class on sorted element
          */
-        $data = parent::index($this->Pull, 'pulls', 'components/pulls');
+        $data = parent::index($this->Poll, 'polls', 'components/polls');
         
-        // get pulls
-        $pulls = $this->Pull->getPulls($data['filters'], $data['order_by']);
+        // get polls
+        $polls = $this->Poll->getPolls($data['filters'], $data['order_by']);
         if($data['limit'] == 'all'){
-            $pulls[0] = $pulls;
+            $polls[0] = $polls;
         }
         else{
-          $pulls = array_chunk($pulls, $data['limit']);
-          $data['max_pages'] = count($pulls);
+          $polls = array_chunk($polls, $data['limit']);
+          $data['max_pages'] = count($polls);
         }
-        $data['pulls']   = count($pulls) == 0 ? array() : $pulls[($this->page-1)];
+        $data['polls']   = count($polls) == 0 ? array() : $polls[($this->page-1)];
         
         // load custom jquery script
         $this->jquery_ext->add_library("check_actions.js");
@@ -120,9 +120,9 @@ class Pulls extends MY_Controller {
     
     public function edit()
     {
-        $data = $this->Pull->getDetails($this->pull_id);
+        $data = $this->Poll->getDetails($this->poll_id);
         
-        $answers = $this->Pull->getAnswers($this->pull_id);
+        $answers = $this->Poll->getAnswers($this->poll_id);
         
         $data['votes'] = 0;
         foreach($answers as $answer){

@@ -6,8 +6,8 @@
     <div id="page_header" >
 	
         <div class="text" >
-            <img src="<?=base_url('components/pulls/img/iconPull_25.png');?>" >
-            <span><?=lang('label_pulls');?></span>
+            <img src="<?=base_url('components/polls/img/iconPoll_25.png');?>" >
+            <span><?=lang('label_polls');?></span>
             <span>&nbsp;»&nbsp;</span>
             <span>
               <?php if(isset($contact_form_id)){
@@ -23,7 +23,7 @@
 		
 	    <button type="submit" name="save"  class="styled save"   ><?=lang('label_save');?></button>
 	    <button type="submit" name="apply" class="styled apply"  ><?=lang('label_apply');?></button>
-	    <a href="<?=site_url('pulls');?>"  class="styled cancel" ><?=lang('label_cancel');?></a>
+	    <a href="<?=site_url('polls');?>"  class="styled cancel" ><?=lang('label_cancel');?></a>
 		
 	</div>
 	

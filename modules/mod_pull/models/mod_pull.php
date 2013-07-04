@@ -1,21 +1,21 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class mod_pull extends CI_Model{
+class mod_poll extends CI_Model{
 	
     function run($module)
     {
 	  	  
-        $this->load->model('pulls/Pull');
-        $this->load->language('modules/mod_pull');
+        $this->load->model('polls/Poll');
+        $this->load->language('modules/mod_poll');
 
-        $data['pull'] = $this->Pull->getDetails($module['params']['pull_id']);
+        $data['poll'] = $this->Poll->getDetails($module['params']['poll_id']);
                 
         $show_votes = false;
-        if(isset($_COOKIE['pulls'][$data['pull']['id']])){
+        if(isset($_COOKIE['polls'][$data['poll']['id']])){
             $show_votes = true;
-            $answer_id  = $_COOKIE['pulls'][$data['pull']['id']];
+            $answer_id  = $_COOKIE['polls'][$data['poll']['id']];
         }
-        elseif(isset($_REQUEST['show_votes']) && $_REQUEST['show_votes'] == $data['pull']['id']){
+        elseif(isset($_REQUEST['show_votes']) && $_REQUEST['show_votes'] == $data['poll']['id']){
             $show_votes = true;
             $answer_id  = false;
         }
@@ -25,11 +25,11 @@ class mod_pull extends CI_Model{
             $data['answer_id'] = $answer_id;
 
             $data['votes'] = 0;
-            foreach($data['pull']['answers'] as $answer){
+            foreach($data['poll']['answers'] as $answer){
                 $data['votes'] += $answer['votes'];	
             }
         	  
-            $module['template'] = '../../modules/mod_pull/views/mod_pull_graphics';
+            $module['template'] = '../../modules/mod_poll/views/mod_poll_graphics';
             
         }
                 

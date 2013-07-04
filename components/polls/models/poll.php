@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Pull extends CI_Model {
+class Poll extends CI_Model {
 
     private $id;
     
@@ -10,28 +10,28 @@ class Pull extends CI_Model {
         $this->db->select('*');
         $this->db->where('id', $id);
 
-        $pull = $this->db->get('com_pulls');  	
-        $pull = $pull->result_array();
+        $poll = $this->db->get('com_polls');  	
+        $poll = $poll->result_array();
         
-        $pull[0]['answers'] = self::getAnswers($id);
+        $poll[0]['answers'] = self::getAnswers($id);
                                 
         if($field == null){
-            return $pull[0];
+            return $poll[0];
         }
         else{  	
-            return $pull[0][$field];
+            return $poll[0][$field];
         }
 
     }
     
-    function getAnswers($pull_id)
+    function getAnswers($poll_id)
     {
     	
     	$this->db->select('*');
-        $this->db->where('pull_id', $pull_id);
+        $this->db->where('poll_id', $poll_id);
         $this->db->where('status', 'yes');
 
-        $answers = $this->db->get('com_pull_answers');  	
+        $answers = $this->db->get('com_poll_answers');  	
         $answers = $answers->result_array();
 
         return $answers;
@@ -44,7 +44,7 @@ class Pull extends CI_Model {
         $this->db->select('*');
         $this->db->where('id', $id);
 
-        $answer = $this->db->get('com_pull_answers');  	
+        $answer = $this->db->get('com_poll_answers');  	
         $answer = $answer->result_array();
         
         if(!isset($answer[0])){
@@ -67,7 +67,7 @@ class Pull extends CI_Model {
     	  $votes = self::getAnswer($answer_id, 'votes');    	  
     	  $votes++;
     	  
-    	  $this->db->query("UPDATE com_pull_answers SET votes = ".$votes." WHERE id = '".$answer_id."'");
+    	  $this->db->query("UPDATE com_poll_answers SET votes = ".$votes." WHERE id = '".$answer_id."'");
     	
     }
     

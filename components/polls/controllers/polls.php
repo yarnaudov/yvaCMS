@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Pulls extends MY_Controller {
+class Polls extends MY_Controller {
 
     public  $page;
     private $puul_id;
@@ -12,22 +12,22 @@ class Pulls extends MY_Controller {
         
         $this->load->config('config');
         
-        $this->load->model('Pull');
+        $this->load->model('Poll');
                     
     }
     
     public function vote()
     {
         
-        echo "\npull = ".$this->input->post('pull_id')."\n";
+        echo "\npoll = ".$this->input->post('poll_id')."\n";
         echo "answer = ".$this->input->post('answer_id')."\n";
         
-        $pull_id   = $this->input->post('pull_id');
+        $poll_id   = $this->input->post('poll_id');
         $answer_id = $this->input->post('answer_id');
         
-        setcookie("pulls[".$pull_id."]", $answer_id, time()+60*60*24*30, "/");
+        setcookie("polls[".$poll_id."]", $answer_id, time()+60*60*24*30, "/");
         
-        $this->Pull->vote($answer_id);
+        $this->Poll->vote($answer_id);
         
     }
     

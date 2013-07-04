@@ -64,7 +64,7 @@ INSERT INTO `ap_menus` (`id`, `title_bg`, `title_en`, `alias`, `parent_id`, `typ
 (17, 'Настройки', 'Settings', 'settings', NULL, 'general', 'no', 'yes', 8),
 (18, 'Основни', 'General', 'settings/general', 17, 'general_sub sub_action', 'no', 'yes', 1),
 (19, 'Майл', 'Mail', 'settings/mail', 17, 'sub_action', 'no', 'yes', 2),
-(20, 'Анкети', 'Pulls', 'components/pulls', 16, 'general_sub', 'yes', 'yes', 1),
+(20, 'Анкети', 'Polls', 'components/polls', 16, 'general_sub', 'yes', 'yes', 1),
 (21, 'Галерия', 'Gallery', 'components/gallery', 16, 'general_sub', 'yes', 'yes', 2),
 (22, 'Контактни форми', 'Contact forms', 'components/contact_forms', 16, 'general_sub', 'yes', 'yes', 3),
 (23, 'Албуми', 'Albums', 'components/gallery/albums', 21, 'sub_action', 'no', 'no', 1),
@@ -406,10 +406,10 @@ CREATE TABLE IF NOT EXISTS `com_gallery_images_data` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `com_pulls`
+-- Table structure for table `com_polls`
 --
 
-CREATE TABLE IF NOT EXISTS `com_pulls` (
+CREATE TABLE IF NOT EXISTS `com_polls` (
   `id` int(4) NOT NULL AUTO_INCREMENT,
   `start_publishing` date DEFAULT NULL,
   `end_publishing` date DEFAULT NULL,
@@ -429,17 +429,17 @@ CREATE TABLE IF NOT EXISTS `com_pulls` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `com_pull_answers`
+-- Table structure for table `com_poll_answers`
 --
 
-CREATE TABLE IF NOT EXISTS `com_pull_answers` (
+CREATE TABLE IF NOT EXISTS `com_poll_answers` (
   `id` int(4) NOT NULL AUTO_INCREMENT,
-  `pull_id` int(4) NOT NULL,
+  `poll_id` int(4) NOT NULL,
   `title` varchar(500) NOT NULL,
   `votes` int(4) NOT NULL,
   `status` enum('yes','no','trash') NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `pull_id` (`pull_id`)
+  KEY `poll_id` (`poll_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -697,7 +697,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 --
 
 INSERT INTO `users` (`id`, `user_group_id`, `description`, `name`, `user`, `pass`, `created_by`, `created_on`, `updated_by`, `updated_on`, `status`, `order`) VALUES
-(1, 4, '', 'Yordan Arnaudov', 'yordan', '2601b64458cb69fa40d70e85f4ec835b', 1, NOW(), NULL, NULL, 'yes', 1);
+(1, 3, '', 'Yordan Arnaudov', 'yordan', '2601b64458cb69fa40d70e85f4ec835b', 1, NOW(), NULL, NULL, 'yes', 1);
 
 -- --------------------------------------------------------
 
@@ -720,10 +720,9 @@ CREATE TABLE IF NOT EXISTS `users_groups` (
 --
 
 INSERT INTO `users_groups` (`id`, `title`, `description`, `access`, `status`, `order`) VALUES
-(1, 'Guests', '', '{"articles":"on","categories\\/articles":"on","custom_fields\\/articles":"on"}', 'yes', 1),
-(2, 'Users', '', '', 'yes', 2),
-(3, 'Administrators', '', '', 'yes', 3),
-(4, 'Super Administrators', '', '*', 'yes', 4);
+(1, 'Users', '', '{"articles":"on","categories\/articles":"on","statistics\/articles":"on","menus":"on","categories\/menus":"on","banners":"on","statistics\/banners":"on","modules":"on","components":"on","components\/polls":"on","components\/gallery":"on","components\/contact_forms":"on"}', 'yes', 2),
+(2, 'Administrators', '', '{"articles":"on","categories\/articles":"on","statistics\/articles":"on","menus":"on","categories\/menus":"on","banners":"on","statistics\/banners":"on","languages":"on","users":"on","groups\/users":"on","modules":"on","components":"on","components\/polls":"on","components\/gallery":"on","components\/contact_forms":"on","settings":"on","settings\/general":"on","settings\/mail":"on"}', 'yes', 3),
+(3, 'Super Administrators', '', '*', 'yes', 4);
 
 --
 -- Constraints for dumped tables
@@ -821,10 +820,10 @@ ALTER TABLE `com_gallery_images_data`
   ADD CONSTRAINT `com_gallery_images_data_ibfk_2` FOREIGN KEY (`language_id`) REFERENCES `languages` (`id`) ON UPDATE CASCADE;
 
 --
--- Constraints for table `com_pull_answers`
+-- Constraints for table `com_poll_answers`
 --
-ALTER TABLE `com_pull_answers`
-  ADD CONSTRAINT `com_pull_answers_ibfk_1` FOREIGN KEY (`pull_id`) REFERENCES `com_pulls` (`id`) ON UPDATE CASCADE;
+ALTER TABLE `com_poll_answers`
+  ADD CONSTRAINT `com_poll_answers_ibfk_1` FOREIGN KEY (`poll_id`) REFERENCES `com_polls` (`id`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `custom_fields_values`

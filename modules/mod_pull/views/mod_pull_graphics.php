@@ -1,11 +1,11 @@
 
-<script type="text/javascript" src="<?=base_url('modules/mod_pull/js/mod_pull.js');?>" ></script>
+<script type="text/javascript" src="<?=base_url('modules/mod_poll/js/mod_poll.js');?>" ></script>
 
-<ul class="pull<?=$pull['id'];?>" >
+<ul class="poll<?=$poll['id'];?>" >
 	
-    <li><?=$pull['title'];?></li>
+    <li><?=$poll['title'];?></li>
 
-    <?php foreach($pull['answers'] as $key => $answer){ ?>
+    <?php foreach($poll['answers'] as $key => $answer){ ?>
     <li>
         <span class="number" ><?=$key+1;?>.</span>
         <?=$answer['title'];?> - 
@@ -13,21 +13,21 @@
     </li>
     <?php } ?>
 	  
-    <li><?=lang('label_mod_pull_total_votes');?>: <?=$votes;?></li>
+    <li><?=lang('label_mod_poll_total_votes');?>: <?=$votes;?></li>
 
     <?php if($answer_id != false){ ?>
     <li>         
-        <?=lang('label_mod_pull_you_already_voted_for');?>:
-        <span class="pull_answer" ><?=pull::getAnswer($answer_id, 'title');?></span>
+        <?=lang('label_mod_poll_you_already_voted_for');?>:
+        <span class="poll_answer" ><?=poll::getAnswer($answer_id, 'title');?></span>
     </li>
     <?php }else{ ?>
     <li>	      
         <div class="actions" >
-            <a href="<?=current_url();?>" class="hide_votes" ><?=lang('label_mod_pull_back_to_pull');?></a>
+            <a href="<?=current_url();?>" class="hide_votes" ><?=lang('label_mod_poll_back_to_poll');?></a>
         </div>
         <div class="loading" style="display: none;" >
-            <span><?=lang('label_mod_pull_please_wait');?></span>
-            <img src="<?=base_url('modules/mod_pull/images/loading.gif');?>" alt="loading..." >
+            <span><?=lang('label_mod_poll_please_wait');?></span>
+            <img src="<?=base_url('modules/mod_poll/images/loading.gif');?>" alt="loading..." >
         </div>
     </li>
     <?php } ?>

@@ -19,13 +19,13 @@ table.fields fieldset a{
 /*
  * grapfics
  */
- .pull_grapfics{
+ .poll_grapfics{
      list-style: none;
  }
- .pull_grapfics li{
+ .poll_grapfics li{
      padding-bottom: 10px;   
  }
- .pull_grapfics li .title{
+ .poll_grapfics li .title{
      font-weight: bold;
  }
  .percent{

@@ -28,7 +28,7 @@ define('TEMPLATES_DIR', 'templates');
  * 
  */
 define('DB_HOST', 'localhost');
-define('DB_NAME', 'yvacms_new');
+define('DB_NAME', 'alldental');
 define('DB_USER', 'root');
 define('DB_PASS', '');
 define('DB_TYPE', 'mysql');

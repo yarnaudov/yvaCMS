@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Pull extends CI_Model {
+class Poll extends CI_Model {
 
     private $id;
     
@@ -10,27 +10,27 @@ class Pull extends CI_Model {
         $this->db->select('*');
         $this->db->where('id', $id);
 
-        $pull = $this->db->get('com_pulls');  	
-        $pull = $pull->result_array();
+        $poll = $this->db->get('com_polls');  	
+        $poll = $poll->result_array();
              
         $answers = self::getAnswers($id);
         foreach($answers as $key => $answer){
-            $pull[0]['answers'][$key+1]['id']     = $answer['id'];
-            $pull[0]['answers'][$key+1]['title']  = $answer['title'];
-            $pull[0]['answers'][$key+1]['votes']  = $answer['votes'];
-            $pull[0]['answers'][$key+1]['status'] = $answer['status'];
+            $poll[0]['answers'][$key+1]['id']     = $answer['id'];
+            $poll[0]['answers'][$key+1]['title']  = $answer['title'];
+            $poll[0]['answers'][$key+1]['votes']  = $answer['votes'];
+            $poll[0]['answers'][$key+1]['status'] = $answer['status'];
         }
                                 
         if($field == null){
-            return $pull[0];
+            return $poll[0];
         }
         else{  	
-            return $pull[0][$field];
+            return $poll[0][$field];
         }
 
     }
     
-    public function getPulls($filters = array(), $order_by = "", $limit = "")
+    public function getPolls($filters = array(), $order_by = "", $limit = "")
     {
                 
         $filter = ''; 
@@ -52,7 +52,7 @@ class Pull extends CI_Model {
         $query = "SELECT 
                         *
                     FROM
-                        com_pulls
+                        com_polls
                     WHERE
                         id IS NOT NULL
                         ".$filter."
@@ -61,9 +61,9 @@ class Pull extends CI_Model {
          
         //echo $query."<br/>";
 
-        $pulls = $this->db->query($query)->result_array();
+        $polls = $this->db->query($query)->result_array();
 
-        return $pulls;
+        return $polls;
         
     }
     
@@ -71,7 +71,7 @@ class Pull extends CI_Model {
     {
                 
         $this->db->select_max("`order`");
-        $max_order = $this->db->get('com_pulls')->result_array();      
+        $max_order = $this->db->get('com_polls')->result_array();      
         $order = $max_order[0]['order'];
 
         return $order;
@@ -84,15 +84,15 @@ class Pull extends CI_Model {
         $query = "SELECT 
                         COUNT(*) as `count`
                     FROM
-                        com_pulls
+                        com_polls
                     WHERE
                         status != 'trash'";
          
         //echo $query."<br/>";
 
-        $pulls = $this->db->query($query)->result_array();    
+        $polls = $this->db->query($query)->result_array();    
 
-        return $pulls[0]['count'];
+        return $polls[0]['count'];
 
     }
     
@@ -137,7 +137,7 @@ class Pull extends CI_Model {
         $answers = $data['answers'];
         unset($data['answers']);
         
-        $query = $this->db->insert_string('com_pulls', $data);
+        $query = $this->db->insert_string('com_polls', $data);
         //echo $query;
         $result = $this->db->query($query);
 
@@ -164,7 +164,7 @@ class Pull extends CI_Model {
         
         $where = "id = ".$id; 
 
-        $query = $this->db->update_string('com_pulls', $data, $where);
+        $query = $this->db->update_string('com_polls', $data, $where);
         //echo $query;
         $result = $this->db->query($query);
 
@@ -186,7 +186,7 @@ class Pull extends CI_Model {
         $data['status'] = $status;
         $where = "id = ".$id;
 
-        $query = $this->db->update_string('com_pulls', $data, $where);
+        $query = $this->db->update_string('com_polls', $data, $where);
         //echo $query;
         $result = $this->db->query($query);
 
@@ -213,13 +213,13 @@ class Pull extends CI_Model {
         
         $data1['order'] = $old_order;
         $where1 = "`order` = ".$new_order;
-        $query1 = $this->db->update_string('com_pulls', $data1, $where1);
+        $query1 = $this->db->update_string('com_polls', $data1, $where1);
         //echo $query1;
         $result1 = $this->db->query($query1);
         
         $data2['order'] = $new_order;
         $where2 = "id = ".$id;
-        $query2 = $this->db->update_string('com_pulls', $data2, $where2);
+        $query2 = $this->db->update_string('com_polls', $data2, $where2);
         //echo $query2;
         $result2 = $this->db->query($query2);
         
@@ -237,16 +237,16 @@ class Pull extends CI_Model {
         
         $this->db->query("BEGIN");
         
-        $pulls = $this->input->post('pulls');     
-        foreach($pulls as $pull){
+        $polls = $this->input->post('polls');     
+        foreach($polls as $poll){
             
-            $status = self::getDetails($pull, 'status');
+            $status = self::getDetails($poll, 'status');
             
             if($status == 'trash'){
-                $result = $this->db->simple_query("DELETE FROM com_pulls WHERE id = '".$pull."'");
+                $result = $this->db->simple_query("DELETE FROM com_polls WHERE id = '".$poll."'");
             }
             else{
-                $result = self::changeStatus($pull, 'trash');
+                $result = self::changeStatus($poll, 'trash');
             }
             
             if($result != true){
@@ -264,7 +264,7 @@ class Pull extends CI_Model {
     function saveAnswers($id, $answers)
     {
     	  
-        //$this->db->query("DELETE FROM com_pull_answers WHERE id = '".$id."'");
+        //$this->db->query("DELETE FROM com_poll_answers WHERE id = '".$id."'");
     	    	
         foreach($answers as $answer){
     	  	
@@ -277,11 +277,11 @@ class Pull extends CI_Model {
             
             if(!empty($answer['id'])){
                 $where = "id = ".$answer['id']; 
-                $query = $this->db->update_string('com_pull_answers', $data, $where);
+                $query = $this->db->update_string('com_poll_answers', $data, $where);
             }
             else{
-                $data['pull_id'] = $id;
-                $query = $this->db->insert_string('com_pull_answers', $data);
+                $data['poll_id'] = $id;
+                $query = $this->db->insert_string('com_poll_answers', $data);
             }
             
             //echo $query;
@@ -291,7 +291,7 @@ class Pull extends CI_Model {
             
         }
         
-        $this->db->query("DELETE FROM com_pull_answers WHERE pull_id = '".$id."' AND id NOT IN (".implode(',', $answers_ids).")");
+        $this->db->query("DELETE FROM com_poll_answers WHERE poll_id = '".$id."' AND id NOT IN (".implode(',', $answers_ids).")");
 
     }
     
@@ -299,9 +299,9 @@ class Pull extends CI_Model {
     {
     	
     	$this->db->select('*');
-        $this->db->where('pull_id', $id);
+        $this->db->where('poll_id', $id);
 
-        $answers = $this->db->get('com_pull_answers');  	
+        $answers = $this->db->get('com_poll_answers');  	
         $answers = $answers->result_array();
       
         return $answers;

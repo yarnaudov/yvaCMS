@@ -6,11 +6,11 @@
     <div id="page_header" >
 	
         <div class="text" >
-            <img src="<?=base_url('components/pulls/img/iconPulls_25.png');?>" >
-            <span><?=lang('label_pulls');?></span>
+            <img src="<?=base_url('components/polls/img/iconPolls_25.png');?>" >
+            <span><?=lang('label_polls');?></span>
             <span>&nbsp;»&nbsp;</span>
             <span>
-              <?php if(isset($pull_id)){
+              <?php if(isset($poll_id)){
                       echo lang('label_edit');
                     }
                     else{
@@ -23,7 +23,7 @@
 		
 	    <button type="submit" name="save"            class="styled save"   ><?=lang('label_save');?></button>
 	    <button type="submit" name="apply"           class="styled apply"  ><?=lang('label_apply');?></button>
-	    <a href="<?=site_url('components/pulls');?>" class="styled cancel" ><?=lang('label_cancel');?></a>
+	    <a href="<?=site_url('components/polls');?>" class="styled cancel" ><?=lang('label_cancel');?></a>
 		
 	</div>
 	
@@ -219,7 +219,7 @@
                         
                         <div class="box_content" >
                             
-                            <ul class="pull_grapfics" >
+                            <ul class="poll_grapfics" >
                             
                                 <?php unset($answers[0]);
                                       foreach($answers as $key => $answer){
