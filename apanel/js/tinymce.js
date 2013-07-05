@@ -1,5 +1,41 @@
 $(document).ready(function() {
     
+    /*
+     * simple editor
+     */
+    tinyMCE.init({	
+	// General options
+	mode : "specific_textareas",
+        language : LANG,
+        editor_selector : "simple_editor",
+        theme : "advanced",
+        plugins : "safari,style,layer,table,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template,wordcount",
+        height: '100',
+        width: '100%',
+        
+        content_css : 'templates/'+TEMPLATE+'/../css/global.css?' + new Date().getTime(),
+        
+        gecko_spellcheck : true,
+        
+        force_br_newlines : false, 
+        force_p_newlines : true, 
+        forced_root_block : 'p',
+	      invalid_elements : "script,applet,iframe",
+        
+        // Theme options
+        theme_advanced_buttons1 : "bold,italic,underline,separator,strikethrough,justifyleft,justifycenter,justifyright,justifyfull,undo,redo,link,unlink",
+        theme_advanced_buttons2 : "tablecontrols",
+        theme_advanced_buttons3 : "",
+        theme_advanced_toolbar_location : "top",
+        theme_advanced_toolbar_align : "left",
+        theme_advanced_statusbar_location : "bottom",
+        theme_advanced_resizing : true,
+        
+        relative_urls : true,
+        remove_script_host : false,
+        document_base_url : DOCUMENT_BASE_URL
+    });
+    
     if($('.editor').attr('name') == 'text'){                
         var tmce_height = '500';
     }

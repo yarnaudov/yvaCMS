@@ -16,7 +16,20 @@ foreach($custom_fields as $custom_field){
 
     $params = $custom_field['params'];
     
-    $required = $custom_field['required'] == "yes" ? "class=required" : "";
+    $class = '';
+    switch($custom_field['mandatory']){
+	case "yes": 
+	    $class = "required";
+	  break;
+
+	case "email":
+	    $class = "required email";
+	  break;
+
+	case "date":
+	    $class = "required date";
+	  break;
+    } 
     
     echo '<tr><td colspan="2" class="empty_line" ></td></tr>';
     echo '<tr>';
@@ -31,19 +44,19 @@ foreach($custom_fields as $custom_field){
         
         case 'text':
             $set_value = ($set_value == "" && !isset(${'field'.$custom_field['id']})) ? $params['value'] : $set_value;
-            echo '<input '.$required.' type="text" name="field'.$custom_field['id'].'" value="'.$set_value.'" >';
+            echo '<input class="'.$class.'" type="text" name="field'.$custom_field['id'].'" value="'.$set_value.'" >';
           break;
         
         case 'textarea':
             $set_value = ($set_value == "" && !isset(${'field'.$custom_field['id']})) ? $params['value'] : $set_value;
-            echo '<textarea '.$required.' name="field'.$custom_field['id'].'" >'.$set_value.'</textarea>';
+            echo '<textarea class="'.$class.' simple_editor" name="field'.$custom_field['id'].'" >'.$set_value.'</textarea>';
           break;
         
         case 'dropdown':
             
             $optgroup = false;
             
-            echo '<select '.$required.' name="field'.$custom_field['id'].'" >';
+            echo '<select class="'.$class.'" name="field'.$custom_field['id'].'" >';
             foreach($params['options'] as $key => $option){
           
                 $selected = '';
@@ -90,7 +103,7 @@ foreach($custom_fields as $custom_field){
                              id="option'.$custom_field['id'].$key.'" 
                              value="'.$key.'" 
                              '.$checked.'
-                             '.$required.' >';
+                             class="'.$class.'" >';
                 echo '<label for="option'.$custom_field['id'].$key.'" >'.$params['labels'][$key].'</label>';
                 echo '</li>';
             }
@@ -99,11 +112,11 @@ foreach($custom_fields as $custom_field){
           break;
       
         case 'date':
-            echo '<input '.$required.' type="text" class="datepicker" name="field'.$custom_field['id'].'" value="'.$set_value.'" >';
+            echo '<input class="'.$class.'" type="text" class="datepicker" name="field'.$custom_field['id'].'" value="'.$set_value.'" >';
           break;
       
         case 'media':
-	    echo '<input '.$required.' class="image" type="text" readonly name="field'.$custom_field['id'].'" id="custom_field_media" value="'.$set_value.'" style="width: 58%">';                                       
+	    echo '<input class="'.$class.'" class="image" type="text" readonly name="field'.$custom_field['id'].'" id="custom_field_media" value="'.$set_value.'" style="width: 58%">';                                       
 	    echo '<a href="'.site_url('media/browse').'" 
 		     class = "load_jquery_ui_iframe"
 		     title="'.lang('label_browse').' '.lang('label_media').'"

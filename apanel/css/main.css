@@ -975,3 +975,13 @@ td.custom_field ul li{
     max-height: 406px;
     overflow: auto;
 }
+
+.right table.mceLayout{
+    border: 1px solid #888888 !important;
+}
+.right .defaultSkin table.mceLayout tr.mceFirst td.mceToolbar {
+    border: none;
+}
+.right .defaultSkin table.mceLayout tr.mceLast td {
+    border: none;
+}

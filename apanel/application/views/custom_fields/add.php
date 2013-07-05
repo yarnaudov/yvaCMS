@@ -185,8 +185,8 @@
                                     <th><label><?=lang('label_required');?>:</label></th>
                                     <td>
                                         <?php if(!isset($required)){$required = 'no';} ?>
-                                        <select name="required" >
-                                            <?=create_options_array($this->config->item('yes_no'), set_value('required', isset($required) ? $required : ""));?>
+                                        <select name="mandatory" >
+                                            <?=create_options_array($this->config->item('mandatory_options'), set_value('required', isset($required) ? $required : ""));?>
                                         </select>
                                     </td>
                                 </tr>
