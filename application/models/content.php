@@ -75,12 +75,14 @@ class Content extends CI_Model {
                 
                     if(!empty($menu['params']['article_id'])){
 		
+			$article = $this->Article->getDetails($menu['params']['article_id']); 
+			 
 			if(empty($article)){
-			    $data['content'] = lang('msg_article_not_found');
+			    $article['show_title'] = 'no';
+			    $article['text'] = lang('msg_article_not_found');
 			}
-			else{
-			    
-			    $article         = $this->Article->getDetails($menu['params']['article_id']);                    
+			else{			    
+			                      
 			    $article['text'] = $this->Article->parceText($article['text']);
 
 			    $this->Article->statistic($article['id']);
