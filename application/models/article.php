@@ -11,7 +11,9 @@ class Article extends CI_Model {
                       articles a
                       LEFT JOIN articles_data ad ON (a.id = ad.article_id AND ad.language_id = '".$this->language_id."')
                     WHERE
-                      a.id = '".$id."' ";
+                      a.id = '".$id."'
+		     AND
+                      a.status = 'yes'";
         
         $article = $this->db->query($query);
         $article = $article->row_array();
