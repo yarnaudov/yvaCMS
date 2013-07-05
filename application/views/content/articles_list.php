@@ -1,6 +1,6 @@
 <?php
 
-echo '<ul>';
+echo '<ul class="articles_list" >';
         
 foreach($articles as $article){
     

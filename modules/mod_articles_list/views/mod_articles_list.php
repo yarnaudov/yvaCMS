@@ -1,5 +1,5 @@
 
-<ul>
+<ul class="articles_list">
         
     <?php foreach($articles as $article){    
               $class = '';
