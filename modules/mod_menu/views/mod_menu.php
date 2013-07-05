@@ -1,7 +1,6 @@
 <?php
 
-
-echo '<ul>';
+echo "<ul>\n";
         
 $ul_count = 0;
 foreach($menus as $key => $menu){
@@ -13,30 +12,30 @@ foreach($menus as $key => $menu){
         $menu['class'] = $menu['class'].' last';
     }
     
-    echo '<li '.($menu['class'] != '' ? 'class="'.$menu['class'].'"' : '').' >';
-    echo '  <a href="'.$menu['link'].'" target="'.$menu['target'].'" ><span>'.$menu['title'].'</span></a>';
+    echo "<li".($menu['class'] != '' ? ' class="'.$menu['class'].'" ' : '').">\n";
+    echo "  <a href=\"".$menu['link']."\" target=\"".$menu['target']."\" ><span>".$menu['title']."</span></a>\n";
     
     if(!empty($menu['image'])){
-        echo '<img src="'.base_url($menu['image']).'" >';
+        echo "<img src=\"".base_url($menu['image'])."\" >\n";
     }
 
     if(@$menus[$key+1]['lavel'] > $menu['lavel']){                
-        echo '<ul>';
+        echo "<ul>\n";
         $ul_count++;
     }
     elseif(@$menus[$key+1]['lavel'] < $menu['lavel']){
         while($ul_count > 0){
-            echo '</ul>';
+            echo "</li>\n</ul>\n";
             $ul_count--;
-        }               
+        }
+	echo "</li>\n";
     }
     else{
-        echo '</li>';
+        echo "</li>\n";
     }
 
 }
 
-echo '</ul>';
-
+echo "</ul>\n";
 
 ?>
