@@ -22,6 +22,11 @@
     
 <div id="map_canvas<?=$id;?>" style="height: 100%;width: 100%;" ></div>
 
+<?php if(!defined('GOOGLE_MAP_LOADED')){ 
+        define('GOOGLE_MAP_LOADED', TRUE); ?> 
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false" ></script>
+<script type="text/javascript" src="<?=base_url('modules/mod_google_map/js/map_options.js');?>" ></script>
+<?php } ?> 
 <script type="text/javascript" >
   $(function(){      
       initialize(<?=$id;?>);
