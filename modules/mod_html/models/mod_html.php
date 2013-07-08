@@ -7,7 +7,7 @@ class mod_html extends CI_Model{
 	
 	$this->load->helper('fix_links');
         
-        $elements = array(0 => array('area', 'href'));
+        $elements = array('area' => array('href'));
         
         $html = fix_links($module['params']['html'], $elements);
         

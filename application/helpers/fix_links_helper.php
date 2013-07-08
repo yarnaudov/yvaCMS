@@ -14,21 +14,20 @@ if ( ! function_exists('fix_links'))
 	function fix_links($html, $elements = array())
 	{
             
-            $default = array(0 => array('a', 'href'),
-                             1 => array('img', 'src', 'base_url'));
+            $default = array('a'   => array('href'),
+                             'img' => array('src', 'base_url'));
             
-            $elements = $elements+$default;
+            $elements = array_merge($default, $elements);
             
             $CI =& get_instance();
             $CI->load->helper('simple_html_dom');
                
             $html = str_get_html($html);
             
-            foreach($elements as $value){
+            foreach($elements as $element => $value){
                 
-                $element    = $value[0];
-                $attributes = is_array($value[1]) ? $value[1] : array(0 => $value[1]);
-                $url_func   = isset($value[2]) ? $value[2] : 'site_url';
+                $attributes = is_array($value[0]) ? $value[0] : array(0 => $value[0]);
+                $url_func   = isset($value[1]) ? $value[1] : 'site_url';
                 
                 foreach($html->find($element) as $key => $el){
                     
