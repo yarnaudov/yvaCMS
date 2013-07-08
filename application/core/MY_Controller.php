@@ -128,11 +128,6 @@ class MY_Controller extends CI_Controller {
         $this->data['MetaKeywords']    = $this->Setting->getMetaKeywords();
         $this->data['robots']          = $this->Setting->getRobots();
         
-        $script = "var base_url = '".base_url()."';
-                   var site_url = '".site_url()."';";
-                       
-        $this->jquery_ext->add_script($script, 'general');
-        
         $script = "$( '#dialog:ui-dialog' ).dialog( 'destroy' );   
                    $( '.jquery_ui' ).dialog({
                        autoOpen: false,
@@ -214,16 +209,19 @@ class MY_Controller extends CI_Controller {
                 $html = str_replace($include, $this->Content->load(), $html);
             }
             elseif($include->type == 'header'){
-                $header = $this->Content->header();
-                if(is_object($this->jquery_ext)){
-                    ob_start();
-                    $this->jquery_ext->output();
-                    $header .= ob_get_clean();                     
-                } 
-                $html = str_replace($include, $header, $html);
+                $include_header = $include;
             }
         }
 
+	#include headers after all modules are ready	
+	$header = $this->Content->header();
+	if(is_object($this->jquery_ext)){
+	    ob_start();
+	    $this->jquery_ext->output();
+	    $header .= ob_get_clean();                     
+	}	
+	$html = str_replace($include_header, $header, $html);
+	
         return $html;
         
     }

@@ -194,7 +194,12 @@ class Content extends CI_Model {
         if($this->Setting->getRobots()){
             $header .= "<meta name=\"robots\" content=\"".$this->Setting->getRobots()."\" />\n";
         }
-        
+	
+	$header .= "<script type=\"text/javascript\" >
+		        var base_url = '".base_url()."';
+                        var site_url = '".site_url()."';
+		    </script>\n";
+                               
         return $header;
         
     }

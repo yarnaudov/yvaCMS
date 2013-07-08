@@ -31,7 +31,7 @@ class Contact_form extends CI_Model {
 
     }
     
-    private function _send($contact_form_id)
+    public function send($contact_form_id)
     {
         
         $contact_form = self::getDetails($contact_form_id);
@@ -44,6 +44,19 @@ class Contact_form extends CI_Model {
             $bcc = explode(',', $contact_form['bcc']);
         }
         
+	# check if there are to/cc comming from form
+	if(isset($_POST['to'])){
+	    $bcc = isset($bcc) ? $bcc . ',' . $to : $to;
+	    $to = $this->input->post('to', true);
+	}
+	if(isset($_POST['cc'])){
+	    $bcc = isset($bcc) ? $bcc . ',' . $cc : $cc;
+	    $cc = $this->input->post('cc', true);
+	}
+	if(isset($_POST['bcc'])){
+	    $bcc = isset($bcc) ? $bcc . ',' . $this->input->post('bcc', true) : $this->input->post('bcc', true);
+	}
+	
         $subject = lang('msg_cf_mail_subject');
         $subject = str_replace('{site_name}', $this->Setting->getSiteName(), $subject);
         $subject = str_replace('{contact_form}', $contact_form['title'], $subject);
@@ -60,7 +73,7 @@ class Contact_form extends CI_Model {
                 
               case 'checkbox':              
                   
-                  $posts = isset($_POST['field'.$number]) ? $_POST['field'.$number] : array();
+                  $posts = isset($_POST['field'.$number]) ? $this->input->post('field'.$number, true) : array();
                   
                   foreach($posts as $post){
                       $values[] = $field['labels'][$post];
@@ -71,11 +84,11 @@ class Contact_form extends CI_Model {
           
               case 'dropdown':
               case 'radio':
-                 $value = isset($_POST['field'.$number]) ? $field['labels'][$_POST['field'.$number]] : '';
+                 $value = isset($_POST['field'.$number]) ? $field['labels'][$this->input->post('field'.$number, true)] : '';
               break;
             
               default:
-                  $value = isset($_POST['field'.$number]) ? $_POST['field'.$number] : '';
+                  $value = isset($_POST['field'.$number]) ? $this->input->post('field'.$number, true) : '';
               break;
           
             }
@@ -150,15 +163,20 @@ class Contact_form extends CI_Model {
         
         if($result == 1){
 	    $msg = !empty($contact_form['msg_success']) ? $contact_form['msg_success'] : lang('msg_cf_send');
-            $this->session->set_flashdata('contact_form_msg', $msg);
+            $this->session->set_flashdata('contact_form_msg'.$contact_form_id, $msg);
 	    self::_save_in_db();
         }
         else{
 	    $msg = !empty($contact_form['msg_error']) ? $contact_form['msg_error'] : lang('msg_cf_error');
-            $this->session->set_flashdata('contact_form_msg', $msg);
+            $this->session->set_flashdata('contact_form_msg'.$contact_form_id, $msg);
         }
         
-        redirect(current_url());
+	if(!empty($_SERVER['HTTP_REFERER'])){
+	    redirect($_SERVER['HTTP_REFERER']);
+	}
+	else{
+	    redirect(current_url());
+	}
         exit;
         
     }

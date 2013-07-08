@@ -12,7 +12,7 @@ $polls = $this->Poll->getPolls();
     <td>        
         <select name="params[poll_id]" >
             <?php foreach($polls as $poll){ ?>
-            <option <?=$poll['id'] == set_value('params[id]', isset($params['id']) ? $params['id'] : "") ? "selected" : "";?> 
+            <option <?=$poll['id'] == set_value('params[poll_id]', isset($params['poll_id']) ? $params['poll_id'] : "") ? "selected" : "";?> 
                     value="<?=$poll['id'];?>" ><?=$poll['title'];?></option>
             <?php } ?>
         </select>

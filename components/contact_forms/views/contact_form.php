@@ -1,5 +1,5 @@
 
-<?php $contact_form_msg = $this->session->flashdata('contact_form_msg');
+<?php $contact_form_msg = $this->session->flashdata('contact_form_msg'.$contact_form['id']);
       if(!empty($contact_form_msg)){ ?>
 
           <?=$contact_form_msg;?>
@@ -16,7 +16,7 @@
 	</div>
 	<?php } ?>
 	  
-	<form method="post" action="<?=current_url();?>" class="contactForm" id="contactForm_<?=$contact_form['id'];?>" >
+	<form method="post" action="<?=site_url('contact_forms/' . $contact_form['id']);?>" class="contactForm" id="contactForm_<?=$contact_form['id'];?>" >
 
 
 	    <?php foreach($contact_form['fields'] as $number => $field){ 

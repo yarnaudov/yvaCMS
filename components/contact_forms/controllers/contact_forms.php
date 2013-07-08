@@ -16,7 +16,7 @@ class Contact_forms extends MY_Controller {
         $this->jquery_ext->add_plugin('validation');
 	$this->jquery_ext->add_library('check_captcha.js');
         $this->jquery_ext->add_library('../components/contact_forms/js/contacts.js');
-        $this->jquery_ext->add_css('../components/contact_forms/css/contacts.css');
+        //$this->jquery_ext->add_css('../components/contact_forms/css/contacts.css');
         
         
         /*
@@ -57,39 +57,17 @@ class Contact_forms extends MY_Controller {
     
     public function index($contact_form_id)
     {
-        
-        //echo $this->router->fetch_class()."<----<br/>";
-        //echo $this->router->fetch_method()."<----<br/>";
-        
-        //echo print_r($this->uri->segments)."<--<br/>";
-        	
+   	
         if(isset($_POST['send'])){
-            $this->Contact_form->_send($contact_form_id);
+            $this->Contact_form->send($contact_form_id);
         }
         
-        //echo print_r($_POST)."<----<br>";
         
         $contact_form = $this->Contact_form->getDetails($contact_form_id);
         
         $this->data['content'] = $this->load->view('contact_form', compact('contact_form'), true);
         
         echo parent::_parseTemplateFile();
-        
-    }
-    
-    public function check_captcha()
-    {
-        
-        require_once BASEPATH . '../plugins/securimage/securimage.php';
-
-        $image = new Securimage();
-        if ($image->check($_POST['code']) == true) {
-            echo 1;
-        } else {
-            echo lang('msg_captcha_code_err');
-        }
-        
-        exit;
         
     }
     
