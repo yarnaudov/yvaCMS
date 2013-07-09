@@ -115,10 +115,18 @@ class Banner extends CI_Model {
     
     function _image($banner)
     {
-        
-        $banner_html  = '<a href="'.site_url($this->router->routes['default_controller'].'/banners/'.$banner['id']).'?url='.$banner['params']['link'].'" target="blank" >';
+	
+        $banner_html = '';
+	
+	if(!empty($banner['params']['link'])){
+	    $banner_html  .= '<a href="'.site_url($this->router->routes['default_controller'].'/banners/'.$banner['id']).'?url='.$banner['params']['link'].'" target="_blank" >';
+	}
+	
         $banner_html .= '    <img src="'.base_url($banner['params']['image']).'" >';
-        $banner_html .= '</a>';
+	
+	if(!empty($banner['params']['link'])){
+	    $banner_html .= '</a>';
+	}
         
         return $banner_html;
         
@@ -160,10 +168,18 @@ class Banner extends CI_Model {
     
     function _link($banner)
     {
-        
-        $banner_html  = '<a href="'.site_url($this->router->routes['default_controller'].'/banners/'.$banner['id']).'?url='.$banner['params']['link'].'" target="blank" >';
+	
+        $banner_html = '';
+	
+	if(!empty($banner['params']['link'])){
+	    $banner_html  .= '<a href="'.site_url($this->router->routes['default_controller'].'/banners/'.$banner['id']).'?url='.$banner['params']['link'].'" target="_blank" >';
+	}
+	
         $banner_html .=     $banner['params']['text'];
-        $banner_html .= '</a>';
+	
+	if(!empty($banner['params']['link'])){
+	    $banner_html .= '</a>';
+	}
         
         return $banner_html;
         
