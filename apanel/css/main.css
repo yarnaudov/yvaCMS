@@ -964,6 +964,9 @@ td.custom_field ul li{
     padding: 2px;
     overflow: auto;
 }
+td.custom_field ul li label{
+   width: auto !important; 
+}
 
 .map_canvas_custom_fields{
     height: 180px;
