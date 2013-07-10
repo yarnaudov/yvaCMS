@@ -101,18 +101,9 @@ class Content extends CI_Model {
                 
                 case "articles_list":
                     
-                    if(isset($menu['params']['categories'])){
-                        
-                        if(in_array('most_popular', $menu['params']['categories'])){
-                            $articles = $this->Article->getMostPopular($menu['params']['order'], $menu['params']['number'], 'menu'.$menu['id']);
-                        }
-			elseif(in_array('most_commented', $menu['params']['categories'])){
-                            $articles = $this->Article->getMostCommented($menu['params']['order'], $menu['params']['number'], 'menu'.$menu['id']);
-                        }
-			else{
-			    $articles = $this->Article->getByCategory($menu['params']['categories'], $menu['params']['order'], $menu['params']['number'], 'menu'.$menu['id']);
-			}
-						
+                    if(isset($menu['params']['categories'])){ 
+			
+                        $articles = self::_get_articles($menu);						
 			$data['content'] = $this->load->view($content_template, compact('menu', 'articles'), true);
                     
                     }
@@ -122,10 +113,12 @@ class Content extends CI_Model {
 		    
                 break;
             
-                case "component":
-		 
-                    $data['content'] = $this->data['content'];
-                                        
+		case "sitemap":
+		    $data['content'] = self::_sitemap();
+		break;
+		
+                case "component":		 
+                    $data['content'] = $this->data['content'];                                        
                 break;
                 
             }
@@ -136,6 +129,26 @@ class Content extends CI_Model {
         
         return $content;
         
+    }
+    
+    private function _get_articles($menu)
+    {
+	if(isset($menu['params']['categories'])){
+	
+	    if(in_array('most_popular', $menu['params']['categories'])){
+		$articles = $this->Article->getMostPopular($menu['params']['order'], $menu['params']['number'], 'menu'.$menu['id']);
+	    }
+	    elseif(in_array('most_commented', $menu['params']['categories'])){
+		$articles = $this->Article->getMostCommented($menu['params']['order'], $menu['params']['number'], 'menu'.$menu['id']);
+	    }
+	    else{
+		$articles = $this->Article->getByCategory($menu['params']['categories'], $menu['params']['order'], $menu['params']['number'], 'menu'.$menu['id']);
+	    }
+	    
+	    return $articles;
+	
+	}
+		
     }
     
     public function header()
@@ -202,6 +215,139 @@ class Content extends CI_Model {
                                
         return $header;
         
+    }
+    
+    private function _sitemap()
+    {
+	$sitemap_items = array();
+	
+	$categories = $this->Category->getCategories('menus');
+	
+	foreach($categories as $category){
+	    
+	    # get menus list
+	    $menus = $this->Menu->getByCategory($category['id']);
+	    if(count($menus) == 0){
+		continue;
+	    }
+	    	    
+	    $sitemap_items[$category['id']] = array('title' => $category['title']);
+	    
+	    foreach($menus as $menu){
+		
+		$menu_link = $this->Module->menu_link($menu);
+		
+		if($menu['parent_id'] != NULL){
+		    $sitemap_items[$category['id']]['children'][$menu['parent_id']]['children'][$menu['id']] = array('title' => $menu['title'], 'link' => $menu_link, 'updated_on' => $menu['updated_on']);
+		}
+		else{
+		    $sitemap_items[$category['id']]['children'][$menu['id']] = array('title' => $menu['title'], 'link' => $menu_link, 'updated_on' => $menu['updated_on']);
+		}
+		
+		# get articles list
+		if($menu['params']['type'] == 'articles_list'){
+		    
+		    $articles = self::_get_articles($menu);
+		    if(count($articles) == 0){
+			continue;
+		    }
+		    
+		    foreach($articles as $article){
+			
+			if($menu['parent_id'] != NULL){
+			    $sitemap_items[$category['id']]['children'][$menu['parent_id']]['children'][$menu['id']]['children'][$article['id']] = array('title' => $article['title'], 'link' => $menu_link.'/article:'.$article['alias'], 'updated_on' => $article['updated_on']);
+			}
+			else{
+			    $sitemap_items[$category['id']]['children'][$menu['id']]['children'][$article['id']] = array('title' => $article['title'], 'link' => $menu_link.'/article:'.$article['alias'], 'updated_on' => $article['updated_on']);
+			}
+		    }
+
+		}
+
+	    }
+
+	    
+	}	
+	
+	if($this->input->get('type') == 'xml'){
+	    header('Content-type: text/xml');	
+	    echo self::_sitemap_xml($sitemap_items);
+	    exit;
+	}
+	else{
+	    return self::_sitemap_html($sitemap_items);
+	}
+	
+    }
+    
+    private function _sitemap_html($sitemap_items)
+    {
+	
+	$sitemap = "<ul>";
+	
+	foreach($sitemap_items as $sitemap_item){
+	    
+	    $sitemap .= "  <li>\n";
+	    
+	    if(isset($sitemap_item['link'])){
+		$sitemap .= "<a href=\"".$sitemap_item['link']."\" >\n";
+	    }
+	    
+	    $sitemap .= "<span>".$sitemap_item['title']."</span>\n";
+		
+	    if(isset($sitemap_item['link'])){
+		$sitemap .= "</a>\n";   
+	    }
+	    
+	    if(isset($sitemap_item['children'])){
+		$sitemap .= self::_sitemap_html($sitemap_item['children']);
+	    }
+	    
+	    $sitemap .= "   </li>\n";
+	    
+	}
+	
+	$sitemap .= "</ul>";
+	
+	return $sitemap;
+	
+    }
+    
+    private function _sitemap_xml($sitemap_items, $children = false)
+    {
+	
+	$sitemap = '';
+	
+	if($children == false){
+	    $sitemap .= "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n";
+	    $sitemap .= "<urlset xmlns=\"".current_url()."?type=xml\">\n";
+	}
+	
+	foreach($sitemap_items as $sitemap_item){
+	    	    
+	    if(isset($sitemap_item['link'])){
+	    
+		$sitemap .= "<url>\n";	    
+		$sitemap .= "<loc>".$sitemap_item['link']."</loc>\n";	    
+		if(isset($sitemap_item['updated_on'])){
+		    $sitemap .= "<lastmod>".$sitemap_item['updated_on']."</lastmod>\n";
+		}	    
+		$sitemap .= "<changefreq>weekly</changefreq>\n";	    
+		$sitemap .= "</url>\n";
+	    
+	    }
+	    
+	    if(isset($sitemap_item['children'])){
+		$sitemap .= self::_sitemap_xml($sitemap_item['children'], true);
+	    }
+	    
+	}
+	if($children == false){
+	    $sitemap .= "</urlset>\n";	    
+	}
+	
+	return $sitemap;
+	
     }
     
 }

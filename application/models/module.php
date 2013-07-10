@@ -135,6 +135,7 @@ class Module extends CI_Model {
             case "articles_list":            
             case "menu":
             case "component":
+	    case "sitemap":
                 
                 $link = '';
                 

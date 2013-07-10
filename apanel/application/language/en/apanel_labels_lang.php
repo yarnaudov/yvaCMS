@@ -113,6 +113,7 @@ $lang['label_articles_list'] = 'Articles list';
 $lang['label_menu']          = 'Menu';
 $lang['label_external_url']  = 'External URL';
 $lang['label_component']     = 'Component';
+$lang['label_sitemap']       = 'Sitemap';
 
 // custom field types
 $lang['label_text_field']     = 'Text field';

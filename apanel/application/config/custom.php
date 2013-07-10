@@ -35,7 +35,8 @@ $config['menu_targets']       = array('_parent'         => 'label_parent_window'
 $config['menu_types']         = array('article'         => 'label_article',    
                                       'articles_list'   => 'label_articles_list',
                                       'menu'            => 'label_menu',
-                                      'external_url'    => 'label_external_url');
+                                      'external_url'    => 'label_external_url',
+				      'sitemap'         => 'label_sitemap');
 
 $config['custom_field_types'] = array('text'            => 'label_text_field',    
                                       'textarea'        => 'label_textarea_field',

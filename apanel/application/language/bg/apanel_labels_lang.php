@@ -113,6 +113,7 @@ $lang['label_articles_list'] = 'Списък със статии';
 $lang['label_menu']          = 'Меню';
 $lang['label_external_url']  = 'Външен линк';
 $lang['label_component']     = 'Компонент';
+$lang['label_sitemap']       = 'Карта на сайта';
 
 // custom field types
 $lang['label_text_field']     = 'Текстово поле';
