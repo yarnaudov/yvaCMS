@@ -34,6 +34,13 @@
 		    position: new google.maps.LatLng($('input.lat'+id).val(), $('input.lng'+id).val()),
 		    map: map[id]
 		});
+		
+		google.maps.event.addListener(markers[id], 'click', function() {
+		    markers[id].setMap(null);
+		    $('input.lat'+id).val('');
+		    $('input.lng'+id).val('');
+		});
+		
 	    }
 
 
@@ -57,6 +64,12 @@
 		markers[id] = new google.maps.Marker({
 		    position: new google.maps.LatLng(e.latLng.lat(), e.latLng.lng()),
 		    map: map[id]
+		});
+		
+		google.maps.event.addListener(markers[id], 'click', function() {
+		    markers[id].setMap(null);
+		    $('input.lat'+id).val('');
+		    $('input.lng'+id).val('');
 		});
 
 	    });
