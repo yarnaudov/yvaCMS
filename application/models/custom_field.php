@@ -6,7 +6,7 @@ class Custom_field extends CI_Model {
     {
 
         $this->db->select('*');
-        $this->db->where('custom_field_id', $custom_field_id);
+        $this->db->where('id', $custom_field_id);
 
         $custom_field = $this->db->get('custom_fields');  	
         $custom_field = $custom_field->result_array();
