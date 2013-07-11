@@ -229,4 +229,7 @@ $lang['created_on_desc'] = 'Newest first';
 $lang['updated_on_asc']  = 'Last updated last';
 $lang['updated_on_desc'] = 'Last updated first';
 
+$lang['show_full_history'] = 'Show full history';
+$lang['current_version']   = 'Current version';
+
 ?>

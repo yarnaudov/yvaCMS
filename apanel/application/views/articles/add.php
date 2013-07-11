@@ -305,10 +305,15 @@
                                 <tr>
                                     <th></th>
                                     <td style="text-align: right;">
+					
+					<?php if($this->uri->segment(4) == 'history'){ ?>
+					<a href="<?=site_url('articles/edit/'.$id);?>" >Текуща версия</a> | 
+					<?php } ?>
+					
                                         <a href = "<?=site_url('/articles/history/'.$id);?>"
                                            class = "load_jquery_ui_iframe"
                                            title = "<?=lang('label_article');?> <?=lang('label_history');?>"
-                                           lang = "dialog-article-history" >Show full history</a>
+                                           lang = "dialog-article-history" ><?=lang('show_full_history');?></a>
                                     </td>
                                 </tr>
                                 
