@@ -80,7 +80,7 @@
                 <th style="width:3%;"  >#</th>	
                 <th style="width:3%;"  >&nbsp;</th>
                 <th style="width:31%;" class="sortable" id="title"       ><?=lang('label_title');?></th>
-                <th style="width:8%;"  class="sortable" id="prefix"      ><?=lang('label_type');?></th>
+                <th style="width:8%;"  class="sortable" id="type"        ><?=lang('label_type');?></th>
                 <th style="width:12%;" class="sortable" id="position"    ><?=lang('label_position');?></th>
                 <th style="width:6%;"  class="sortable" id="status"      ><?=lang('label_status');?></th>
                 <th style="width:8%;"  class="sortable" id="order"       ><?=lang('label_order');?></th>
