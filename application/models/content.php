@@ -153,6 +153,9 @@ class Content extends CI_Model {
     
     public function header()
     {
+	
+	$header = "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8;\" />\n";
+	
         /*
          * generate title
          */
@@ -183,7 +186,7 @@ class Content extends CI_Model {
             $title .= ' '.$this->Setting->getSiteNameInTitleSeparator().' '.$this->Setting->getSiteName();
         }
         
-        $header = "<title>".$title."</title>\n";
+        $header .= "<title>".$title."</title>\n";
         
         
         /*
@@ -208,10 +211,7 @@ class Content extends CI_Model {
             $header .= "<meta name=\"robots\" content=\"".$this->Setting->getRobots()."\" />\n";
         }
 	
-	$header .= "<script type=\"text/javascript\" >
-		        var base_url = '".base_url()."';
-                        var site_url = '".site_url()."';
-		    </script>\n";
+	$header .= "<script type=\"text/javascript\" >var base_url = '".base_url()."';var site_url = '".site_url()."';</script>\n";
                                
         return $header;
         
