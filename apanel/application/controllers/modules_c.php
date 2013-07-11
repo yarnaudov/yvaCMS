@@ -65,7 +65,7 @@ class Modules_c extends MY_Controller {
                     $module_id = $this->Module->$method($this->module_id);
 
                     // check if there is module model and call save method
-                    $module_type = $_POST['params']['type'];                
+                    $module_type = $this->input->post('type');                
                     if(file_exists(FCPATH.'modules/'.$module_type.'/models/'.$module_type.'.php')){
                         $this->load->model('../../modules/'.$module_type.'/models/'.$module_type);
                         $this->$module_type->save($module_id);
