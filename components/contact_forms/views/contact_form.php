@@ -12,7 +12,7 @@
 
 	<?php if(!empty($contact_form['text_above'])){ ?>
 	<div class="text_above" >
-	    <?=$contact_form['text_above'];?>
+	    <?=$this->Article->parceText($contact_form['text_above']);?>
 	</div>
 	<?php } ?>
 	  
@@ -38,7 +38,7 @@
 
 		  ?>    
 
-	    <div>
+	    <div class="row" >
 		<label for="field<?=$number;?>" >
 		    <?=$field['label'];?>: 
 		    <?=$field['mandatory'] != 'no' ? '*' : '';?>
@@ -129,7 +129,7 @@
 
 	    <?php if($captcha['enabled'] == 'yes'){ ?>
 	    <br/>
-	    <div>
+	    <div class="row captcha" >
 		<label>&nbsp;</label>
 		<img id="siimage" style="margin-right: 15px;width: 200px;height: 70px;" src="<?=base_url();?>/plugins/securimage/securimage_show.php?sid=<?php echo md5(uniqid()) ?>" alt="CAPTCHA Image" />	
 		<object type="application/x-shockwave-flash" data="<?=base_url();?>/plugins/securimage/securimage_play.swf?bgcol=#ffffff&amp;icon_file=./images/audio_icon.gif&amp;audio_file=<?=base_url();?>/plugins/securimage/securimage_play.php" width="19" height="19" >
@@ -143,17 +143,17 @@
 
 	    </div>
 
-	    <div>
+	    <div class="row" >
 
 		<label><?=lang('label_cf_enter_code');?>: *</label>
-		<input type="text" name="ct_captcha" class="required" style="width: 200px;" />
+		<input type="text" name="ct_captcha" class="required captcha_input" />
 
 	    </div>
 	    <br/>
 	    <?php } ?>
 
-	    <div>
-		<button class="submit" type="submit" name="send" ><?=lang('label_cf_send');?></button>
+	    <div class="buttons">
+		<button class="primary" type="submit" name="send" ><?=lang('label_cf_send');?></button>
 		<button type="reset" ><?=lang('label_cf_clear');?></button>
 	    </div>
 
@@ -161,7 +161,7 @@
 	  
 	<?php if(!empty($contact_form['text_under'])){ ?>
 	<div class="text_under" >
-	    <?=$contact_form['text_under'];?>
+	    <?=$this->Article->parceText($contact_form['text_under']);?>
 	</div>
 	<?php } ?>
 

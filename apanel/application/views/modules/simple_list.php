@@ -23,7 +23,7 @@
                 <td>
                     <label for="module<?=$module['id'];?>" >
                       <span class="title" ><?=$module['title'];?></span>
-                      <span class="type"  ><?=lang('label_'.$module['params']['type']);?></span>
+                      <span class="type"  ><?=lang('label_'.$module['type']);?></span>
                     </label>
                 </td>
             </tr>    
