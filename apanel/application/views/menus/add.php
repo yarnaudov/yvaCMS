@@ -106,7 +106,7 @@
                                         
                                         <?php 
                                         
-                                        $type = set_value('params[type]', isset($params['type']) ? $params['type'] : "");
+                                        $type = set_value('type', isset($type) ? $type : "");
                                         
                                         if(preg_match('/^components{1}/', $type)){
                                             
@@ -134,7 +134,7 @@
                                         <?php } ?>
                                         </span>
                                         
-                                        <input type="hidden" class="type" name="params[type]" value="<?=$type;?>" >
+                                        <input type="hidden" class="type" name="type" value="<?=$type;?>" >
                                                    
                                         <a href  = "<?=site_url('menus/types');?>"
                                            class = "load_jquery_ui_iframe"

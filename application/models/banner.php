@@ -35,13 +35,13 @@ class Banner extends CI_Model {
         $banner_html = '';
         foreach($banners as $banner){
     
-            $banner_html .= '<div class="banner banner_'.$banner['params']['type'].'" >';
+            $banner_html .= '<div class="banner banner_'.$banner['type'].'" >';
             
             if($banner['show_title'] == 'yes'){
                 $banner_html .= '<div class="title" >'.$banner['title'].'</div>';
             }
 
-            switch($banner['params']['type']){
+            switch($banner['type']){
                 case "image":
                     $banner_html .= self::_image($banner);
                 break;

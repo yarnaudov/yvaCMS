@@ -96,11 +96,11 @@
                                 <tr>	      			
                                     <th><label><?=lang('label_type');?>:</label></th>
                                     <td style="padding: 2px 0 0 1px;" >
-                                        <?php $type = set_value('params[type]', isset($params['type']) ? $params['type'] : "");
+                                        <?php $type = set_value('type', isset($type) ? $type : "");
                                               if(!empty($type)){
                                               	  $this->load->language('modules/'.$type);
                                               } ?>
-                                        <input type="hidden" class="type" name="params[type]" value="<?=$type;?>" >
+                                        <input type="hidden" class="type" name="type" value="<?=$type;?>" >
                                         
                                         <span id="type_label" >
                                             <?php if(!empty($type)){ ?>

@@ -82,7 +82,7 @@ class MY_Controller extends CI_Controller {
             $menu = $this->Menu->getDetails($this->menu_id);
             
             // If menu type is 'menu' rewrite variable $menu with new menu but save alias from original menu
-            if($menu['params']['type'] == 'menu' && !empty($menu['params']['menu_id'])){
+            if($menu['type'] == 'menu' && !empty($menu['params']['menu_id'])){
                 
                 $this->current_menus[] = $menu['menu_id'];
                 
@@ -93,14 +93,14 @@ class MY_Controller extends CI_Controller {
             }            
             
             // If menu type is 'component' set route to component and redirect the page 
-            if(preg_match('/^components{1}/', $menu['params']['type'])){                     
+            if(preg_match('/^components{1}/', $menu['type'])){                     
                 $this->setRoute($menu);                
             }
             
         }
 	
 	// load validation js if article is loaded
-	if($this->article_alias || @$menu['params']['type'] == 'article'){
+	if($this->article_alias || @$menu['type'] == 'article'){
 	    
 	    $this->jquery_ext->add_plugin('validation');
 	    $this->jquery_ext->add_library('check_captcha.js');
@@ -159,7 +159,7 @@ class MY_Controller extends CI_Controller {
     function setRoute($menu)
     {
         
-        $component = explode('/', $menu['params']['type']);
+        $component = explode('/', $menu['type']);
         $menu['params']['component'] = $component[1];
         
         include APPPATH . "cache/routes.php";

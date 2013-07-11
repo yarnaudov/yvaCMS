@@ -1,4 +1,4 @@
-<!--
+<?php /*
 <tr><td colspan="2" class="empty_line" ></td></tr>
                                 
 <tr>	      			
@@ -11,4 +11,4 @@
 	
     </td>
 </tr>
--->
+*/ ?>

@@ -105,7 +105,7 @@
                     <div class="description" >(<span class="head" ><?=lang('label_description');?>:</span> <span class="content" ><?=strip_tags($banner['description']);?></span>)</div>
                     <?php } ?>
                 </td>                
-                <td><?=lang('label_'.$banner['params']['type']);?></td>
+                <td><?=lang('label_'.$banner['type']);?></td>
                 <td><?=$banner['position'];?></td>
                 <td>
                     <?php if($banner['status'] == 'yes'){ ?>

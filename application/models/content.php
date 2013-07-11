@@ -40,8 +40,8 @@ class Content extends CI_Model {
             if(isset($templates[$menu['alias']])){
                 $menu['template'] = $templates[$menu['alias']];
             }
-            elseif(isset($templates[$menu['params']['type']])){
-                $menu['template'] = $templates[$menu['params']['type']];
+            elseif(isset($templates[$menu['type']])){
+                $menu['template'] = $templates[$menu['type']];
             }
                         
             $data['title'] = $menu['title'];
@@ -49,12 +49,12 @@ class Content extends CI_Model {
             /*
              * If menu type is 'menu' rewrite variable $menu with new menu
              */
-            if($menu['params']['type'] == 'menu' && !empty($menu['params']['menu_id'])){
+            if($menu['type'] == 'menu' && !empty($menu['params']['menu_id'])){
                 $menu = $this->Menu->getDetails($menu['params']['menu_id']);
             }
             
-            if(preg_match('/^components{1}/', $menu['params']['type'])){
-                $menu['params']['type'] = "component";
+            if(preg_match('/^components{1}/', $menu['type'])){
+                $menu['type'] = "component";
             }
             
             
@@ -66,10 +66,10 @@ class Content extends CI_Model {
                 $content_template = '../../'.$template_file;
             }
             else{
-                $content_template = @$this->templates[$menu['params']['type']];
+                $content_template = @$this->templates[$menu['type']];
             }
                         
-            switch($menu['params']['type']){
+            switch($menu['type']){
                 
                 case "article":
                 
@@ -245,7 +245,7 @@ class Content extends CI_Model {
 		}
 		
 		# get articles list
-		if($menu['params']['type'] == 'articles_list'){
+		if($menu['type'] == 'articles_list'){
 		    
 		    $articles = self::_get_articles($menu);
 		    if(count($articles) == 0){

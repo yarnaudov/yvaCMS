@@ -16,20 +16,20 @@ class Menu extends MY_Model {
                       m.id = '".$id."' ";
         
         $menu = $this->db->query($query);  	
-        $menu = $menu->result_array();
+        $menu = $menu->row_array();
 
         if(empty($menu)){
             return;
         }
         
-        $menu[0]['params'] = json_decode($menu[0]['params'], true);   
-        $menu[0]           = array_merge($menu[0], $this->Custom_field->getFieldsValues($id));
+        $menu['params'] = json_decode($menu['params'], true);   
+        $menu           = array_merge($menu, $this->Custom_field->getFieldsValues($id));
 
         if($field == null){
-            return $menu[0];
+            return $menu;
         }
         else{  	
-            return $menu[0][$field];
+            return $menu[$field];
         }
 
     }
@@ -278,6 +278,7 @@ class Menu extends MY_Model {
         $data['menus']['content_template']          = $this->input->post('content_template');
         $data['menus']['default']                   = $this->input->post('default');
         $data['menus']['description_as_page_title'] = $this->input->post('description_as_page_title');
+	$data['menus']['type']                      = $this->input->post('type');
         $data['menus']['params']                    = json_encode($this->input->post('params'));
         
         if($data['menus']['default'] == ""){

@@ -97,8 +97,8 @@
                                     <th><label><?=lang('label_type');?>:</label></th>
                                     <td>
                                         
-                                        <?php $type = set_value('params[type]', isset($params['type']) ? $params['type'] : ""); ?>
-                                        <input type="hidden" class="type" name="params[type]" value="<?=$type;?>" >
+                                        <?php $type = set_value('type', isset($type) ? $type : ""); ?>
+                                        <input type="hidden" class="type" name="type" value="<?=$type;?>" >
                                         
                                         <?php if(!empty($type)){ ?>
                                         <strong><?=lang('label_'.$type);?></strong> - 

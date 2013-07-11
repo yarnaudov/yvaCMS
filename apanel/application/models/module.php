@@ -160,6 +160,7 @@ class Module extends MY_Model {
         $data['modules']['show_title']       = $this->input->post('show_title');
         $data['modules']['css_class_sufix']  = $this->input->post('css_class_sufix');
         $data['modules']['template']         = $this->input->post('template');
+	$data['modules']['type']             = $this->input->post('type');
         $data['modules']['params']           = $this->input->post('params');
 
         if($data['modules']['show_in_language'] == 'all'){

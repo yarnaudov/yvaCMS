@@ -114,9 +114,9 @@
                     <div class="description" >(<span class="head" ><?=lang('label_alias');?>:</span> <span class="content" ><?=$menu['alias'];?></span>)</div>
                 </td>
                 <td>
-                    <?php if(preg_match('/^components{1}/', $menu['params']['type'])){
+                    <?php if(preg_match('/^components{1}/', $menu['type'])){
                               
-                              $type_arr = explode('/', $menu['params']['type']);
+                              $type_arr = explode('/', $menu['type']);
                               
                               if(count($type_arr) > 2){
                                   echo lang('com_'.$type_arr[1]).' > '.lang($this->components[$type_arr[1]]['menus'][$type_arr[2]]);
@@ -127,7 +127,7 @@
                                             
                           }
                           else{
-                              echo lang('label_'.$menu['params']['type']);
+                              echo lang('label_'.$menu['type']);
                           }
                         ?>
                 </td>

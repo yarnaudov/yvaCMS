@@ -44,7 +44,7 @@ class Module extends CI_Model {
         $module_html = '';
         foreach($modules as $module){
             
-            $module['template'] = isset($templates[$module['params']['type']]) ? $templates[$module['params']['type']] : "";
+            $module['template'] = isset($templates[$module['type']]) ? $templates[$module['type']] : "";
             
             $content = $this->Module->_load_module($module['id']);
                 
@@ -125,12 +125,12 @@ class Module extends CI_Model {
     function menu_link($menu, $full = true)
     {
         
-        if(preg_match('/^components{1}/', $menu['params']['type'])){
-            $menu['params']['type'] = "component";
+        if(preg_match('/^components{1}/', $menu['type'])){
+            $menu['type'] = "component";
         }
         
         /* --- get menu link --- */            
-        switch($menu['params']['type']){
+        switch($menu['type']){
             case "article":
             case "articles_list":            
             case "menu":
@@ -187,7 +187,7 @@ class Module extends CI_Model {
             include $template_file;
         }
     	else{
-            include 'modules/' . $module['params']['type'] . '/views/' . $module['params']['type'] . '.php';
+            include 'modules/' . $module['type'] . '/views/' . $module['type'] . '.php';
         }
         
         $content = ob_get_contents();
@@ -204,15 +204,15 @@ class Module extends CI_Model {
         
         $module = Module::getDetails($id);
 
-        if(file_exists('modules/' . $module['params']['type'] . '/models/' . $module['params']['type'] . '.php')){
+        if(file_exists('modules/' . $module['type'] . '/models/' . $module['type'] . '.php')){
 
-            include_once 'modules/' . $module['params']['type'] . '/models/' . $module['params']['type'] . '.php';
+            include_once 'modules/' . $module['type'] . '/models/' . $module['type'] . '.php';
 
             if($module['template'] != 'default'){
                 
             }
             
-            $moduleObj = new $module['params']['type'];
+            $moduleObj = new $module['type'];
             $content   = $moduleObj->run($module);
 
         }
