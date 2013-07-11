@@ -180,8 +180,8 @@ class Module extends MY_Model {
         }
         elseif($action == 'update'){
             
-            $params = self::getDetails($id, 'params');
-            if($params['type'] == $data['modules']['params']['type']){
+            $type = self::getDetails($id, 'type');
+            if($type == $data['modules']['type']){
                 
 		!isset($data['modules']['params']['multilang']) ? $data['modules']['params']['multilang'] = array() : '';
 		
