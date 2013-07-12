@@ -8,6 +8,12 @@ class Media extends MY_Controller {
         $this->jquery_ext->add_library('check_actions_browse_media.js');
         
         $data['folder'] = isset($_POST['folder']) ? $_POST['folder'] : $this->config->item('media_dir').'/';
+	
+	$folder = realpath(FCPATH.'../').'/'.$data['folder'];
+	if(!file_exists($folder)){
+	    mkdir($folder, 0777);
+	}
+	
         $data['param']  = $param;
 
         if(isset($_POST['up'])){

@@ -124,7 +124,7 @@ class Articles extends MY_Controller {
          *  delete, change status, change order, set order by, set filters, 
          *  clear filter, set limit, get sub menus, set class on sorted element
          */
-        $data = parent::index($this->Article, 'articles', $redirect);
+        $data = parent::index($this->Article, 'articles'.$this->layout, $redirect);
 
         // get articles        
         $articles = $this->Article->getArticles($data['filters'], $data['order_by']);

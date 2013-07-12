@@ -80,10 +80,6 @@
 		
 	</div>
 	
-	<?php if($this->layout == 'simple_ajax'){ ?>
-	<div style="overflow-x: hidden;overflow-y: auto;max-height: 360px" >
-	<?php } ?>
-	
 	<table class="list" cellpadding="0" cellspacing="2" >
 		
             <tr>
@@ -176,10 +172,6 @@
             <?php } ?>
             
 	</table>
-	
-	<?php if($this->layout == 'simple_ajax'){ ?>
-	</div>
-	<?php } ?>
 	    
 	<?php $this->load->view('paging'); ?>
         
