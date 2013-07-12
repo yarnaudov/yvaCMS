@@ -91,9 +91,9 @@ foreach($custom_fields as $custom_field){
             
             echo '<ul>';
             foreach($params['options'] as $key => $option){
-            
+
                 $checked = '';
-                if(@in_array($key, $set_value) || $key == $set_value || ($set_value == "" && $option == 1)){
+                if(@in_array($key, $set_value) || ($key == $set_value && $set_value != "") || ($set_value == "" && $option == 1)){
                     $checked = 'checked';
                 }
                 
