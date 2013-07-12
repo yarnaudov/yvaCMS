@@ -89,6 +89,10 @@ foreach($custom_fields as $custom_field){
             
             $name_sufix = $custom_field['type'] == 'checkbox' ? '[]' : '';
             
+	    if(count($params['options']) > 1){
+		echo '<div class="menu_list" >';
+	    }
+	    
             echo '<ul>';
             foreach($params['options'] as $key => $option){
 
@@ -109,6 +113,10 @@ foreach($custom_fields as $custom_field){
             }
             echo '</ul>';
             
+	    if(count($params['options']) > 1){
+		echo '</div>';
+	    }
+	    
           break;
       
         case 'date':
