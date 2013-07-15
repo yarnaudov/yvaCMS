@@ -1,11 +1,11 @@
 
-<div class="content" >
+<div id="content" >
     
-    <?php if(isset($title)){ ?>
-    <div class="title" ><?=$title;?></div>
+    <?php if($menu['show_title'] == 'yes'){ ?>
+    <div class="content_title" ><?=$menu['title'];?></div>
     <?php } ?>
 
-    <?=$content;?>
+    <div class="content_content" ><?=$content;?></div>
 
 </div>
 

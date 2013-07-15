@@ -274,6 +274,7 @@ class Menu extends MY_Model {
         $data['menus']['target']                    = $this->input->post('target');
         $data['menus']['parent_id']                 = $this->input->post('parent');
         $data['menus']['image']                     = $this->input->post('image');
+	$data['menus']['show_title']                = $this->input->post('show_title');
         $data['menus']['main_template']             = $this->input->post('main_template');
         $data['menus']['content_template']          = $this->input->post('content_template');
         $data['menus']['default']                   = $this->input->post('default');

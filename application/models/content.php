@@ -36,6 +36,7 @@ class Content extends CI_Model {
         else{
             
             $menu = $this->Menu->getDetails($this->menu_id);
+	    $data['menu'] = $menu;
                         
             if(isset($templates[$menu['alias']])){
                 $menu['template'] = $templates[$menu['alias']];
@@ -44,8 +45,6 @@ class Content extends CI_Model {
                 $menu['template'] = $templates[$menu['type']];
             }
                         
-            $data['title'] = $menu['title'];
-
             /*
              * If menu type is 'menu' rewrite variable $menu with new menu
              */

@@ -78,4 +78,33 @@ class Update_script extends CI_Controller {
 	
     }
     
+    function add_menus_show_title()
+    {
+	
+	$menus = $this->db->get('menus')->result_array();
+	    
+	if(!array_key_exists('show_title', $menus[0])){   
+	    $this->db->query("ALTER TABLE `menus` ADD `show_title` ENUM( 'yes', 'no' ) NOT NULL");
+	    $this->db->query("UPDATE `menus` SET `show_title` = 'yes'");
+	}
+	
+	echo "done!";
+	
+    }
+    
+    function remove_menus_show_title()
+    {
+	
+	$menus = $this->db->get('menus')->result_array();
+	    
+	if(array_key_exists('show_title', $menus[0])){
+	    $this->db->query('ALTER TABLE `menus` DROP COLUMN `show_title`');
+	}
+	
+	echo 'done!';
+	
+    }
+    
+    
+    
 }
