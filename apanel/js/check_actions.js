@@ -232,6 +232,12 @@ $(document).ready(function() {
 	var url          = $('form').attr('action');
 	var page_results = $(this).val();
 	
+	url = url.split('?');
+	url = url[0];
+	
+	history.pushState({ path: this.path }, '', url);
+	$('form').attr('action', url);
+	
 	$.post(url, {limit: true, page_results: page_results}, function(data){	    	    
 	    $('table.list').replaceWith($('table.list', data).clone());
 	    $('#paging').replaceWith($('#paging', data).clone());
