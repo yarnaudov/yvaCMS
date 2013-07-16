@@ -17,7 +17,7 @@ $modules = array_chunk($modules, ceil($size));
     -->
     
     <tr>
-        <td>
+        <td style="width: 50%;" >
    
             <ul>
             <?php foreach($modules[0] as $module){ ?> 
@@ -33,7 +33,7 @@ $modules = array_chunk($modules, ceil($size));
 
         </td>
         
-        <td>
+        <td style="width: 50%;" >
    
             <ul>
             <?php foreach($modules[1] as $module){ ?> 

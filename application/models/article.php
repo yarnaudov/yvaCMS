@@ -146,9 +146,35 @@ class Article extends CI_Model {
 	
     }
     
+    public function getByIds($articles)
+    {
+	
+	$articles_arr = array();
+	
+	foreach($articles as $article){
+	    
+	    $article = self::getDetails($article);
+	   
+	    /* --- check filters --- */
+	    if(self::_checkFilters('article', $article) == false){
+		continue;
+	    }
+	    
+            $articles_arr[] = $article;
+	    
+	}
+	
+	return $articles_arr;
+	
+    }
+    
     private function _checkFilters($filter, $article)
     {
 
+	if(empty($article)){
+	    return false;
+	}
+	
 	if($filter == $this->input->get_post('filter') || $this->input->get_post('filter') == 'all'){
 
 	    $get_post = $_GET+$_POST;
