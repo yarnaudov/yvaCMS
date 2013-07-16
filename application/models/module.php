@@ -132,7 +132,8 @@ class Module extends CI_Model {
         /* --- get menu link --- */            
         switch($menu['type']){
             case "article":
-            case "articles_list":            
+            case "articles_list":           
+	    case "custom_articles_list":
             case "menu":
             case "component":
 	    case "sitemap":

@@ -51,6 +51,7 @@ class MY_Controller extends CI_Controller {
         $uri = explode('/', $this->uri->uri_string());
         $uri = array_reverse($uri);
         
+	// check if article with no menu is selected
         if(count($uri) == 1 && current(explode(':', $uri[0])) == 'article'){
             $this->article_alias = end(explode(':', $uri[0]));
         }
@@ -75,8 +76,10 @@ class MY_Controller extends CI_Controller {
             
             // get all parent menus of current one
             $this->current_menus = $this->Menu->getParents($this->menu_id);
-            if(current(explode(':', $this->uri->segment(2))) == 'article'){
-                $this->article_alias = end(explode(':', $this->uri->segment(2)));
+	    
+	    // check if article is selected
+            if(current(explode(':', $uri[0])) == 'article'){
+                $this->article_alias = end(explode(':', $uri[0]));
             }
             
             $menu = $this->Menu->getDetails($this->menu_id);

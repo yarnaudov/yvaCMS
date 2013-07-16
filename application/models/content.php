@@ -4,7 +4,8 @@ class Content extends CI_Model {
     
     public $templates = array('main'          => 'content/main',
                               'article'       => 'content/article',
-                              'articles_list' => 'content/articles_list');
+                              'articles_list' => 'content/articles_list',
+			      'custom_articles_list' => 'content/articles_list');
         
     public function load($templates = array())
     {
@@ -36,6 +37,9 @@ class Content extends CI_Model {
         else{
             
             $menu = $this->Menu->getDetails($this->menu_id);
+	    
+	    $menu['link']  = module::menu_link($menu);
+	    
 	    $data['menu'] = $menu;
                         
             if(isset($templates[$menu['alias']])){
@@ -109,6 +113,14 @@ class Content extends CI_Model {
                     else{
 		       $data['content'] = lang('msg_category_not_selected');
                     }
+		    
+                break;
+		
+		case "custom_articles_list":
+                    		
+			$articles = $this->Article->getByIds(isset($menu['params']['custom_articles']) ? $menu['params']['custom_articles'] : array());
+						
+			$data['content'] = $this->load->view($content_template, compact('menu', 'articles'), true);
 		    
                 break;
             

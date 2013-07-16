@@ -110,6 +110,7 @@ $lang['label_new_window']     = 'Нов прозорец';
 // menu types
 $lang['label_article']       = 'Статия';
 $lang['label_articles_list'] = 'Списък със статии';
+$lang['label_custom_articles_list'] = 'Разширен списък със статии';
 $lang['label_menu']          = 'Меню';
 $lang['label_external_url']  = 'Външен линк';
 $lang['label_component']     = 'Компонент';

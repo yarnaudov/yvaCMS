@@ -110,6 +110,7 @@ $lang['label_new_window']     = 'New window';
 // menu types
 $lang['label_article']       = 'Article';
 $lang['label_articles_list'] = 'Articles list';
+$lang['label_custom_articles_list'] = 'Custom articles list';
 $lang['label_menu']          = 'Menu';
 $lang['label_external_url']  = 'External URL';
 $lang['label_component']     = 'Component';
