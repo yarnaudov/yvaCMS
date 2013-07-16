@@ -238,6 +238,26 @@ $(document).ready(function() {
 	});
 	
     });
-           
+    
+    /*
+     * add onclick event to page links
+     */
+    $('.pagination a').live('click', function(event){
+	
+	event.preventDefault();
+	
+	var url = $(this).attr('href');
+	
+	history.pushState({ path: this.path }, '', url);
+	$('form').attr('action', url);
+	
+	$.post(url, function(data){	    	    
+	    $('table.list').replaceWith($('table.list', data).clone());
+	    $('#paging').replaceWith($('#paging', data).clone());
+	});
+	
+    });
+    
+	   
 		
 });
