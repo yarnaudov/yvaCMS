@@ -196,14 +196,15 @@ $(document).ready(function() {
     /*
      * add onclick event to order images
      */
-    $('.order_img').bind('click', function(){
+    $('.order_img').live('click', function(){
         
+	var url        = $('form').attr('action');
         var element_id = $(this).parents('tr').find('.checkbox').val();
-        var order = $(this).attr('alt');
-            
-        $('form').append('<input type="hidden" name="element_id" value="'+element_id+'" >');
-        $('form').append('<input type="hidden" name="change_order" value="'+order+'" >');
-        $('form').submit();
+        var order      = $(this).attr('alt');
+        
+	$.post(url, {element_id: element_id, change_order: order}, function(data){	    	    
+	    $('table.list').replaceWith($('table.list', data).clone());
+	});
         
     });
     
@@ -211,18 +212,31 @@ $(document).ready(function() {
     /*
      * add onclick event to table header for ordering the results
      */
-    $('.sortable').bind('click', function(){                
-        $('form').append('<input type="hidden" name="order_by" value="'+$(this).attr('id')+'" >');        
-        $('form').submit();        
+    $('.sortable').live('click', function(){  
+	
+	var url      = $('form').attr('action');
+	var oredr_by = $(this).attr('id');
+	
+	$.post(url, {order_by: oredr_by}, function(data){	    	    
+	    $('table.list').replaceWith($('table.list', data).clone());
+	});
+       
     });
     
     
     /*
      * add onchange event to results per page select
      */
-    $('select[name=page_results]').bind('change', function(){
-        $('form').append('<input type="hidden" name="limit" value="'+$(this).attr('id')+'" >');
-        $('form').submit();
+    $('select[name=page_results]').live('change', function(){
+	
+	var url          = $('form').attr('action');
+	var page_results = $(this).val();
+	
+	$.post(url, {limit: true, page_results: page_results}, function(data){	    	    
+	    $('table.list').replaceWith($('table.list', data).clone());
+	    $('#paging').replaceWith($('#paging', data).clone());
+	});
+	
     });
            
 		
