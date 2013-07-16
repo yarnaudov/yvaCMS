@@ -193,6 +193,7 @@ CREATE TABLE IF NOT EXISTS `articles_statistics` (
 CREATE TABLE IF NOT EXISTS `banners` (
   `id` int(4) NOT NULL AUTO_INCREMENT,
   `position` varchar(50) NOT NULL,
+  `type` VARCHAR( 50 ) NOT NULL,
   `title` varchar(250) NOT NULL,
   `description` varchar(1000) NOT NULL,
   `show_in_language` int(4) DEFAULT NULL,
@@ -528,7 +529,9 @@ CREATE TABLE IF NOT EXISTS `menus` (
   `id` int(4) NOT NULL AUTO_INCREMENT,
   `category_id` int(4) NOT NULL,
   `parent_id` int(4) DEFAULT NULL,
+  `type` VARCHAR( 50 ) NOT NULL,
   `show_in_language` int(4) DEFAULT NULL,
+  `show_title` ENUM( 'yes', 'no' ) NOT NULL,
   `alias` varchar(500) CHARACTER SET ucs2 NOT NULL,
   `default` enum('yes','no') NOT NULL,
   `access` enum('public','registred') NOT NULL,
@@ -578,6 +581,7 @@ CREATE TABLE IF NOT EXISTS `menus_data` (
 CREATE TABLE IF NOT EXISTS `modules` (
   `id` int(4) NOT NULL AUTO_INCREMENT,
   `position` varchar(50) NOT NULL,
+  `type` VARCHAR( 50 ) NOT NULL,
   `show_in_language` int(4) DEFAULT NULL,
   `start_publishing` date DEFAULT NULL,
   `end_publishing` date DEFAULT NULL,

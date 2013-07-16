@@ -176,14 +176,19 @@ $(document).ready(function() {
     /*
      * add onclick event to status images
      */
-    $('.status_img').bind('click', function(){
+    $('.status_img').live('click', function(){
         
-        var element_id = $(this).parents('tr').find('.checkbox').val();
+	$(this).attr('src', base_url+'img/loading.gif');
+	
+	var status_img = this;
+	var url        = $('form').attr('action');	
+	var element_id = $(this).parents('tr').find('.checkbox').val();
         var status     = $(this).attr('alt');
-            
-        $('form').append('<input type="hidden" name="element_id" value="'+element_id+'" >');
-        $('form').append('<input type="hidden" name="change_status" value="'+status+'" >');
-        $('form').submit();
+		
+	$.post(url, {element_id: element_id, change_status: status}, function(data){
+	    var status_img_new = $('.checkbox[value='+element_id+']', data).parents('tr').find('.status_img').clone();	    
+	    $(status_img).replaceWith(status_img_new);	    	    
+	});
         
     });
     

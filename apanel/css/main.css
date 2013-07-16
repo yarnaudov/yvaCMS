@@ -300,6 +300,10 @@ button.toggle,
 a.toggle{
     background-image: url('../img/iconToggle.png');
 }
+button.copy,
+a.copy{
+    background-image: url('../img/iconCopy.png');
+}
 
 
 #sub_actions{
