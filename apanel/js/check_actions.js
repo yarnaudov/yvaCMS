@@ -220,7 +220,10 @@ $(document).ready(function() {
 	url = url.split('?');
 	url = url[0];
 	
-	history.pushState({ path: this.path }, '', url);
+	try{
+	    history.pushState({ path: this.path }, '', url);
+	}
+	catch(err){}
 	$('form').attr('action', url);
 	
 	$.post(url, {order_by: oredr_by}, function(data){
@@ -241,7 +244,10 @@ $(document).ready(function() {
 	url = url.split('?');
 	url = url[0];
 	
-	history.pushState({ path: this.path }, '', url);
+	try{
+	    history.pushState({ path: this.path }, '', url);
+	}
+	catch(err){}
 	$('form').attr('action', url);
 	
 	$.post(url, {limit: true, page_results: page_results}, function(data){	    	    
@@ -259,7 +265,10 @@ $(document).ready(function() {
 	
 	var url = $(this).attr('href');
 	
-	history.pushState({ path: this.path }, '', url);
+	try{
+	    history.pushState({ path: this.path }, '', url);
+	}
+	catch(err){}
 	$('form').attr('action', url);
 
 	$.post(url, function(data){
@@ -279,7 +288,7 @@ $(document).ready(function() {
     });
     
     function reload_content(data){
-	
+
 	$('table.list').replaceWith($('table.list', data));
 	$('#paging').replaceWith($('#paging', data));
 	
