@@ -20,7 +20,7 @@ $(document).ready(function() {
         force_br_newlines : false, 
         force_p_newlines : true, 
         forced_root_block : 'p',
-	      invalid_elements : "script,applet,iframe",
+	invalid_elements : "script,applet",//iframe",
         
         // Theme options
         theme_advanced_buttons1 : "bold,italic,underline,separator,strikethrough,justifyleft,justifycenter,justifyright,justifyfull,undo,redo,link,unlink",
@@ -60,7 +60,7 @@ $(document).ready(function() {
         force_br_newlines : false, 
         force_p_newlines : true, 
         forced_root_block : 'p',
-	      invalid_elements : "script,applet,iframe",
+	      invalid_elements : "script,applet",//iframe",
         
         // Theme options
         theme_advanced_buttons1 : "bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,styleselect,formatselect,fontselect,fontsizeselect",
