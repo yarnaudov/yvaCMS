@@ -197,7 +197,7 @@ class MY_Controller extends CI_Controller{
         if(isset($_POST['change_order'])){
             $result = $model->changeOrder($_POST['element_id'], $_POST['change_order']);
             if($result == true){
-                redirect($redirect);
+                redirect($redirect.$page);
                 exit();
             }
         }
