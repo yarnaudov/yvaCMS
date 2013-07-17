@@ -248,6 +248,11 @@ class MY_Controller extends CI_Controller{
         $script   = "$('#".$elm_id."').addClass('".$class."');";
         $this->jquery_ext->add_script($script);
         
+	// fix for sort when page loaded via ajax
+	if($this->input->is_ajax_request()) {
+	    echo $elm_id.'&'.$class.'&';
+	}
+	
         // set data       
         $data['order_by']  = $this->session->userdata($session.'_order')        == '' ? '`order`' : $this->session->userdata($session.'_order');
         $data['order']     = trim(str_replace('`', '', $data['order_by']));

@@ -203,7 +203,7 @@ $(document).ready(function() {
         var order      = $(this).attr('alt');
         
 	$.post(url, {element_id: element_id, change_order: order}, function(data){	    	    
-	    $('table.list').replaceWith($('table.list', data).clone());
+	    reload_content(data);
 	});
         
     });
@@ -217,8 +217,14 @@ $(document).ready(function() {
 	var url      = $('form').attr('action');
 	var oredr_by = $(this).attr('id');
 	
-	$.post(url, {order_by: oredr_by}, function(data){	    	    
-	    $('table.list').replaceWith($('table.list', data).clone());
+	url = url.split('?');
+	url = url[0];
+	
+	history.pushState({ path: this.path }, '', url);
+	$('form').attr('action', url);
+	
+	$.post(url, {order_by: oredr_by}, function(data){
+	    reload_content(data);
 	});
        
     });
@@ -239,8 +245,7 @@ $(document).ready(function() {
 	$('form').attr('action', url);
 	
 	$.post(url, {limit: true, page_results: page_results}, function(data){	    	    
-	    $('table.list').replaceWith($('table.list', data).clone());
-	    $('#paging').replaceWith($('#paging', data).clone());
+	    reload_content(data);
 	});
 	
     });
@@ -256,14 +261,31 @@ $(document).ready(function() {
 	
 	history.pushState({ path: this.path }, '', url);
 	$('form').attr('action', url);
-	
-	$.post(url, function(data){	    	    
-	    $('table.list').replaceWith($('table.list', data).clone());
-	    $('#paging').replaceWith($('#paging', data).clone());
+
+	$.post(url, function(data){
+	    reload_content(data);
 	});
 	
     });
     
-	   
+    $(window).bind("popstate", function(){ 
+	
+	var url = location.href;
+	
+	$.post(url, function(data){    
+	    reload_content(data);
+	});
+	
+    });
+    
+    function reload_content(data){
+	
+	$('table.list').replaceWith($('table.list', data));
+	$('#paging').replaceWith($('#paging', data));
+	
+	data = data.split('&');
+	$('#'+data[0]).addClass(data[1]);
+	
+    }
 		
 });

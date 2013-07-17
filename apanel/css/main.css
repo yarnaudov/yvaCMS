@@ -708,7 +708,7 @@ button.toggle{
  * module types
  */
 .dialog-select-module-type{
-	width: 400px !important;
+	width: 450px !important;
 	min-height: 230px !important;
 	overflow: hidden;
 }
