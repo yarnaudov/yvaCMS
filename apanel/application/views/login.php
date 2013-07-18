@@ -47,13 +47,13 @@
                                 <span><?=lang('label_tool_title');?></span>
                             </div>
 
-                            Welcome to administration panel for simple menagment of your site content 
+			    <?=lang('login_text');?>
 
                         </div>
             
                         <div class="browsers" >
 
-                            <span class="header" >Tested with</span>
+                            <span class="header" ><?=lang('label_tested_with');?></span>
 
                             <a href="http://www.firefox.com" target="_blank" >
                                 <img src="<?=base_url('img/iconFirefox.png');?>" >

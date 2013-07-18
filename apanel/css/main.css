@@ -5,6 +5,12 @@
          url('../../fonts/myriadpro-it.ttf'),
          url('../../fonts/myriadpro-it.eot');
 }
+@font-face {
+    font-family: "Monofur";
+    src: local('Monofur'), local('Monofur'),
+         url('../../fonts/myriadpro-it.ttf'),
+         url('../../fonts/myriadpro-it.eot');
+}
 a{
     color: #017BD7;
     text-decoration: none;
@@ -56,12 +62,12 @@ body{
     float: left;
 }
 #header .logo span{
-    font-size: 26px;
+    font-size: 30px;
     font-family: "Myriad Pro It";
     float: left;
     display: inline-block;
-    padding: 3px 10px;
-    color: #000;
+    padding: 0px 10px;
+    color: #444;
 }
 #header .top_bar{
     position: relative;

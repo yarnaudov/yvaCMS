@@ -64,7 +64,14 @@ img.fnone{float:none !important}
 .dd .ddTitle .ddlabel{color:#666;}
 .dd .ddTitle .description{font-size:12px; color:#666}
 .dd .ddTitle .ddTitleText img{padding-right:5px;margin-top: -3px;}
-.dd .ddChild{border:1px solid #c3c3c3; background-color:#fff; left:-1px;}
+
+.dd .ddChild{
+    margin-top: 10px;
+    border:1px solid #c3c3c3; 
+    background-color:#fff; 
+    left:-1px;
+}
+
 .dd .ddChild li{padding:5px; background-color:#fff; border-bottom:1px solid #c3c3c3;}
 .dd .ddChild li .description{color:#666;}
 .dd .ddChild li .ddlabel{color:#333;}
@@ -73,4 +80,8 @@ img.fnone{float:none !important}
 .dd .ddChild li.optgroup{padding:0;}
 .dd .ddChild li.optgroup .optgroupTitle{padding:0 5px; font-weight:bold; font-style:italic}
 .dd .ddChild li.optgroup ul li{padding:5px 5px 5px 15px}
-.dd .ddChild li.selected{background-color:#d5d5d5; color:#000;}
+
+.dd .ddChild li.selected{
+    background-color:#E7EFEF; 
+    color:#000;
+}

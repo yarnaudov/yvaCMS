@@ -2,6 +2,8 @@
 
 $lang['label_tool_title']    = 'Административен панел';
 $lang['label_logged_in_as']  = 'Вие сте влезли като';
+$lang['label_tested_with']   = 'Тестван с';
+$lang['login_text']          = 'Designed for easy site content management. You can easy add/change articles, menus, images, videos, banners, languages, outsourced scripts.';
 
 $lang['label_articles']      = 'Статии';
 $lang['label_menus']         = 'Менюта';

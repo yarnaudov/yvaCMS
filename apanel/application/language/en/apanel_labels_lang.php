@@ -2,6 +2,8 @@
 
 $lang['label_tool_title']    = 'Administration Panel';
 $lang['label_logged_in_as']  = 'You are logged in as';
+$lang['label_tested_with']   = 'Tested with';
+$lang['login_text']          = 'Designed for easy site content management. You can easy add/change articles, menus, images, videos, banners, languages, outsourced scripts.';
 
 $lang['label_articles']      = 'Articles';
 $lang['label_menus']         = 'Menus';

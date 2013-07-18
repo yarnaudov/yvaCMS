@@ -69,9 +69,9 @@ div.login div.login_intro div.text .logo img{
     float: left;
 }
 div.login div.login_intro div.text .logo span{
-    font-size: 26px;
+    font-size: 30px;
     font-family: "Myriad Pro It";
     float: left;
     display: inline-block;
-    padding: 3px 10px;
+    padding: 0px 10px;
 }
