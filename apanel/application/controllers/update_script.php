@@ -2,7 +2,7 @@
 
 class Update_script extends CI_Controller {
     
-    public function index()
+    public function add_type()
     {
 	
 	$tables = array('menus', 'modules', 'banners');
@@ -40,7 +40,7 @@ class Update_script extends CI_Controller {
 	
     }
     
-    function revert()
+    function remove_type()
     {
 	
 	$tables = array('menus', 'modules', 'banners');
@@ -105,6 +105,31 @@ class Update_script extends CI_Controller {
 	
     }
     
+    function add_ap_sessions_table()
+    {
+	
+	$this->db->query("CREATE TABLE IF NOT EXISTS `ap_sessions` (
+			    `user_id` int(4) NOT NULL,
+			    `ip_address` varchar(45) NOT NULL DEFAULT '0',
+			    `user_agent` varchar(120) NOT NULL,
+			    `last_activity` int(10) unsigned NOT NULL DEFAULT '0',
+			    `user_data` text NOT NULL,
+			    UNIQUE KEY `user_id` (`user_id`),
+			    KEY `last_activity_idx` (`last_activity`),
+			    KEY `user_id_2` (`user_id`)
+			  ) ENGINE=InnoDB DEFAULT CHARSET=utf8;");
+	
+	echo 'done!';
+	
+    }
     
+    function remove_ap_sessions_table()
+    {
+	
+	$this->db->query("DROP TABLE IF EXISTS `ap_sessions`");
+	
+	echo 'done!';
+	
+    }
     
 }
