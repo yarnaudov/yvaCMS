@@ -33,7 +33,26 @@ class MY_Controller extends CI_Controller {
         $this->language_id = $this->Language->getDetailsByAbbr(get_lang(), 'id');
         
         $this->load->model('Setting');
-        
+	
+	// check environment
+	error_reporting(0);
+	switch ($this->Setting->getEnvironment())
+	{
+	    case 'development':
+		error_reporting(E_ALL);
+		$this->output->enable_profiler(TRUE);
+	    break;
+
+	    case 'testing':
+	    case 'production':
+		error_reporting(0);
+	    break;
+
+	    default:
+		exit('The application environment is not set correctly.');
+	    break;
+	}
+
         /*
          * Set settings
          */

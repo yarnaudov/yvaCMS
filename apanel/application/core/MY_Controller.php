@@ -24,7 +24,29 @@ class MY_Controller extends CI_Controller{
 
         parent::__construct();
         
-	$this->output->enable_profiler(TRUE);
+	// get all settings
+	$settings = $this->Setting->getSettings();
+	
+	// check environment
+	error_reporting(0);
+	switch ($settings['environment'])
+	{
+	    case 'development':
+		error_reporting(E_ALL);
+		$this->output->enable_profiler(TRUE);
+		$this->session->unset_userdata('error_msg');
+	    break;
+
+	    case 'testing':
+	    case 'production':
+		error_reporting(0);
+		$this->session->unset_userdata('error_msg');
+	    break;
+
+	    default:
+		$this->session->set_userdata('error_msg', 'The application environment is not set correctly. Please go to <a href="'.site_url('settings').'" >Settings</a> to fix this');
+	    break;
+	}
 	
         $this->load->library('Lang_lib');        
         

@@ -190,6 +190,8 @@ $lang['label_port']                      = 'Порт';
 $lang['label_sendmail_path']             = 'Sendmail път';
 $lang['label_host']                      = 'Host';
 $lang['label_security']                  = 'Сигорност';
+$lang['label_system']                    = 'Системни';
+$lang['label_environment']               = 'Работна среда';
 
 $lang['label_last_changed_articles']    = 'Последни 10 променени статии';
 

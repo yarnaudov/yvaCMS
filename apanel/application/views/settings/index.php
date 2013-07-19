@@ -128,6 +128,27 @@
                       </div>
 	      	              
                     </div>
+		    
+		    <div class="box" >
+	      	      <span class="header" ><?=lang('label_system');?> <?=lang('label_settings');?></span>
+	      	      
+                      <div class="box_content" >
+                        <table class="box_table" cellpadding="0" cellspacing="0" >
+
+                            <tr>
+                                <th><label><?=lang('label_environment');?>:</label></th>
+                                <td>
+				    <?php $environments = array('development' => 'Development', 'testing' => 'Testing', 'production' => 'Production'); ?>
+				    <select name="settings[environment]" style="width: auto;" >
+					 <?=create_options_array($environments, set_value('settings[environment]', isset($settings['environment']) ? $settings['environment']: ""));?>
+                                    </select>				    
+				</td>
+                            </tr>
+			    
+                        </table>
+                      </div>
+	      	              
+                    </div>
                     
                 </td>
                 

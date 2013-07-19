@@ -189,6 +189,8 @@ $lang['label_port']                      = 'Port';
 $lang['label_sendmail_path']             = 'Sendmail path';
 $lang['label_host']                      = 'Host';
 $lang['label_security']                  = 'Security';
+$lang['label_system']                    = 'System';
+$lang['label_environment']               = 'Environment';
 
 $lang['label_last_changed_articles']    = 'Last 10 changed articles';
 

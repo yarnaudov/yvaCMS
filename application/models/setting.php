@@ -48,7 +48,12 @@ class Setting extends CI_Model {
         return $settings_arr;
         
     }
-        
+       
+    public function getEnvironment()
+    {                
+        return $this->settings['environment'];
+    }
+    
     public function getSiteName()
     {                
         return $this->settings['site_name'];
