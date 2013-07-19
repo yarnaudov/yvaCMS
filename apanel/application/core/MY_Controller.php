@@ -17,6 +17,7 @@ class MY_Controller extends CI_Controller{
     // all information about installed modules
     public $modules = array();
     
+    // all active menus on page
     public $current_menu;
     
     public function __construct()
@@ -29,18 +30,18 @@ class MY_Controller extends CI_Controller{
 	
 	// check environment
 	error_reporting(0);
+	$this->session->unset_userdata('error_msg');
+	
 	switch ($settings['environment'])
 	{
 	    case 'development':
 		error_reporting(E_ALL);
-		$this->output->enable_profiler(TRUE);
-		$this->session->unset_userdata('error_msg');
+		$this->output->enable_profiler(TRUE);		
 	    break;
 
 	    case 'testing':
 	    case 'production':
 		error_reporting(0);
-		$this->session->unset_userdata('error_msg');
 	    break;
 
 	    default:
