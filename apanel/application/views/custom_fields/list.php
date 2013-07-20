@@ -46,24 +46,7 @@ if(empty($menu_id)){
 	<?php echo $this->menu_lib->create_menu($sub_menu); ?>
     </div>
 
-    <!-- start messages -->
-    <?php $good_msg = $this->session->userdata('good_msg');
-          $this->session->unset_userdata('good_msg');
-          if(!empty($good_msg)){ ?>
-          <div class="good_msg" >
-              <?=$good_msg;?>            
-          </div>
-    <?php } ?>
-
-    <?php $error_msg = $this->session->userdata('error_msg');
-          $this->session->unset_userdata('error_msg');
-          if(!empty($error_msg)){ ?>
-          <div class="error_msg" >
-              <?=$error_msg;?>            
-          </div>
-    <?php } ?>
-    <!-- end messages -->
-
+    <?=$this->load->view('messages');?>
 
     <!-- start page content -->
     <div id="page_content" >
