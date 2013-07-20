@@ -201,11 +201,9 @@ $(document).ready(function() {
 	var url        = $('form').attr('action');
         var element_id = $(this).parents('tr').find('.checkbox').val();
         var order      = $(this).attr('alt');
-        
-	$.post(url, {element_id: element_id, change_order: order}, function(data){	    	    
-	    reload_content(data);
-	});
-        
+            	    
+        reload_content(url, {element_id: element_id, change_order: order});
+	        
     });
     
     
@@ -226,9 +224,7 @@ $(document).ready(function() {
 	catch(err){}
 	$('form').attr('action', url);
 	
-	$.post(url, {order_by: oredr_by}, function(data){
-	    reload_content(data);
-	});
+        reload_content(url, {order_by: oredr_by});
        
     });
     
@@ -249,10 +245,8 @@ $(document).ready(function() {
 	}
 	catch(err){}
 	$('form').attr('action', url);
-	
-	$.post(url, {limit: true, page_results: page_results}, function(data){	    	    
-	    reload_content(data);
-	});
+		    	    
+        reload_content(url, {limit: true, page_results: page_results});
 	
     });
     
@@ -271,30 +265,39 @@ $(document).ready(function() {
 	catch(err){}
 	$('form').attr('action', url);
 
-	$.post(url, function(data){
-	    reload_content(data);
-	});
+	reload_content(url);
 	
     });
     
     $(window).bind("popstate", function(){ 
 	
 	var url = location.href;
-	
-	$.post(url, function(data){    
-	    reload_content(data);
-	});
+	   
+        reload_content(url);
 	
     });
     
-    function reload_content(data){
+    function reload_content(url, arguments){
 
-	$('table.list').replaceWith($('table.list', data));
-	$('#paging').replaceWith($('#paging', data));
+        if(!arguments){
+            arguments = {};
+        }
+        
+        var top = $('#page_content').offset().top + ($('#page_content').height()/2) - 50;
+        $('#page_content').append('<img id="loading" src="'+base_url+'img/loading_big.gif" style="position: absolute; top: '+top+'px; left: 50%;" >');
+
+        $.post(url, arguments, function(data){    
+
+            $('#loading').remove();
+            
+            $('table.list').replaceWith($('table.list', data));
+            $('#paging').replaceWith($('#paging', data));
 	
-	data = data.split('&');
-	$('#'+data[0]).addClass(data[1]);
+            data = data.split('&');
+            $('#'+data[0]).addClass(data[1]);
 	
+        });
+        
     }
 		
 });
