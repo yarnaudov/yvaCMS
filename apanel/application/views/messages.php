@@ -1,12 +1,13 @@
 <!-- start messages -->
-<?php $errors = validation_errors();
-      if(!empty($errors)){ ?>      
-      <div class="error_msg" >
-          <ul>
-              <?=validation_errors('<li>', '</li>');?>
-          </ul>
-      </div>
-<?php } ?>
+<?php if(function_exists('validation_errors')){
+        $errors = validation_errors();
+        if(!empty($errors)){ ?>      
+        <div class="error_msg" >
+            <ul>
+                <?=validation_errors('<li>', '</li>');?>
+            </ul>
+        </div>
+<?php } } ?>
 
 <?php $good_msg = $this->session->userdata('good_msg');
       $this->session->unset_userdata('good_msg');

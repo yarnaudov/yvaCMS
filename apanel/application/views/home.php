@@ -1,4 +1,4 @@
-
+<?=$this->load->view('messages');?>
 <?php $this->session->unset_userdata('good_msg');
       $this->session->unset_userdata('error_msg'); ?>
 
