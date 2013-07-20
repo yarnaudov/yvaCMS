@@ -157,8 +157,8 @@ $lang['label_from']          = 'От';
 
 $lang['label_display_module_in'] = 'Показване на модула в';
 $lang['label_display_banner_in'] = 'Показване на банера в';
-$lang['label_show_title']        = 'Покажи заглавието';
-$lang['label_show_comments']     = 'Покажи коментарите';
+$lang['label_show_title']        = 'Покажи заглавие';
+$lang['label_show_comments']     = 'Покажи коментари';
 $lang['label_label']             = 'Етикет';
 $lang['label_field_text']        = 'Текст в полето';
 $lang['label_button_text']       = 'Текст в бутона';
