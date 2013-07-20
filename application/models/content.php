@@ -166,6 +166,10 @@ class Content extends CI_Model {
     {
 	
 	$header = "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8;\" />\n";
+        
+        if($this->Setting->getEnvironment() == 'development'){
+            $header .= "<meta http-equiv=\"cache-control\" content=\"no-cache\" />\n";
+        }
 	
         /*
          * generate title
