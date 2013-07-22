@@ -134,10 +134,17 @@ class MY_Controller extends CI_Controller{
         $this->current_menu = $this->Ap_menu->getDetailsByAlias($url, 'id');
         
         if(@$this->access[$url] != 'on' && !in_array($url, $this->config->item('no_login')) && isset($_SESSION['user_id']) && !isset($_SESSION['no_access_page'])){
-           $_SESSION['no_access_page'] = $_SERVER['REQUEST_URI'];
-           $this->session->set_userdata('no_access_page', $_SERVER['REQUEST_URI']);
-           redirect(current_url());
-           exit;
+	    
+	    // stupid fix for the stupid IE !
+	    $this->load->library('user_agent');
+	    if($this->agent->browser() == 'Internet Explorer' && preg_match('/media/', $_SERVER['REQUEST_URI'])){
+		exit;
+	    }
+	    
+	    $_SESSION['no_access_page'] = $_SERVER['REQUEST_URI'];
+	    $this->session->set_userdata('no_access_page', $_SERVER['REQUEST_URI']);
+	    redirect(current_url());
+	    exit;
         }
         else{
             unset($_SESSION['no_access_page']);
