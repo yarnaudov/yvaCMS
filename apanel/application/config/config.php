@@ -257,7 +257,7 @@ $config['encryption_key'] = '1e4d9964bec7d4e2f6d7c0ee3b1ea728';
 |
 */
 $config['sess_cookie_name']	= 'apanel';
-$config['sess_expiration']	= 10;
+$config['sess_expiration']	= 60*60*24*30; // 1 month
 $config['sess_expire_on_close']	= TRUE;
 $config['sess_encrypt_cookie']	= TRUE;
 $config['sess_use_database']	= TRUE;
