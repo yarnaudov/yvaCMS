@@ -198,11 +198,17 @@ $(document).ready(function() {
      */
     $('.order_img').live('click', function(){
         
-	var url        = $('form').attr('action');
-        var element_id = $(this).parents('tr').find('.checkbox').val();
-        var order      = $(this).attr('alt');
-            	    
-        reload_content(url, {element_id: element_id, change_order: order});
+	var url = $('form').attr('action');
+        
+	var posts = new Object();
+	posts.element_id   = $(this).parents('tr').find('.checkbox').val();
+	posts.change_order = $(this).attr('alt');
+	
+	$(this).parent().parent().find('.posts').each(function(index){
+	    posts[$(this).attr('name')] = $(this).val();
+	});
+	
+        reload_content(url, posts);
 	        
     });
     
@@ -282,12 +288,12 @@ $(document).ready(function() {
         if(!arguments){
             arguments = {};
         }
-        
+   
         var top = $('#page_content').offset().top + ($('#page_content').height()/2) - 50;
         $('#page_content').append('<img id="loading" src="'+base_url+'img/loading_big.gif" style="position: absolute; top: '+top+'px; left: 50%;" >');
 
         $.post(url, arguments, function(data){    
-
+	
             $('#loading').remove();
             
             $('table.list').replaceWith($('table.list', data));

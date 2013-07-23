@@ -153,11 +153,11 @@ class Articles extends MY_Controller {
     public function add()
     {   
         
-        $categories    = $this->Category->getForDropdown();
+        $categories_dropdown = $this->Category->getForDropdown();
         $custom_fields = $this->Custom_field->getCustomFields(array('extension_key' => set_value('category', key($categories)),
                                                                     'status'        => 'yes'));
 
-        $content = $this->load->view('articles/add', compact('categories', 'custom_fields'), true);		
+        $content = $this->load->view('articles/add', compact('categories_dropdown', 'custom_fields'), true);		
         $this->load->view('layouts/default', compact('content'));
         
     }
@@ -174,10 +174,10 @@ class Articles extends MY_Controller {
             $data = $this->Article->getDetails($this->article_id);
         }
         
-        $data['categories'] = $this->Category->getForDropdown();
+        $data['categories_dropdown'] = $this->Category->getForDropdown();
                
-        $data['custom_fields'] = $this->Custom_field->getCustomFields(array('extension_key' => set_value('category', isset($data['category_id']) ? $data['category_id'] : ""), 
-                                                                            'status'        => 'yes'));
+        $data['custom_fields']  = $this->Custom_field->getCustomFields(array('extension_key' => set_value('category', isset($data['category_id']) ? $data['category_id'] : ""), 
+                                                                             'status'        => 'yes'));
 
         $content["content"] = $this->load->view('articles/add', $data, true);		
         $this->load->view('layouts/default', $content);

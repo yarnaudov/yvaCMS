@@ -76,7 +76,11 @@
                 
                 <?php if($this->layout != 'simple_ajax'){ ?>
                 <th style="width:6%;"  class="sortable" id="status"      ><?=lang('label_status');?></th>
+		
+		<?php if(isset($filters['category'])){ ?>
                 <th style="width:8%;"  class="sortable" id="order"       ><?=lang('label_order');?></th>
+		<?php } ?>
+		
                 <?php } ?>
                 
                 <th style="width:8%;"  class="sortable" id="created_by"  ><?=lang('label_author');?></th>
@@ -102,7 +106,11 @@
                     </a>
                     <div class="description" >(<span class="head" ><?=lang('label_alias');?>:</span> <span class="content" ><?=$article['alias'];?></span>)</div>
                 </td>
-                <td><?=$this->Category->getDetails($article['category_id'], 'title');?></td>
+                <td>
+		    <?php foreach($article['categories'] as $category){
+			      echo "<div>".$this->Category->getDetails($category, 'title')."</div>\n";
+		          } ?>
+		</td>
                 
                 <?php if($this->layout != 'simple_ajax'){ ?>
                 <td>
@@ -114,10 +122,15 @@
                     <img class="status_img" alt="yes" src="<?=base_url('img/iconRecover.png');?>" >
                     <?php } ?>
                 </td>
+		
+		<?php if(isset($filters['category'])){ ?>
                 <td>
+		    
+		    <input type="hidden" class="posts" name="category" value="<?=$filters['category'];?>" >
+		    
                     <?php if($order == 'order'){ ?>
                     <span class="order_span" >
-                        <?php if($article['order'] > 1){ ?>
+                        <?php if($article['orders'][$filters['category']] > 1){ ?>
                         <img class="order_img" alt="up" src="<?=base_url('img/iconArrowUp.png');?>" >
                         <?php }else{ ?>
                         &nbsp;
@@ -125,8 +138,8 @@
                     </span>
                     
                     <span class="order_span" >
-                        <?php $max_order = $this->Article->count($article['category_id']);
-                            if($article['order'] < $max_order){ ?>
+                        <?php $max_order = $this->Article->count($filters['category']);
+                              if($article['orders'][$filters['category']] < $max_order){ ?>
                         <img class="order_img" alt="down" src="<?=base_url('img/iconArrowDown.png');?>" >
                         <?php }else{ ?>
                         &nbsp;
@@ -135,9 +148,11 @@
                     <?php } ?>
                     
                     <span class="order_span" >
-                    <?=$article['order'];?>
+                    <?=$article['orders'][$filters['category']];?>
                     </span>
                 </td>
+		<?php } ?>
+		
                 <?php } ?>
                 
                 <td><?=$this->User->getDetails($article['created_by'], 'user');?></td>

@@ -14,20 +14,29 @@ class Article extends MY_Model {
                       a.id = '".$id."' ";
         
         $article = $this->db->query($query);
-        $article = $article->result_array();
+        $article = $article->row_array();
 
         if(empty($article)){
             return;
         }
         
-        $article[0]['params'] = json_decode($article[0]['params'], true); 
-        $article[0]           = array_merge($article[0], json_decode(json_encode($this->Custom_field->getFieldsValues($id)), true));
+	# get categories and make array with category_id
+	$article['categories'] = array();
+	$article['orders']     = array();
+	$categories = $this->db->get_where('articles_categories', array('article_id' => $id))->result_array();
+	foreach($categories as $category){
+	   $article['categories'][] =  $category['category_id'];
+	   $article['orders'][$category['category_id']] =  $category['order'];
+	}
+	
+        $article['params']     = json_decode($article['params'], true); 
+        $article               = array_merge($article, json_decode(json_encode($this->Custom_field->getFieldsValues($id)), true));
    
         if($field == null){
-            return $article[0];
+            return $article;
         }
         else{  	
-            return $article[0][$field];
+            return $article[$field];
         }
 
     }
@@ -40,16 +49,22 @@ class Article extends MY_Model {
         $this->db->where('updated_on', $updated_on);
 
         $article = $this->db->get('articles_history');  	
-        $article = $article->result_array();
+        $article = $article->row_array();
 	
-	$article[0]['params'] = json_decode($article[0]['params'], true); 
-        $article[0]           = array_merge($article[0], json_decode($article[0]['custom_fields'], true));
+	$article['params'] = json_decode($article['params'], true); 
+        $article           = array_merge($article, json_decode($article['custom_fields'], true));
 
+	$categories = json_decode($article['categories'], true);
+	$article['categories'] = array();
+	foreach($categories as $key => $category){
+	   $article['categories'][] = $category['category_id'];
+	}
+	
         if($field == null){
-            return $article[0];
+            return $article;
         }
         else{  	
-            return $article[0][$field];
+            return $article[$field];
         }
 
     }
@@ -100,9 +115,9 @@ class Article extends MY_Model {
             $filter = " AND status != 'trash' "; 
         }
         
-        if(substr_count($order_by, 'order')){
-            $order_by = "category_id, ".$order_by;
-        }      
+        //if(substr_count($order_by, 'order')){
+        //    $order_by = "ac.category_id, ".$order_by;
+        //}      
                     
         foreach($filters as $key => $value){
             
@@ -110,7 +125,7 @@ class Article extends MY_Model {
                 $filter .= " AND ( title like '%".$value."%' OR text like '%".$value."%' ) ";
             }
             elseif($key == 'category'){
-                $filter .= " AND category_id = '".$value."' ";
+                $filter .= " AND ac.category_id = '".$value."' ";
             }
             else{
                 $filter .= " AND `".$key."` = '".$value."' ";
@@ -119,10 +134,11 @@ class Article extends MY_Model {
         }
 
         $query = "SELECT 
-                        *
+                        DISTINCT(a.id)
                     FROM
                         articles a
                         LEFT JOIN articles_data ad ON (a.id = ad.article_id AND ad.language_id = ".$this->language_id.")
+			LEFT JOIN articles_categories ac ON (a.id = ac.article_id)
                     WHERE
                         id IS NOT NULL
                         ".$filter."
@@ -132,6 +148,10 @@ class Article extends MY_Model {
         //echo $query."<br/>";
 
         $articles = $this->db->query($query)->result_array();
+	
+	foreach($articles as &$article){
+	    $article = self::getDetails($article['id']);
+	}
         
         return $articles;
 
@@ -158,7 +178,7 @@ class Article extends MY_Model {
         
         $this->db->select_max("`order`");
         $this->db->where("category_id", $category_id);
-        $max_order = $this->db->get('articles')->result_array();      
+        $max_order = $this->db->get('articles_categories')->result_array();      
         $order = $max_order[0]['order'];
 
         return $order;
@@ -170,7 +190,7 @@ class Article extends MY_Model {
 
         $this->db->select('*');
         $this->db->where('category_id', $category_id);
-        $this->db->from('articles');
+        $this->db->from('articles_categories');
         $count = $this->db->count_all_results();  
 
         return $count;
@@ -194,7 +214,7 @@ class Article extends MY_Model {
         $data['articles']['end_publishing']   = $this->input->post('end_publishing');
         $data['articles']['show_title']       = $this->input->post('show_title');
         $data['articles']['params']           = json_encode($this->input->post('params'));
-
+	
         if($data['articles']['show_in_language'] == 'all'){
             $data['articles']['show_in_language'] = NULL;
         }
@@ -250,6 +270,14 @@ class Article extends MY_Model {
             return $id;
         }
         
+	// save categories data
+	$result = self::_save_categories($id);
+	if($result == false){
+            $this->session->set_userdata('error_msg', lang('msg_save_article_error'));
+            $this->db->query('ROLLBACK');
+            return $id;
+        }
+	
         // save custom fields data
         $result = $this->Custom_field->saveFieldsValues($id);
         if($result == false){
@@ -305,6 +333,14 @@ class Article extends MY_Model {
             return $id;
         }
         
+	// save categories data
+	$result = self::_save_categories($id, 'update');
+	if($result == false){
+            $this->session->set_userdata('error_msg', lang('msg_save_article_error'));
+            $this->db->query('ROLLBACK');
+            return $id;
+        }
+	
         // save custom fields data
         $result = $this->Custom_field->saveFieldsValues($id);
         if($result == false){
@@ -317,6 +353,70 @@ class Article extends MY_Model {
         $this->db->query('COMMIT');
         return $id;
 
+    }
+    
+    private function _save_categories($id, $action = 'insert')
+    {
+	
+	$categories = $this->input->post('categories');
+	
+	if($action == 'insert'){
+	    
+	    foreach($categories as $category_id){
+		
+		$category['article_id']  = $id;
+		$category['category_id'] = $category_id;
+		$category['order']       = self::getMaxOrder($category_id)+1;
+						
+		$query = $this->db->insert_string('articles_categories', $category);
+		$result = $this->db->query($query);        
+		if($result != TRUE){
+		    return FALSE;
+		}
+		
+	    }
+	    
+	}
+	else{
+	    	    
+	    $new_categories = array();
+	    
+	    foreach($categories as $category_id){
+		    
+		$category = $this->db->get_where('articles_categories', array('article_id' => $id, 'category_id' => $category_id))->row_array();
+		
+		if(empty($category)){
+		    $category['article_id']  = $id;
+		    $category['category_id'] = $category_id;
+		}
+		
+		$new_categories[] = $category;
+		
+	    }
+	    
+	    $result = $this->db->delete('articles_categories', array('article_id' => $id));    
+	    if($result != TRUE){
+		return FALSE;
+	    }
+	    
+	    foreach($new_categories as $new_category){
+		
+		if(!isset($new_category['order'])){
+		    $new_category['order'] = self::getMaxOrder($new_category['category_id'])+1;
+		}
+				
+		$query = $this->db->insert_string('articles_categories', $new_category);
+		$result = $this->db->query($query);        
+		if($result != TRUE){
+		    return FALSE;
+		}
+		
+	    }
+	    
+	}
+	
+	return TRUE;
+	
     }
     
     public function changeStatus($id, $status)
@@ -341,9 +441,14 @@ class Article extends MY_Model {
     public function changeOrder($id, $order)
     {   
         
-        $old_order   = self::getDetails($id, 'order');
-        $category_id = self::getDetails($id, 'category_id');
-        
+	$category_id = $this->input->post('category');
+	if(empty($category_id)){
+	    return FALSE;
+	}
+	
+        $orders    = self::getDetails($id, 'orders');	
+	$old_order = $orders[$category_id];
+	        
         if($order == 'up'){
             $new_order =  $old_order-1;        
         }
@@ -353,18 +458,18 @@ class Article extends MY_Model {
         
         $data1['order'] = $old_order;
         $where1 = "`order` = ".$new_order." AND category_id = '".$category_id."'";
-        $query1 = $this->db->update_string('articles', $data1, $where1);
+        $query1 = $this->db->update_string('articles_categories', $data1, $where1);
         //echo $query1;
         $result1 = $this->db->query($query1);
         
         $data2['order'] = $new_order;
-        $where2 = "id = ".$id;
-        $query2 = $this->db->update_string('articles', $data2, $where2);
+        $where2 = "article_id = ".$id;
+        $query2 = $this->db->update_string('articles_categories', $data2, $where2);
         //echo $query2;
         $result2 = $this->db->query($query2);
         
-        if($result1 == true && $result2 == true){
-            return true; 
+        if($result1 == TRUE && $result2 == TRUE){
+            return TRUE; 
         }
         else{
             $this->session->set_userdata('error_msg', lang('msg_order_error'));
@@ -469,6 +574,7 @@ class Article extends MY_Model {
     {
        
 	$custom_fields = $this->Custom_field->getFieldsValues($id);
+	$categories = $this->db->get_where('articles_categories', array('article_id' => $id))->result_array();
 	
         $result = $this->db->query("INSERT 
                                       INTO 
@@ -476,7 +582,7 @@ class Article extends MY_Model {
                                       SELECT 
                                          ad.article_id,
                                          ad.language_id,
-                                         a.category_id,
+                                         #a.category_id,
                                          a.alias,
                                          a.show_in_language,
                                          a.start_publishing,
@@ -490,7 +596,7 @@ class Article extends MY_Model {
                                          ad.title,
                                          ad.text,
                                          a.status,
-                                         a.`order`,
+					 '".json_encode($categories)."' AS categories,
 					 '".mysql_real_escape_string(json_encode($custom_fields))."' AS custom_fields
                                        FROM
                                          articles a

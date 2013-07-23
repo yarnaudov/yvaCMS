@@ -1,8 +1,33 @@
 <tr>	      			
     <th><label><?=lang('label_category');?>:</label></th>
     <td>
+	
+	<div class="menu_list" >
+            <table class="menu_list" cellpadding="0" cellspacing="0" >
+                                                      
+		<?php $categories = set_value('categories', isset($categories) ? $categories : "");
+		      foreach($categories_dropdown as $category_id => $category){ 
+			  $checked = "";
+			  if(@in_array($category_id, $categories)){
+			      $checked = "checked";
+			  } ?>
+
+		<tr>
+		    <td style="width: 1%;" >
+			<input class="required" type="checkbox" style="width:16px;" <?=$checked;?> name="categories[]" id="category<?=$category_id;?>" value="<?=$category_id;?>" >
+		    </td>
+		    <td>
+			<label for="category<?=$category_id;?>" ><?=$category;?></label>
+		    </td>
+		</tr>
+
+		<?php } ?>
+		
+            </table>
+        </div>
+	
         <select name="category" >
-            <?=create_options_array($categories, set_value('category', isset($category_id) ? $category_id : ""));?>
+            <?=create_options_array($categories_dropdown, set_value('category', isset($category_id) ? $category_id : ""));?>
         </select>
 
         <script type="text/javascript" >
