@@ -12,13 +12,8 @@
 	<input type="hidden" name="params[zoom]" class="zoom<?=$id;?>" value="<?=set_value('params[zoom]', isset($params['zoom']) ? $params['zoom'] : "");?>" >
 	<input type="hidden" name="params[lat]"  class="lat<?=$id;?>"  value="<?=set_value('params[lat]', isset($params['lat']) ? $params['lat'] : "");?>">
 	<input type="hidden" name="params[lng]"  class="lng<?=$id;?>"  value="<?=set_value('params[lng]', isset($params['zoom']) ? $params['lng'] : "");?>" >
-	
-	<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false" ></script>
-	<script type="text/javascript">
-	    google.maps.event.addDomListener(window, 'load', function(){
-		initialize('<?=$id;?>', false);
-	    });
-	</script>
-	
+		
+	<img src="<?=base_url('img/iconAdministration.png');?>" style="display:none;" onload="initialize('<?=$id;?>', false);"  >
+		   	
     </td>
 </tr>

@@ -39,6 +39,7 @@ class Custom_fields extends MY_Controller {
             $this->jquery_ext->add_plugin("validation");
             $this->jquery_ext->add_library("check_actions_add_edit.js");
 	    $this->jquery_ext->add_library("custom_fields.js");
+	    $this->jquery_ext->add_library("https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false");
             
             if ($method == 'add'){
                 
@@ -53,18 +54,9 @@ class Custom_fields extends MY_Controller {
             }
                 
             $script = "$('select[name=type]').change(function(){
-                           $.get('".site_url('home/ajax/load')."?view=custom_fields/'+$(this).val(), function(data){
-			       
-			       if(data.search('script') != -1){
-                                   parent.$('.required').each(function(){
-                                       $(this).removeClass('required');
-                                   });
-                                   parent.$('form').submit();
-                                   return;
-                               }
-			    
+                           $.get('".site_url('home/ajax/load')."?view=custom_fields/'+$(this).val(), function(data){			       			    
                                $('#params').css('display', 'none');
-                               $('#params').html(data);
+                               document.getElementById('params').innerHTML = data;
                                $('#params').toggle('slow');
                            });
                        });";

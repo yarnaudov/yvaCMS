@@ -43,7 +43,6 @@
                         $.post('<?=site_url('home/ajax/load_custom_fields');?>', {extension: '<?=$this->extension;?>', extension_keys: extension_keys}, function(data){
 			    						    
                             $('#custom_fields').css('display', 'none');
-                            //$('#custom_fields').html(data);
 			    document.getElementById('custom_fields').innerHTML = data;
                             $('#custom_fields').toggle('slow');
 
