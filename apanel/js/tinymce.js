@@ -1,8 +1,6 @@
-$(document).ready(function() {
+
+function simple_editor(){
     
-    /*
-     * simple editor
-     */
     tinyMCE.init({	
 	// General options
 	mode : "specific_textareas",
@@ -35,6 +33,12 @@ $(document).ready(function() {
         remove_script_host : false,
         document_base_url : DOCUMENT_BASE_URL
     });
+    
+}
+
+$(document).ready(function() {
+    
+    simple_editor();
     
     if($('.editor').attr('name') == 'text'){                
         var tmce_height = '500';

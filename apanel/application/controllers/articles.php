@@ -154,7 +154,7 @@ class Articles extends MY_Controller {
     {   
         
         $categories_dropdown = $this->Category->getForDropdown();
-        $custom_fields = $this->Custom_field->getCustomFields(array('extension_key' => set_value('category', key($categories)),
+        $custom_fields = $this->Custom_field->getCustomFields(array('extension_key' => set_value('categories'),
                                                                     'status'        => 'yes'));
 
         $content = $this->load->view('articles/add', compact('categories_dropdown', 'custom_fields'), true);		
@@ -176,7 +176,7 @@ class Articles extends MY_Controller {
         
         $data['categories_dropdown'] = $this->Category->getForDropdown();
                
-        $data['custom_fields']  = $this->Custom_field->getCustomFields(array('extension_key' => set_value('category', isset($data['category_id']) ? $data['category_id'] : ""), 
+        $data['custom_fields']  = $this->Custom_field->getCustomFields(array('extension_key' => set_value('categories', isset($data['categories']) ? $data['categories'] : ""), 
                                                                              'status'        => 'yes'));
 
         $content["content"] = $this->load->view('articles/add', $data, true);		

@@ -43,7 +43,9 @@ class Article extends CI_Model {
             return array();
         }
         
-        $this->db->select('id');
+        $this->db->select('DISTINCT(id) as id');
+	$this->db->from('articles');
+	$this->db->join('articles_categories', 'articles.id = articles_categories.article_id', 'left');
         $this->db->where_in('category_id', $categories);
         $this->db->where('status', 'yes');
 	
@@ -53,8 +55,7 @@ class Article extends CI_Model {
 	    $this->db->limit($limit);
 	}
 	
-        $articles = $this->db->get('articles');  	
-        $articles = $articles->result_array();
+        $articles = $this->db->get()->result_array();	
         
         $articles_arr = array();
         foreach($articles as $article){
@@ -77,9 +78,10 @@ class Article extends CI_Model {
     public function getMostPopular($order = 'order ASC', $limit = 'all', $filter = false)
     {
 	
-	$this->db->select('articles.id, count(articles_statistics.id) AS views');
+	$this->db->select('DISTINCT(articles.id) AS id, count(articles_statistics.id) AS views');
 	$this->db->from('articles');
 	$this->db->join('articles_statistics', 'articles.id = articles_statistics.article_id', 'left');
+	$this->db->join('articles_categories', 'articles.id = articles_categories.article_id', 'left');
         $this->db->where('status', 'yes');
 	$this->db->group_by('articles.id');
 	
@@ -113,9 +115,10 @@ class Article extends CI_Model {
     public function getMostCommented($order = 'order ASC', $limit = 'all', $filter = false)
     {
 	
-	$this->db->select('articles.id, count(articles_comments.id) AS comments');
+	$this->db->select('DISTINCT(articles.id) as id, count(articles_comments.id) AS comments');
 	$this->db->from('articles');
 	$this->db->join('articles_comments', 'articles.id = articles_comments.article_id', 'left');
+	$this->db->join('articles_categories', 'articles.id = articles_categories.article_id', 'left');
         $this->db->where('status', 'yes');
 	$this->db->group_by('articles.id');
 	
@@ -251,12 +254,13 @@ class Article extends CI_Model {
         $query = "SELECT *
                     FROM
                       articles a
-                      LEFT JOIN articles_data ad ON (a.id = ad.article_id AND ad.language_id = '".$this->language_id."')                    
+                      LEFT JOIN articles_data ad ON (a.id = ad.article_id AND ad.language_id = '".$this->language_id."') 
+		      LEFT JOIN articles_categories ac ON (a.id = ac.article_id)
                     WHERE
                       a.status = 'yes'
                      AND
                       (ad.title like '%".$search_v."%' OR ad.text like '%".$search_v."%')
-                    ORDER BY a.`order`";
+                    ORDER BY `order`";
         
         $articles = $this->db->query($query);  
         $articles = $articles->result_array();        

@@ -31,10 +31,10 @@ foreach($custom_fields as $custom_field){
 	  break;
     } 
     
-    echo '<tr><td colspan="2" class="empty_line" ></td></tr>';
-    echo '<tr>';
-    echo '  <th><label '.($custom_field['multilang'] == "yes" ? "class=multilang" : "").' >'.$custom_field['title'].':</label></th>';
-    echo '  <td class="custom_field" >';
+    echo "<tr><td colspan=\"2\" class=\"empty_line\" ></td></tr>\n";
+    echo "<tr>\n";
+    echo "  <th><label ".($custom_field['multilang'] == "yes" ? "class=multilang" : "")." >".$custom_field['title'].":</label></th>\n";
+    echo "  <td class=\"custom_field\" >\n";
     
     if($custom_field['type'] != 'location'){
 	$set_value = set_value('field'.$custom_field['id'], isset(${'field'.$custom_field['id']}) ? ${'field'.$custom_field['id']} : "");
@@ -44,19 +44,20 @@ foreach($custom_fields as $custom_field){
         
         case 'text':
             $set_value = ($set_value == "" && !isset(${'field'.$custom_field['id']})) ? $params['value'] : $set_value;
-            echo '<input class="'.$class.'" type="text" name="field'.$custom_field['id'].'" value="'.$set_value.'" >';
+            echo "<input class=\"".$class."\" type=\"text\" name=\"field".$custom_field['id']."\" value=\"".$set_value."\" >\n";
           break;
         
         case 'textarea':
             $set_value = ($set_value == "" && !isset(${'field'.$custom_field['id']})) ? $params['value'] : $set_value;
-            echo '<textarea class="'.$class.' simple_editor" name="field'.$custom_field['id'].'" >'.$set_value.'</textarea>';
+            echo "<textarea class=\"".$class." simple_editor\" name=\"field".$custom_field['id']."\" >".$set_value."</textarea>\n";
+	    echo "<img src=\"".base_url('img/iconAdministration.png')."\" style=\"display:none;\" onload=\"simple_editor();\"  >";
           break;
         
         case 'dropdown':
             
             $optgroup = false;
             
-            echo '<select class="'.$class.'" name="field'.$custom_field['id'].'" >';
+            echo "<select class=\"".$class." name=\"field".$custom_field['id']."\" >\n";
             foreach($params['options'] as $key => $option){
           
                 $selected = '';
@@ -66,21 +67,21 @@ foreach($custom_fields as $custom_field){
                 
                 if($params['optgroups'][$key] == 1){
                     if($optgroup == true){
-                        echo '</optgroup>';
+                        echo "</optgroup>\n";
                     }
                     $optgroup = true;
-                    echo '<optgroup label="'.$params['labels'][$key].'" >';
+                    echo "<optgroup label=\"".$params['labels'][$key]."\" >\n";
                 }
                 else{
-                    echo '<option '.$selected.' value="'.$key.'" >'.$params['labels'][$key].'</option>';   
+                    echo "<option ".$selected." value=\"".$key."\" >".$params['labels'][$key]."</option>\n";   
                 }
                 
                 if($key+1 == count($params['options']) && $optgroup == true){
-                    echo '</optgroup>';
+                    echo "</optgroup>\n";
                 }
                 
             }
-            echo '</select>';
+            echo "</select>\n";
             
           break;
         
@@ -90,10 +91,10 @@ foreach($custom_fields as $custom_field){
             $name_sufix = $custom_field['type'] == 'checkbox' ? '[]' : '';
             
 	    if(count($params['options']) > 1){
-		echo '<div class="menu_list" >';
+		echo "<div class=\"menu_list\" >\n";
 	    }
 	    
-            echo '<ul>';
+            echo "<ul>\n";
             foreach($params['options'] as $key => $option){
 
                 $checked = '';
@@ -101,37 +102,37 @@ foreach($custom_fields as $custom_field){
                     $checked = 'checked';
                 }
                 
-                echo '<li>';
-                echo '<input type="'.$custom_field['type'].'" 
-                             name="field'.$custom_field['id'].$name_sufix.'" 
-                             id="option'.$custom_field['id'].$key.'" 
-                             value="'.$key.'" 
-                             '.$checked.'
-                             class="'.$class.'" >';
-                echo '<label for="option'.$custom_field['id'].$key.'" >'.$params['labels'][$key].'</label>';
-                echo '</li>';
+                echo "<li>\n";
+                echo "<input type=\"".$custom_field['type']."\" 
+                             name=\"field".$custom_field['id'].$name_sufix."\" 
+                             id=\"option".$custom_field['id'].$key."\" 
+                             value=\"".$key."\" 
+                             ".$checked."
+                             class=\"".$class."\" >\n";
+                echo "<label for=\"option".$custom_field['id'].$key."\" >".$params['labels'][$key]."</label>\n";
+                echo "</li>\n";
             }
-            echo '</ul>';
+            echo "</ul>\n";
             
 	    if(count($params['options']) > 1){
-		echo '</div>';
+		echo "</div>\n";
 	    }
 	    
           break;
       
         case 'date':
-            echo '<input class="'.$class.'" type="text" class="datepicker" name="field'.$custom_field['id'].'" value="'.$set_value.'" >';
+            echo "<input class=\"".$class."\" type=\"text\" class=\"datepicker\" name=\"field".$custom_field['id']."\" value=\"".$set_value."\" >\n";
           break;
       
         case 'media':
-	    echo '<input class="'.$class.'" class="image" type="text" readonly name="field'.$custom_field['id'].'" id="custom_field_media" value="'.$set_value.'" style="width: 58%">';                                       
-	    echo '<a href="'.site_url('media/browse').'" 
-		     class = "load_jquery_ui_iframe"
-		     title="'.lang('label_browse').' '.lang('label_media').'"
-		     lang  = "dialog-media-browser"
-		     target = "custom_field_media" >'.lang('label_select').'</a>&nbsp;|&nbsp;<a href  = "#"
-												class = "clear_jquery_ui_inputs"
-												lang  = "image" >'.lang('label_clear').'</a>';
+	    echo "<input class=\"".$class."\" class=\"image\" type=\"text\" readonly name=\"field".$custom_field['id']."\" id=\"custom_field_media\" value=\"".$set_value."\" style=\"width: 58%\">\n";                                       
+	    echo "<a href   = \"".site_url('media/browse')."\" 
+		     class  = \"load_jquery_ui_iframe\"
+		     title  = \"".lang('label_browse')." ".lang('label_media')."\"
+		     lang   = \"dialog-media-browser\"
+		     target = \"custom_field_media\" >".lang('label_select')."</a>&nbsp;|&nbsp;<a href  = \"#\"
+												  class = \"clear_jquery_ui_inputs\"
+												  lang  = \"image\" >".lang('label_clear')."</a>\n";
           break;
      
 	case 'location':
@@ -140,23 +141,19 @@ foreach($custom_fields as $custom_field){
 	    $lat  = set_value('field'.$custom_field['id'].'[lng]',  isset(${'field'.$custom_field['id']}['lat'])  ? ${'field'.$custom_field['id']}['lat']  : "");
 	    $lng  = set_value('field'.$custom_field['id'].'[lng]',  isset(${'field'.$custom_field['id']}['lng'])  ? ${'field'.$custom_field['id']}['lng']  : "");
 	    
-	    echo '<input type="hidden" name="field'.$custom_field['id'].'[zoom]" class="zoom'.$custom_field['id'].'" value="'.$zoom.'" >';
-	    echo '<input type="hidden" name="field'.$custom_field['id'].'[lat]"  class="lat'.$custom_field['id'].'"  value="'.$lat.'">';
-	    echo '<input type="hidden" name="field'.$custom_field['id'].'[lng]"  class="lng'.$custom_field['id'].'"  value="'.$lng.'" >';
-	    
-	    echo '<div class="map_canvas_custom_fields" id="map_canvas'.$custom_field['id'].'" ></div>';
+	    echo "<input type=\"hidden\" name=\"field".$custom_field['id']."[zoom]\" class=\"zoom".$custom_field['id']."\" value=\"".$zoom."\" >\n";
+	    echo "<input type=\"hidden\" name=\"field".$custom_field['id']."[lat]\"  class=\"lat".$custom_field['id']."\"  value=\"".$lat."\">\n";
+	    echo "<input type=\"hidden\" name=\"field".$custom_field['id']."[lng]\"  class=\"lng".$custom_field['id']."\"  value=\"".$lng."\" >\n";
 	    
 	    if(!defined('GOOGLE_MAP_LOADED')){ 
 		define('GOOGLE_MAP_LOADED', TRUE);
-		echo '<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false" ></script>';
-		echo '<script type="text/javascript" src="'.base_url('js/custom_fields.js').'" ></script>';
+		echo "<script src=\"https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false\" ></script>\n";
+		echo "<script type=\"text/javascript\" src=\"".base_url('js/custom_fields.js')."\" ></script>\n";
 	    }
 	    
-	    echo '<script type="text/javascript">		
-		    google.maps.event.addDomListener(window, "load", function(){
-			initialize("'.$custom_field['id'].'", true);
-		    });	
-		 </script>';
+	    echo "<div class=\"map_canvas_custom_fields\" id=\"map_canvas".$custom_field['id']."\" ></div>\n";
+	    
+	    echo "<img src=\"".base_url('img/iconAdministration.png')."\" style=\"display:none;\" onload=\"initialize('".$custom_field['id']."', true);\"  >";
 	    
 	  break;
       

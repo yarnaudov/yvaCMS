@@ -207,7 +207,7 @@ class Article extends MY_Model {
         $data['articles_data']['language_id'] = $this->language_id;
         
         $data['articles']['alias']            = alias($this->input->post('alias'));
-        $data['articles']['category_id']      = $this->input->post('category');
+        //$data['articles']['category_id']      = $this->input->post('category');
         $data['articles']['status']           = $this->input->post('status');      
         $data['articles']['show_in_language'] = $this->input->post('show_in_language');
         $data['articles']['start_publishing'] = $this->input->post('start_publishing');

@@ -63,14 +63,29 @@ class Custom_field extends CI_Model {
 
         $custom_fields = $this->db->query($query)->result_array();
 
-        foreach($custom_fields as $key => $custom_field){
-            $custom_fields[$key]['params'] = json_decode($custom_field['params'], true);	    
+        foreach($custom_fields as $key => &$custom_field){
+            $custom_field['params'] = json_decode($custom_field['params'], true);	    
 	
 	    if(isset($filters['extension_key']) && $custom_field['extension_keys'] != NULL){
 		
-		$custom_fields[$key]['extension_keys'] = json_decode($custom_field['extension_keys'], true);
+		$custom_field['extension_keys'] = json_decode($custom_field['extension_keys'], true);
 		
-		if(@!in_array($filters['extension_key'], $custom_fields[$key]['extension_keys']) ){
+		if(is_array($filters['extension_key'])){
+		    
+		    $extension_key_exists = false;
+		    
+		    foreach($filters['extension_key'] as $extension_key){	
+			if(in_array($extension_key, $custom_field['extension_keys']) ){
+			    $extension_key_exists = true;
+			}
+		    }
+		    
+		    if($extension_key_exists == false){
+			unset($custom_fields[$key]);
+		    }
+		    
+		}
+		elseif(!in_array($filters['extension_key'], $custom_field['extension_keys']) ){
 		    unset($custom_fields[$key]);
 		}
 	    

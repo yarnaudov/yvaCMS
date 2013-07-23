@@ -132,4 +132,45 @@ class Update_script extends CI_Controller {
 	
     }
     
+    function add_multiple_categories()
+    {
+	
+	$this->db->query("CREATE TABLE IF NOT EXISTS `articles_categories` (
+			    `article_id` int(4) NOT NULL,
+			    `category_id` int(4) NOT NULL,
+			    `order` int(4) NOT NULL,
+			    UNIQUE KEY `article_category` (`article_id`,`category_id`),
+			    KEY `article_id` (`article_id`),
+			    KEY `category_id` (`category_id`)
+			  ) ENGINE=InnoDB DEFAULT CHARSET=utf8;	");
+	
+	//$this->db->query("SET foreign_key_checks = 0;");
+	$this->db->query("ALTER TABLE `articles_categories`
+	                    ADD CONSTRAINT `articles_categories_ibfk_1` FOREIGN KEY (`article_id`) REFERENCES `articles` (`id`) ON UPDATE CASCADE,
+			    ADD CONSTRAINT `articles_categories_ibfk_2` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`) ON UPDATE CASCADE;");
+
+    
+	$articles = $this->db->get('articles')->result_array();
+	
+	foreach($articles as $article){
+	    
+	    $category['article_id']  = $article['id'];
+	    $category['category_id'] = $article['category_id'];
+	    $category['order']       = $article['order'];
+	    
+	    $query = $this->db->insert_string('articles_categories', $category);
+	    //echo $query."<---<br/>";
+	    $this->db->query($query);
+	     
+	}
+	
+	$this->db->query("SET foreign_key_checks = 0;ALTER TABLE `articles` DROP `category_id`");
+	$this->db->query("SET foreign_key_checks = 0;ALTER TABLE `articles` DROP `order`");
+	
+	$this->db->query("ALTER TABLE `articles_history` DROP `category_id`");
+	$this->db->query("ALTER TABLE `articles_history` DROP `order`");
+	$this->db->query("ALTER TABLE `articles_history` ADD `categories` TEXT NOT NULL AFTER `status`");
+	
+    }
+    
 }

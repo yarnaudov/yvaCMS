@@ -14,7 +14,7 @@
 
 		<tr>
 		    <td style="width: 1%;" >
-			<input class="required" type="checkbox" style="width:16px;" <?=$checked;?> name="categories[]" id="category<?=$category_id;?>" value="<?=$category_id;?>" >
+			<input class="required categories" type="checkbox" style="width:16px;" <?=$checked;?> name="categories[]" id="category<?=$category_id;?>" value="<?=$category_id;?>" >
 		    </td>
 		    <td>
 			<label for="category<?=$category_id;?>" ><?=$category;?></label>
@@ -25,32 +25,28 @@
 		
             </table>
         </div>
-	
-        <select name="category" >
-            <?=create_options_array($categories_dropdown, set_value('category', isset($category_id) ? $category_id : ""));?>
-        </select>
 
         <script type="text/javascript" >
-            
+         
             $(document).ready(function() {
-                
+		
                 if($('#custom_fields').length == 1){
-                    
-                    $('select[name=category]').change(function(){
-
-                        $.get('<?=site_url('home/ajax/load_custom_fields');?>?extension=<?=$this->extension;?>&extension_key='+$(this).val(), function(data){
-			    
-			    if(data.search('script') != -1){
-                                parent.$('.required').each(function(){
-                                    $(this).removeClass('required');
-                                });
-                                parent.$('form').submit();
-                                return;
-                            }
-			    
+                    		    
+                    $('input.categories').click(function(){
+		
+			var extension_keys = new Array();
+			
+			$('input.categories:checked').each(function(){
+			    extension_keys.push($(this).val());
+			});
+			
+                        $.post('<?=site_url('home/ajax/load_custom_fields');?>', {extension: '<?=$this->extension;?>', extension_keys: extension_keys}, function(data){
+			    						    
                             $('#custom_fields').css('display', 'none');
-                            $('#custom_fields').html(data);
+                            //$('#custom_fields').html(data);
+			    document.getElementById('custom_fields').innerHTML = data;
                             $('#custom_fields').toggle('slow');
+
                         });
 
                     });

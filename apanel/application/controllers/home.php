@@ -2,6 +2,8 @@
 
 class Home extends MY_Controller {
 
+    public  $extension = '';
+    
     public function index()
     {
         
@@ -47,6 +49,8 @@ class Home extends MY_Controller {
     public function ajax($action)
     {
         
+	$this->output->enable_profiler(FALSE);
+	
         switch($action){
             
             case "get_menus":
@@ -77,14 +81,14 @@ class Home extends MY_Controller {
                 
                 $this->load->helper('form');
                 
-                $this->extension = $this->input->get('extension');                
-                $extension_key   = $this->input->get('extension_key');
-                
+                $this->extension = $this->input->post('extension');		
+		$extension_keys  = $this->input->post('extension_keys');
+
                 $filters['status']        = 'yes';
-                $filters['extension_key'] = $extension_key;
+                $filters['extension_key'] = $extension_keys;
                 
                 $custom_fields = $this->Custom_field->getCustomFields($filters);
-                    
+		                    
                 $this->load->view('custom_fields/load_fields', compact('custom_fields'));
                 
             break;
@@ -134,7 +138,7 @@ class Home extends MY_Controller {
                 if(file_exists('modules/' . $type . '/views/apanel_options.php')){
                     include_once 'modules/' . $type . '/views/apanel_options.php';
                 }
-                
+		
             break;
             
         }
