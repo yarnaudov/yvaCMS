@@ -24,10 +24,10 @@
 
                 <tr>
                     <td style="width: 1%;" >
-                        <input type="checkbox" style="width:16px;" <?=$checked;?> name="params[custom_articles][]" id="custom_article<?=$article_id;?>" value="<?=$article_id;?>" >
+                        <input type="checkbox" class="custom_articles" style="width:16px;" <?=$checked;?> name="params[custom_articles][]" id="custom_article<?=$category;?><?=$article_id;?>" value="<?=$article_id;?>" >
                     </td>
                     <td>
-                        <label for="custom_article<?=$article_id;?>" ><?=$article;?></label>
+                        <label for="custom_article<?=$category;?><?=$article_id;?>" ><?=$article;?></label>
                     </td>
                 </tr>
 
@@ -37,6 +37,13 @@
                 
             <?php } ?>
             </table>
+	    
+	    <script type="text/javascript">		
+		$('.custom_articles').live('click', function(){
+		    $('.custom_articles[value='+$(this).val()+']').attr('checked', $(this).is(':checked'));
+		});		
+	    </script>
+	    
         </div>
     </td>
 </tr>

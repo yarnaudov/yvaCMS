@@ -185,7 +185,7 @@
                         <div class="box_content" >
                             <table class="box_table" cellpadding="0" cellspacing="0" >
 
-                                <?php $this->load->view('categories'); ?>
+                                <?php $this->load->view('category'); ?>
 
                                 <tr><td colspan="2" class="empty_line" ></td></tr>
 

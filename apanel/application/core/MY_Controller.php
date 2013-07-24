@@ -104,6 +104,8 @@ class MY_Controller extends CI_Controller{
             
         }
         
+	$this->jquery_ext->add_library("scripts.js");
+	
         //$this->Adm_menu->setConfig();
         $this->Ap_menu->setConfig();
         
@@ -265,7 +267,7 @@ class MY_Controller extends CI_Controller{
             $filters = array();
             foreach($_POST['filters'] as $name => $value){
                 if(!empty($value) && $value != 'none'){
-                    $filters[$name] = $value;
+                    $filters[$name] = trim($value);
                 }
             }            
             $this->session->set_userdata($session.'_filters', $filters);
