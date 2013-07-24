@@ -4,12 +4,7 @@
 
 <tr>
     <td colspan="2" class="empty_line" >
-
-        <link rel="stylesheet" type="text/css" href="<?=base_url('modules/mod_google_map/css/mod_google_map.css');?>" />
-        
-        <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false" ></script>
-        <script type="text/javascript" src="<?=base_url('modules/mod_google_map/js/map_options.js');?>" ></script>
-        
+        <link rel="stylesheet" type="text/css" href="<?=base_url('modules/mod_google_map/css/mod_google_map.css');?>" />        
     </td>
 </tr>
                                 

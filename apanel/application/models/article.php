@@ -160,14 +160,18 @@ class Article extends MY_Model {
     public function getArticlesByCategory($filters = array(), $order_by = "")
     {
         
-        $articles = self::getArticles($filters, $order_by);
-        
-        $articles_arr = array();
-        foreach($articles as $article){
-            
-            $articles_arr[$this->Category->getDetails($article['category_id'], 'title')][$article['id']] = $article['title'];
-            
-        }
+	$categories = $this->Category->getForDropdown('articles');
+	
+	$articles_arr = array();
+	foreach($categories as $category_id => $category_title){
+	    
+	    $articles = self::getArticles(array('category' => $category_id), $order_by);
+	    
+	    foreach($articles as $article){
+		$articles_arr[$category_title][$article['id']] = $article['title'];
+	    }
+	    
+	}
         
         return $articles_arr;
         
