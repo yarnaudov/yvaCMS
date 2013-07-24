@@ -1,6 +1,6 @@
 
-$(function(){
-
+function marker_info_dialog(){
+    
     $( "#dialog:ui-dialog" ).dialog( "destroy" );
 
     $( "#marker_info" ).dialog({
@@ -9,152 +9,175 @@ $(function(){
         width: 'auto',
         position: ['top', 100]
     });
+    
+}
 
-    var map;
-    var markers = new Array();
-    var numb = 0;
+function marker_description_editor(){
+    
+    tinyMCE.init({
+        mode : "specific_textareas",
+        editor_selector : "marker_description",
+        theme : "advanced",
+        theme_advanced_buttons1 : "bold,italic,underline,separator,strikethrough,justifyleft,justifycenter,justifyright,justifyfull,undo,redo,link,unlink",
+        theme_advanced_buttons2 : "",
+        theme_advanced_buttons3 : "",
+        theme_advanced_toolbar_location : "top",
+        theme_advanced_toolbar_align : "left",
+        height: '100',
+        width: '350'
+    });
+    
+}
 
-    var map_zoom     = parseInt($('input.zoom').val());
-    var map_lat      = $('input.lat').val();
-    var map_lng      = $('input.lng').val();
-    var markers_icon = $('input.markers_image').val();
+var map;
+var markers = new Array();
+var numb = 0;
 
-    function initialize() {
+var map_zoom;
+var map_lat;
+var map_lng;
+var markers_icon;
 
-        if(map_lat == ''){
-            map_zoom = 7;
-            map_lat  = 42.70311884052214;
-            map_lng  = 25.387890624999958;
-        }
+function initialize() {
 
-        var mapOptions = {
-            zoom: map_zoom,
-            center: new google.maps.LatLng(map_lat, map_lng),
-            mapTypeId: google.maps.MapTypeId.ROADMAP,
-            //scrollwheel: false,
-            mapTypeControl: false
-        };
-        map = new google.maps.Map(document.getElementById('map_canvas'), mapOptions);
+    map_zoom     = parseInt($('input.zoom').val());
+    map_lat      = $('input.lat').val();
+    map_lng      = $('input.lng').val();
+    markers_icon = $('input.markers_image').val();
 
-        google.maps.event.addListener(map, 'zoom_changed', function() {    
-            $('input.zoom').val(map.getZoom());
-        });
+    if(map_lat == ''){
+	map_zoom = 7;
+	map_lat  = 42.70311884052214;
+	map_lng  = 25.387890624999958;
+    }
 
-        google.maps.event.addListener(map, 'center_changed', function() {
-            var center = map.getCenter();
-            $('input.lat').val(center.lat());
-            $('input.lng').val(center.lng());
-        });
+    var mapOptions = {
+	zoom: map_zoom,
+	center: new google.maps.LatLng(map_lat, map_lng),
+	mapTypeId: google.maps.MapTypeId.ROADMAP,
+	//scrollwheel: false,
+	mapTypeControl: false
+    };
+    map = new google.maps.Map(document.getElementById('map_canvas'), mapOptions);
 
-        google.maps.event.addListener(map, 'click', function(e) {
+    google.maps.event.addListener(map, 'zoom_changed', function() {    
+	$('input.zoom').val(map.getZoom());
+    });
 
-            //marker_data = new Array();
-            //marker_data['lat']         = e.latLng.lat();
-            //marker_data['lng']         = e.latLng.lng();
-            //marker_data['title']       = '';
-            //marker_data['description'] = '';
-            //marker_data['image']       = '';
+    google.maps.event.addListener(map, 'center_changed', function() {
+	var center = map.getCenter();
+	$('input.lat').val(center.lat());
+	$('input.lng').val(center.lng());
+    });
 
-            $( "#marker_info" ).dialog('open');
+    google.maps.event.addListener(map, 'click', function(e) {
 
-            $('#position strong').first().html(e.latLng.lat());
-            $('#position strong').last().html(e.latLng.lng());
-            $('#marker_numb').attr('value', '');
-            $('#marker_title').attr('value', '');
-            tinyMCE.activeEditor.setContent('');
-            $('#marker_image').attr('value', '');
+	//marker_data = new Array();
+	//marker_data['lat']         = e.latLng.lat();
+	//marker_data['lng']         = e.latLng.lng();
+	//marker_data['title']       = '';
+	//marker_data['description'] = '';
+	//marker_data['image']       = '';
 
-            //createMarker(marker_data, true);
+	$( "#marker_info" ).dialog('open');
 
-        });
+	$('#position strong').first().html(e.latLng.lat());
+	$('#position strong').last().html(e.latLng.lng());
+	$('#marker_numb').attr('value', '');
+	$('#marker_title').attr('value', '');
+	tinyMCE.activeEditor.setContent('');
+	$('#marker_image').attr('value', '');
 
-        google.maps.event.addListenerOnce(map, 'idle', function(){
-            google.maps.event.trigger(map, 'zoom_changed');
-            google.maps.event.trigger(map, 'center_changed');
+	//createMarker(marker_data, true);
 
-            // create markers from database
-            $('#markers div').each(function(){
-                var marker_info = new Array();
-                marker_info['lat']         = $(this).find('.marker_lat').val();
-                marker_info['lng']         = $(this).find('.marker_lng').val();
-                marker_info['title']       = $(this).find('.marker_title').val();
-                marker_info['description'] = $(this).find('.marker_descr').val();
-                marker_info['image']       = $(this).find('.marker_image').val();
-                createMarker(marker_info, false);
-            });
+    });
 
-        });
+    google.maps.event.addListenerOnce(map, 'idle', function(){
+	google.maps.event.trigger(map, 'zoom_changed');
+	google.maps.event.trigger(map, 'center_changed');
+
+	// create markers from database
+	$('#markers div').each(function(){
+	    var marker_info = new Array();
+	    marker_info['lat']         = $(this).find('.marker_lat').val();
+	    marker_info['lng']         = $(this).find('.marker_lng').val();
+	    marker_info['title']       = $(this).find('.marker_title').val();
+	    marker_info['description'] = $(this).find('.marker_descr').val();
+	    marker_info['image']       = $(this).find('.marker_image').val();
+	    createMarker(marker_info, false);
+	});
+
+    });
+
+}
+
+function createMarker(marker_info, open_infowindow){
+
+    var marker = new google.maps.Marker({
+	position: new google.maps.LatLng(marker_info['lat'], marker_info['lng']),
+	map: map,
+	draggable: true
+    });
+
+    marker.set('id', numb);
+    marker.set('title', marker_info['title']);
+    marker.set('descr', marker_info['description']);
+    marker.set('image', marker_info['image']);
+
+    if(marker_info['image'] != ''){
+	marker.set('icon', base_url+'../'+marker_info['image']);
+    }
+    else if(markers_icon != ''){
+	marker.set('icon', base_url+'../'+markers_icon);
+    }
+
+    markers.push(marker);
+    numb++;
+
+    if(open_infowindow == true){
+
+	var marker_data = document.createElement('div');
+	$(marker_data).addClass('marker');
+	$(marker_data).attr('lang', marker.id);
+	$(marker_data).append('<input type="text" name="markers['+marker.id+'][lat]"         class="marker_lat"   value="'+marker.position.lat()+'" >');
+	$(marker_data).append('<input type="text" name="markers['+marker.id+'][lng]"         class="marker_lng"   value="'+marker.position.lng()+'" >');
+	$(marker_data).append('<input type="text" name="markers['+marker.id+'][title]"       class="marker_title" value="'+marker.title+'" >');
+	$(marker_data).append('<textarea          name="markers['+marker.id+'][description]" class="marker_descr" >'+marker.descr+'</textarea>');
+	$(marker_data).append('<input type="text" name="markers['+marker.id+'][image]"       class="marker_image" value="'+marker.image+'" >');
+	$('#markers').append(marker_data);
 
     }
 
-    google.maps.event.addDomListener(window, 'load', initialize);
+    google.maps.event.addListener(marker, 'click', function() {
+
+	$( "#marker_info" ).dialog('open');
+
+	$('#position strong').first().html(marker.position.lat());
+	$('#position strong').last().html(marker.position.lng());
+	$('#marker_numb').attr('value', marker.id);
+	$('#marker_title').attr('value', marker.title);
+	tinyMCE.activeEditor.setContent(marker.descr);
+	$('#marker_image').attr('value', marker.image);
+
+    });
+
+    google.maps.event.addListener(marker, 'dragend', function() {
+	var position = marker.getPosition();
+	var marker_div = $('#markers div.marker[lang='+marker.id+']');
+	$(marker_div).find('.marker_lat').val(position.lat());
+	$(marker_div).find('.marker_lng').val(position.lng());
+	$('#position strong').first().html(position.lat());
+	$('#position strong').last().html(position.lng());
+    });
 
 
-    function createMarker(marker_info, open_infowindow){
-
-        var marker = new google.maps.Marker({
-            position: new google.maps.LatLng(marker_info['lat'], marker_info['lng']),
-            map: map,
-            draggable: true
-        });
-
-        marker.set('id', numb);
-        marker.set('title', marker_info['title']);
-        marker.set('descr', marker_info['description']);
-        marker.set('image', marker_info['image']);
-
-        if(marker_info['image'] != ''){
-            marker.set('icon', base_url+'../'+marker_info['image']);
-        }
-        else if(markers_icon != ''){
-            marker.set('icon', base_url+'../'+markers_icon);
-        }
-
-        markers.push(marker);
-        numb++;
-
-        if(open_infowindow == true){
-
-            var marker_data = document.createElement('div');
-            $(marker_data).addClass('marker');
-            $(marker_data).attr('lang', marker.id);
-            $(marker_data).append('<input type="text" name="markers['+marker.id+'][lat]"         class="marker_lat"   value="'+marker.position.lat()+'" >');
-            $(marker_data).append('<input type="text" name="markers['+marker.id+'][lng]"         class="marker_lng"   value="'+marker.position.lng()+'" >');
-            $(marker_data).append('<input type="text" name="markers['+marker.id+'][title]"       class="marker_title" value="'+marker.title+'" >');
-            $(marker_data).append('<textarea          name="markers['+marker.id+'][description]" class="marker_descr" >'+marker.descr+'</textarea>');
-            $(marker_data).append('<input type="text" name="markers['+marker.id+'][image]"       class="marker_image" value="'+marker.image+'" >');
-            $('#markers').append(marker_data);
-
-        }
-
-        google.maps.event.addListener(marker, 'click', function() {
-
-            $( "#marker_info" ).dialog('open');
-
-            $('#position strong').first().html(marker.position.lat());
-            $('#position strong').last().html(marker.position.lng());
-            $('#marker_numb').attr('value', marker.id);
-            $('#marker_title').attr('value', marker.title);
-            tinyMCE.activeEditor.setContent(marker.descr);
-            $('#marker_image').attr('value', marker.image);
-
-        });
-
-        google.maps.event.addListener(marker, 'dragend', function() {
-            var position = marker.getPosition();
-            var marker_div = $('#markers div.marker[lang='+marker.id+']');
-            $(marker_div).find('.marker_lat').val(position.lat());
-            $(marker_div).find('.marker_lng').val(position.lng());
-            $('#position strong').first().html(position.lat());
-            $('#position strong').last().html(position.lng());
-        });
-
-
-        if(open_infowindow == true){
-            google.maps.event.trigger(marker, 'click');
-        }
-
+    if(open_infowindow == true){
+	google.maps.event.trigger(marker, 'click');
     }
+
+}
+
+$(function(){
 
     $('#save_marker').live('click', function(){
 
@@ -225,8 +248,7 @@ $(function(){
         $( "#marker_info" ).dialog('close');
 
     });
-
-    
+ 
     $('#cancel_marker').live('click', function(event){
 
         event.preventDefault();
@@ -235,7 +257,7 @@ $(function(){
 
     });
     
-    $('.markers_image').click(function(){
+    $('.markers_image').live('click', function(){
                
         var image = $(this).val();        
         markers_icon = image;
@@ -254,21 +276,8 @@ $(function(){
         }
 
     });
-        
-    tinyMCE.init({
-        mode : "specific_textareas",
-        editor_selector : "marker_description",
-        theme : "advanced",
-        theme_advanced_buttons1 : "bold,italic,underline,separator,strikethrough,justifyleft,justifycenter,justifyright,justifyfull,undo,redo,link,unlink",
-        theme_advanced_buttons2 : "",
-        theme_advanced_buttons3 : "",
-        theme_advanced_toolbar_location : "top",
-        theme_advanced_toolbar_align : "left",
-        height: '100',
-        width: '350'
-    });
 
-    $('#map_fullscreen').click(function(event){
+    $('#map_fullscreen').live('click', function(event){
 
         event.preventDefault();
 
@@ -283,7 +292,7 @@ $(function(){
 
     });
 
-    $('#map_fullscreen_exit').click(function(event){
+    $('#map_fullscreen_exit').live('click', function(event){
 
         event.preventDefault();
 

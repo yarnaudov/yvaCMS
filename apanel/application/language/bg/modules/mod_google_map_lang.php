@@ -8,5 +8,6 @@ $lang['label_mod_google_map_center'] = 'Център';
 
 $lang['label_mod_google_map_icon'] = 'Икона';
 $lang['label_mod_google_map_markers_icon'] = 'Маркери икона';
+$lang['label_mod_google_map_marker_info']  = 'Маркер иформация';
 
 ?>

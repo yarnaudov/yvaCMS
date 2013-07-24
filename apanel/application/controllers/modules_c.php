@@ -52,6 +52,11 @@ class Modules_c extends MY_Controller {
 
             $this->jquery_ext->add_plugin("tinymce");
             $this->jquery_ext->add_library("tinymce.js");
+	    $this->jquery_ext->add_plugin("codemirror");
+	    $this->jquery_ext->add_library("codemirror.js");
+	    
+	    $this->jquery_ext->add_library("https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false");
+	    $this->jquery_ext->add_library(base_url("modules/mod_google_map/js/map_options.js"));
 
             $this->load->helper('form');
             $this->load->library('form_validation');            
@@ -163,7 +168,7 @@ class Modules_c extends MY_Controller {
     	               parent.$('input.type').val($(this).attr('href'));
                        
                        $.get('".site_url('home/ajax/load_module_type')."?type='+$(this).attr('href'), function(data){
-                           
+                           /*
                            if(data.search('script') != -1){
                                 parent.$('.required').each(function(){
                                     $(this).removeClass('required');
@@ -171,10 +176,11 @@ class Modules_c extends MY_Controller {
                                 parent.$('form').submit();
                                 return;
                            }
-
+			   */
                            parent.$('#type_label').html($(data, '#type_label').html());
                            parent.$('#module_options').css('display', 'none');                           
-                           parent.$('#module_options').html(data);
+                           //parent.$('#module_options').html(data);
+			   parent.document.getElementById('module_options').innerHTML = data;
                            parent.$('#module_options').find('#type_label').remove();
                            parent.$('#module_options').toggle('slow');
                            parent.$( '#jquery_ui' ).dialog( 'close' );

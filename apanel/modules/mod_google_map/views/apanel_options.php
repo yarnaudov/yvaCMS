@@ -8,9 +8,6 @@
         <link rel="stylesheet" type="text/css" href="<?=base_url('modules/mod_google_map/css/mod_google_map.css');?>" />
         
         <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false" ></script>
-        <script type="text/javascript" >
-          //var db_markers = JSON.parse('<?=str_replace("\\u", "\\\\u", json_encode($markers, JSON_HEX_APOS | JSON_HEX_QUOT));?>');
-        </script>
         <script type="text/javascript" src="<?=base_url('modules/mod_google_map/js/map_options.js');?>" ></script>
         
     </td>
@@ -44,6 +41,7 @@
             </div>
             
             <div id="map_canvas" ></div>
+	    <img src="<?=base_url('img/iconAdministration.png');?>" style="display:none;" onload="initialize();"  >
 
         </div>
 
@@ -80,6 +78,4 @@
     </td>
 </tr>
 
-<div id="marker_info" title="Marker Info" >
-    <?=$this->load->view('../../modules/mod_google_map/views/marker_options');?>
-</div>
+<?=$this->load->view('../../modules/mod_google_map/views/marker_options');?>
