@@ -145,22 +145,16 @@ foreach($custom_fields as $custom_field){
 	    echo "<input type=\"hidden\" name=\"field".$custom_field['id']."[lat]\"  class=\"lat".$custom_field['id']."\"  value=\"".$lat."\">\n";
 	    echo "<input type=\"hidden\" name=\"field".$custom_field['id']."[lng]\"  class=\"lng".$custom_field['id']."\"  value=\"".$lng."\" >\n";
 	    
-	    if(!defined('GOOGLE_MAP_LOADED')){ 
-		define('GOOGLE_MAP_LOADED', TRUE);
-		echo "<script src=\"https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false\" ></script>\n";
-		echo "<script type=\"text/javascript\" src=\"".base_url('js/custom_fields.js')."\" ></script>\n";
-	    }
-	    
 	    echo "<div class=\"map_canvas_custom_fields\" id=\"map_canvas".$custom_field['id']."\" ></div>\n";
 	    
-	    echo "<img src=\"".base_url('img/iconAdministration.png')."\" style=\"display:none;\" onload=\"initialize('".$custom_field['id']."', true);\"  >";
+	    echo "<img src=\"".base_url('img/iconAdministration.png')."\" style=\"display:none;\" onload=\"initialize('".$custom_field['id']."', true);\"  >\n";
 	    
 	  break;
       
     }
     
-    echo '  </td>';
-    echo '</tr>';
+    echo "  </td>\n";
+    echo "</tr>\n";
 
 } 
 

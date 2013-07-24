@@ -105,6 +105,8 @@ class MY_Controller extends CI_Controller{
         }
         
 	$this->jquery_ext->add_library("scripts.js");
+	$this->jquery_ext->add_library("https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false");
+	$this->jquery_ext->add_library("custom_fields.js");
 	
         //$this->Adm_menu->setConfig();
         $this->Ap_menu->setConfig();
