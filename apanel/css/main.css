@@ -460,7 +460,7 @@ table.list td span.order_span{
     margin: 10px 12px 10px 10px;
 }
 .box .box_table,
-.box input,
+.box input[type=text],
 .box select,
 .box textarea{
     width: 100%;

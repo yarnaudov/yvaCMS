@@ -20,7 +20,7 @@
 
                 <tr>
                     <td style="width: 1%;" >
-                        <input type="checkbox" style="width:16px;" <?=$checked;?> name="params[categories][]" id="category<?=$category_id;?>" value="<?=$category_id;?>" >
+                        <input type="checkbox" <?=$checked;?> name="params[categories][]" id="category<?=$category_id;?>" value="<?=$category_id;?>" >
                     </td>
                     <td>
                         <label for="category<?=$category_id;?>" ><?=$category;?></label>

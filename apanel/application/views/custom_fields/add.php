@@ -109,7 +109,7 @@
 
 						<tr>
 						    <td style="width: 1%;" >
-							<input type="checkbox" style="width:16px;" <?=$checked;?> name="extension_keys[]" id="custom_menu<?=$extension_id;?>" value="<?=$extension_id;?>" >
+							<input type="checkbox" <?=$checked;?> name="extension_keys[]" id="custom_menu<?=$extension_id;?>" value="<?=$extension_id;?>" >
 						    </td>
 						    <td>
 							<label for="custom_menu<?=$extension_id;?>" ><?=$extension;?></label>

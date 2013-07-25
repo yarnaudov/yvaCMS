@@ -27,7 +27,7 @@ foreach($albums_arr as $album){
                 
                 <tr>
                     <td style="width: 1%;">
-                        <input id="all" type="checkbox" value="*" name="params[albums][]" <?php echo @$albums[0] == '*' ? 'checked' : ''; ?> style="width:16px;">
+                        <input id="all" type="checkbox" value="*" name="params[albums][]" <?php echo @$albums[0] == '*' ? 'checked' : ''; ?> >
                     </td>
                     <td>
                         <label for="all" ><?=lang('label_all');?></label>
@@ -37,7 +37,7 @@ foreach($albums_arr as $album){
                 <?php foreach($albums_arr as $album){ ?>
                 <tr>
                     <td style="width: 1%;">
-                        <input id="album<?=$album['id'];?>" type="checkbox" value="<?=$album['id'];?>" name="params[albums][]" <?php echo in_array($album['id'], $albums) ? 'checked' : ''; ?> style="width:16px;">
+                        <input id="album<?=$album['id'];?>" type="checkbox" value="<?=$album['id'];?>" name="params[albums][]" <?php echo in_array($album['id'], $albums) ? 'checked' : ''; ?> >
                     </td>
                     <td>
                         <label for="album<?=$album['id'];?>" ><?=$album['title'];?></label>

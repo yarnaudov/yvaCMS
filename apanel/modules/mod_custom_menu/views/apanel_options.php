@@ -23,7 +23,7 @@
 
                 <tr>
                     <td style="width: 1%;" >
-                        <input type="checkbox" style="width:16px;" <?=$checked;?> name="params[custom_menus][]" id="custom_menu<?=$menu_id;?>" value="<?=$menu_id;?>" >
+                        <input type="checkbox" <?=$checked;?> name="params[custom_menus][]" id="custom_menu<?=$menu_id;?>" value="<?=$menu_id;?>" >
                     </td>
                     <td>
                         <label for="custom_menu<?=$menu_id;?>" ><?=$menu;?></label>

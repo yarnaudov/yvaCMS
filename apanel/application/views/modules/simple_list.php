@@ -18,7 +18,7 @@
             <?php foreach($modules as $numb => $module){ ?>
             <tr>
                 <td style="width: 1%;">
-                    <input id="module<?=$module['id'];?>" type="radio" value="<?=$module['id'];?>" name="modules" style="width:16px;">
+                    <input id="module<?=$module['id'];?>" type="radio" value="<?=$module['id'];?>" name="modules" >
                 </td>
                 <td>
                     <label for="module<?=$module['id'];?>" >

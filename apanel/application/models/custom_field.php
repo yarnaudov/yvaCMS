@@ -65,7 +65,11 @@ class Custom_field extends CI_Model {
 
         foreach($custom_fields as $key => &$custom_field){
             $custom_field['params'] = json_decode($custom_field['params'], true);	    
-		    
+		
+	    if(!isset($filters['extension_key']) && !isset($filters['extension_keys'])){
+		unset($custom_fields[$key]);
+	    }
+	    
 	    if($custom_field['extension_keys'] == NULL){
 		continue;
 	    }

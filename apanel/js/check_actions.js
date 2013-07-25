@@ -186,8 +186,13 @@ $(document).ready(function() {
         var status     = $(this).attr('alt');
 		
 	$.post(url, {element_id: element_id, change_status: status}, function(data){
-	    var status_img_new = $('.checkbox[value='+element_id+']', data).parents('tr').find('.status_img').clone();	    
-	    $(status_img).replaceWith(status_img_new);	    	    
+	    var status_img_new = $('.checkbox[value='+element_id+']', data).parents('tr').find('.status_img').clone();
+	    if(status_img_new.length > 0){
+		$(status_img).replaceWith(status_img_new);
+	    }
+	    else{
+		reload_content(url);
+	    }
 	});
         
     });

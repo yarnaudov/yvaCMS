@@ -14,7 +14,7 @@
 
 		<tr>
 		    <td style="width: 1%;" >
-			<input class="required categories" type="checkbox" style="width:16px;" <?=$checked;?> name="categories[]" id="category<?=$category_id;?>" value="<?=$category_id;?>" >
+			<input class="required categories" type="checkbox" <?=$checked;?> name="categories[]" id="category<?=$category_id;?>" value="<?=$category_id;?>" >
 		    </td>
 		    <td>
 			<label for="category<?=$category_id;?>" ><?=$category;?></label>

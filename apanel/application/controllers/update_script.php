@@ -171,6 +171,8 @@ class Update_script extends CI_Controller {
 	$this->db->query("ALTER TABLE `articles_history` DROP `order`");
 	$this->db->query("ALTER TABLE `articles_history` ADD `categories` TEXT NOT NULL AFTER `status`");
 	
+	echo "done!";
+	
     }
     
 }

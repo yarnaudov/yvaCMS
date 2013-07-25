@@ -24,7 +24,7 @@
 
                 <tr>
                     <td style="width: 1%;" >
-                        <input type="checkbox" class="custom_articles" style="width:16px;" <?=$checked;?> name="params[custom_articles][]" id="custom_article<?=$category;?><?=$article_id;?>" value="<?=$article_id;?>" >
+                        <input type="checkbox" class="custom_articles" <?=$checked;?> name="params[custom_articles][]" id="custom_article<?=$category;?><?=$article_id;?>" value="<?=$article_id;?>" >
                     </td>
                     <td>
                         <label for="custom_article<?=$category;?><?=$article_id;?>" ><?=$article;?></label>
