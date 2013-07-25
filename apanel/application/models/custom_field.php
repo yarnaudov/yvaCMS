@@ -64,11 +64,7 @@ class Custom_field extends CI_Model {
         $custom_fields = $this->db->query($query)->result_array();
 
         foreach($custom_fields as $key => &$custom_field){
-            $custom_field['params'] = json_decode($custom_field['params'], true);	    
-		
-	    if(!isset($filters['extension_key']) && !isset($filters['extension_keys'])){
-		unset($custom_fields[$key]);
-	    }
+            $custom_field['params'] = json_decode($custom_field['params'], true);
 	    
 	    if($custom_field['extension_keys'] == NULL){
 		continue;
@@ -287,10 +283,14 @@ class Custom_field extends CI_Model {
     public function saveFieldsValues($element_id)
     {
                
-        $custom_fields = $this->Custom_field->getCustomFields(array('status' => 'yes'), '`order`');
-        
+        $custom_fields = $this->Custom_field->getCustomFields(array('status' => 'yes'));
+        		
         foreach($custom_fields as $custom_field){
                   
+	    if(!isset($_POST['field'.$custom_field['id']])){
+		continue;
+	    }
+	    
             $data = array();
             
             $data['language_id'] = $custom_field['multilang'] == "yes" ? $this->language_id : NULL;  

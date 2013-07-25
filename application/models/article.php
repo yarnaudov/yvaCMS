@@ -22,6 +22,15 @@ class Article extends CI_Model {
             return;
         }
         
+	# get categories and make array with category_id
+	$article['categories'] = array();
+	$article['orders']     = array();
+	$categories = $this->db->get_where('articles_categories', array('article_id' => $id))->result_array();
+	foreach($categories as $category){
+	   $article['categories'][] =  $category['category_id'];
+	   $article['orders'][$category['category_id']] =  $category['order'];
+	}
+	
         $article['params'] = json_decode($article['params'], true); 
         $article           = array_merge($article, $this->Custom_field->getValues('articles', $id));
 	

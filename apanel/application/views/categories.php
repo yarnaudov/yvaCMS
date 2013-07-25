@@ -38,7 +38,7 @@
 			posts.extension      = '<?=$this->extension;?>';
 			posts.model          = '<?=$this->model;?>';
 			posts.element_id     = '<?=$this->element_id;?>';
-			posts.extension_keys = new Array();
+			posts.extension_keys = new Array('default');
 			
 			$('input.categories:checked').each(function(){
 			    posts.extension_keys.push($(this).val());
