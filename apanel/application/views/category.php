@@ -14,19 +14,18 @@
                     
                     $('select[name=category]').change(function(){
 
-                        $.get('<?=site_url('home/ajax/load_custom_fields');?>?extension=<?=$this->extension;?>&extension_key='+$(this).val(), function(data){
-			    
-			    if(data.search('script') != -1){
-                                parent.$('.required').each(function(){
-                                    $(this).removeClass('required');
-                                });
-                                parent.$('form').submit();
-                                return;
-                            }
-			    
+                        var posts = new Object();
+			posts.extension      = '<?=$this->extension;?>';
+			posts.model          = '<?=$this->model;?>';
+			posts.element_id     = '<?=$this->element_id;?>';
+			posts.extension_key  = $(this).val();
+			
+                        $.post('<?=site_url('home/ajax/load_custom_fields');?>', posts, function(data){
+			    						    
                             $('#custom_fields').css('display', 'none');
-                            $('#custom_fields').html(data);
+			    document.getElementById('custom_fields').innerHTML = data;
                             $('#custom_fields').toggle('slow');
+
                         });
 
                     });

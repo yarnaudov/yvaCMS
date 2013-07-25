@@ -34,13 +34,17 @@
                     		    
                     $('input.categories').click(function(){
 		
-			var extension_keys = new Array();
+			var posts = new Object();
+			posts.extension      = '<?=$this->extension;?>';
+			posts.model          = '<?=$this->model;?>';
+			posts.element_id     = '<?=$this->element_id;?>';
+			posts.extension_keys = new Array();
 			
 			$('input.categories:checked').each(function(){
-			    extension_keys.push($(this).val());
+			    posts.extension_keys.push($(this).val());
 			});
 			
-                        $.post('<?=site_url('home/ajax/load_custom_fields');?>', {extension: '<?=$this->extension;?>', extension_keys: extension_keys}, function(data){
+                        $.post('<?=site_url('home/ajax/load_custom_fields');?>', posts, function(data){
 			    						    
                             $('#custom_fields').css('display', 'none');
 			    document.getElementById('custom_fields').innerHTML = data;

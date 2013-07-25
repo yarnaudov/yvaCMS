@@ -3,6 +3,8 @@
 class Articles extends MY_Controller {
     
     public  $extension = 'articles';
+    public  $model     = 'Article';
+    public  $element_id;
     public  $page;
     public  $layout;
     private $article_id;
@@ -15,7 +17,7 @@ class Articles extends MY_Controller {
         $this->load->model('Article');
         
         $this->page       = isset($_GET['page']) ? $_GET['page'] : 1;                
-        $this->article_id = $this->uri->segment(3);
+        $this->article_id = $this->element_id = $this->uri->segment(3);
         
     }
     
@@ -154,8 +156,8 @@ class Articles extends MY_Controller {
     {   
         
         $categories_dropdown = $this->Category->getForDropdown();
-        $custom_fields = $this->Custom_field->getCustomFields(array('extension_key' => set_value('categories'),
-                                                                    'status'        => 'yes'));
+        $custom_fields = $this->Custom_field->getCustomFields(array('extension_keys' => set_value('categories'),
+                                                                    'status'         => 'yes'));
 
         $content = $this->load->view('articles/add', compact('categories_dropdown', 'custom_fields'), true);		
         $this->load->view('layouts/default', compact('content'));
@@ -176,8 +178,8 @@ class Articles extends MY_Controller {
         
         $data['categories_dropdown'] = $this->Category->getForDropdown();
                
-        $data['custom_fields']  = $this->Custom_field->getCustomFields(array('extension_key' => set_value('categories', isset($data['categories']) ? $data['categories'] : ""), 
-                                                                             'status'        => 'yes'));
+        $data['custom_fields']  = $this->Custom_field->getCustomFields(array('extension_keys' => set_value('categories', isset($data['categories']) ? $data['categories'] : ""), 
+                                                                             'status'         => 'yes'));
 
         $content["content"] = $this->load->view('articles/add', $data, true);		
         $this->load->view('layouts/default', $content);

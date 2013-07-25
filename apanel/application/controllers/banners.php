@@ -3,6 +3,8 @@
 class Banners extends MY_Controller {
     
     public  $extension = 'banners';
+    public  $model     = 'Banner';
+    public  $element_id;
     public  $page;
     public  $positions;
     
@@ -16,7 +18,7 @@ class Banners extends MY_Controller {
         $this->load->model('Banner');
                 
         $this->page      = isset($_GET['page']) ? $_GET['page'] : 1;
-        $this->banner_id = $this->uri->segment(3);
+        $this->banner_id = $this->element_id = $this->uri->segment(3);
         
         /*
          * get positions
@@ -135,15 +137,11 @@ class Banners extends MY_Controller {
     public function types()      
     {
     	
-    	$script = "$('a.type').live('click', function(event){
-                       
+    	$script = "$('a.type').live('click', function(event){                       
                        event.preventDefault();
-
     	               parent.$('input.type').val($(this).attr('href'));
-                       parent.$('form').submit();
-                       
-                   });";
-                   
+                       parent.$('form').submit();                       
+                   });";                   
         $this->jquery_ext->add_script($script, 'general');
     	  
     	$banner_types = $this->config->item('banner_types');

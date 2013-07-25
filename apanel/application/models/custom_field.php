@@ -40,7 +40,7 @@ class Custom_field extends CI_Model {
             if($key == 'search_v'){               
                 $filter .= " AND (title like '%".$value."%' OR description  like '%".$value."%' )";            
             }
-            elseif($key == 'extension_key'){
+            elseif($key == 'extension_key' || $key == 'extension_keys'){
             //    $filter .= " AND (`extension_key` = '".$value."' OR `extension_key` is NULL) ";
             }
             else{
@@ -65,30 +65,30 @@ class Custom_field extends CI_Model {
 
         foreach($custom_fields as $key => &$custom_field){
             $custom_field['params'] = json_decode($custom_field['params'], true);	    
-	
-	    if(isset($filters['extension_key']) && $custom_field['extension_keys'] != NULL){
-		
-		$custom_field['extension_keys'] = json_decode($custom_field['extension_keys'], true);
-		
-		if(is_array($filters['extension_key'])){
 		    
-		    $extension_key_exists = false;
+	    if($custom_field['extension_keys'] == NULL){
+		continue;
+	    }
+	    
+	    $custom_field['extension_keys'] = json_decode($custom_field['extension_keys'], true);
+
+	    if(isset($filters['extension_key']) && !in_array($filters['extension_key'], $custom_field['extension_keys']) ){
+		    unset($custom_fields[$key]);
+	    }
+	    elseif(isset($filters['extension_keys'])){
 		    
-		    foreach($filters['extension_key'] as $extension_key){	
-			if(in_array($extension_key, $custom_field['extension_keys']) ){
-			    $extension_key_exists = true;
-			}
+		$extension_key_exists = false;
+		    
+		foreach($filters['extension_keys'] as $extension_key){	
+		    if(in_array($extension_key, $custom_field['extension_keys']) ){
+			$extension_key_exists = true;
 		    }
-		    
-		    if($extension_key_exists == false){
-			unset($custom_fields[$key]);
-		    }
-		    
 		}
-		elseif(!in_array($filters['extension_key'], $custom_field['extension_keys']) ){
+		    
+		if($extension_key_exists == false){
 		    unset($custom_fields[$key]);
 		}
-	    
+		    
 	    }
 	    
         }

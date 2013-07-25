@@ -3,6 +3,8 @@
 class Menus extends MY_Controller {
 
     public  $extension = 'menus';
+    public  $model     = 'Menu';
+    public  $element_id;
     public  $page;
     private $menu_id;
     
@@ -17,7 +19,7 @@ class Menus extends MY_Controller {
         $this->load->model('Menu');
         
         $this->page    = isset($_GET['page']) ? $_GET['page'] : 1;        
-        $this->menu_id = $this->uri->segment(3);
+        $this->menu_id = $this->element_id = $this->uri->segment(3);
         
         /*
          * load modules languages

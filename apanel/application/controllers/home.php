@@ -81,15 +81,27 @@ class Home extends MY_Controller {
                 
                 $this->load->helper('form');
                 
-                $this->extension = $this->input->post('extension');		
+                $this->extension = $this->input->post('extension');
+		$extension_key   = $this->input->post('extension_key');
 		$extension_keys  = $this->input->post('extension_keys');
 
-                $filters['status']        = 'yes';
-                $filters['extension_key'] = $extension_keys;
+                $filters['status']         = 'yes';
+		if(!empty($extension_key)){
+		    $filters['extension_key'] = $extension_key;
+		}
+		if(!empty($extension_keys)){
+		    $filters['extension_keys'] = $extension_keys;
+		}
                 
-                $custom_fields = $this->Custom_field->getCustomFields($filters);
+		$model      = $this->input->post('model');
+		$element_id = $this->input->post('element_id');
+		
+		$this->load->model($model);
+		$data = $this->$model->getDetails($element_id);
+		
+                $data['custom_fields'] = $this->Custom_field->getCustomFields($filters);
 		                    
-                $this->load->view('custom_fields/load_fields', compact('custom_fields'));
+                $this->load->view('custom_fields/load_fields', $data);
                 
             break;
         

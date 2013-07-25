@@ -2,8 +2,9 @@
 
 class Modules_c extends MY_Controller {
     
-    public  $trl;
     public  $extension = 'modules';
+    public  $model     = 'Module';
+    public  $element_id;
     public  $page;
     public  $layout;
     public  $positions;
@@ -20,7 +21,7 @@ class Modules_c extends MY_Controller {
         $this->load->model('Module');        
         
         $this->page      = isset($_GET['page']) ? $_GET['page'] : 1;                
-        $this->module_id = $this->uri->segment(3);
+        $this->module_id = $this->element_id = $this->uri->segment(3);
         
         /*
          * load modules languages

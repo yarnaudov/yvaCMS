@@ -3,6 +3,8 @@
 class Users extends MY_Controller {
     
     public $extension = 'users';
+    public $model     = 'User';
+    public $element_id;
     public $page;
     public $user_id;
     
@@ -14,7 +16,7 @@ class Users extends MY_Controller {
         $this->load->model('User');
                 
         $this->page    = isset($_GET['page']) ? $_GET['page'] : 1;                
-        $this->user_id = $this->uri->segment(3);
+        $this->user_id = $this->element_id = $this->uri->segment(3);
         
     }
     
@@ -27,12 +29,20 @@ class Users extends MY_Controller {
             $this->jquery_ext->add_library("check_actions_add_edit.js"); 
             
             $script = "$('select[name=user_group]').change(function(){
+			   
+			    var posts = new Object();
+			    posts.extension      = '".$this->extension."';
+			    posts.model          = '".$this->model."';
+			    posts.element_id     = '".$this->element_id."';
+			    posts.extension_key  = $(this).val();
 
-                           $.get('".site_url('home/ajax/load_custom_fields')."?extension=".$this->extension."&extension_key='+$(this).val(), function(data){
-                               $('#custom_fields').css('display', 'none');
-                               $('#custom_fields').html(data);
-                               $('#custom_fields').toggle('slow');
-                           });
+			    $.post('".site_url('home/ajax/load_custom_fields')."', posts, function(data){
+
+				$('#custom_fields').css('display', 'none');
+				document.getElementById('custom_fields').innerHTML = data;
+				$('#custom_fields').toggle('slow');
+
+			    });
 
                        });";
             
