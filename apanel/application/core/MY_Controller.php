@@ -104,6 +104,7 @@ class MY_Controller extends CI_Controller{
             
         }
         
+	# load all js very stupid but for now it is ok
 	$this->jquery_ext->add_library("scripts.js");
 	$this->jquery_ext->add_library("https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false");
 	$this->jquery_ext->add_library("custom_fields.js");
