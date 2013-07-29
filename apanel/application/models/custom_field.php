@@ -75,7 +75,7 @@ class Custom_field extends CI_Model {
 	    if(isset($filters['extension_key']) && !in_array($filters['extension_key'], $custom_field['extension_keys']) ){
 		    unset($custom_fields[$key]);
 	    }
-	    elseif(isset($filters['extension_keys'])){
+	    elseif(isset($filters['extension_keys']) && is_array($filters['extension_keys'])){
 		    
 		$extension_key_exists = false;
 		    
@@ -89,6 +89,9 @@ class Custom_field extends CI_Model {
 		    unset($custom_fields[$key]);
 		}
 		    
+	    }
+	    else{
+		unset($custom_fields[$key]);
 	    }
 	    
         }
