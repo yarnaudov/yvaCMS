@@ -109,6 +109,7 @@ class Custom_fields extends MY_Controller {
         $data = parent::index($this->Custom_field, 'custom_fields', 'custom_fields/'.$this->extension);
         
         // get custom_fields
+	$data['filters']['no_extension_keys'] = TRUE;
         $custom_fields = $this->Custom_field->getCustomFields($data['filters'], $data['order_by']);
         if($data['limit'] == 'all'){
             $custom_fields[0] = $custom_fields;

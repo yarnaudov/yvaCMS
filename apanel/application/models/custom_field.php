@@ -40,7 +40,7 @@ class Custom_field extends CI_Model {
             if($key == 'search_v'){               
                 $filter .= " AND (title like '%".$value."%' OR description  like '%".$value."%' )";            
             }
-            elseif($key == 'extension_key' || $key == 'extension_keys'){
+            elseif($key == 'extension_key' || $key == 'extension_keys' || $key == 'no_extension_keys'){
             //    $filter .= " AND (`extension_key` = '".$value."' OR `extension_key` is NULL) ";
             }
             else{
@@ -66,7 +66,7 @@ class Custom_field extends CI_Model {
         foreach($custom_fields as $key => &$custom_field){
             $custom_field['params'] = json_decode($custom_field['params'], true);
 	    
-	    if($custom_field['extension_keys'] == NULL){
+	    if($custom_field['extension_keys'] == NULL || isset($filters['no_extension_keys'])){
 		continue;
 	    }
 	    
