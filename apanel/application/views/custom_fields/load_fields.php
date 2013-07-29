@@ -49,8 +49,10 @@ foreach($custom_fields as $custom_field){
         
         case 'textarea':
             $set_value = ($set_value == "" && !isset(${'field'.$custom_field['id']})) ? $params['value'] : $set_value;
-            echo "<textarea class=\"".$class." simple_editor\" name=\"field".$custom_field['id']."\" >".$set_value."</textarea>\n";
-	    echo "<img src=\"".base_url('img/iconAdministration.png')."\" style=\"display:none;\" onload=\"simple_editor();\"  >";
+            echo "<textarea class=\"".$class." simple_editor\" name=\"field".$custom_field['id']."\" id=\"field".$custom_field['id']."\" >".$set_value."</textarea>\n";
+	    if($this->input->is_ajax_request()) {
+		echo "<img src=\"".base_url('img/iconAdministration.png')."\" style=\"display:none;\" onload=\"simple_editor();\"  >";
+	    }
           break;
         
         case 'dropdown':
