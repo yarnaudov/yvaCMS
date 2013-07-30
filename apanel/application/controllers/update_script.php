@@ -2,7 +2,31 @@
 
 class Update_script extends CI_Controller {
     
-    public function add_type()
+    public $language_id;
+    
+    function index()
+    {
+	
+	$methods = get_class_methods('Update_script');
+	
+	unset($methods[0]);
+	array_pop($methods);
+	array_pop($methods);
+	
+	$html = '<h2>Actions</h2>';
+	$html .= '<ul>';
+	foreach($methods as $method){
+	    
+	    $html .= '<li><a href="'.site_url('update_script/'.$method).'" >'.$method.'</a></li>';
+	    
+	}
+	$html .= '</ul>';
+	
+	$this->load->view('layouts/simple', array('content' => $html));
+	
+    }
+    
+    function add_type()
     {
 	
 	$tables = array('menus', 'modules', 'banners');
@@ -178,23 +202,29 @@ class Update_script extends CI_Controller {
     function remove_multiple_categopries()
     {
 	
+	echo "this is not completed yet!";
+	
     }
     
-    function add_meta_data_to_articles()
+    function add_articles_meta_data()
     {
 	
 	
 	$this->db->query("ALTER TABLE `articles_data` ADD `meta_keywords` VARCHAR( 1000 ) NOT NULL ,
 			                              ADD `meta_description` VARCHAR( 1000 ) NOT NULL ");
 		
+	echo "done!";
+	
     }
     
-     function remove_meta_data_to_articles()
+     function remove_articles_meta_data()
     {
 		
 	$this->db->query("ALTER TABLE `articles_data` DROP `meta_keywords`,
 			                              DROP `meta_description`");
-		
+	
+	echo "done!";
+	
     }
     
 }
