@@ -13,14 +13,14 @@ class Update_script extends CI_Controller {
 	array_pop($methods);
 	array_pop($methods);
 	
-	$html = '<h2>Actions</h2>';
-	$html .= '<ul>';
+	$html = "<h2>Actions</h2>\n";
+	$html .= "<ul>\n";
 	foreach($methods as $method){
 	    
-	    $html .= '<li><a href="'.site_url('update_script/'.$method).'" >'.$method.'</a></li>';
+	    $html .= "<li><a href=\"".site_url('update_script/'.$method)."\" >".$method."</a></li>\n";
 	    
 	}
-	$html .= '</ul>';
+	$html .= "</ul>\n";
 	
 	$this->load->view('layouts/simple', array('content' => $html));
 	
