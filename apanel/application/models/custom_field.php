@@ -91,7 +91,7 @@ class Custom_field extends CI_Model {
 		    
 	    }
 	    else{
-		unset($custom_fields[$key]);
+		//unset($custom_fields[$key]);
 	    }
 	    
         }
