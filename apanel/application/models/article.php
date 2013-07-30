@@ -25,8 +25,8 @@ class Article extends MY_Model {
 	$article['orders']     = array();
 	$categories = $this->db->get_where('articles_categories', array('article_id' => $id))->result_array();
 	foreach($categories as $category){
-	   $article['categories'][] =  $category['category_id'];
-	   $article['orders'][$category['category_id']] =  $category['order'];
+	   $article['categories'][] = $category['category_id'];
+	   $article['orders'][$category['category_id']] = $category['order'];
 	}
 	
         $article['params']     = json_decode($article['params'], true); 
@@ -206,9 +206,11 @@ class Article extends MY_Model {
          
         $this->load->helper('alias');
                 
-        $data['articles_data']['title']       = $this->input->post('title');
-        $data['articles_data']['text']        = $this->input->post('text');
-        $data['articles_data']['language_id'] = $this->language_id;
+        $data['articles_data']['title']            = $this->input->post('title');
+        $data['articles_data']['text']             = $this->input->post('text');
+	$data['articles_data']['meta_keywords']    = $this->input->post('meta_keywords');
+	$data['articles_data']['meta_description'] = $this->input->post('meta_description');
+        $data['articles_data']['language_id']      = $this->language_id;
         
         $data['articles']['alias']            = alias($this->input->post('alias'));
         //$data['articles']['category_id']      = $this->input->post('category');

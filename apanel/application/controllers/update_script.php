@@ -144,7 +144,6 @@ class Update_script extends CI_Controller {
 			    KEY `category_id` (`category_id`)
 			  ) ENGINE=InnoDB DEFAULT CHARSET=utf8;	");
 	
-	//$this->db->query("SET foreign_key_checks = 0;");
 	$this->db->query("ALTER TABLE `articles_categories`
 	                    ADD CONSTRAINT `articles_categories_ibfk_1` FOREIGN KEY (`article_id`) REFERENCES `articles` (`id`) ON UPDATE CASCADE,
 			    ADD CONSTRAINT `articles_categories_ibfk_2` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`) ON UPDATE CASCADE;");
@@ -164,8 +163,9 @@ class Update_script extends CI_Controller {
 	     
 	}
 	
-	$this->db->query("SET foreign_key_checks = 0;ALTER TABLE `articles` DROP `category_id`");
-	$this->db->query("SET foreign_key_checks = 0;ALTER TABLE `articles` DROP `order`");
+	$this->db->query("ALTER TABLE `articles` DROP FOREIGN KEY `articles_ibfk_3`;");
+	$this->db->query("ALTER TABLE `articles` DROP `category_id`");
+	$this->db->query("ALTER TABLE `articles` DROP `order`");
 	
 	$this->db->query("ALTER TABLE `articles_history` DROP `category_id`");
 	$this->db->query("ALTER TABLE `articles_history` DROP `order`");
@@ -173,6 +173,28 @@ class Update_script extends CI_Controller {
 	
 	echo "done!";
 	
+    }
+    
+    function remove_multiple_categopries()
+    {
+	
+    }
+    
+    function add_meta_data_to_articles()
+    {
+	
+	
+	$this->db->query("ALTER TABLE `articles_data` ADD `meta_keywords` VARCHAR( 1000 ) NOT NULL ,
+			                              ADD `meta_description` VARCHAR( 1000 ) NOT NULL ");
+		
+    }
+    
+     function remove_meta_data_to_articles()
+    {
+		
+	$this->db->query("ALTER TABLE `articles_data` DROP `meta_keywords`,
+			                              DROP `meta_description`");
+		
     }
     
 }

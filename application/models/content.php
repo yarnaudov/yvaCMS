@@ -171,30 +171,46 @@ class Content extends CI_Model {
             $header .= "<meta http-equiv=\"cache-control\" content=\"no-cache\" />\n";
         }
 	
-        /*
-         * generate title
-         */
+        # generate title and meta data
         if($this->article_alias){
+	    
             $article = $this->Article->getByAlias($this->article_alias);
-            $title = $article['title'];
+            $title   = $article['title'];
+	    
+	    $this->meta_description = $article['meta_description'];
+            $this->meta_keywords    = $article['meta_keywords'];
+	    
+	    if($this->menu_id != '' && (empty($this->meta_description) || empty($this->meta_keywords)) ){
+		$menu = $this->Menu->getDetails($this->menu_id);
+		
+		if(empty($this->meta_description)){
+		    $this->meta_description = $menu['meta_description'];
+		}
+		
+		if(empty($this->meta_keywords)){
+		    $this->meta_keywords = $menu['meta_keywords'];
+		}
+		
+	    }
+	    
         }
         elseif($this->menu_id == 'search'){ // stupid fix for search component to work with no menu assigned to it
             $title = lang('label_search');
         }
         else{
+	    
             $menu = $this->Menu->getDetails($this->menu_id);
             
-            $description = trim(strip_tags($menu['description']));
-            
+	    $title = $menu['title'];
+	    
+            $description = trim(strip_tags($menu['description']));            
             if(isset($menu['description_as_page_title']) && $menu['description_as_page_title'] == 'yes' && !empty($description) ){
                 $title = $description;
             }
-            else{            
-                $title = $menu['title'];
-            }
             
-            $meta_description = $menu['meta_description'];
-            $meta_keywords    = $menu['meta_keywords'];
+            $this->meta_description = $menu['meta_description'];
+            $this->meta_keywords    = $menu['meta_keywords'];
+	    
         }
         
         if($this->Setting->getSiteNameInTitle() ==  'yes'){
@@ -204,19 +220,19 @@ class Content extends CI_Model {
         $header .= "<title>".$title."</title>\n";
         
         
-        /*
-         * generate meta data
-         */        
-        if(isset($meta_description) && !empty($meta_description)){
-            $header .= "<meta name=\"description\" content=\"".$meta_description."\" >\n";
+        # load meta data tag       
+        if(!empty($this->meta_description)){
+            $header .= "<meta name=\"description\" content=\"".$this->meta_description."\" >\n";
         }elseif($this->Setting->getMetaDescription()){
-            $header .= "<meta name=\"description\" content=\"".$this->Setting->getMetaDescription()."\" >\n";
+	    $this->meta_description = $this->Setting->getMetaDescription();
+            $header .= "<meta name=\"description\" content=\"".$this->meta_description."\" >\n";
         }
         
-        if(isset($meta_keywords) && !empty($meta_keywords)){
-            $header .= "<meta name=\"keywords\" content=\"".$meta_keywords."\" >\n";
+        if(!empty($this->meta_keywords)){
+            $header .= "<meta name=\"keywords\" content=\"".$this->meta_keywords."\" >\n";
         }elseif($this->Setting->getMetaKeywords()){
-            $header .= "<meta name=\"keywords\" content=\"".$this->Setting->getMetaKeywords()."\" >\n";
+	    $this->meta_keywords = $this->Setting->getMetaKeywords();
+            $header .= "<meta name=\"keywords\" content=\"".$this->meta_keywords."\" >\n";
         }
         
         /*

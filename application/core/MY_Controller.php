@@ -11,6 +11,9 @@ class MY_Controller extends CI_Controller {
     public $template_main;
     public $data;
     
+    public $meta_description;
+    public $meta_keywords;
+    
     function __construct()
     {
         

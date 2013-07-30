@@ -115,6 +115,33 @@
                         </div>
                         
 	            </div>
+		    
+		    <div class="box" >
+	      	        <span class="header" ><?=lang('label_metadata');?></span>
+	                
+                        <div class="box_content" >
+                            <table class="box_table" cellpadding="0" cellspacing="0" >
+
+                                <tr>	      			
+                                    <th><label class="multilang" ><?=lang('label_keywords');?>:</label></th>
+                                    <td>
+                                        <textarea name="meta_keywords" ><?=set_value('meta_keywords', isset($meta_keywords) ? $meta_keywords : "");?></textarea> 
+                                    </td>
+                                </tr>
+
+                                <tr><td colspan="2" class="empty_line" ></td></tr>
+                                
+                                <tr>	      			
+                                    <th><label class="multilang" ><?=lang('label_description');?>:</label></th>
+                                    <td>
+                                        <textarea name="meta_description" ><?=set_value('meta_description', isset($meta_description) ? $meta_description : "");?></textarea>                                            
+                                    </td>
+                                </tr>
+                                
+                            </table>
+                                
+                        </div>
+                    </div>
 	      
                 </td>
                 <!-- end left content  -->
