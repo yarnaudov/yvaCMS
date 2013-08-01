@@ -223,6 +223,9 @@ class MY_Controller extends CI_Controller {
         $html = $this->load->view('../../'.TEMPLATES_DIR.'/'.$this->template, '', true);
         $html2 = str_get_html($html);
     
+	#set headers here so module have access to meta data!
+	$header = $this->Content->header();
+	
         foreach($html2->find('include') as $include){
             if($include->type == 'module'){
                 $html = str_replace($include, $this->Module->load($include->name), $html);
@@ -239,7 +242,6 @@ class MY_Controller extends CI_Controller {
         }
 
 	#include headers after all modules are ready	
-	$header = $this->Content->header();
 	if(is_object($this->jquery_ext)){
 	    ob_start();
 	    $this->jquery_ext->output();

@@ -177,18 +177,18 @@ class Content extends CI_Model {
             $article = $this->Article->getByAlias($this->article_alias);
             $title   = $article['title'];
 	    
-	    $this->meta_description = $article['meta_description'];
-            $this->meta_keywords    = $article['meta_keywords'];
+	    $meta_description = $article['meta_description'];
+            $meta_keywords    = $article['meta_keywords'];
 	    
-	    if($this->menu_id != '' && (empty($this->meta_description) || empty($this->meta_keywords)) ){
+	    if($this->menu_id != '' && (empty($meta_description) || empty($meta_keywords)) ){
 		$menu = $this->Menu->getDetails($this->menu_id);
 		
-		if(empty($this->meta_description)){
-		    $this->meta_description = $menu['meta_description'];
+		if(empty($meta_description)){
+		    $meta_description = $menu['meta_description'];
 		}
 		
-		if(empty($this->meta_keywords)){
-		    $this->meta_keywords = $menu['meta_keywords'];
+		if(empty($meta_keywords)){
+		    $meta_keywords = $menu['meta_keywords'];
 		}
 		
 	    }
@@ -207,9 +207,9 @@ class Content extends CI_Model {
             if(isset($menu['description_as_page_title']) && $menu['description_as_page_title'] == 'yes' && !empty($description) ){
                 $title = $description;
             }
-            
-            $this->meta_description = $menu['meta_description'];
-            $this->meta_keywords    = $menu['meta_keywords'];
+
+            $meta_description = $menu['meta_description'];
+            $meta_keywords    = $menu['meta_keywords'];
 	    
         }
         
@@ -221,20 +221,24 @@ class Content extends CI_Model {
         
         
         # load meta data tag       
-        if(!empty($this->meta_description)){
-            $header .= "<meta name=\"description\" content=\"".$this->meta_description."\" >\n";
+        if(!empty($meta_description)){
+            $header .= "<meta name=\"description\" content=\"".$meta_description."\" >\n";
         }elseif($this->Setting->getMetaDescription()){
-	    $this->meta_description = $this->Setting->getMetaDescription();
-            $header .= "<meta name=\"description\" content=\"".$this->meta_description."\" >\n";
+	    $meta_description = $this->Setting->getMetaDescription();
+            $header .= "<meta name=\"description\" content=\"".$meta_description."\" >\n";
         }
         
-        if(!empty($this->meta_keywords)){
-            $header .= "<meta name=\"keywords\" content=\"".$this->meta_keywords."\" >\n";
+        if(!empty($meta_keywords)){
+            $header .= "<meta name=\"keywords\" content=\"".$meta_keywords."\" >\n";
         }elseif($this->Setting->getMetaKeywords()){
-	    $this->meta_keywords = $this->Setting->getMetaKeywords();
-            $header .= "<meta name=\"keywords\" content=\"".$this->meta_keywords."\" >\n";
+	    $meta_keywords = $this->Setting->getMetaKeywords();
+            $header .= "<meta name=\"keywords\" content=\"".$meta_keywords."\" >\n";
         }
         
+	# change controller properties
+	get_instance()->meta_description = $meta_description;
+	get_instance()->meta_keywords    = $meta_keywords;
+	
         /*
          * robots
          */
