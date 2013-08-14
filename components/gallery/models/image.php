@@ -107,8 +107,6 @@ class Image extends CI_Model {
             
         }
         
-        return "hahaha";
-        
     }
     
 }

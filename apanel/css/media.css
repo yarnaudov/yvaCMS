@@ -108,7 +108,7 @@
 }
 .input_file .text{
     margin-top: -5px;
-    width: 210px;
+    width: 210px !important;
     z-index: 2;
 }
 .input_file button{

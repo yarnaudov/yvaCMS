@@ -16,20 +16,21 @@ class Gallery extends MY_Controller {
         
     }
     
-    public function _remap($method)
-    {        
+    public function _remap($method,  $params = array())
+    {        	
+	
         if(!method_exists($this, $method)){
-            $url = $method;
-            $method = 'index';
+            $this->index($method);
         }
-                
-        $this->$method($url);
+        else{  
+	    $this->$method($params);
+	}
         
-    }
-    
+    }     
+        
     public function index($url)
     {
-        
+        	
         $menu = $this->Menu->getDetails($this->menu_id);
         $menu_link = $this->Module->menu_link($menu);
         
@@ -81,6 +82,26 @@ class Gallery extends MY_Controller {
                 
         echo parent::_parseTemplateFile();
         
+    }
+    
+    public function image($params)
+    {
+
+	$image_id = $params[0];
+	$width    = $params[1];
+	$height   = $params[2];
+	
+	$this->load->model('Image');
+	$image_src = $this->Image->getImageUrl($image_id, $width, $height);
+
+	$image = imagecreatefromjpeg($image_src);
+
+	// Output and free memory
+	header('Content-type: image/png');
+	imagepng($image);
+	imagedestroy($image);
+	
+	exit;
     }
     
     public function getRoute($menu)

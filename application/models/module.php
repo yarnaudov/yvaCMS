@@ -34,19 +34,24 @@ class Module extends CI_Model {
 
     }    
     
-    public function load($position, $type = 1, $templates = array())
+    public function load($position, $type = 1)
     {
-        
-        $templates = array_merge($this->templates, $templates);
+	
+	$templates = $this->templates;
+	if(isset($this->templates[$position])){
+	    $templates = array_merge($this->templates, $this->templates[$position]);
+	}
                 
         $modules = self::_getModules($position, $type);
 
         $module_html = '';
         foreach($modules as $module){
             
-            $module['template'] = isset($templates[$module['type']]) ? $templates[$module['type']] : "";
-            
-            $content = $this->Module->_load_module($module['id']);
+	    if($module['template'] == 'default'){
+		$module['template'] = isset($templates[$module['type']]) ? $templates[$module['type']] : "";
+	    }
+       
+            $content = $this->Module->_load_module($module);
                 
             $module_html .= $this->load->view($templates['main'], compact('module', 'content'), true); 
                       
@@ -183,7 +188,7 @@ class Module extends CI_Model {
     	extract($data);
         
         $template_file = TEMPLATES_DIR.'/'.$this->Setting->getTemplate('main').'/'.$module['template'].'.php';
-        
+
         if(file_exists(FCPATH.$template_file)){
             include $template_file;
         }
@@ -198,20 +203,14 @@ class Module extends CI_Model {
     	
     }
     
-    function _load_module($id)
+    function _load_module($module)
     {
         
         $content = '';
-        
-        $module = Module::getDetails($id);
 
         if(file_exists('modules/' . $module['type'] . '/models/' . $module['type'] . '.php')){
 
             include_once 'modules/' . $module['type'] . '/models/' . $module['type'] . '.php';
-
-            if($module['template'] != 'default'){
-                
-            }
             
             $moduleObj = new $module['type'];
             $content   = $moduleObj->run($module);

@@ -180,6 +180,45 @@ class Article extends CI_Model {
 	
     }
     
+    public function getByKeyword($keyword, $count = FALSE)
+    {
+        
+        if(empty($keyword)){
+            return array();
+        }
+        
+        $this->db->select('id');
+	$this->db->from('articles');
+	$this->db->join('articles_data', 'articles.id = articles_data.article_id', 'left');
+        $this->db->like('meta_keywords', $keyword, 'both');
+        $this->db->where('status', 'yes');
+	$this->db->where('language_id', $this->language_id);
+        //$this->db->order_by('`order` DESC', '', false);
+	
+	if($count == TRUE){
+	    return $this->db->count_all_results();
+	}
+
+	$articles = $this->db->get()->result_array();
+        
+        $articles_arr = array();
+        foreach($articles as $article){
+            
+            $article = self::getDetails($article['id']);
+	 
+	    /* --- check filters --- */
+	    if(self::_checkFilters('article', $article) == false){
+		continue;
+	    }
+            
+            $articles_arr[] = $article;
+            
+        }
+        
+        return $articles_arr;
+        
+    }
+    
     private function _checkFilters($filter, $article)
     {
 
