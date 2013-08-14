@@ -5,7 +5,9 @@ class MY_Controller extends CI_Controller {
     public $menu_id = '';
     public $current_menus = array();
     public $language_id;
+    
     public $article_alias;
+    public $category_alias;
     
     public $template;
     public $template_main;
@@ -70,59 +72,7 @@ class MY_Controller extends CI_Controller {
 	    $this->load->language('template');
 	}
 
-        $uri = explode('/', $this->uri->uri_string());
-        $uri = array_reverse($uri);
-        
-	// check if article with no menu is selected
-        if(count($uri) == 1 && current(explode(':', $uri[0])) == 'article'){
-            $this->article_alias = end(explode(':', $uri[0]));
-        }
-        elseif($uri[0] == 'search'){ // stupid fix for search component to work with no menu assigned to it
-            $this->menu_id = 'search';
-            $this->current_menus = array();
-        }
-        else{
-            
-            //seach for menu by alias              
-            foreach($uri as $alias){
-                $this->menu_id = $this->Menu->getByAlias($alias, 'id');
-                if($this->menu_id != ''){
-                    break;
-                }
-            }
-            
-             //if no menu found load default one
-            if($this->menu_id == ''){
-                $this->menu_id   = $this->Menu->getDefault('id');
-            }       
-            
-            // get all parent menus of current one
-            $this->current_menus = $this->Menu->getParents($this->menu_id);
-	    
-	    // check if article is selected
-            if(current(explode(':', $uri[0])) == 'article'){
-                $this->article_alias = end(explode(':', $uri[0]));
-            }
-            
-            $menu = $this->Menu->getDetails($this->menu_id);
-            
-            // If menu type is 'menu' rewrite variable $menu with new menu but save alias from original menu
-            if($menu['type'] == 'menu' && !empty($menu['params']['menu_id'])){
-                
-                $this->current_menus[] = $menu['menu_id'];
-                
-                $alias = $menu['alias'];
-                $menu = $this->Menu->getDetails($menu['params']['menu_id']);
-                $menu['alias'] = $alias;
-                
-            }            
-            
-            // If menu type is 'component' set route to component and redirect the page 
-            if(preg_match('/^components{1}/', $menu['type'])){                     
-                $this->setRoute($menu);                
-            }
-            
-        }
+	self::_getActiveContent();
 	
 	// load validation js if article is loaded
 	if($this->article_alias || @$menu['type'] == 'article'){
@@ -179,6 +129,76 @@ class MY_Controller extends CI_Controller {
                    });";
         $this->jquery_ext->add_script($script);
         
+    }
+    
+    private function _getActiveContent()
+    {
+	
+	$uri = explode('/', $this->uri->uri_string());
+        $uri = array_reverse($uri);
+        
+	$last_uri = explode(':', $uri[0]);
+	
+	# check if article is selected
+        if(count($uri) == 1 && current($last_uri) == 'article'){
+            $this->article_alias = end($last_uri);
+        }
+	
+	# check if category is selected
+	elseif(count($uri) == 1 && current($last_uri) == 'category'){
+	    $this->category_alias = end($last_uri);
+	}
+	
+	# stupid fix for search component to work with no menu assigned to it
+        elseif($uri[0] == 'search'){
+            $this->menu_id = 'search';
+        }
+	
+	# check for menu to load
+        else{
+            
+            # seach for menu by alias              
+            foreach($uri as $alias){
+                $this->menu_id = $this->Menu->getByAlias($alias, 'id');
+                if($this->menu_id != ''){
+                    break;
+                }
+            }
+            
+            # if no menu found load default one
+            if($this->menu_id == ''){
+                $this->menu_id = $this->Menu->getDefault('id');
+            }       
+            
+            # get all parent menus of current one
+            $this->current_menus = $this->Menu->getParents($this->menu_id);
+	    
+	    # check if article is selected
+            if(current($last_uri) == 'article'){
+                $this->article_alias = end($last_uri);
+            }
+            
+	    # get menu details
+            $menu = $this->Menu->getDetails($this->menu_id);
+            
+            # If menu type is 'menu' rewrite variable $menu with new menu but save alias from original menu
+            if($menu['type'] == 'menu' && !empty($menu['params']['menu_id'])){
+                
+                //$this->current_menus[] = $menu['menu_id'];
+                
+		$alias = $menu['alias'];
+                $menu = $this->Menu->getDetails($menu['params']['menu_id']);
+                $menu['alias'] = $alias;
+                
+            }            
+            
+            # If menu type is 'component' set route to component and redirect the page 
+            if(preg_match('/^components{1}/', $menu['type'])){                     
+                $this->setRoute($menu);                
+            }
+            
+        }
+	
     }
     
     function setRoute($menu)

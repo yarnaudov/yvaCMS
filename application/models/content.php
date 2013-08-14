@@ -5,7 +5,8 @@ class Content extends CI_Model {
     public $templates = array('main'          => 'content/main',
                               'article'       => 'content/article',
                               'articles_list' => 'content/articles_list',
-			      'custom_articles_list' => 'content/articles_list');
+			      'custom_articles_list' => 'content/articles_list',
+			      'category_articles_list' => 'content/category_articles_list');
         
     public function load($templates = array())
     {
@@ -31,12 +32,40 @@ class Content extends CI_Model {
             }
             
         }
+	elseif($this->category_alias){
+            
+	    //$category = $this->Category->getByAlias($this->category_alias, 'articles');
+	    $category = array('id' => 1, 'title' => 'Test');
+	    if(empty($category)){
+		$data['content'] = lang('msg_category_not_found');
+	    }
+	    else{
+		
+		$articles = $this->Article->getByCategory(array($category['id']));    
+
+		$data['content'] = $this->load->view($this->templates['category_articles_list'], compact('category', 'articles'), true);
+		
+	    }
+            
+        }
         elseif($this->menu_id == 'search'){ // stupid fix for search component to work with no menu assigned to it
             $data['content'] = $this->data['content'];
         }
         else{
             
             $menu = $this->Menu->getDetails($this->menu_id);
+	    
+	    # If menu type is 'menu' rewrite variable $menu with new menu
+            if($menu['type'] == 'menu' && !empty($menu['params']['menu_id'])){
+		$org_menu = $menu;
+                $menu = $this->Menu->getDetails($menu['params']['menu_id']);
+		$menu['id']    = $org_menu['id'];
+		$menu['alias'] = $org_menu['alias'];
+            }
+            
+            if(preg_match('/^components{1}/', $menu['type'])){
+                $menu['type'] = "component";
+            }
 	    
 	    $menu['link']  = module::menu_link($menu);
 	    
@@ -49,16 +78,7 @@ class Content extends CI_Model {
                 $menu['template'] = $templates[$menu['type']];
             }
                         
-            /*
-             * If menu type is 'menu' rewrite variable $menu with new menu
-             */
-            if($menu['type'] == 'menu' && !empty($menu['params']['menu_id'])){
-                $menu = $this->Menu->getDetails($menu['params']['menu_id']);
-            }
             
-            if(preg_match('/^components{1}/', $menu['type'])){
-                $menu['type'] = "component";
-            }
             
             
             /*
