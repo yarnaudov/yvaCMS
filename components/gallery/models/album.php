@@ -14,17 +14,19 @@ class Album extends CI_Model {
                       cga.id = '".$id."' ";
         
         $album = $this->db->query($query);  	
-        $album = $album->result_array();
+        $album = $album->row_array();
 
         if(empty($album)){
             return;
         }
+	
+	$album['params'] = json_decode($album['params'], true); 
 
         if($field == null){
-            return $album[0];
+            return $album;
         }
         else{  	
-            return $album[0][$field];
+            return $album[$field];
         }
 
     }

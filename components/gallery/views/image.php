@@ -31,7 +31,7 @@ if($url2[0] == 'album'){
         </div>
         
         <a class="image" href="<?=$menu_link.$alias.'/image/'.$next_id;?>#image" >
-            <img src="<?=site_url('gallery/image/'.$image['id'].'/150/100');/*$this->Image->getImageUrl($image['id'], 150, 100);base_url('images/thumbs/'.$image['id'].'.'.$image['ext']);*/?>" alt="<?=$image['title'];?>" >
+            <img src="<?=$this->Image->getImageUrl($image['id'], 150, 100);/*base_url('images/thumbs/'.$image['id'].'.'.$image['ext']);*/?>" alt="<?=$image['title'];?>" >
         </a>
         
         <div class="description" >

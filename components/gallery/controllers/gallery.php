@@ -91,17 +91,85 @@ class Gallery extends MY_Controller {
 	$width    = $params[1];
 	$height   = $params[2];
 	
-	$this->load->model('Image');
 	$image_src = $this->Image->getImageUrl($image_id, $width, $height);
 
-	$image = imagecreatefromjpeg($image_src);
-
-	// Output and free memory
+	$image = $this->Image->getDetails($image_id);
+	$album = $this->Album->getDetails($image['album_id']);
+	
 	header('Content-type: image/png');
-	imagepng($image);
-	imagedestroy($image);
+	
+	if($album['params']['water_mark_type'] == ""){
+	    echo file_get_contents($image_src);
+	}
+	elseif($album['params']['water_mark_type'] == "text"){
+	    
+	    $imagesize   = getimagesize($image_src);
+	    $width       = $imagesize[0];
+	    $height      = $imagesize[1];
+	    $text        = $album['params']['water_mark_text'];
+	    $font_size   = $album['params']['water_mark_size'];
+	    $font_file   = $album['params']['water_mark_font'] == "" ? "fonts/arial.ttf" : $album['params']['water_mark_font'];
+	    $angle       = 0;
+	    $margin_left = $width  - ($font_size*6);
+	    $margin_top  = $height - ($font_size);
+
+	    $image = self::_load_image($image_src);
+	    
+	    $text_color = imagecolorallocate($image, 0xFF, 0xFF, 0xFF);//text color-white
+	    
+	    imagefttext($image, $font_size, $angle, $margin_left, $margin_top, $text_color, $font_file, $text);
+	    
+	    imagepng($image);
+	    imagedestroy($image);
+	
+	}
+	elseif($album['params']['water_mark_type'] == "image"){
+	    
+	    if($album['params']['water_mark_image'] == ""){
+		echo file_get_contents($image_src);
+		exit;
+	    }
+	    
+	    $imagesize = getimagesize($image_src);
+	    $width     = $imagesize[0];
+	    $height    = $imagesize[1];
+
+	    $logo = self::_load_image($album['params']['water_mark_image']);
+	    
+	    imagecolortransparent($logo, imagecolorat($logo, 0, 0));
+	    $logo_x    = imagesx($logo);
+	    $logo_y    = imagesy($logo);
+
+	    $image = self::_load_image($image_src);
+
+	    $margin_left = $width  - ($logo_x+10);
+	    $margin_top  = $height - ($logo_y+10);
+
+	    imagecopymerge($image, $logo, $margin_left, $margin_top, 0, 0, $logo_x, $logo_y, 100);
+
+	    imagejpeg($image);
+	    imagedestroy($image);
+	    
+	}
 	
 	exit;
+    }
+    
+    private function _load_image($image_src)
+    {
+	
+	$image_type = exif_imagetype($image_src);
+	    
+	if($image_type == IMAGETYPE_JPEG){
+	    return imagecreatefromjpeg($image_src);
+	}
+	elseif($image_type == IMAGETYPE_PNG){
+	    return imagecreatefrompng($image_src);
+	}
+	elseif($image_type == IMAGETYPE_GIF){
+	    return imagecreatefromgif($image_src);
+	}
+	
     }
     
     public function getRoute($menu)
