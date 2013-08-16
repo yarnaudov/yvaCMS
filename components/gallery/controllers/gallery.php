@@ -110,13 +110,36 @@ class Gallery extends MY_Controller {
 	    $font_size   = $album['params']['water_mark_size'];
 	    $font_file   = $album['params']['water_mark_font'] == "" ? "fonts/arial.ttf" : $album['params']['water_mark_font'];
 	    $angle       = 0;
-	    $margin_left = $width  - ($font_size*6);
-	    $margin_top  = $height - ($font_size);
+	    
+	    $bbox = imagettfbbox($font_size, 0, $font_file, $text);
+	 
+	    switch($album['params']['water_mark_position']){
+		case 'top_left':
+		    $margin_left = 10;
+	            $margin_top  = $font_size+10;
+		break;
+	    
+		case 'top_right':
+		    $margin_left = $width - $bbox[2] -10; //$width  - ($font_size * mb_strlen($text));
+	            $margin_top  = $font_size+10;
+		break;
+	    
+		case 'bottom_left':
+		    $margin_left = 10;
+	            $margin_top  = $height -10;
+		break;
+	    
+		case 'bottom_right':
+		    $margin_left = $width - $bbox[2] -10;
+	            $margin_top  = $height - 10;
+		break;
+	    
+	    }
 
 	    $image = self::_load_image($image_src);
 	    
 	    $text_color = imagecolorallocate($image, 0xFF, 0xFF, 0xFF);//text color-white
-	    
+
 	    imagefttext($image, $font_size, $angle, $margin_left, $margin_top, $text_color, $font_file, $text);
 	    
 	    imagepng($image);
@@ -137,13 +160,36 @@ class Gallery extends MY_Controller {
 	    $logo = self::_load_image($album['params']['water_mark_image']);
 	    
 	    imagecolortransparent($logo, imagecolorat($logo, 0, 0));
-	    $logo_x    = imagesx($logo);
-	    $logo_y    = imagesy($logo);
+	    $logo_x = imagesx($logo);
+	    $logo_y = imagesy($logo);
+		    
+	    switch($album['params']['water_mark_position']){
+		case 'top_left':
+		    $margin_left = 10;
+	            $margin_top  = 10;
+		break;
+	    
+		case 'top_right':
+		    $margin_left = $width  - ($logo_x+10);
+	            $margin_top  = 10;
+		break;
+	    
+		case 'bottom_left':
+		    $margin_left = 10;
+	            $margin_top  = $height - ($logo_y+10);
+		break;
+	    
+		case 'bottom_right':
+		    $margin_left = $width  - ($logo_x+10);
+	            $margin_top  = $height - ($logo_y+10);
+		break;
+	    
+	    }	    
 
 	    $image = self::_load_image($image_src);
 
-	    $margin_left = $width  - ($logo_x+10);
-	    $margin_top  = $height - ($logo_y+10);
+	    //$margin_left = $width  - ($logo_x+10);
+	    //$margin_top  = $height - ($logo_y+10);
 
 	    imagecopymerge($image, $logo, $margin_left, $margin_top, 0, 0, $logo_x, $logo_y, 100);
 
