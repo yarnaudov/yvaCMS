@@ -7,7 +7,7 @@ class MY_Controller extends CI_Controller {
     public $language_id;
     
     public $article_alias;
-    public $category_alias;
+    public $category_id;
     
     public $template;
     public $template_main;
@@ -146,7 +146,7 @@ class MY_Controller extends CI_Controller {
 	
 	# check if category is selected
 	elseif(count($uri) == 1 && current($last_uri) == 'category'){
-	    $this->category_alias = end($last_uri);
+	    $this->category_id = str_replace("id", "", end($last_uri));
 	}
 	
 	# stupid fix for search component to work with no menu assigned to it

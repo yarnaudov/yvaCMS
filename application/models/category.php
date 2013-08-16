@@ -7,6 +7,34 @@ class Category extends CI_Model {
         parent::__construct();
     }
     
+    public function getDetails($id, $field = null){
+        
+        $query = "SELECT 
+                      *
+                    FROM
+                      categories c
+                      LEFT JOIN categories_data cd ON (c.id = cd.category_id AND cd.language_id = '".$this->language_id."')
+                    WHERE
+                      c.id = '".$id."'
+		     AND
+                      c.status = 'yes'";
+        
+        $category = $this->db->query($query);
+	$category = $category->row_array();
+
+	if(empty($category)){
+            return;
+        }
+	
+        if($field == null){
+            return $category;
+        }
+        else{  	
+            return $category[$field];
+        }
+        
+    }
+    
     public function getByAlias($alias, $extension, $field = null){
         
         $this->db->select('*');

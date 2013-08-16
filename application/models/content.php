@@ -32,10 +32,11 @@ class Content extends CI_Model {
             }
             
         }
-	elseif($this->category_alias){
+	elseif($this->category_id){
             
-	    //$category = $this->Category->getByAlias($this->category_alias, 'articles');
-	    $category = array('id' => 1, 'title' => 'Test');
+	    $category = $this->Category->getDetails($this->category_id);
+	    
+	    //$category = array('id' => 1, 'title' => 'Test');
 	    if(empty($category)){
 		$data['content'] = lang('msg_category_not_found');
 	    }
