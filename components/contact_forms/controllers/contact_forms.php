@@ -71,8 +71,16 @@ class Contact_forms extends MY_Controller {
     public function getContent()
     {
 	
+	$templates = $this->Content->templates['contact_forms'];
+	
 	$contact_form = $this->Contact_form->getDetails($this->contact_form_id);
-	return $this->load->view('contact_form', compact('contact_form'), true);
+	
+	$view = 'contact_form';
+	if(isset($templates['contact_form'])){
+	    $view = $templates['contact_form'];
+	}
+		
+	return $this->load->view($view, compact('contact_form'), true);
 	
     }
     
