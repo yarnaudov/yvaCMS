@@ -79,8 +79,11 @@ class Image extends CI_Model {
         
         $ext = self::getDetails($id, 'ext');
         $image_dir = 'images/'.$width.'x'.$height.'/';
-        
-        if(file_exists(FCPATH . $image_dir . $id . '.' . $ext)){
+    
+	if($width == null || $height == null){
+	    return base_url('images/'.$id . '.' . $ext);
+	}
+        elseif(file_exists(FCPATH . $image_dir . $id . '.' . $ext)){
             
             return base_url($image_dir .  $id . '.' . $ext);
             
@@ -100,7 +103,8 @@ class Image extends CI_Model {
             $config['height']	      = $height;
 
             
-            $this->load->library('image_lib', $config);
+            $this->load->library('image_lib');
+	    $this->image_lib->initialize($config);
             $this->image_lib->resize();
             
             return base_url($image_dir .  $id . '.' . $ext);

@@ -74,7 +74,7 @@ class MY_Controller extends CI_Controller {
 
 	self::_getActiveContent();
 	
-	// load validation js if article is loaded
+	# load validation js if article is loaded
 	if($this->article_alias || @$menu['type'] == 'article'){
 	    
 	    $this->jquery_ext->add_plugin('validation');
@@ -95,9 +95,7 @@ class MY_Controller extends CI_Controller {
             $this->template = $menu['main_template'];
         }
         
-        /*
-         * Set settings for template
-         */
+        # Set settings for template
         $this->data['SiteName']        = $this->Setting->getSiteName();
         $this->data['MetaDescription'] = $this->Setting->getMetaDescription();
         $this->data['MetaKeywords']    = $this->Setting->getMetaKeywords();
@@ -267,7 +265,10 @@ class MY_Controller extends CI_Controller {
 	    $this->jquery_ext->output();
 	    $header .= ob_get_clean();                     
 	}	
-	$html = str_replace($include_header, $header, $html);
+	
+	if(isset($include_header)){
+	    $html = str_replace($include_header, $header, $html);
+	}
 	
         return $html;
         

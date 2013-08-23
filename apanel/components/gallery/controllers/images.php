@@ -137,8 +137,12 @@ class Images extends MY_Controller {
          *  delete, change status, change order, set order by, set filters, 
          *  clear filter, set limit, get sub menus, set class on sorted element
          */
-        $data = parent::index($this->Image, 'gallery_images', 'components/gallery/images');        
-         
+        $data = parent::index($this->Image, 'gallery_images', 'components/gallery/images');
+	
+	if($this->input->get('album')){
+	    $data['filters']['album'] = $this->input->get('album');
+	}
+     
         // get images
         $images = $this->Image->getImages($data['filters'], $data['order_by']); 
         if($data['limit'] == 'all'){

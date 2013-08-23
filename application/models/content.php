@@ -149,8 +149,9 @@ class Content extends CI_Model {
 		    $data['content'] = self::_sitemap();
 		break;
 		
-                case "component":		 
-                    $data['content'] = $this->data['content'];                                        
+                case "component":	
+		    $controllerInstance = & get_instance();
+                    $data['content'] = $controllerInstance->getContent();//$this->data['content'];                                        
                 break;
                 
             }

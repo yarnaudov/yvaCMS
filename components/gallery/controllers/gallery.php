@@ -2,6 +2,7 @@
 
 class Gallery extends MY_Controller {
 
+    private $url;
     
     function __construct() {
         parent::__construct();
@@ -12,7 +13,7 @@ class Gallery extends MY_Controller {
         $this->load->model('Image');
                 
         $this->jquery_ext->add_library('../components/gallery/js/gallery.js');
-        $this->jquery_ext->add_css('../components/gallery/css/gallery.css');
+        //$this->jquery_ext->add_css('../components/gallery/css/gallery.css');
         
     }
     
@@ -31,17 +32,27 @@ class Gallery extends MY_Controller {
     public function index($url)
     {
         	
-        $menu = $this->Menu->getDetails($this->menu_id);
+        $this->url = $url;
+                
+        echo parent::_parseTemplateFile();
+        
+    }
+    
+    public function getContent()
+    {
+	$templates = $this->Content->templates['gallery'];
+	
+	$menu = $this->Menu->getDetails($this->menu_id);
         $menu_link = $this->Module->menu_link($menu);
         
-        $url1 = explode(':', $url);
+        $url1 = explode(':', $this->url);
         
         $uri = str_replace($menu_link.'/', '', current_url());	
         $uri = explode('/', $uri);    
         
         if(current($url1) == 'album' || @$uri[0] == 'album'){
             
-            if(@$uri[0] == 'album'){
+            if(isset($uri[0]) && $uri[0] == 'album'){
                 $album_id  = $uri[1];
             }
             else{
@@ -51,15 +62,28 @@ class Gallery extends MY_Controller {
                         
             $images = $this->Image->getImages(array('album_id' => $album_id), '`order`');
             
-            if(@$uri[0] == 'image' || @$uri[2] == 'image'){
+            if( (isset($uri[0]) && $uri[0] == 'image') || (isset($uri[2]) && $uri[2] == 'image') ){
+		
                 $image_id  = isset($uri[3]) ? $uri[3] : $uri[1]; 
                 $image     = $this->Image->getDetails($image_id);
                 $image_key = array_search($image, $images);
-		$url2 = array($uri[0], $uri[1]);
-                $this->data['content'] = $this->load->view('image', compact('menu_link', 'images', 'image_id', 'image', 'image_key', 'url2'), true);
+		$url2      = array($uri[0], $uri[1]);
+		
+		$view = 'image';
+		if(isset($templates['image'])){
+		    $view = $templates['image'];
+		}
+		
+                $this->data['content'] = $this->load->view($view, compact('menu_link', 'images', 'image_id', 'image', 'image_key', 'url2'), true);
             }
-            else{                
-                $this->data['content'] = $this->load->view('images', compact('menu_link', 'images', 'url1'), true);
+            else{   
+		
+		$view = 'images';
+		if(isset($templates['images'])){
+		    $view = $templates['images'];
+		}
+		
+                $this->data['content'] = $this->load->view($view, compact('menu_link', 'images', 'url1'), true);
             }
             
         }
@@ -76,20 +100,25 @@ class Gallery extends MY_Controller {
                 }
             }
             
-            $this->data['content'] = $this->load->view('albums', compact('menu_link', 'albums'), true);
+	    $view = 'albums';
+	    if(isset($templates['albums'])){
+		$view = $templates['albums'];
+	    }
+		
+            $this->data['content'] = $this->load->view($view, compact('menu_link', 'albums'), true);
             
         }
-                
-        echo parent::_parseTemplateFile();
-        
+	
+	return $this->data['content'];
+	
     }
     
     public function image($params)
     {
 
 	$image_id = $params[0];
-	$width    = $params[1];
-	$height   = $params[2];
+	$width    = isset($params[1]) ? $params[1] : null;
+	$height   = isset($params[2]) ? $params[2] : null;
 	
 	$image_src = $this->Image->getImageUrl($image_id, $width, $height);
 
