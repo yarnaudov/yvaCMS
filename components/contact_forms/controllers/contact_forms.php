@@ -2,7 +2,7 @@
 
 class Contact_forms extends MY_Controller {
 
-    public $data;
+    public $contact_form_id;
     
     function __construct() 
     {
@@ -62,13 +62,18 @@ class Contact_forms extends MY_Controller {
             $this->Contact_form->send($contact_form_id);
         }
         
-        
-        $contact_form = $this->Contact_form->getDetails($contact_form_id);
-        
-        $this->data['content'] = $this->load->view('contact_form', compact('contact_form'), true);
+        $this->contact_form_id = $contact_form_id;
         
         echo parent::_parseTemplateFile();
         
+    }
+    
+    public function getContent()
+    {
+	
+	$contact_form = $this->Contact_form->getDetails($this->contact_form_id);
+	return $this->load->view('contact_form', compact('contact_form'), true);
+	
     }
     
     public function getRoute($menu)

@@ -28,15 +28,19 @@ class Search extends MY_Controller {
     
     public function index()
     {
-        
-        $query = $_GET['query'];
-        
-        $articles = $this->Article->search($query);
-        
-        $this->data['content'] = $this->load->view('search', compact('query', 'articles'), true);
                 
         echo parent::_parseTemplateFile();
         
+    }
+    
+    public function getContent()
+    {
+	
+	$query = $this->input->get('query', TRUE);
+        $articles = $this->Article->search($query);
+	
+        return $this->load->view('search', compact('query', 'articles'), true);
+	
     }
     
     public function getRoute($menu)

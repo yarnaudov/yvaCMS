@@ -40,6 +40,7 @@ class Gallery extends MY_Controller {
     
     public function getContent()
     {
+	
 	$templates = $this->Content->templates['gallery'];
 	
 	$menu = $this->Menu->getDetails($this->menu_id);
@@ -74,7 +75,7 @@ class Gallery extends MY_Controller {
 		    $view = $templates['image'];
 		}
 		
-                $this->data['content'] = $this->load->view($view, compact('menu_link', 'images', 'image_id', 'image', 'image_key', 'url2'), true);
+                return $this->load->view($view, compact('menu_link', 'images', 'image_id', 'image', 'image_key', 'url2'), true);
             }
             else{   
 		
@@ -83,7 +84,7 @@ class Gallery extends MY_Controller {
 		    $view = $templates['images'];
 		}
 		
-                $this->data['content'] = $this->load->view($view, compact('menu_link', 'images', 'url1'), true);
+                return $this->load->view($view, compact('menu_link', 'images', 'url1'), true);
             }
             
         }
@@ -105,11 +106,9 @@ class Gallery extends MY_Controller {
 		$view = $templates['albums'];
 	    }
 		
-            $this->data['content'] = $this->load->view($view, compact('menu_link', 'albums'), true);
+            return $this->load->view($view, compact('menu_link', 'albums'), true);
             
         }
-	
-	return $this->data['content'];
 	
     }
     
