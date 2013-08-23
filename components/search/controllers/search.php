@@ -36,7 +36,7 @@ class Search extends MY_Controller {
     public function getContent()
     {
 	
-	$templates = $this->Content->templates['search'];
+	$templates = isset($this->Content->templates['search']) ? $this->Content->templates['search'] : array();
 	
 	$query = $this->input->get('query', TRUE);
         $articles = $this->Article->search($query);

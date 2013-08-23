@@ -41,7 +41,7 @@ class Gallery extends MY_Controller {
     public function getContent()
     {
 	
-	$templates = $this->Content->templates['gallery'];
+	$templates = isset($this->Content->templates['gallery']) ? $this->Content->templates['gallery'] : array();
 	
 	$menu = $this->Menu->getDetails($this->menu_id);
         $menu_link = $this->Module->menu_link($menu);

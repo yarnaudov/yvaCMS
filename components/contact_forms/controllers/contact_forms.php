@@ -71,7 +71,7 @@ class Contact_forms extends MY_Controller {
     public function getContent()
     {
 	
-	$templates = $this->Content->templates['contact_forms'];
+	$templates = isset($this->Content->templates['contact_forms']) ? $this->Content->templates['contact_forms'] : array();
 	
 	$contact_form = $this->Contact_form->getDetails($this->contact_form_id);
 	
