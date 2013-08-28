@@ -290,7 +290,7 @@ class Banner extends CI_Model {
         }
         
         $data1['order'] = $old_order;
-        $where1 = "`order` = ".$new_order." AND category_id = '".$category_id."'";
+        $where1 = "`order` = ".$new_order." AND position = '".$position."'";
         $query1 = $this->db->update_string('banners', $data1, $where1);
         //echo $query1;
         $result1 = $this->db->query($query1);
