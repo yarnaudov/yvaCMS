@@ -29,7 +29,7 @@ class Image extends CI_Model {
 
     }
   
-    public function getImages($filters = array(), $order_by = "", $limit = "")
+    public function getImages($filters = array(), $order_by = "`order`", $limit = "")
     {
         
         $filter = ''; 

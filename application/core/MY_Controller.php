@@ -26,7 +26,6 @@ class MY_Controller extends CI_Controller {
         $this->load->model('Category');
         $this->load->model('Menu');
         $this->load->model('Article');
-        $this->load->model('Image');
         $this->load->model('Banner');
         $this->load->model('Custom_field');
         $this->load->model('Module');

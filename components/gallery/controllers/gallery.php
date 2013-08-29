@@ -61,7 +61,7 @@ class Gallery extends MY_Controller {
                 $image = $this->uri->segment(2);
             }
                         
-            $images = $this->Image->getImages(array('album_id' => $album_id), '`order`');
+            $images = $this->Image->getImages(array('album_id' => $album_id));
             
             if( (isset($uri[0]) && $uri[0] == 'image') || (isset($uri[2]) && $uri[2] == 'image') ){
 		
