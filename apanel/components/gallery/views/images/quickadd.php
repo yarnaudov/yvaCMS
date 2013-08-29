@@ -12,7 +12,7 @@
             <span><?=lang('com_gallery_label_images');?></span>
             <span>&nbsp;»&nbsp;</span>
             <span>
-              <?php echo lang('label_quickadd');  ?>
+              <?php echo lang('com_gallery_label_quickadd');  ?>
             </span>
 	</div>
 	
@@ -103,6 +103,13 @@
                                 </table>
                             </div>
                     </div>
+		    
+		    <div class="box" >
+	      	        <span class="header multilang" ><?=lang('label_description');?></span>
+                        <div class="editor_div" >
+                          <textarea name="description" class="editor" ><?=set_value('description', isset($description) ? $description : "");?></textarea>
+                        </div>
+	            </div>
 	      
                 </td>
                 <!-- end left content  -->

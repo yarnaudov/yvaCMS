@@ -36,4 +36,6 @@ $lang['com_gallery_label_bottom_right'] = 'Доло дясно';
 
 $lang['com_gallery_label_font'] = 'Фонт';
 
+$lang['com_gallery_label_quickadd'] = 'Бързо добавяне';
+
 ?>
