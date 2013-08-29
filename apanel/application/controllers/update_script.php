@@ -191,6 +191,7 @@ class Update_script extends CI_Controller {
 	$this->db->query("ALTER TABLE `articles` DROP `category_id`");
 	$this->db->query("ALTER TABLE `articles` DROP `order`");
 	
+	$this->db->query("ALTER TABLE `articles_history` DROP FOREIGN KEY `articles_history_ibfk_2`;");
 	$this->db->query("ALTER TABLE `articles_history` DROP `category_id`");
 	$this->db->query("ALTER TABLE `articles_history` DROP `order`");
 	$this->db->query("ALTER TABLE `articles_history` ADD `categories` TEXT NOT NULL AFTER `status`");

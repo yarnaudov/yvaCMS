@@ -232,7 +232,6 @@ class Article extends MY_Model {
         }
 
         if($action == 'insert'){
-            $data['articles']['order']      =  self::getMaxOrder($data['articles']['category_id'])+1;
             $data['articles']['created_by'] =  $_SESSION['user_id'];
             $data['articles']['created_on'] =  now();        
         }

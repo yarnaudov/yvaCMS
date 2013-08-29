@@ -3,21 +3,15 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 03, 2013 at 11:06 AM
+-- Generation Time: Aug 29, 2013 at 04:40 PM
 -- Server version: 5.5.27
 -- PHP Version: 5.4.7
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
-
 --
--- Database: `yvacms_new`
+-- Database: `yvacms`
 --
 
 -- --------------------------------------------------------
@@ -76,12 +70,28 @@ INSERT INTO `ap_menus` (`id`, `title_bg`, `title_en`, `alias`, `parent_id`, `typ
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `ap_sessions`
+--
+
+CREATE TABLE IF NOT EXISTS `ap_sessions` (
+  `user_id` int(4) NOT NULL,
+  `ip_address` varchar(45) NOT NULL DEFAULT '0',
+  `user_agent` varchar(120) NOT NULL,
+  `last_activity` int(10) unsigned NOT NULL DEFAULT '0',
+  `user_data` text NOT NULL,
+  UNIQUE KEY `user_id` (`user_id`),
+  KEY `last_activity_idx` (`last_activity`),
+  KEY `user_id_2` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `articles`
 --
 
 CREATE TABLE IF NOT EXISTS `articles` (
   `id` int(4) NOT NULL AUTO_INCREMENT,
-  `category_id` int(4) NOT NULL,
   `alias` varchar(500) NOT NULL,
   `show_in_language` int(4) DEFAULT NULL,
   `start_publishing` date DEFAULT NULL,
@@ -93,13 +103,40 @@ CREATE TABLE IF NOT EXISTS `articles` (
   `updated_by` int(4) DEFAULT NULL,
   `updated_on` datetime DEFAULT NULL,
   `status` enum('yes','no','trash','deleted') NOT NULL,
-  `order` int(4) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `category_id` (`category_id`),
   KEY `language_id` (`show_in_language`),
   KEY `created_by` (`created_by`),
   KEY `updated_by` (`updated_by`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `articles`
+--
+
+INSERT INTO `articles` (`id`, `alias`, `show_in_language`, `start_publishing`, `end_publishing`, `show_title`, `params`, `created_by`, `created_on`, `updated_by`, `updated_on`, `status`) VALUES
+(1, 'home', NULL, NULL, NULL, 'yes', '{"show_comments":"yes"}', 1, '2013-08-29 16:38:48', 1, '2013-08-29 16:39:09', 'yes');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `articles_categories`
+--
+
+CREATE TABLE IF NOT EXISTS `articles_categories` (
+  `article_id` int(4) NOT NULL,
+  `category_id` int(4) NOT NULL,
+  `order` int(4) NOT NULL,
+  UNIQUE KEY `article_category` (`article_id`,`category_id`),
+  KEY `article_id` (`article_id`),
+  KEY `category_id` (`category_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `articles_categories`
+--
+
+INSERT INTO `articles_categories` (`article_id`, `category_id`, `order`) VALUES
+(1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -114,8 +151,10 @@ CREATE TABLE IF NOT EXISTS `articles_comments` (
   `comment` text NOT NULL,
   `created_by` int(4) DEFAULT NULL,
   `created_on` datetime NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`id`),
+  KEY `articles_comments_ibfk_1` (`article_id`),
+  KEY `articles_comments_ibfk_2` (`created_by`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -128,10 +167,20 @@ CREATE TABLE IF NOT EXISTS `articles_data` (
   `language_id` int(4) NOT NULL,
   `title` varchar(500) NOT NULL,
   `text` text NOT NULL,
+  `meta_keywords` varchar(1000) NOT NULL,
+  `meta_description` varchar(1000) NOT NULL,
   UNIQUE KEY `article_id_language_id` (`article_id`,`language_id`),
   KEY `language_id` (`language_id`),
   KEY `article_id` (`article_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `articles_data`
+--
+
+INSERT INTO `articles_data` (`article_id`, `language_id`, `title`, `text`, `meta_keywords`, `meta_description`) VALUES
+(1, 1, 'Начало', '<p>Това е примерна статия!</p>', '', ''),
+(1, 2, 'Home', '<p>This is an example article!</p>', '', '');
 
 -- --------------------------------------------------------
 
@@ -142,7 +191,6 @@ CREATE TABLE IF NOT EXISTS `articles_data` (
 CREATE TABLE IF NOT EXISTS `articles_history` (
   `article_id` int(4) NOT NULL,
   `language_id` int(4) NOT NULL,
-  `category_id` int(4) NOT NULL,
   `alias` varchar(500) NOT NULL,
   `show_in_language` int(4) DEFAULT NULL,
   `start_publishing` date DEFAULT NULL,
@@ -156,9 +204,8 @@ CREATE TABLE IF NOT EXISTS `articles_history` (
   `title` varchar(500) NOT NULL,
   `text` text NOT NULL,
   `status` enum('yes','no','trash') NOT NULL,
-  `order` int(4) NOT NULL,
-  `custom_fields` mediumtext, 
-  KEY `category_id` (`category_id`),
+  `categories` text NOT NULL,
+  `custom_fields` mediumtext,
   KEY `language_id` (`show_in_language`),
   KEY `created_by` (`created_by`),
   KEY `updated_by` (`updated_by`),
@@ -182,7 +229,14 @@ CREATE TABLE IF NOT EXISTS `articles_statistics` (
   `page_url` varchar(1000) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `article_id` (`article_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `articles_statistics`
+--
+
+INSERT INTO `articles_statistics` (`id`, `article_id`, `created_on`, `ip`, `user_agent`, `user_referrer`, `page_url`) VALUES
+(1, 1, '2013-08-29 16:39:49', '::1', 'Firefox 23.0', '', 'http://localhost/yvaCMS/bg');
 
 -- --------------------------------------------------------
 
@@ -193,7 +247,7 @@ CREATE TABLE IF NOT EXISTS `articles_statistics` (
 CREATE TABLE IF NOT EXISTS `banners` (
   `id` int(4) NOT NULL AUTO_INCREMENT,
   `position` varchar(50) NOT NULL,
-  `type` VARCHAR( 50 ) NOT NULL,
+  `type` varchar(50) NOT NULL,
   `title` varchar(250) NOT NULL,
   `description` varchar(1000) NOT NULL,
   `show_in_language` int(4) DEFAULT NULL,
@@ -212,7 +266,7 @@ CREATE TABLE IF NOT EXISTS `banners` (
   KEY `language_id` (`show_in_language`),
   KEY `created_by` (`created_by`),
   KEY `updated_by` (`updated_by`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -231,7 +285,7 @@ CREATE TABLE IF NOT EXISTS `banners_statistics` (
   `page_url` varchar(1000) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `banner_id` (`banner_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -251,15 +305,15 @@ CREATE TABLE IF NOT EXISTS `categories` (
   PRIMARY KEY (`id`),
   KEY `created_by` (`created_by`),
   KEY `updated_by` (`updated_by`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 --
 -- Dumping data for table `categories`
 --
 
 INSERT INTO `categories` (`id`, `extension`, `created_by`, `created_on`, `updated_by`, `updated_on`, `status`, `order`) VALUES
-(1, 'articles', 1, NOW(), NULL, NULL, 'yes', 1),
-(2, 'menus', 1, NOW(), NULL, NULL, 'yes', 1);
+(1, 'articles', 1, '2013-08-29 13:52:05', NULL, NULL, 'yes', 1),
+(2, 'menus', 1, '2013-08-29 13:52:05', NULL, NULL, 'yes', 1);
 
 -- --------------------------------------------------------
 
@@ -306,7 +360,7 @@ CREATE TABLE IF NOT EXISTS `com_contacts_forms` (
   PRIMARY KEY (`id`),
   KEY `created_by` (`created_by`),
   KEY `updated_by` (`updated_by`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -348,7 +402,7 @@ CREATE TABLE IF NOT EXISTS `com_gallery_albums` (
   KEY `created_by` (`created_by`),
   KEY `updated_by` (`updated_by`),
   KEY `show_in_language` (`show_in_language`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -388,7 +442,7 @@ CREATE TABLE IF NOT EXISTS `com_gallery_images` (
   KEY `created_by` (`created_by`),
   KEY `updated_by` (`updated_by`),
   KEY `album_id` (`album_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -426,7 +480,7 @@ CREATE TABLE IF NOT EXISTS `com_polls` (
   PRIMARY KEY (`id`),
   KEY `created_by` (`created_by`),
   KEY `updated_by` (`updated_by`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -442,7 +496,7 @@ CREATE TABLE IF NOT EXISTS `com_poll_answers` (
   `status` enum('yes','no','trash') NOT NULL,
   PRIMARY KEY (`id`),
   KEY `poll_id` (`poll_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -469,7 +523,7 @@ CREATE TABLE IF NOT EXISTS `custom_fields` (
   PRIMARY KEY (`id`),
   KEY `created_by` (`created_by`),
   KEY `updated_by` (`updated_by`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -509,15 +563,15 @@ CREATE TABLE IF NOT EXISTS `languages` (
   PRIMARY KEY (`id`),
   KEY `created_by` (`created_by`),
   KEY `updated_by` (`updated_by`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 --
 -- Dumping data for table `languages`
 --
 
 INSERT INTO `languages` (`id`, `title`, `abbreviation`, `description`, `default`, `image`, `created_by`, `created_on`, `updated_by`, `updated_on`, `status`, `order`) VALUES
-(1, 'Български', 'bg', '', 'yes', '', 1,  NOW(), NULL, NULL, 'yes', 1),
-(2, 'English', 'en', '', 'no', '', 1,  NOW(), NULL, NULL, 'yes', 2);
+(1, 'Български', 'bg', '', 'yes', '', 1, '2013-08-29 13:52:06', NULL, NULL, 'yes', 1),
+(2, 'English', 'en', '', 'no', '', 1, '2013-08-29 13:52:06', NULL, NULL, 'yes', 2);
 
 -- --------------------------------------------------------
 
@@ -529,9 +583,9 @@ CREATE TABLE IF NOT EXISTS `menus` (
   `id` int(4) NOT NULL AUTO_INCREMENT,
   `category_id` int(4) NOT NULL,
   `parent_id` int(4) DEFAULT NULL,
-  `type` VARCHAR( 50 ) NOT NULL,
+  `type` varchar(50) NOT NULL,
   `show_in_language` int(4) DEFAULT NULL,
-  `show_title` ENUM( 'yes', 'no' ) NOT NULL,
+  `show_title` enum('yes','no') NOT NULL,
   `alias` varchar(500) CHARACTER SET ucs2 NOT NULL,
   `default` enum('yes','no') NOT NULL,
   `access` enum('public','registred') NOT NULL,
@@ -553,7 +607,14 @@ CREATE TABLE IF NOT EXISTS `menus` (
   KEY `category_id` (`category_id`),
   KEY `parent_id` (`parent_id`),
   KEY `language_id` (`show_in_language`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `menus`
+--
+
+INSERT INTO `menus` (`id`, `category_id`, `parent_id`, `type`, `show_in_language`, `show_title`, `alias`, `default`, `access`, `created_by`, `created_on`, `updated_by`, `updated_on`, `params`, `target`, `image`, `main_template`, `content_template`, `description_as_page_title`, `status`, `order`) VALUES
+(1, 2, NULL, 'article', NULL, 'yes', 'home', 'yes', 'public', 1, '2013-08-29 16:37:08', 1, '2013-08-29 16:39:27', '{"article_id":"1"}', '_parent', '', 'default', 'default', '', 'yes', 1);
 
 -- --------------------------------------------------------
 
@@ -572,6 +633,14 @@ CREATE TABLE IF NOT EXISTS `menus_data` (
   KEY `menu_id` (`menu_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Dumping data for table `menus_data`
+--
+
+INSERT INTO `menus_data` (`menu_id`, `language_id`, `title`, `description`, `meta_keywords`, `meta_description`) VALUES
+(1, 1, 'Начало', '', '', ''),
+(1, 2, 'Home', '', '', '');
+
 -- --------------------------------------------------------
 
 --
@@ -581,7 +650,7 @@ CREATE TABLE IF NOT EXISTS `menus_data` (
 CREATE TABLE IF NOT EXISTS `modules` (
   `id` int(4) NOT NULL AUTO_INCREMENT,
   `position` varchar(50) NOT NULL,
-  `type` VARCHAR( 50 ) NOT NULL,
+  `type` varchar(50) NOT NULL,
   `show_in_language` int(4) DEFAULT NULL,
   `start_publishing` date DEFAULT NULL,
   `end_publishing` date DEFAULT NULL,
@@ -600,7 +669,7 @@ CREATE TABLE IF NOT EXISTS `modules` (
   KEY `language_id` (`show_in_language`),
   KEY `created_by` (`created_by`),
   KEY `updated_by` (`updated_by`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -615,7 +684,7 @@ CREATE TABLE IF NOT EXISTS `modules_data` (
   `description` varchar(1000) NOT NULL,
   KEY `language_id` (`language_id`),
   KEY `module_id` (`module_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -645,7 +714,7 @@ CREATE TABLE IF NOT EXISTS `settings` (
   `value` text NOT NULL,
   PRIMARY KEY (`id`),
   KEY `language_id` (`language_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=21 ;
 
 --
 -- Dumping data for table `settings`
@@ -670,7 +739,8 @@ INSERT INTO `settings` (`id`, `language_id`, `name`, `value`) VALUES
 (16, NULL, 'ssmt_port', '25'),
 (17, NULL, 'ssmt_user', ''),
 (18, NULL, 'ssmt_pass', ''),
-(19, NULL, 'ssmt_host', '');
+(19, NULL, 'ssmt_host', ''),
+(20, NULL, 'environment', 'development');
 
 -- --------------------------------------------------------
 
@@ -695,14 +765,14 @@ CREATE TABLE IF NOT EXISTS `users` (
   KEY `group_id` (`user_group_id`),
   KEY `created_by` (`created_by`),
   KEY `updated_by` (`updated_by`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 --
 -- Dumping data for table `users`
 --
 
 INSERT INTO `users` (`id`, `user_group_id`, `description`, `name`, `user`, `pass`, `created_by`, `created_on`, `updated_by`, `updated_on`, `status`, `order`) VALUES
-(1, 3, '', 'Yordan Arnaudov', 'yordan', '2601b64458cb69fa40d70e85f4ec835b', 1, NOW(), NULL, NULL, 'yes', 1);
+(1, 3, '', 'Yordan Arnaudov', 'yordan', '2601b64458cb69fa40d70e85f4ec835b', 1, '2013-08-29 13:52:07', NULL, NULL, 'yes', 1);
 
 -- --------------------------------------------------------
 
@@ -718,15 +788,15 @@ CREATE TABLE IF NOT EXISTS `users_groups` (
   `status` enum('yes','no','trash','deleted') NOT NULL,
   `order` int(4) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
 --
 -- Dumping data for table `users_groups`
 --
 
 INSERT INTO `users_groups` (`id`, `title`, `description`, `access`, `status`, `order`) VALUES
-(1, 'Users', '', '{"articles":"on","categories\/articles":"on","statistics\/articles":"on","menus":"on","categories\/menus":"on","banners":"on","statistics\/banners":"on","modules":"on","components":"on","components\/polls":"on","components\/gallery":"on","components\/contact_forms":"on"}', 'yes', 2),
-(2, 'Administrators', '', '{"articles":"on","categories\/articles":"on","statistics\/articles":"on","menus":"on","categories\/menus":"on","banners":"on","statistics\/banners":"on","languages":"on","users":"on","groups\/users":"on","modules":"on","components":"on","components\/polls":"on","components\/gallery":"on","components\/contact_forms":"on","settings":"on","settings\/general":"on","settings\/mail":"on"}', 'yes', 3),
+(1, 'Users', '', '{"articles":"on","categories/articles":"on","statistics/articles":"on","menus":"on","categories/menus":"on","banners":"on","statistics/banners":"on","modules":"on","components":"on","components/polls":"on","components/gallery":"on","components/contact_forms":"on"}', 'yes', 2),
+(2, 'Administrators', '', '{"articles":"on","categories/articles":"on","statistics/articles":"on","menus":"on","categories/menus":"on","banners":"on","statistics/banners":"on","languages":"on","users":"on","groups/users":"on","modules":"on","components":"on","components/polls":"on","components/gallery":"on","components/contact_forms":"on","settings":"on","settings/general":"on","settings/mail":"on"}', 'yes', 3),
 (3, 'Super Administrators', '', '*', 'yes', 4);
 
 --
@@ -737,17 +807,23 @@ INSERT INTO `users_groups` (`id`, `title`, `description`, `access`, `status`, `o
 -- Constraints for table `articles`
 --
 ALTER TABLE `articles`
-  ADD CONSTRAINT `articles_ibfk_3` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`) ON UPDATE CASCADE,
   ADD CONSTRAINT `articles_ibfk_4` FOREIGN KEY (`show_in_language`) REFERENCES `languages` (`id`) ON UPDATE CASCADE,
   ADD CONSTRAINT `articles_ibfk_5` FOREIGN KEY (`created_by`) REFERENCES `users` (`id`) ON UPDATE CASCADE,
   ADD CONSTRAINT `articles_ibfk_6` FOREIGN KEY (`updated_by`) REFERENCES `users` (`id`) ON UPDATE CASCADE;
 
 --
+-- Constraints for table `articles_categories`
+--
+ALTER TABLE `articles_categories`
+  ADD CONSTRAINT `articles_categories_ibfk_1` FOREIGN KEY (`article_id`) REFERENCES `articles` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `articles_categories_ibfk_2` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`) ON UPDATE CASCADE;
+
+--
 -- Constraints for table `articles_comments`
 --
-ALTER TABLE `articles_comments` 
-  ADD CONSTRAINT `articles_comments_ibfk_1` FOREIGN KEY ( `article_id` ) REFERENCES `articles` (`id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `articles_comments_ibfk_2` FOREIGN KEY ( `created_by` ) REFERENCES `users` (`id`) ON UPDATE CASCADE ;
+ALTER TABLE `articles_comments`
+  ADD CONSTRAINT `articles_comments_ibfk_1` FOREIGN KEY (`article_id`) REFERENCES `articles` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `articles_comments_ibfk_2` FOREIGN KEY (`created_by`) REFERENCES `users` (`id`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `articles_data`
@@ -761,7 +837,6 @@ ALTER TABLE `articles_data`
 --
 ALTER TABLE `articles_history`
   ADD CONSTRAINT `articles_history_ibfk_1` FOREIGN KEY (`article_id`) REFERENCES `articles` (`id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `articles_history_ibfk_2` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`) ON UPDATE CASCADE,
   ADD CONSTRAINT `articles_history_ibfk_3` FOREIGN KEY (`show_in_language`) REFERENCES `languages` (`id`) ON UPDATE CASCADE,
   ADD CONSTRAINT `articles_history_ibfk_4` FOREIGN KEY (`language_id`) REFERENCES `languages` (`id`) ON UPDATE CASCADE,
   ADD CONSTRAINT `articles_history_ibfk_5` FOREIGN KEY (`created_by`) REFERENCES `users` (`id`) ON UPDATE CASCADE,
@@ -889,7 +964,3 @@ ALTER TABLE `users`
   ADD CONSTRAINT `users_ibfk_1` FOREIGN KEY (`user_group_id`) REFERENCES `users_groups` (`id`) ON UPDATE CASCADE,
   ADD CONSTRAINT `users_ibfk_2` FOREIGN KEY (`created_by`) REFERENCES `users` (`id`) ON UPDATE CASCADE,
   ADD CONSTRAINT `users_ibfk_3` FOREIGN KEY (`updated_by`) REFERENCES `users` (`id`) ON UPDATE CASCADE;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
