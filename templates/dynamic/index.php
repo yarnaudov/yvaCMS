@@ -32,7 +32,7 @@
                 </div>
 
                 <div id="language_switch" >
-                    <include type="module" name="language_switch" template="" />
+                    <include type="module" name="language-switch" template="" />
                 </div>
                 
             </div>
@@ -87,7 +87,7 @@
             </div>
 
             <div id="footer">
-                <include type="module" name="footer_left" />
+                <include type="module" name="footer" />
                 <br/>
             </div>
 

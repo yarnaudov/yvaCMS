@@ -24,9 +24,9 @@
                     <div id="header">                    
                         <include type="module" name="search" />	
                         
-                        <include type="module" name="language_switch" />
+                        <include type="module" name="language-switch" />
 
-                        <include type="module" name="top_menu_right" />
+                        <include type="module" name="top-menu-right" />
                         
                         <div class="main_menu" >
                             <include type="module" name="menu" />
@@ -69,10 +69,10 @@
                     <div id="footer">
                         <div class="indent">
                             <div class="fleft">
-                                <?=$this->Module->load('footer_left');?>
+                                <?=$this->Module->load('footer-left');?>
                             </div>
                             <div class="fright">
-                                <?=$this->Module->load('footer_right');?>
+                                <?=$this->Module->load('footer-right');?>
                             </div>
                         </div>
                     </div>

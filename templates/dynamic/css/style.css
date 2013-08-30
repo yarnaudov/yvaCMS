@@ -536,9 +536,6 @@ a.readmore_hide{
 }
 
 /* articles comments */
-.comments{
-    
-}
 .comments_list{
     border-top: 1px solid;
 }
@@ -568,22 +565,27 @@ a.readmore_hide{
    float: left;
    width: 100%;
 }
-.comments_form div{
+.comments_form div,
+.contactForm div{
     padding: 5px 0;
 }
-.comments_form label{
+.comments_form label,
+.contactForm label{
     display: inline-block;
     width: 120px;
     vertical-align: top;
 }
-.comments_form label.error{
+.comments_form label.error,
+.contactForm label.error{
     color: red;
     width: auto !important;
 }
-.comments_form input{
+.comments_form input,
+.contactForm input{
     width: 200px;   
 }
-.comments_form textarea{
+.comments_form textarea,
+.contactForm textarea{
     width: 525px;   
     height: 100px;
 }

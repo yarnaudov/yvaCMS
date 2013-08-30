@@ -1,7 +1,7 @@
 <div class="article" >
     
     <?php if($article['show_title'] == 'yes'){ ?>
-    <div class="article_title" ><?=$article['title'];?></div>
+    <h4 class="article_title" ><?=$article['title'];?></h4>
     <?php } ?>
     
     <div class="article_content" >

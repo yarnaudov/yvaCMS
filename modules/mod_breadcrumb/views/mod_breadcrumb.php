@@ -2,8 +2,9 @@
 
 if(count($menus) > 0 || $article_alias != ''){
 
-    
-    echo '<span>'.$text.'</span>';
+    if(isset($text)){
+	echo '<span>'.$text.'</span>';
+    }
     
     echo '<ul>';
 

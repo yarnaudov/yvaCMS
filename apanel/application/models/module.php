@@ -174,6 +174,22 @@ class Module extends MY_Model {
         }
 
         if($action == 'insert'){
+	    
+	    !isset($data['modules']['params']['multilang']) ? $data['modules']['params']['multilang'] = array() : '';		
+	    $params = array();
+
+	    foreach($data['modules']['params']['multilang'] as $key1 => $value1){
+
+		foreach($value1 as $key2 => $value2){
+		    $params[$key1][$key2] = $value2;
+		}
+
+		$data['modules']['params'][$key1] = $params[$key1];
+
+	    }
+
+	    unset($data['modules']['params']['multilang']);
+	    
             $data['modules']['order']      =  self::getMaxOrder($data['modules']['position'])+1;
             $data['modules']['created_by'] =  $_SESSION['user_id'];
             $data['modules']['created_on'] =  now();        
@@ -183,7 +199,8 @@ class Module extends MY_Model {
             $type = self::getDetails($id, 'type');
             if($type == $data['modules']['type']){
                 
-		!isset($data['modules']['params']['multilang']) ? $data['modules']['params']['multilang'] = array() : '';
+		!isset($data['modules']['params']['multilang']) ? $data['modules']['params']['multilang'] = array() : '';		
+		$params = self::getDetails($id, 'params');
 		
                 foreach($data['modules']['params']['multilang'] as $key1 => $value1){
                     
@@ -196,7 +213,7 @@ class Module extends MY_Model {
                 }
                 
                 unset($data['modules']['params']['multilang']);
-                                
+                
             }
             
             $data['modules']['updated_by'] =  $_SESSION['user_id'];

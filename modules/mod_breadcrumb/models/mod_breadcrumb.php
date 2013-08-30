@@ -4,8 +4,11 @@ class mod_breadcrumb extends CI_Model{
 	
     function run($module)
     {
-	  	
-        $data['text']      = $module['params']['text'][$this->language_id];
+	
+	if(isset($module['params']['text'][$this->language_id])){
+	    $data['text']      = $module['params']['text'][$this->language_id];
+	}
+	
         $data['separator'] = $module['params']['separator'];
         
         $menus_arr = array();

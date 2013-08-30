@@ -259,8 +259,8 @@ class Content extends CI_Model {
         }
         
 	# change controller properties
-	get_instance()->meta_description = $meta_description;
-	get_instance()->meta_keywords    = $meta_keywords;
+	get_instance()->meta_description = isset($meta_description) ? $meta_description : '';
+	get_instance()->meta_keywords    = isset($meta_keywords) ? $meta_keywords : '';
 	
         /*
          * robots

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 29, 2013 at 04:40 PM
+-- Generation Time: Aug 30, 2013 at 09:29 AM
 -- Server version: 5.5.27
 -- PHP Version: 5.4.7
 
@@ -84,6 +84,13 @@ CREATE TABLE IF NOT EXISTS `ap_sessions` (
   KEY `user_id_2` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Dumping data for table `ap_sessions`
+--
+
+INSERT INTO `ap_sessions` (`user_id`, `ip_address`, `user_agent`, `last_activity`, `user_data`) VALUES
+(1, '::1', 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:23.0) Gecko/20100101 Firefox/23.0', 1377847461, '');
+
 -- --------------------------------------------------------
 
 --
@@ -114,7 +121,7 @@ CREATE TABLE IF NOT EXISTS `articles` (
 --
 
 INSERT INTO `articles` (`id`, `alias`, `show_in_language`, `start_publishing`, `end_publishing`, `show_title`, `params`, `created_by`, `created_on`, `updated_by`, `updated_on`, `status`) VALUES
-(1, 'home', NULL, NULL, NULL, 'yes', '{"show_comments":"yes"}', 1, '2013-08-29 16:38:48', 1, '2013-08-29 16:39:09', 'yes');
+(1, 'home', NULL, NULL, NULL, 'yes', '{"show_comments":"no"}', 1, '2013-08-29 16:38:48', 1, '2013-08-30 09:19:14', 'yes');
 
 -- --------------------------------------------------------
 
@@ -213,6 +220,13 @@ CREATE TABLE IF NOT EXISTS `articles_history` (
   KEY `language_id_2` (`language_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Dumping data for table `articles_history`
+--
+
+INSERT INTO `articles_history` (`article_id`, `language_id`, `alias`, `show_in_language`, `start_publishing`, `end_publishing`, `show_title`, `params`, `created_by`, `created_on`, `updated_by`, `updated_on`, `title`, `text`, `status`, `categories`, `custom_fields`) VALUES
+(1, 1, 'home', NULL, NULL, NULL, 'yes', '{"show_comments":"yes"}', 1, '2013-08-29 16:38:48', 1, '2013-08-29 16:39:09', 'Начало', '<p>Това е примерна статия!</p>', 'yes', '[{"article_id":"1","category_id":"1","order":"1"}]', '[]');
+
 -- --------------------------------------------------------
 
 --
@@ -229,14 +243,139 @@ CREATE TABLE IF NOT EXISTS `articles_statistics` (
   `page_url` varchar(1000) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `article_id` (`article_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=127 ;
 
 --
 -- Dumping data for table `articles_statistics`
 --
 
 INSERT INTO `articles_statistics` (`id`, `article_id`, `created_on`, `ip`, `user_agent`, `user_referrer`, `page_url`) VALUES
-(1, 1, '2013-08-29 16:39:49', '::1', 'Firefox 23.0', '', 'http://localhost/yvaCMS/bg');
+(1, 1, '2013-08-29 16:39:49', '::1', 'Firefox 23.0', '', 'http://localhost/yvaCMS/bg'),
+(2, 1, '2013-08-29 16:49:28', '::1', 'Firefox 23.0', '', 'http://localhost/yvaCMS/bg'),
+(3, 1, '2013-08-29 16:49:41', '::1', 'Firefox 23.0', '', 'http://localhost/yvaCMS/bg'),
+(4, 1, '2013-08-29 16:49:45', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS/bg', 'http://localhost/yvaCMS/bg/home'),
+(5, 1, '2013-08-29 16:49:46', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS//plugins/securimage/securimage_play.swf?bgcol=', 'http://localhost/yvaCMS/bg/images/audio_icon.gif'),
+(6, 1, '2013-08-29 16:51:11', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS/bg', 'http://localhost/yvaCMS/bg/home'),
+(7, 1, '2013-08-29 16:51:12', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS//plugins/securimage/securimage_play.swf?bgcol=', 'http://localhost/yvaCMS/bg/images/audio_icon.gif'),
+(8, 1, '2013-08-29 16:54:15', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS/bg', 'http://localhost/yvaCMS/bg/home'),
+(9, 1, '2013-08-29 16:54:16', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS//plugins/securimage/securimage_play.swf?bgcol=', 'http://localhost/yvaCMS/bg/images/audio_icon.gif'),
+(10, 1, '2013-08-29 16:54:18', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS//plugins/securimage/securimage_play.swf?bgcol=', 'http://localhost/yvaCMS/bg/images/audio_icon.gif'),
+(11, 1, '2013-08-29 16:54:37', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS//plugins/securimage/securimage_play.swf?bgcol=', 'http://localhost/yvaCMS/bg/images/audio_icon.gif'),
+(12, 1, '2013-08-29 16:56:36', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS/bg/contacts', 'http://localhost/yvaCMS/bg/home'),
+(13, 1, '2013-08-29 16:56:37', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS//plugins/securimage/securimage_play.swf?bgcol=', 'http://localhost/yvaCMS/bg/images/audio_icon.gif'),
+(14, 1, '2013-08-30 08:14:57', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS/bg/home', 'http://localhost/yvaCMS/bg/oralno_zdrave/zaboliavania_saveti_i_lechenie'),
+(15, 1, '2013-08-30 08:15:00', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS//plugins/securimage/securimage_play.swf?bgcol=', 'http://localhost/yvaCMS/bg/oralno_zdrave/images/audio_icon.gif'),
+(16, 1, '2013-08-30 08:15:14', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS//plugins/securimage/securimage_play.swf?bgcol=', 'http://localhost/yvaCMS/bg/images/audio_icon.gif'),
+(17, 1, '2013-08-30 08:15:16', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS/bg/contacts', 'http://localhost/yvaCMS/bg/home'),
+(18, 1, '2013-08-30 08:15:16', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS//plugins/securimage/securimage_play.swf?bgcol=', 'http://localhost/yvaCMS/bg/images/audio_icon.gif'),
+(19, 1, '2013-08-30 08:18:04', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS/bg/contacts', 'http://localhost/yvaCMS/bg/home'),
+(20, 1, '2013-08-30 08:18:04', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS//plugins/securimage/securimage_play.swf?bgcol=', 'http://localhost/yvaCMS/bg/images/audio_icon.gif'),
+(21, 1, '2013-08-30 08:18:23', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS/bg/contacts', 'http://localhost/yvaCMS/bg/home'),
+(22, 1, '2013-08-30 08:18:24', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS//plugins/securimage/securimage_play.swf?bgcol=', 'http://localhost/yvaCMS/bg/images/audio_icon.gif'),
+(23, 1, '2013-08-30 08:20:12', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS/bg/contacts', 'http://localhost/yvaCMS/bg/home'),
+(24, 1, '2013-08-30 08:20:13', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS//plugins/securimage/securimage_play.swf?bgcol=', 'http://localhost/yvaCMS/bg/images/audio_icon.gif'),
+(25, 1, '2013-08-30 08:20:13', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS/bg/contacts', 'http://localhost/yvaCMS/bg/home'),
+(26, 1, '2013-08-30 08:20:14', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS//plugins/securimage/securimage_play.swf?bgcol=', 'http://localhost/yvaCMS/bg/images/audio_icon.gif'),
+(27, 1, '2013-08-30 08:21:30', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS/bg/contacts', 'http://localhost/yvaCMS/bg/home'),
+(28, 1, '2013-08-30 08:21:31', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS//plugins/securimage/securimage_play.swf?bgcol=', 'http://localhost/yvaCMS/bg/images/audio_icon.gif'),
+(29, 1, '2013-08-30 08:23:25', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS/bg/contacts', 'http://localhost/yvaCMS/bg/home'),
+(30, 1, '2013-08-30 08:23:26', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS//plugins/securimage/securimage_play.swf?bgcol=', 'http://localhost/yvaCMS/bg/images/audio_icon.gif'),
+(31, 1, '2013-08-30 08:23:26', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS/bg/contacts', 'http://localhost/yvaCMS/bg/home'),
+(32, 1, '2013-08-30 08:23:27', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS//plugins/securimage/securimage_play.swf?bgcol=', 'http://localhost/yvaCMS/bg/images/audio_icon.gif'),
+(33, 1, '2013-08-30 08:26:11', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS/bg/contacts', 'http://localhost/yvaCMS/bg/home'),
+(34, 1, '2013-08-30 08:26:11', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS//plugins/securimage/securimage_play.swf?bgcol=', 'http://localhost/yvaCMS/bg/images/audio_icon.gif'),
+(35, 1, '2013-08-30 08:27:24', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS/bg/contacts', 'http://localhost/yvaCMS/bg/home'),
+(36, 1, '2013-08-30 08:27:25', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS//plugins/securimage/securimage_play.swf?bgcol=', 'http://localhost/yvaCMS/bg/images/audio_icon.gif'),
+(37, 1, '2013-08-30 08:27:38', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS//plugins/securimage/securimage_play.swf?bgcol=', 'http://localhost/yvaCMS/bg/images/audio_icon.gif'),
+(38, 1, '2013-08-30 08:28:46', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS//plugins/securimage/securimage_play.swf?bgcol=', 'http://localhost/yvaCMS/bg/images/audio_icon.gif'),
+(39, 1, '2013-08-30 08:31:28', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS//plugins/securimage/securimage_play.swf?bgcol=', 'http://localhost/yvaCMS/bg/images/audio_icon.gif'),
+(40, 1, '2013-08-30 08:31:34', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS/bg/contacts', 'http://localhost/yvaCMS/bg/home'),
+(41, 1, '2013-08-30 08:31:34', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS//plugins/securimage/securimage_play.swf?bgcol=', 'http://localhost/yvaCMS/bg/images/audio_icon.gif'),
+(42, 1, '2013-08-30 08:31:36', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS//plugins/securimage/securimage_play.swf?bgcol=', 'http://localhost/yvaCMS/bg/images/audio_icon.gif'),
+(43, 1, '2013-08-30 08:31:38', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS/bg/contacts', 'http://localhost/yvaCMS/bg'),
+(44, 1, '2013-08-30 08:31:42', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS//plugins/securimage/securimage_play.swf?bgcol=', 'http://localhost/yvaCMS/bg/images/audio_icon.gif'),
+(45, 1, '2013-08-30 08:31:53', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS//plugins/securimage/securimage_play.swf?bgcol=', 'http://localhost/yvaCMS/bg/images/audio_icon.gif'),
+(46, 1, '2013-08-30 08:45:50', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS//plugins/securimage/securimage_play.swf?bgcol=', 'http://localhost/yvaCMS/en/images/audio_icon.gif'),
+(47, 1, '2013-08-30 08:47:24', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS/en/contacts', 'http://localhost/yvaCMS/en/home'),
+(48, 1, '2013-08-30 08:47:26', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS//plugins/securimage/securimage_play.swf?bgcol=', 'http://localhost/yvaCMS/en/images/audio_icon.gif'),
+(49, 1, '2013-08-30 08:47:27', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS//plugins/securimage/securimage_play.swf?bgcol=', 'http://localhost/yvaCMS/en/images/audio_icon.gif'),
+(50, 1, '2013-08-30 08:50:26', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS//plugins/securimage/securimage_play.swf?bgcol=', 'http://localhost/yvaCMS/en/images/audio_icon.gif'),
+(51, 1, '2013-08-30 08:50:38', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS//plugins/securimage/securimage_play.swf?bgcol=', 'http://localhost/yvaCMS/en/images/audio_icon.gif'),
+(52, 1, '2013-08-30 08:51:00', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS//plugins/securimage/securimage_play.swf?bgcol=', 'http://localhost/yvaCMS/en/images/audio_icon.gif'),
+(53, 1, '2013-08-30 08:55:50', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS//plugins/securimage/securimage_play.swf?bgcol=', 'http://localhost/yvaCMS/en/images/audio_icon.gif'),
+(54, 1, '2013-08-30 08:55:54', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS//plugins/securimage/securimage_play.swf?bgcol=', 'http://localhost/yvaCMS/bg/images/audio_icon.gif'),
+(55, 1, '2013-08-30 08:56:12', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS//plugins/securimage/securimage_play.swf?bgcol=', 'http://localhost/yvaCMS/bg/images/audio_icon.gif'),
+(56, 1, '2013-08-30 08:57:44', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS//plugins/securimage/securimage_play.swf?bgcol=', 'http://localhost/yvaCMS/bg/images/audio_icon.gif'),
+(57, 1, '2013-08-30 08:57:46', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS//plugins/securimage/securimage_play.swf?bgcol=', 'http://localhost/yvaCMS/bg/images/audio_icon.gif'),
+(58, 1, '2013-08-30 08:57:54', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS//plugins/securimage/securimage_play.swf?bgcol=', 'http://localhost/yvaCMS/bg/images/audio_icon.gif'),
+(59, 1, '2013-08-30 08:58:27', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS//plugins/securimage/securimage_play.swf?bgcol=', 'http://localhost/yvaCMS/bg/images/audio_icon.gif'),
+(60, 1, '2013-08-30 09:01:53', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS/bg/search?query=%D0%BD%D0%B0%D1%87%D0%B0', 'http://localhost/yvaCMS/bg/home'),
+(61, 1, '2013-08-30 09:01:54', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS//plugins/securimage/securimage_play.swf?bgcol=', 'http://localhost/yvaCMS/bg/images/audio_icon.gif'),
+(62, 1, '2013-08-30 09:02:11', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS//plugins/securimage/securimage_play.swf?bgcol=', 'http://localhost/yvaCMS/bg/images/audio_icon.gif'),
+(63, 1, '2013-08-30 09:03:05', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS//plugins/securimage/securimage_play.swf?bgcol=', 'http://localhost/yvaCMS/bg/images/audio_icon.gif'),
+(64, 1, '2013-08-30 09:03:07', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS//plugins/securimage/securimage_play.swf?bgcol=', 'http://localhost/yvaCMS/en/images/audio_icon.gif'),
+(65, 1, '2013-08-30 09:03:10', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS//plugins/securimage/securimage_play.swf?bgcol=', 'http://localhost/yvaCMS/bg/images/audio_icon.gif'),
+(66, 1, '2013-08-30 09:04:27', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS//plugins/securimage/securimage_play.swf?bgcol=', 'http://localhost/yvaCMS/bg/images/audio_icon.gif'),
+(67, 1, '2013-08-30 09:04:31', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS/bg/contacts', 'http://localhost/yvaCMS/bg/home'),
+(68, 1, '2013-08-30 09:04:32', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS//plugins/securimage/securimage_play.swf?bgcol=', 'http://localhost/yvaCMS/bg/images/audio_icon.gif'),
+(69, 1, '2013-08-30 09:04:33', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS//plugins/securimage/securimage_play.swf?bgcol=', 'http://localhost/yvaCMS/bg/images/audio_icon.gif'),
+(70, 1, '2013-08-30 09:09:26', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS/bg/contacts', 'http://localhost/yvaCMS/bg/home'),
+(71, 1, '2013-08-30 09:09:26', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS//plugins/securimage/securimage_play.swf?bgcol=', 'http://localhost/yvaCMS/bg/images/audio_icon.gif'),
+(72, 1, '2013-08-30 09:09:30', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS//plugins/securimage/securimage_play.swf?bgcol=', 'http://localhost/yvaCMS/bg/images/audio_icon.gif'),
+(73, 1, '2013-08-30 09:10:21', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS//plugins/securimage/securimage_play.swf?bgcol=', 'http://localhost/yvaCMS/bg/images/audio_icon.gif'),
+(74, 1, '2013-08-30 09:11:10', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS//plugins/securimage/securimage_play.swf?bgcol=', 'http://localhost/yvaCMS/bg/images/audio_icon.gif'),
+(75, 1, '2013-08-30 09:11:19', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS/bg/contacts', 'http://localhost/yvaCMS/bg/home'),
+(76, 1, '2013-08-30 09:11:21', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS//plugins/securimage/securimage_play.swf?bgcol=', 'http://localhost/yvaCMS/bg/images/audio_icon.gif'),
+(77, 1, '2013-08-30 09:11:23', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS/bg/home', 'http://localhost/yvaCMS/bg/home'),
+(78, 1, '2013-08-30 09:11:24', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS//plugins/securimage/securimage_play.swf?bgcol=', 'http://localhost/yvaCMS/bg/images/audio_icon.gif'),
+(79, 1, '2013-08-30 09:11:29', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS/bg/home', 'http://localhost/yvaCMS/bg/home'),
+(80, 1, '2013-08-30 09:11:31', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS//plugins/securimage/securimage_play.swf?bgcol=', 'http://localhost/yvaCMS/bg/images/audio_icon.gif'),
+(81, 1, '2013-08-30 09:12:50', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS/bg/home', 'http://localhost/yvaCMS/bg/home'),
+(82, 1, '2013-08-30 09:12:52', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS//plugins/securimage/securimage_play.swf?bgcol=', 'http://localhost/yvaCMS/bg/images/audio_icon.gif'),
+(83, 1, '2013-08-30 09:14:03', '::1', 'Firefox 23.0', '', 'http://localhost/yvaCMS/bg/article:home'),
+(84, 1, '2013-08-30 09:14:04', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS//plugins/securimage/securimage_play.swf?bgcol=', 'http://localhost/yvaCMS/bg/images/audio_icon.gif'),
+(85, 1, '2013-08-30 09:15:15', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS/bg/article:home', 'http://localhost/yvaCMS/bg/home'),
+(86, 1, '2013-08-30 09:15:16', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS//plugins/securimage/securimage_play.swf?bgcol=', 'http://localhost/yvaCMS/bg/images/audio_icon.gif'),
+(87, 1, '2013-08-30 09:16:54', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS/bg/home', 'http://localhost/yvaCMS/bg/home'),
+(88, 1, '2013-08-30 09:16:58', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS/bg/article:home', 'http://localhost/yvaCMS/bg/home'),
+(89, 1, '2013-08-30 09:16:59', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS//plugins/securimage/securimage_play.swf?bgcol=', 'http://localhost/yvaCMS/bg/images/audio_icon.gif'),
+(90, 1, '2013-08-30 09:17:43', '::1', 'Firefox 23.0', '', 'http://localhost/yvaCMS/bg/home'),
+(91, 1, '2013-08-30 09:17:44', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS//plugins/securimage/securimage_play.swf?bgcol=', 'http://localhost/yvaCMS/bg/images/audio_icon.gif'),
+(92, 1, '2013-08-30 09:18:14', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS/bg/home', 'http://localhost/yvaCMS/bg/home'),
+(93, 1, '2013-08-30 09:18:14', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS//plugins/securimage/securimage_play.swf?bgcol=', 'http://localhost/yvaCMS/bg/images/audio_icon.gif'),
+(94, 1, '2013-08-30 09:18:42', '::1', 'Firefox 23.0', '', 'http://localhost/yvaCMS/bg/home'),
+(95, 1, '2013-08-30 09:18:45', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS//plugins/securimage/securimage_play.swf?bgcol=', 'http://localhost/yvaCMS/bg/images/audio_icon.gif'),
+(96, 1, '2013-08-30 09:19:18', '::1', 'Firefox 23.0', '', 'http://localhost/yvaCMS/bg/home'),
+(97, 1, '2013-08-30 09:19:31', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS//plugins/securimage/securimage_play.swf?bgcol=', 'http://localhost/yvaCMS/bg/images/audio_icon.gif'),
+(98, 1, '2013-08-30 09:19:32', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS/bg/contacts', 'http://localhost/yvaCMS/bg/home'),
+(99, 1, '2013-08-30 09:19:36', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS//plugins/securimage/securimage_play.swf?bgcol=', 'http://localhost/yvaCMS/bg/images/audio_icon.gif'),
+(100, 1, '2013-08-30 09:20:11', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS/bg/contacts', 'http://localhost/yvaCMS/bg/home'),
+(101, 1, '2013-08-30 09:21:52', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS/bg/contacts', 'http://localhost/yvaCMS/bg/home'),
+(102, 1, '2013-08-30 09:21:56', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS//plugins/securimage/securimage_play.swf?bgcol=', 'http://localhost/yvaCMS/bg/images/audio_icon.gif'),
+(103, 1, '2013-08-30 09:22:19', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS//plugins/securimage/securimage_play.swf?bgcol=', 'http://localhost/yvaCMS/bg/images/audio_icon.gif'),
+(104, 1, '2013-08-30 09:22:21', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS/bg/contacts', 'http://localhost/yvaCMS/bg/home'),
+(105, 1, '2013-08-30 09:22:25', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS//plugins/securimage/securimage_play.swf?bgcol=', 'http://localhost/yvaCMS/bg/images/audio_icon.gif'),
+(106, 1, '2013-08-30 09:22:29', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS/bg/contacts', 'http://localhost/yvaCMS/bg/home'),
+(107, 1, '2013-08-30 09:22:38', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS/bg/contacts', 'http://localhost/yvaCMS/bg/home'),
+(108, 1, '2013-08-30 09:22:40', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS/bg/home', 'http://localhost/yvaCMS/bg'),
+(109, 1, '2013-08-30 09:22:47', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS//plugins/securimage/securimage_play.swf?bgcol=', 'http://localhost/yvaCMS/bg/images/audio_icon.gif'),
+(110, 1, '2013-08-30 09:22:48', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS/bg/contacts', 'http://localhost/yvaCMS/bg'),
+(111, 1, '2013-08-30 09:22:57', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS/en/contacts', 'http://localhost/yvaCMS/en'),
+(112, 1, '2013-08-30 09:22:57', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS//plugins/securimage/securimage_play.swf?bgcol=', 'http://localhost/yvaCMS/en/images/audio_icon.gif'),
+(113, 1, '2013-08-30 09:23:22', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS//plugins/securimage/securimage_play.swf?bgcol=', 'http://localhost/yvaCMS/en/images/audio_icon.gif'),
+(114, 1, '2013-08-30 09:23:31', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS//plugins/securimage/securimage_play.swf?bgcol=', 'http://localhost/yvaCMS/en/images/audio_icon.gif'),
+(115, 1, '2013-08-30 09:23:36', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS/en/contacts', 'http://localhost/yvaCMS/en/home'),
+(116, 1, '2013-08-30 09:23:40', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS//plugins/securimage/securimage_play.swf?bgcol=', 'http://localhost/yvaCMS/en/images/audio_icon.gif'),
+(117, 1, '2013-08-30 09:23:52', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS//plugins/securimage/securimage_play.swf?bgcol=', 'http://localhost/yvaCMS/en/images/audio_icon.gif'),
+(118, 1, '2013-08-30 09:23:54', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS/en/contacts', 'http://localhost/yvaCMS/en/home'),
+(119, 1, '2013-08-30 09:23:57', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS//plugins/securimage/securimage_play.swf?bgcol=', 'http://localhost/yvaCMS/en/images/audio_icon.gif'),
+(120, 1, '2013-08-30 09:24:37', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS//plugins/securimage/securimage_play.swf?bgcol=', 'http://localhost/yvaCMS/en/images/audio_icon.gif'),
+(121, 1, '2013-08-30 09:24:42', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS//plugins/securimage/securimage_play.swf?bgcol=', 'http://localhost/yvaCMS/en/images/audio_icon.gif'),
+(122, 1, '2013-08-30 09:24:47', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS/en/contacts', 'http://localhost/yvaCMS/en/home'),
+(123, 1, '2013-08-30 09:25:11', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS/en/contacts', 'http://localhost/yvaCMS/en/home'),
+(124, 1, '2013-08-30 09:25:26', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS//plugins/securimage/securimage_play.swf?bgcol=', 'http://localhost/yvaCMS/en/images/audio_icon.gif'),
+(125, 1, '2013-08-30 09:27:23', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS//plugins/securimage/securimage_play.swf?bgcol=', 'http://localhost/yvaCMS/en/images/audio_icon.gif'),
+(126, 1, '2013-08-30 09:27:34', '::1', 'Firefox 23.0', 'http://localhost/yvaCMS//plugins/securimage/securimage_play.swf?bgcol=', 'http://localhost/yvaCMS/en/images/audio_icon.gif');
 
 -- --------------------------------------------------------
 
@@ -305,7 +444,7 @@ CREATE TABLE IF NOT EXISTS `categories` (
   PRIMARY KEY (`id`),
   KEY `created_by` (`created_by`),
   KEY `updated_by` (`updated_by`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
 --
 -- Dumping data for table `categories`
@@ -313,7 +452,8 @@ CREATE TABLE IF NOT EXISTS `categories` (
 
 INSERT INTO `categories` (`id`, `extension`, `created_by`, `created_on`, `updated_by`, `updated_on`, `status`, `order`) VALUES
 (1, 'articles', 1, '2013-08-29 13:52:05', NULL, NULL, 'yes', 1),
-(2, 'menus', 1, '2013-08-29 13:52:05', NULL, NULL, 'yes', 1);
+(2, 'menus', 1, '2013-08-29 13:52:05', NULL, NULL, 'yes', 1),
+(3, 'menus', 1, '2013-08-29 16:50:27', 1, '2013-08-29 16:50:51', 'yes', 2);
 
 -- --------------------------------------------------------
 
@@ -338,7 +478,9 @@ INSERT INTO `categories_data` (`category_id`, `language_id`, `title`, `descripti
 (1, 1, 'Некатегоризирани', '<p>default</p>'),
 (1, 2, 'Uncategorized', '<p>default</p>'),
 (2, 1, 'Некатегоризирани', '<p>default</p>'),
-(2, 2, 'Uncategorized', '<p>default</p>');
+(2, 2, 'Uncategorized', '<p>default</p>'),
+(3, 1, 'Главно меню', ''),
+(3, 2, 'Main menu', '');
 
 -- --------------------------------------------------------
 
@@ -360,7 +502,14 @@ CREATE TABLE IF NOT EXISTS `com_contacts_forms` (
   PRIMARY KEY (`id`),
   KEY `created_by` (`created_by`),
   KEY `updated_by` (`updated_by`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `com_contacts_forms`
+--
+
+INSERT INTO `com_contacts_forms` (`id`, `to`, `cc`, `bcc`, `created_by`, `created_on`, `updated_by`, `updated_on`, `status`, `order`) VALUES
+(1, 'ofice@yvacms.com', '', '', 1, '2013-08-29 16:54:07', 1, NULL, 'yes', 1);
 
 -- --------------------------------------------------------
 
@@ -381,6 +530,14 @@ CREATE TABLE IF NOT EXISTS `com_contacts_forms_data` (
   KEY `contact_form_id` (`contact_form_id`),
   KEY `language_id` (`language_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `com_contacts_forms_data`
+--
+
+INSERT INTO `com_contacts_forms_data` (`contact_form_id`, `language_id`, `title`, `description`, `text_above`, `text_under`, `msg_success`, `msg_error`, `fields`) VALUES
+(1, 1, 'Контактна форма', '', '', '', '', '', '{"1":{"label":"\\u0422\\u0435\\u043c\\u0430","type":"text","value":"","mandatory":"no"},"2":{"label":"\\u0421\\u044a\\u043e\\u0431\\u0449\\u0435\\u043d\\u0438\\u0435","type":"textarea","value":"","mandatory":"no"},"captcha":{"enabled":"yes"}}'),
+(1, 2, 'Contact form', '', '', '', '', '', '{"1":{"label":"Subject","type":"text","value":"","mandatory":"no"},"2":{"label":"Message","type":"textarea","value":"","mandatory":"no"},"captcha":{"enabled":"yes"}}');
 
 -- --------------------------------------------------------
 
@@ -607,14 +764,15 @@ CREATE TABLE IF NOT EXISTS `menus` (
   KEY `category_id` (`category_id`),
   KEY `parent_id` (`parent_id`),
   KEY `language_id` (`show_in_language`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 --
 -- Dumping data for table `menus`
 --
 
 INSERT INTO `menus` (`id`, `category_id`, `parent_id`, `type`, `show_in_language`, `show_title`, `alias`, `default`, `access`, `created_by`, `created_on`, `updated_by`, `updated_on`, `params`, `target`, `image`, `main_template`, `content_template`, `description_as_page_title`, `status`, `order`) VALUES
-(1, 2, NULL, 'article', NULL, 'yes', 'home', 'yes', 'public', 1, '2013-08-29 16:37:08', 1, '2013-08-29 16:39:27', '{"article_id":"1"}', '_parent', '', 'default', 'default', '', 'yes', 1);
+(1, 3, NULL, 'article', NULL, 'yes', 'home', 'yes', 'public', 1, '2013-08-29 16:37:08', 1, '2013-08-29 16:51:00', '{"article_id":"1"}', '_parent', '', 'default', 'default', '', 'yes', 1),
+(2, 3, NULL, 'components/contact_forms', NULL, 'yes', 'contacts', 'no', 'public', 1, '2013-08-29 16:52:39', 1, '2013-08-30 08:45:03', '{"contact_form_id":"1"}', '_parent', '', 'default', 'default', '', 'yes', 2);
 
 -- --------------------------------------------------------
 
@@ -639,7 +797,9 @@ CREATE TABLE IF NOT EXISTS `menus_data` (
 
 INSERT INTO `menus_data` (`menu_id`, `language_id`, `title`, `description`, `meta_keywords`, `meta_description`) VALUES
 (1, 1, 'Начало', '', '', ''),
-(1, 2, 'Home', '', '', '');
+(1, 2, 'Home', '', '', ''),
+(2, 1, 'Контакти', '', '', ''),
+(2, 2, 'Contacts', '', '', '');
 
 -- --------------------------------------------------------
 
@@ -669,7 +829,17 @@ CREATE TABLE IF NOT EXISTS `modules` (
   KEY `language_id` (`show_in_language`),
   KEY `created_by` (`created_by`),
   KEY `updated_by` (`updated_by`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+
+--
+-- Dumping data for table `modules`
+--
+
+INSERT INTO `modules` (`id`, `position`, `type`, `show_in_language`, `start_publishing`, `end_publishing`, `params`, `access`, `show_title`, `css_class_sufix`, `template`, `created_on`, `created_by`, `updated_by`, `updated_on`, `status`, `order`) VALUES
+(1, 'menu', 'mod_menu', NULL, NULL, NULL, '{"category_id":"3","display_in":"all"}', 'public', 'no', '', 'default', '2013-08-29 16:49:03', 1, 1, '2013-08-29 16:51:09', 'yes', 1),
+(2, 'navigation', 'mod_breadcrumb', NULL, NULL, NULL, '{"separator":"\\/","display_in":"all","text":{"2":"You are here:","1":"\\u0412\\u0438\\u0435 \\u0441\\u0442\\u0435 \\u0442\\u0443\\u043a:"}}', 'public', 'no', '', 'default', '2013-08-30 08:21:25', 1, 1, '2013-08-30 08:55:43', 'yes', 1),
+(3, 'search', 'mod_search_form', NULL, NULL, NULL, '{"show_button":"yes","display_in":"all","label":{"2":"","1":""},"field_text":{"2":"Search text","1":"\\u041d\\u0430\\u043c\\u0435\\u0440\\u0438"},"button_text":{"2":"Search","1":"\\u0422\\u044a\\u0440\\u0441\\u0438"}}', 'public', 'no', '', 'default', '2013-08-30 08:50:21', 1, 1, '2013-08-30 08:58:38', 'yes', 1),
+(4, 'language-switch', 'mod_language_switch', NULL, NULL, NULL, '{"images":"yes","menu_type":"list","display_in":"all"}', 'public', 'no', '', 'default', '2013-08-30 09:02:45', 1, 1, '2013-08-30 09:27:30', 'yes', 1);
 
 -- --------------------------------------------------------
 
@@ -685,6 +855,20 @@ CREATE TABLE IF NOT EXISTS `modules_data` (
   KEY `language_id` (`language_id`),
   KEY `module_id` (`module_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `modules_data`
+--
+
+INSERT INTO `modules_data` (`module_id`, `language_id`, `title`, `description`) VALUES
+(1, 1, 'Главно меню', ''),
+(1, 2, 'Main menu', ''),
+(2, 1, 'Навигация', ''),
+(2, 2, 'Breadcrumb', ''),
+(3, 1, 'Форма за търсене', ''),
+(3, 2, 'Search form', ''),
+(4, 1, 'Смяна на език', ''),
+(4, 2, 'Language switch', '');
 
 -- --------------------------------------------------------
 

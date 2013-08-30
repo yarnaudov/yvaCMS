@@ -6,7 +6,7 @@
 	
         <div class="text" >
             <img src="<?=base_url('img/iconModules_25.png');?>" >
-            <span><?=lang('label_modules');?></span>
+            <span><?=lang('label_modules_c');?></span>
         </div>
 	
 	<div class="actions" >
