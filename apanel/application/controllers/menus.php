@@ -211,6 +211,8 @@ class Menus extends MY_Controller {
     public function types()
     {
         
+	$this->output->enable_profiler(FALSE);
+	
         $script = "$('a.type').live('click', function(event){
             
                        event.preventDefault();

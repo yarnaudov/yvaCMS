@@ -136,10 +136,15 @@ class Banners extends MY_Controller {
     
     public function types()      
     {
-    	
+	
+    	$this->output->enable_profiler(FALSE);
+	
     	$script = "$('a.type').live('click', function(event){                       
                        event.preventDefault();
     	               parent.$('input.type').val($(this).attr('href'));
+		       parent.$('.required').each(function(){
+			   $(this).removeClass('required');
+		       });
                        parent.$('form').submit();                       
                    });";                   
         $this->jquery_ext->add_script($script, 'general');

@@ -162,32 +162,34 @@ class Modules_c extends MY_Controller {
     public function types()      
     {
     	
-    	  $script = "$('a.type').live('click', function(event){
-                       
-                       event.preventDefault();
+	$this->output->enable_profiler(FALSE);
+	
+	$script = "$('a.type').live('click', function(event){
 
-    	               parent.$('input.type').val($(this).attr('href'));
-                       
-                       $.get('".site_url('home/ajax/load_module_type')."?type='+$(this).attr('href'), function(data){
-                           /*
-                           if(data.search('script') != -1){
-                                parent.$('.required').each(function(){
-                                    $(this).removeClass('required');
-                                });
-                                parent.$('form').submit();
-                                return;
-                           }
-			   */
-                           parent.$('#type_label').html($(data, '#type_label').html());
-                           parent.$('#module_options').css('display', 'none');                           
-                           //parent.$('#module_options').html(data);
-			   parent.document.getElementById('module_options').innerHTML = data;
-                           parent.$('#module_options').find('#type_label').remove();
-                           parent.$('#module_options').toggle('slow');
-                           parent.$( '#jquery_ui' ).dialog( 'close' );
-                       });
-                       
-                   });";
+		     event.preventDefault();
+
+		     parent.$('input.type').val($(this).attr('href'));
+
+		     $.get('".site_url('home/ajax/load_module_type')."?type='+$(this).attr('href'), function(data){
+			 /*
+			 if(data.search('script') != -1){
+			      parent.$('.required').each(function(){
+				  $(this).removeClass('required');
+			      });
+			      parent.$('form').submit();
+			      return;
+			 }
+			 */
+			 parent.$('#type_label').html($(data, '#type_label').html());
+			 parent.$('#module_options').css('display', 'none');                           
+			 //parent.$('#module_options').html(data);
+			 parent.document.getElementById('module_options').innerHTML = data;
+			 parent.$('#module_options').find('#type_label').remove();
+			 parent.$('#module_options').toggle('slow');
+			 parent.$( '#jquery_ui' ).dialog( 'close' );
+		     });
+
+		 });";
                    
         $this->jquery_ext->add_script($script, 'general');
     	  
