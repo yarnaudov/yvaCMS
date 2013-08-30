@@ -92,6 +92,7 @@ class Image extends CI_Model {
             
             if(!file_exists(FCPATH . $image_dir)){
                 mkdir(FCPATH . $image_dir, 0777);
+		copy(BASEPATH."/index.html", FCPATH . $image_dir."/index.html");
             }
             
             $config['image_library']  = 'gd2';

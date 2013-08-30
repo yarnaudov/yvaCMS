@@ -330,10 +330,12 @@ class Image extends MY_Model {
         
         if(!file_exists($images_dir)){
             mkdir($images_dir, 0777);
+	    copy(BASEPATH."/index.html", $images_dir."/index.html");	    
         }
 
         if(!file_exists($images_origin_dir)){
             mkdir($images_origin_dir, 0777);
+	    copy(BASEPATH."/index.html", $images_origin_dir."/index.html");
         }
 
         $image = self::getDetails($id);

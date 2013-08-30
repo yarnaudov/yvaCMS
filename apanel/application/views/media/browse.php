@@ -50,7 +50,7 @@
 
             <?php while (false !== ($entry = readdir($handle))) { 
                     $entry = iconv("Windows-1251", "UTF-8", $entry);
-                    if (substr($entry, 0, 1) == "."){
+                    if (substr($entry, 0, 1) == "." || $entry == "index.html"){
                         continue;
                     } ?>
 

@@ -65,6 +65,7 @@ class Media extends MY_Controller {
                 }
                 else{
                     mkdir($folder, 0777);
+		    copy(BASEPATH."/index.html", $folder."/index.html");
                     unset($_POST['folder_name']);
                 }
             }

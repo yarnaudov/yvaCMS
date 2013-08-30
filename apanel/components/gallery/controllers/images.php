@@ -298,6 +298,7 @@ class Images extends MY_Controller {
         $images_tmp_dir = FCPATH.'../'.$this->config->item('images_tmp_dir');
         if(!file_exists($images_tmp_dir)){
             mkdir($images_tmp_dir, 0777);
+	    copy(BASEPATH."/index.html", $images_tmp_dir."/index.html");
         }
 
         $targ_w = $this->input->post('w');
@@ -338,6 +339,7 @@ class Images extends MY_Controller {
         $images_tmp_dir = FCPATH.'../'.$this->config->item('images_tmp_dir');        
         if(!file_exists($images_tmp_dir)){
             mkdir($images_tmp_dir, 0777);
+	    copy(BASEPATH."/index.html", $images_tmp_dir."/index.html");
         }
 
         // File and rotation
