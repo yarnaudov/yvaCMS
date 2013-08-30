@@ -1,3 +1,13 @@
 .jcrop-vline.right{
 	min-width: 0px !important;
 }
+button.crop{
+    background-image: url('../img/iconCrop.png');
+}
+button.rotate{
+    background-image: url('../img/iconRotate.png');
+}
+button.origin,
+button.change{
+    padding-left: 5px !important;
+}

@@ -164,3 +164,13 @@ pip-log.txt
 # Mac crap
 .DS_Store
 /nbproject/private/
+/templates/alldental/
+/templates/alldental_old/
+/templates/photoria/
+/apanel/application/logs/
+/templates/simple/
+/templates/bootstrap/
+/templates/melnik_new/
+!/images/tmp/
+/media/
+/images/

@@ -233,7 +233,7 @@
                                                     <input type="text" class="text">
                                                 </div>
                                                 <?php if(isset($id)){ ?>
-                                                <button type="button" class="styled styled_small" id="btn_change_image" data-url="<?=site_url('components/gallery/images/change/'.$id);?>" ><?=lang('com_gallery_label_change');?></button>
+                                                <button type="button" class="styled styled_small change" id="btn_change_image" data-url="<?=site_url('components/gallery/images/change/'.$id);?>" ><?=lang('com_gallery_label_change');?></button>
                                                 <?php } ?>
                                             </td>
                                         </tr>
