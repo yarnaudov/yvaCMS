@@ -525,7 +525,7 @@ class Article extends MY_Model {
 	    $article['order'] = self::getMaxOrder($article['category_id'])+1;
 	    $article['created_by'] = $_SESSION['user_id'];
             $article['created_on'] = now();
-	    unset($article['id'], $article['updated_by'], $article['updated_on']);
+	    unset($article['id'], $article['order'], $article['updated_by'], $article['updated_on']);
 	    
             $result = $this->db->insert('articles', $article);                        
             if($result != true){
@@ -540,6 +540,17 @@ class Article extends MY_Model {
 	    foreach($article_data as $data){
 		$data['article_id'] = $id;
 		$result = $this->db->insert('articles_data', $data);                        
+		if($result != true){
+		    $this->session->set_userdata('error_msg', lang('msg_copy_article_error'));
+		    $this->db->query("ROLLBACK");
+		    return false;
+		}
+	    }
+	    
+	    $article_categories = $this->db->get_where('articles_categories', array('article_id' => $article_id))->result_array();
+	    foreach($article_categories as $data){
+		$data['article_id'] = $id;
+		$result = $this->db->insert('articles_categories', $data);                        
 		if($result != true){
 		    $this->session->set_userdata('error_msg', lang('msg_copy_article_error'));
 		    $this->db->query("ROLLBACK");
