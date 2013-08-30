@@ -93,6 +93,7 @@ class Languages extends MY_Controller {
         if(isset($_POST['make_default'])){
             $result = $this->Language->makeDefault($_POST['element_id']);
             if($result == true){
+		$page = "";
                 if($this->page > 1){
                     $page = "?page=".$this->page;
                 }
