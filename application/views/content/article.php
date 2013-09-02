@@ -8,7 +8,7 @@
         <?=$article['text'];?>
     </div>
    
-    <?php if($article['params']['show_comments'] == 'yes'){
+    <?php if(isset($article['params']['show_comments']) && $article['params']['show_comments'] == 'yes'){
 	      $this->load->view('content/article_comments');
           } ?>
     

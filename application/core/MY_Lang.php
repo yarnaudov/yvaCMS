@@ -29,9 +29,6 @@ class MY_Lang extends MX_Lang {
 	    if($lang = parent::load($langfile, $lang, $return, $add_suffix, TEMPLATES_DIR . '/' . CI::$APP->template_main . '/')){
 		return $lang;
 	    }
-            else if ($lang = parent::load($langfile, $lang, $return, $add_suffix, $alt_path)){
-                return $lang;
-	    }
 
         } else {
 
