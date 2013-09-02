@@ -296,9 +296,9 @@ class Article extends CI_Model {
         
     }    
     
-    public function search($search_v)
+    public function search($search_v, $type = 'article')
     {
-    
+	/*
         $query = "SELECT *
                     FROM
                       articles a
@@ -314,6 +314,41 @@ class Article extends CI_Model {
         $articles = $articles->result_array();        
         
         return $articles;
+	*/
+	
+	$this->db->select('DISTINCT(a.id) as id');
+	$this->db->from('articles a');
+	$this->db->join('articles_data ad', 'a.id = ad.article_id', 'left');
+	$this->db->join('articles_categories ac', 'a.id = ac.article_id', 'left');
+        $this->db->where('ad.language_id', $this->language_id);
+        $this->db->where('status', 'yes');	
+	
+	if($type == 'tag'){
+	    $this->db->where("(ad.meta_keywords like '%".$search_v."%' OR ad.meta_description like '%".$search_v."%')");	    
+	}
+	else{
+	    $this->db->where("(ad.title like '%".$search_v."%' OR ad.text like '%".$search_v."%')");	    
+	}
+	
+        $this->db->order_by('order', '', false);
+	
+	$articles = $this->db->get()->result_array();
+	
+	$articles_arr = array();
+        foreach($articles as $article){
+            
+            $article = self::getDetails($article['id']);
+	 
+	    /* --- check filters --- */
+	    if(self::_checkFilters(false, $article) == false){
+		continue;
+	    }
+            
+            $articles_arr[] = $article;
+            
+        }
+        
+        return $articles_arr;
         
     }
     

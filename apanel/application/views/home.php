@@ -1,6 +1,4 @@
 <?=$this->load->view('messages');?>
-<?php $this->session->unset_userdata('good_msg');
-      $this->session->unset_userdata('error_msg'); ?>
 
 <table style="width: 100%;" id="page_content" >
     

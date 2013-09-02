@@ -39,8 +39,10 @@ class Search extends MY_Controller {
 	$templates = isset($this->Content->templates['search']) ? $this->Content->templates['search'] : array();
 	
 	$query = $this->input->get('query', TRUE);
-        $articles = $this->Article->search($query);
+	$type  = $this->input->get('type', TRUE);
 	
+	$articles = $this->Article->search($query, $type);
+		
 	$view = 'search';
 	if(isset($templates['search'])){
 	    $view = $templates['search'];
