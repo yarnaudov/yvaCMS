@@ -33,7 +33,9 @@ class Contact_form extends CI_Model {
     
     public function send($contact_form_id)
     {
-        
+	
+        $message_data = array();
+	
         $contact_form = self::getDetails($contact_form_id);
         
         $to  = explode(',', $contact_form['to']);
@@ -94,6 +96,7 @@ class Contact_form extends CI_Model {
             }
             
             $message_body .= '<strong>'.$field['label'].'</strong>: '.$value.'<br/>';
+	    $message_data[$field['label']] = $value;
             
         }
 
@@ -164,7 +167,7 @@ class Contact_form extends CI_Model {
         if($result == 1){
 	    $msg = !empty($contact_form['msg_success']) ? $contact_form['msg_success'] : lang('msg_cf_send');
             $this->session->set_flashdata('contact_form_msg'.$contact_form_id, $msg);
-	    self::_save_in_db();
+	    self::_save_in_db($contact_form_id, $message_data);
         }
         else{
 	    $msg = !empty($contact_form['msg_error']) ? $contact_form['msg_error'] : lang('msg_cf_error');
@@ -181,8 +184,37 @@ class Contact_form extends CI_Model {
         
     }
     
-    private function _save_in_db()
+    private function _save_in_db($contact_form_id, $message_data)
     {
+	
+	$this->load->library('user_agent');
+	
+	$data['contact_form_id'] = $contact_form_id;
+	$data['created_on'] = date('Y-m-d H:i:s');
+	
+	# get user agent
+	if ($this->agent->is_browser()){
+	    $data['user_agent'] = $this->agent->browser().' '.$this->agent->version();
+	}
+	elseif ($this->agent->is_robot()){
+	    $data['user_agent'] = $this->agent->robot();
+	}
+	elseif ($this->agent->is_mobile()){
+	    $data['user_agent'] = $this->agent->mobile();
+	}
+	else{
+	    $data['user_agent'] = 'Unidentified User Agent';
+	}
+	
+	if($this->agent->is_referral()){
+	    $data['page_url'] = $this->agent->referrer();
+	}
+	
+	$data['ip'] = $this->input->ip_address();
+	
+	$data['message'] = json_encode($message_data);
+
+	$this->db->insert('com_contacts_forms_messages', $data);
 	
     }
     

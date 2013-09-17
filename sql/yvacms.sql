@@ -542,6 +542,22 @@ INSERT INTO `com_contacts_forms_data` (`contact_form_id`, `language_id`, `title`
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `com_contacts_forms_messages`
+--
+
+CREATE TABLE IF NOT EXISTS `com_contacts_forms_messages` (
+  `contact_form_id` int(11) NOT NULL,
+  `user_agent` varchar(500) NOT NULL,
+  `page_url` varchar(1000) NOT NULL,
+  `ip` varchar(15) NOT NULL,
+  `message` text NOT NULL,
+  `created_on` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+
+--
 -- Table structure for table `com_gallery_albums`
 --
 
@@ -1051,6 +1067,19 @@ ALTER TABLE `categories`
 ALTER TABLE `categories_data`
   ADD CONSTRAINT `categories_data_ibfk_1` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`) ON UPDATE CASCADE,
   ADD CONSTRAINT `categories_data_ibfk_3` FOREIGN KEY (`language_id`) REFERENCES `languages` (`id`) ON UPDATE CASCADE;
+
+--
+-- Constraints for table `com_contacts_forms_data`
+--
+ALTER TABLE `com_contacts_forms_data` 
+  ADD FOREIGN KEY ( `contact_form_id` ) REFERENCES `alldental`.`com_contacts_forms` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  ADD FOREIGN KEY ( `language_id` ) REFERENCES `alldental`.`languages` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE ;
+
+--
+-- Constraints for table `com_contacts_forms_messages`
+--
+ALTER TABLE `com_contacts_forms_messages` 
+  ADD FOREIGN KEY ( `contact_form_id` ) REFERENCES `alldental`.`com_contacts_forms` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE ;
 
 --
 -- Constraints for table `com_gallery_albums`
