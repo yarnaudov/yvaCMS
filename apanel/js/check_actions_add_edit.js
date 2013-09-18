@@ -72,5 +72,14 @@ $(document).ready(function() {
     });
 
     $('.categories_list input[value^=most_]').trigger('load');
-     
+	    
 });
+
+function create_datepicker(){
+    $('.datepicker').datepicker({
+	showOn: 'button',
+	dateFormat: 'yy-mm-dd',
+	buttonImage: base_url+'img/iconCalendar.png',
+	buttonImageOnly: true
+    });
+}
