@@ -1,4 +1,3 @@
-
 <?php if(count($custom_fields) > 0){ ?>
 <tr><td colspan="2" class="empty_line" ></td></tr>
 <tr>
@@ -59,7 +58,7 @@ foreach($custom_fields as $custom_field){
             
             $optgroup = false;
             
-            echo "<select class=\"".$class." name=\"field".$custom_field['id']."\" >\n";
+            echo "<select class=\"".$class."\" name=\"field".$custom_field['id']."\" >\n";
             foreach($params['options'] as $key => $option){
           
                 $selected = '';
