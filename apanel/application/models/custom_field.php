@@ -153,7 +153,8 @@ class Custom_field extends CI_Model {
         $query = $this->db->insert_string('custom_fields', $data);
         //echo $query;
         $result = $this->db->query($query);
-        
+        $id = $this->db->insert_id();
+	
         if($result == true){
             $this->session->set_userdata('good_msg', lang('msg_save_custom_field'));
         }
@@ -161,7 +162,7 @@ class Custom_field extends CI_Model {
             $this->session->set_userdata('error_msg', lang('msg_save_custom_field_error'));
         }
         
-        return $this->db->insert_id();
+        return $id;
 
     }
 
