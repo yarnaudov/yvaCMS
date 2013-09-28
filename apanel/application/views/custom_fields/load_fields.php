@@ -1,4 +1,3 @@
-
 <?php if(count($custom_fields) > 0){ ?>
 <tr><td colspan="2" class="empty_line" ></td></tr>
 <tr>
@@ -121,6 +120,7 @@ foreach($custom_fields as $custom_field){
       
         case 'date':
             echo '<input class="'.$class.'" type="text" class="datepicker" name="field'.$custom_field['id'].'" value="'.$set_value.'" >';
+            echo "<img src=\"".base_url('img/iconAdministration.png')."\" style=\"display:none;\" onload=\"create_datepicker();\" >\n";
           break;
       
         case 'media':
