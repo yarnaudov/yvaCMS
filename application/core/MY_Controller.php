@@ -3,6 +3,7 @@
 class MY_Controller extends CI_Controller {
     
     public $menu_id = '';
+    public $menu_link;
     public $current_menus = array();
     public $language_id;
     
@@ -72,6 +73,10 @@ class MY_Controller extends CI_Controller {
 	}
 
 	self::_getActiveContent();
+	
+	# set menu link
+	$menu = $this->Menu->getDetails($this->menu_id);
+        $this->menu_link = $this->Module->menu_link($menu);
 	
 	# load validation js if article is loaded
 	if($this->article_alias || $this->Menu->getDetails($this->menu_id, 'type') == 'article'){
