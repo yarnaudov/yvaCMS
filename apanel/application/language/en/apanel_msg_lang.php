@@ -61,3 +61,5 @@ $lang['msg_folder_exists']           = 'Folder with same name olready exists';
 $lang['msg_multilang_info']          = 'This field has different value for all languages';
 
 $lang['msg_group_no_access']         = 'You do not have permission to change this group access';
+
+$lang['msg_external_url']            = 'If you type URL without "http://", "https://" or "mailto://" the system will automaticaly add site URL to it';
