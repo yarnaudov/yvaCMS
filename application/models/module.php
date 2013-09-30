@@ -161,6 +161,12 @@ class Module extends CI_Model {
                 
             break;
             case "external_url":
+		
+		if(!preg_match('/^http:\/\//', $menu['params']['url']) &&
+		   !preg_match('/^https:\/\//', $menu['params']['url']) &&
+		   !preg_match('/^mailto:/', $menu['params']['url'])){
+		    $menu['params']['url'] = site_url($menu['params']['url']);
+		}
                 
                 return $menu['params']['url'];
                 
