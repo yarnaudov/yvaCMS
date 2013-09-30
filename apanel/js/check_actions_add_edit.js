@@ -72,7 +72,7 @@ $(document).ready(function() {
     });
 
     $('.categories_list input[value^=most_]').trigger('load');
-	    
+     
 });
 
 function create_datepicker(){

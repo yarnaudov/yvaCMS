@@ -123,7 +123,7 @@ foreach($custom_fields as $custom_field){
       
         case 'date':
             echo "<input type=\"text\" class=\"datepicker ".$class."\" name=\"field".$custom_field['id']."\" value=\"".$set_value."\" >\n";
-	    echo "<img src=\"".base_url('img/iconAdministration.png')."\" style=\"display:none;\" onload=\"create_datepicker();\"  >\n";
+            echo "<img src=\"".base_url('img/iconAdministration.png')."\" style=\"display:none;\" onload=\"create_datepicker();\" >\n";
           break;
       
         case 'media':
