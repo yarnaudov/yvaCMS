@@ -191,6 +191,7 @@ $lang['label_host']                      = 'Host';
 $lang['label_security']                  = 'Security';
 $lang['label_system']                    = 'System';
 $lang['label_environment']               = 'Environment';
+$lang['label_default_language_in_url']   = 'Show default language in url';
 
 $lang['label_last_changed_articles']    = 'Last 10 changed articles';
 

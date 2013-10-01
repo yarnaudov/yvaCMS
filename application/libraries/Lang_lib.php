@@ -10,27 +10,37 @@ class Lang_lib
     
     function __construct() 
     {        
-        global $URI, $CFG, $CI;
+        global $URI, $CFG;
         
         $config =& $CFG->config; 
         
-        $this->ci =& get_instance();
+        $CI =& get_instance();
         
         /* get the language abbreviation from uri ---------------------- */
         $this->lang = $URI->segment(1);
-                
-        if(!isset($_COOKIE['lang']) || $_COOKIE['lang'] != $this->lang){
+        
+        /* get all available languages --------------------------------- */
+        $lang_uri_abbr = $CI->Language->getLanguages(true);
+        
+        if(!isset($lang_uri_abbr[$this->lang])){
+	    
+	    $lang_abbr = isset($_COOKIE['lang']) ? $_COOKIE['lang'] : $CI->Language->getDefault();
+	    
+	    if($CI->Setting->getDefaultLanguageInUrl() == 'no' && $lang_abbr == $CI->Language->getDefault()){
+		$this->lang = $lang_abbr;
+	    }
+	    else{
+		header('Location: '.base_url($lang_abbr));
+		exit;
+	    }
+	    
+        }
+        
+	/* set language cookie ----------------------------------------- */
+	if(!isset($_COOKIE['lang']) || $_COOKIE['lang'] != $this->lang){
             setcookie("lang", $this->lang, time()+60*60*24*30, "/");
         }
-        
-        $lang_abbr     = isset($_COOKIE['lang']) ? $_COOKIE['lang'] : $this->ci->Language->getDefault();
-        $lang_uri_abbr = $this->ci->Language->getLanguages(true);
-        
-        if(!isset($lang_uri_abbr[$this->lang])){            
-            header('Location: '.base_url($lang_abbr));
-            exit;
-        }
-        
+	
         /* reset uri segments and uri string --------------------------- */
         $URI->_reindex_segments(array_shift($URI->segments));
         $URI->uri_string = preg_replace("|^\/?$this->lang/?|", '', $URI->uri_string);

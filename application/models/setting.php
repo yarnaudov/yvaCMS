@@ -10,7 +10,7 @@ class Setting extends CI_Model {
         parent::__construct();
         
         $this->load->helper('isJson');
-        $this->settings = self::getSettings();
+        self::getSettings();
         
     }
     
@@ -37,7 +37,7 @@ class Setting extends CI_Model {
         $this->db->select('*');
         $this->db->where('language_id', $this->language_id);
         $this->db->or_where('language_id', NULL);
-        $settings = $this->db->get('settings');        
+        $settings = $this->db->get('settings');	
         $settings = $settings->result_array();
                 
         $settings_arr = array();
@@ -45,6 +45,8 @@ class Setting extends CI_Model {
             $settings_arr[$setting['name']] = $setting['value'];
         }
         
+	$this->settings = $settings_arr;
+		
         return $settings_arr;
         
     }
@@ -135,6 +137,10 @@ class Setting extends CI_Model {
     
     public function getFromEmail(){
         return $this->settings['from_email']; 
+    }
+    
+    public function getDefaultLanguageInUrl(){
+	return $this->settings['default_language_in_url']; 
     }
     
 }

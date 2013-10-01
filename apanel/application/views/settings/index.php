@@ -65,7 +65,19 @@
                             </tr>
                             
                             <?php $this->load->view('templates', array('name' => 'settings[template]', 'template' => set_value('settings[template]', isset($settings['template']) ? $settings['template'] : ''))); ?>
-                                                        
+                               
+			    <tr><td colspan="2" class="empty_line" ></td></tr>
+			    
+			    <tr>
+                                <th></th>
+                                <td>                                    
+                                    <label style="display: inline;"><?=lang('label_default_language_in_url');?>:</label>
+                                    <select name="settings[default_language_in_url]" style="width: auto;" >
+                                        <?=create_options_array($this->config->item('yes_no'), set_value('settings[default_language_in_url]', isset($settings['default_language_in_url']) ? $settings['default_language_in_url']: ""));?>
+                                    </select>                                    
+                                </td>
+                            </tr>
+			    
                         </table>
                       </div>
 	      	              

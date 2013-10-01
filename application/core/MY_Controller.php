@@ -22,6 +22,8 @@ class MY_Controller extends CI_Controller {
         
         parent::__construct();
         
+	$this->load->model('Setting');
+	
         $this->load->library('Lang_lib');
         
         $this->load->model('Category');
@@ -36,10 +38,11 @@ class MY_Controller extends CI_Controller {
         $this->load->helper('simple_html_dom');
         
         $this->language_id = $this->Language->getDetailsByAbbr(get_lang(), 'id');
-        
-        $this->load->model('Setting');
 	
-	// check environment
+	# reload settings for correct language
+	$this->Setting->getSettings();
+	
+	# check environment
 	error_reporting(0);
 	switch ($this->Setting->getEnvironment())
 	{
@@ -58,9 +61,7 @@ class MY_Controller extends CI_Controller {
 	    break;
 	}
 
-        /*
-         * Set settings
-         */
+        # Set settings
         $this->template = $this->Setting->getTemplate();
 	$this->template_main = $this->Setting->getTemplate('main');
 	

@@ -192,6 +192,7 @@ $lang['label_host']                      = 'Host';
 $lang['label_security']                  = 'Сигорност';
 $lang['label_system']                    = 'Системни';
 $lang['label_environment']               = 'Работна среда';
+$lang['label_default_language_in_url']   = 'Показвай основния език в адреса';
 
 $lang['label_last_changed_articles']    = 'Последни 10 променени статии';
 
