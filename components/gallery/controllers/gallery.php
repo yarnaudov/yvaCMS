@@ -80,8 +80,8 @@ class Gallery extends MY_Controller {
             else{   
 		
 		$view = 'images';
-		if(isset($templates['images'])){
-		    $view = $templates['images'];
+		if(isset($templates[$view])){
+		    $view = $templates[$view];
 		}
 		
                 return $this->load->view($view, compact('menu_link', 'images', 'url1'), true);
@@ -102,10 +102,10 @@ class Gallery extends MY_Controller {
             }
             
 	    $view = 'albums';
-	    if(isset($templates['albums'])){
-		$view = $templates['albums'];
+	    if(isset($templates[$view])){
+		$view = $templates[$view];
 	    }
-		
+
             return $this->load->view($view, compact('menu_link', 'albums'), true);
             
         }

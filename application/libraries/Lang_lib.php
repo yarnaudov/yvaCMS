@@ -35,16 +35,16 @@ class Lang_lib
 	    }
 	    
         }
+	else{
+	    /* reset uri segments and uri string --------------------------- */
+	    $URI->_reindex_segments(array_shift($URI->segments));
+	    $URI->uri_string = preg_replace("|^\/?$this->lang/?|", '', $URI->uri_string);
+	}
         
 	/* set language cookie ----------------------------------------- */
 	if(!isset($_COOKIE['lang']) || $_COOKIE['lang'] != $this->lang){
             setcookie("lang", $this->lang, time()+60*60*24*30, "/");
-        }
-	
-        /* reset uri segments and uri string --------------------------- */
-        $URI->_reindex_segments(array_shift($URI->segments));
-        $URI->uri_string = preg_replace("|^\/?$this->lang/?|", '', $URI->uri_string);
-        
+        }        
         
         /* reset index page value -------------------------------------- */
         $index_page  = $config['index_page'];

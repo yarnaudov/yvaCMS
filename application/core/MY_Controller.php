@@ -215,7 +215,7 @@ class MY_Controller extends CI_Controller {
         include_once "components/" . $menu['params']['component'] . "/controllers/" . $menu['params']['component'] . ".php";
         
         $link = $this->Module->menu_link($menu, false);
-        $com_route_key   = '(\w{2})' . $link . '(.*)';
+        $com_route_key   = '(\w{2})?(/)?' . preg_replace('/^\//', '', $link) . '(.*)';
         $com_route_value = $menu['params']['component']::getRoute($menu);
         
         if(!isset($route[$com_route_key]) || $route[$com_route_key] != $com_route_value){
@@ -228,9 +228,9 @@ class MY_Controller extends CI_Controller {
             redirect($link);
             
         }
-        
+	
         if($this->uri->segment(1) == ''){
-            redirect($link);  
+            redirect($link);
         }
         
     }
@@ -273,6 +273,12 @@ class MY_Controller extends CI_Controller {
 	
 	if(isset($include_header)){
 	    $html = str_replace($include_header, $header, $html);
+	}
+	
+	
+	if($this->Setting->getEnvironment() != 'development'){
+	    $html = preg_replace('/(\r\n|\n|\r|\t)/m', '', $html);
+	    $html = preg_replace('/\s+/', " ", $html);
 	}
 	
         return $html;

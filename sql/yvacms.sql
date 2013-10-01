@@ -940,7 +940,8 @@ INSERT INTO `settings` (`id`, `language_id`, `name`, `value`) VALUES
 (17, NULL, 'ssmt_user', ''),
 (18, NULL, 'ssmt_pass', ''),
 (19, NULL, 'ssmt_host', ''),
-(20, NULL, 'environment', 'development');
+(20, NULL, 'environment', 'development'),
+(21, NULL, 'default_language_in_url', 'yes');
 
 -- --------------------------------------------------------
 

@@ -25,3 +25,27 @@ if ( ! function_exists('site_url'))
 }
 
 // ------------------------------------------------------------------------
+
+/**
+ * MY Current URL
+ *
+ * Returns the full URL (including segments) of the page where this
+ * function is placed
+ *
+ * @access	public
+ * @return	string
+ */
+if ( ! function_exists('current_url'))
+{
+	function current_url()
+	{
+		$CI =& get_instance();
+		if($CI->Setting->getDefaultLanguageInUrl() == 'no' && get_lang() == $CI->Language->getDefault()){
+		    return $CI->config->base_url($CI->uri->uri_string());
+		}
+		
+		return $CI->config->site_url($CI->uri->uri_string());
+	}
+}
+
+// ------------------------------------------------------------------------
