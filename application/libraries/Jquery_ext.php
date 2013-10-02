@@ -81,8 +81,11 @@ class CI_Jquery_ext {
 	 * Sends the output to the browser output
 	 *
 	 */
-	function output()
+	function output($type = 'all')
 	{
+	    
+	    if($type == 'all' || $type == 'js'){
+	    
 		$this->libraries = array_unique($this->libraries);
 	
 		// first it loads the libraries
@@ -111,9 +114,13 @@ class CI_Jquery_ext {
 				echo "<script type=\"text/javascript\" src=\"" . $this->config['js_files_url_prefix'] . $filename . "\"></script>" . "\n";
 			}
 		}
+	    }
 
-		// at the end loads the css
+	    // at the end loads the css
+	    if($type == 'all' || $type == 'css'){		
 		echo $this->_build_output_css();
+	    }
+	    
 	}
 
 	// ------------------------------------------------------------------------

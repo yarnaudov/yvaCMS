@@ -188,10 +188,9 @@ class Content extends CI_Model {
     public function header()
     {
 	
-	$header = "<meta http-equiv=\"Content-Language\" content=\"".get_lang()."\" />\n";
-	$header .= "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8;\" />\n";	
+	$header = "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8;\" />\n";	
         
-        if($this->Setting->getEnvironment() == 'development'){
+        if($this->Setting->getEnvironment() != 'production'){
             $header .= "<meta http-equiv=\"cache-control\" content=\"no-cache\" />\n";
         }
 	

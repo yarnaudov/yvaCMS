@@ -246,6 +246,11 @@ class MY_Controller extends CI_Controller {
         $html = $this->load->view('../../'.TEMPLATES_DIR.'/'.$this->template, '', true);
         $html2 = str_get_html($html);
     
+	# include language in html tag
+	$html2->find('html', 0)->lang = get_lang();
+	
+	$html = $html2;
+	
 	#set headers here so module have access to meta data!
 	$header = $this->Content->header();
 	
@@ -262,23 +267,44 @@ class MY_Controller extends CI_Controller {
             elseif($include->type == 'header'){
                 $include_header = $include;
             }
+	    elseif($include->type == 'js'){
+		$include_js = $include;
+            }
         }
 
 	#include headers after all modules are ready	
 	if(is_object($this->jquery_ext)){
-	    ob_start();
-	    $this->jquery_ext->output();
-	    $header .= ob_get_clean();                     
+
+	    if(isset($include_js)){
+		
+		ob_start();
+		$this->jquery_ext->output('js');
+		$html = str_replace($include_js, ob_get_clean(), $html);
+		
+		ob_start();
+		$this->jquery_ext->output('css');
+		$header .= ob_get_clean();
+		
+	    }
+	    else{
+		
+		ob_start();
+		$this->jquery_ext->output();
+		$header .= ob_get_clean();
+		
+	    }
+	    
 	}	
 	
 	if(isset($include_header)){
 	    $html = str_replace($include_header, $header, $html);
 	}
 	
-	
+	# remove new lines, comments and spaces
 	if($this->Setting->getEnvironment() != 'development'){
 	    $html = preg_replace('/(\r\n|\n|\r|\t)/m', '', $html);
-	    $html = preg_replace('/\s+/', " ", $html);
+	    $html = preg_replace('/\s+/', ' ', $html);
+	    $html = preg_replace('/<!--(.*)-->/Uis', ' ', $html);
 	}
 	
         return $html;
