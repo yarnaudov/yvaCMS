@@ -1,12 +1,12 @@
 
-<h3><?=$category['title'];?></h3>
+<h3><?php echo $category['title'];?></h3>
 
 <ul class="articles_list" >
         
 <?php foreach($articles as $article){ ?>
     
 <li>
-    <a href="<?=site_url('article:'.$article['alias']);?>" ><?=$article['title']; ?></a>
+    <a href="<?php echo site_url('article:'.$article['alias']);?>" ><?php echo $article['title']; ?></a>
 </li>
 
 <?php } ?>

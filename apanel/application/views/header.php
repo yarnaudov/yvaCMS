@@ -32,11 +32,11 @@
         </title>
         
         <script type="text/javascript" >
-            var LANG              = '<?=get_lang();?>';
-            var TEMPLATE          = '<?=$this->Setting->getTemplate();?>';
-            var DOCUMENT_BASE_URL = '<?=base_url();?>../';
-            var base_url          = '<?=base_url();?>';
-            var site_url          = '<?=site_url();?>';
+            var LANG              = '<?php echo get_lang();?>';
+            var TEMPLATE          = '<?php echo $this->Setting->getTemplate();?>';
+            var DOCUMENT_BASE_URL = '<?php echo base_url();?>../';
+            var base_url          = '<?php echo base_url();?>';
+            var site_url          = '<?php echo site_url();?>';
         </script>
         
     </head>

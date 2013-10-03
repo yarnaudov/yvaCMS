@@ -40,7 +40,7 @@
 
 <div id="map_canvas" style="width: 100%; height: 400px;"></div>
 <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false" ></script>
-<script src="<?=base_url(TEMPLATES_DIR.'/dynamic/js/markerclusterer.js');?>"></script>
+<script src="<?php echo base_url(TEMPLATES_DIR.'/dynamic/js/markerclusterer.js');?>"></script>
 <script type="text/javascript" >
     $(function(){    
 
@@ -61,15 +61,15 @@
 		    continue;
 		} ?>
 	
-	    marker_position = new google.maps.LatLng(<?=$article['field4']->lat;?>, <?=$article['field4']->lng;?>);
+	    marker_position = new google.maps.LatLng(<?php echo $article['field4']->lat;?>, <?php echo $article['field4']->lng;?>);
 	    
 	    marker = new google.maps.Marker({
 		position: marker_position,
 		map: map,
-		city: <?=$article['field2'];?>,
-		category: <?=$article['category_id'];?>,
+		city: <?php echo $article['field2'];?>,
+		category: <?php echo $article['category_id'];?>,
 		//icon: 'marker.png',
-		title: '<?=$article['title'];?>'
+		title: '<?php echo $article['title'];?>'
 	    });
 	    
 	    markers.push(marker);	    

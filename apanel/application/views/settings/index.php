@@ -1,19 +1,19 @@
 
-<form name="list" action="<?=current_url(true);?>" method="post" >
+<form name="list" action="<?php echo current_url(true);?>" method="post" >
         
     <!-- start page header -->
     <div id="page_header" >
 	
         <div class="text" >
-            <img src="<?=base_url('img/iconSettings_25.png');?>" >
-            <span><?=lang('label_settings');?></span>
+            <img src="<?php echo base_url('img/iconSettings_25.png');?>" >
+            <span><?php echo lang('label_settings');?></span>
         </div>
 	
 	<div class="actions" >
 	    
-            <button type="submit" name="save"     class="styled save"   ><?=lang('label_save');?></button>
-	    <button type="submit" name="apply"    class="styled apply"  ><?=lang('label_apply');?></button>
-	    <a href="<?=site_url('');?>"          class="styled cancel" ><?=lang('label_cancel');?></a>
+            <button type="submit" name="save"     class="styled save"   ><?php echo lang('label_save');?></button>
+	    <button type="submit" name="apply"    class="styled apply"  ><?php echo lang('label_apply');?></button>
+	    <a href="<?php echo site_url('');?>"          class="styled cancel" ><?php echo lang('label_cancel');?></a>
 		
 	</div>
         
@@ -26,7 +26,7 @@
     </div>
     <!-- start page content -->
 
-    <?=$this->load->view('messages');?>
+    <?php echo $this->load->view('messages');?>
 
     <!-- start page content -->
     <div id="page_content" >
@@ -40,14 +40,14 @@
 	            
                     <!-- mandatory information  -->
 	            <div class="box" >
-	      	      <span class="header" ><?=lang('label_general');?> <?=lang('label_information');?></span>
+	      	      <span class="header" ><?php echo lang('label_general');?> <?php echo lang('label_information');?></span>
 	      	      
                       <div class="box_content" >
                         <table class="box_table" cellpadding="0" cellspacing="0" >
 
                             <tr>
-                                <th><label class="multilang" ><?=lang('label_site_name');?>:</label></th>
-                                <td><input type="text" name="settings[site_name]" value="<?=set_value('settings[site_name]', isset($settings['site_name']) ? $settings['site_name'] : "");?>" ></td>
+                                <th><label class="multilang" ><?php echo lang('label_site_name');?>:</label></th>
+                                <td><input type="text" name="settings[site_name]" value="<?php echo set_value('settings[site_name]', isset($settings['site_name']) ? $settings['site_name'] : "");?>" ></td>
                             </tr>
 
                             <tr><td colspan="2" class="empty_line" ></td></tr>
@@ -55,12 +55,12 @@
                             <tr>
                                 <th></th>
                                 <td>                                    
-                                    <label style="display: inline;"><?=lang('label_site_name_in_title');?>:</label>
+                                    <label style="display: inline;"><?php echo lang('label_site_name_in_title');?>:</label>
                                     <select name="settings[site_name_in_title]" style="width: auto;" >
-                                        <?=create_options_array($this->config->item('yes_no'), set_value('settings[site_name_in_title]', isset($settings['site_name_in_title']) ? $settings['site_name_in_title']: ""));?>
+                                        <?php echo create_options_array($this->config->item('yes_no'), set_value('settings[site_name_in_title]', isset($settings['site_name_in_title']) ? $settings['site_name_in_title']: ""));?>
                                     </select>
-                                    <span>&nbsp;<?=lang('label_with_separator');?>&nbsp;</span>
-                                    <input type="text" style="width: 40px;" name="settings[site_name_in_title_separator]" value="<?=set_value('settings[site_name_in_title_separator]', isset($settings['site_name_in_title_separator']) ? $settings['site_name_in_title_separator'] : "");?>" >
+                                    <span>&nbsp;<?php echo lang('label_with_separator');?>&nbsp;</span>
+                                    <input type="text" style="width: 40px;" name="settings[site_name_in_title_separator]" value="<?php echo set_value('settings[site_name_in_title_separator]', isset($settings['site_name_in_title_separator']) ? $settings['site_name_in_title_separator'] : "");?>" >
                                 </td>
                             </tr>
                             
@@ -71,9 +71,9 @@
 			    <tr>
                                 <th></th>
                                 <td>                                    
-                                    <label style="display: inline;"><?=lang('label_default_language_in_url');?>:</label>
+                                    <label style="display: inline;"><?php echo lang('label_default_language_in_url');?>:</label>
                                     <select name="settings[default_language_in_url]" style="width: auto;" >
-                                        <?=create_options_array($this->config->item('yes_no'), set_value('settings[default_language_in_url]', isset($settings['default_language_in_url']) ? $settings['default_language_in_url']: ""));?>
+                                        <?php echo create_options_array($this->config->item('yes_no'), set_value('settings[default_language_in_url]', isset($settings['default_language_in_url']) ? $settings['default_language_in_url']: ""));?>
                                     </select>                                    
                                 </td>
                             </tr>
@@ -84,34 +84,34 @@
                     </div>
                     
                     <div class="box" >
-	      	      <span class="header" ><?=lang('label_metadata');?></span>
+	      	      <span class="header" ><?php echo lang('label_metadata');?></span>
 	      	      
                       <div class="box_content" >
                         <table class="box_table" cellpadding="0" cellspacing="0" >
 
                             <tr>
-                                <th><label class="multilang" ><?=lang('label_description');?>:</label></th>
-                                <td><textarea name="settings[meta_description]" ><?=set_value('settings[meta_description]', isset($settings['meta_description']) ? $settings['meta_description'] : "");?></textarea></td>
+                                <th><label class="multilang" ><?php echo lang('label_description');?>:</label></th>
+                                <td><textarea name="settings[meta_description]" ><?php echo set_value('settings[meta_description]', isset($settings['meta_description']) ? $settings['meta_description'] : "");?></textarea></td>
                             </tr>
 
                             <tr><td colspan="2" class="empty_line" ></td></tr>
 
                             <tr>
-                                <th><label class="multilang" ><?=lang('label_keywords');?>:</label></th>
-                                <td><textarea name="settings[meta_keywords]" ><?=set_value('settings[meta_keywords]', isset($settings['meta_keywords']) ? $settings['meta_keywords'] : "");?></textarea></td>
+                                <th><label class="multilang" ><?php echo lang('label_keywords');?>:</label></th>
+                                <td><textarea name="settings[meta_keywords]" ><?php echo set_value('settings[meta_keywords]', isset($settings['meta_keywords']) ? $settings['meta_keywords'] : "");?></textarea></td>
                             </tr>
 
                             <tr><td colspan="2" class="empty_line" ></td></tr>
 
                             <tr>
-                                <th><label><?=lang('label_robots');?>:</label></th>
+                                <th><label><?php echo lang('label_robots');?>:</label></th>
                                 <td>
                                     <?php $robots_arr = array("" => "Index, Follow", "noindex, follow" => "No index, follow", "index, nofollow" => "Index, No follow", "noindex, nofollow" => "No index, no follow"); ?> 
                                     <select name="settings[robots]" style="width: auto;" >
                                         <?php foreach($robots_arr as $key => $robot){ 
                                                 $robots = set_value('settings[robots]', isset($settings['robots']) ? $settings['robots'] : ""); ?>
                                         
-                                        <option value="<?=$key;?>" <?=$robots == $key ? "selected" : "";?> ><?=$robot;?></option>
+                                        <option value="<?php echo $key;?>" <?php echo $robots == $key ? "selected" : "";?> ><?php echo $robot;?></option>
                                         
                                         <?php } ?>
                                     </select>
@@ -124,17 +124,17 @@
                     </div>
 		    
 		    <div class="box" >
-	      	      <span class="header" ><?=lang('label_system');?> <?=lang('label_settings');?></span>
+	      	      <span class="header" ><?php echo lang('label_system');?> <?php echo lang('label_settings');?></span>
 	      	      
                       <div class="box_content" >
                         <table class="box_table" cellpadding="0" cellspacing="0" >
 
                             <tr>
-                                <th><label><?=lang('label_environment');?>:</label></th>
+                                <th><label><?php echo lang('label_environment');?>:</label></th>
                                 <td>
 				    <?php $environments = array('development' => 'Development', 'testing' => 'Testing', 'production' => 'Production'); ?>
 				    <select name="settings[environment]" style="width: auto;" >
-					 <?=create_options_array($environments, set_value('settings[environment]', isset($settings['environment']) ? $settings['environment']: ""));?>
+					 <?php echo create_options_array($environments, set_value('settings[environment]', isset($settings['environment']) ? $settings['environment']: ""));?>
                                     </select>				    
 				</td>
                             </tr>
@@ -150,7 +150,7 @@
 	        <td class="right" >
 	      
                     <div class="box" >
-                        <span class="header" ><?=lang('label_translation');?></span>
+                        <span class="header" ><?php echo lang('label_translation');?></span>
                         
                         <div class="box_content" >
                             <table class="box_table" cellpadding="0" cellspacing="0" >
@@ -158,7 +158,7 @@
                                 <tr>
                                     <td>
                                         <select name="translation" >
-                                            <?=create_options('languages', 'id', 'title', $this->language_id, array('status' => 'yes'));?>
+                                            <?php echo create_options('languages', 'id', 'title', $this->language_id, array('status' => 'yes'));?>
                                         </select>
                                     </td>
                                 </tr>

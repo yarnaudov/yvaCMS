@@ -7,10 +7,10 @@
     <?php foreach($albums[0]['images'] as $image){ ?>
     
     <li>
-        <a href="<?=site_url('gallery/image/'.$image['id'].'/600/600');?>">
-            <img src="<?=$this->Image->getImageUrl($image['id'], 80, 80);?>" alt="<?=$image['title'];?>" >
+        <a href="<?php echo site_url('gallery/image/'.$image['id'].'/600/600');?>">
+            <img src="<?php echo $this->Image->getImageUrl($image['id'], 80, 80);?>" alt="<?php echo $image['title'];?>" >
         </a>
-        <div class="description" ><?=$image['title'];?></div>
+        <div class="description" ><?php echo $image['title'];?></div>
     </li>
     
     <?php } ?>
@@ -25,10 +25,10 @@
               $image = $this->Album->getImage($album['id']); ?>
     
     <li>
-        <a href="<?=$menu_link;?>/album/<?=$album['id'];?>">
-            <img src="<?=$this->Image->getImageUrl($image['id'], 150, 100);/*base_url('images/'.$image['id'].'.'.$image['ext']);*/?>" alt="<?=$album['title'];?>" >
+        <a href="<?php echo $menu_link;?>/album/<?php echo $album['id'];?>">
+            <img src="<?php echo $this->Image->getImageUrl($image['id'], 150, 100);/*base_url('images/'.$image['id'].'.'.$image['ext']);*/?>" alt="<?php echo $album['title'];?>" >
         </a>
-        <div class="description" ><?=$album['title'];?></div>
+        <div class="description" ><?php echo $album['title'];?></div>
     </li>
     
     <?php } ?>

@@ -4,7 +4,7 @@
 <tr><td colspan="2" class="empty_line" ></td></tr>
 
 <tr>
-    <th><label><?=lang('label_options');?>:</label></th>
+    <th><label><?php echo lang('label_options');?>:</label></th>
     <td>
         <ul id="checkboxes" >
             <?php $options   = set_value('params[options]',   isset($params['options'])   ? $params['options']   : "");
@@ -13,18 +13,18 @@
                   $optgroups = set_value('params[optgroups]', isset($params['optgroups']) ? $params['optgroups'] : "");
                   foreach($options as $key => $option){ ?>
             <li>
-                <input class="option_hidden"   type="hidden"            name="params[options][<?=$key;?>]"   value="0" >
-                <input class="option"          type="<?=$input_type;?>" name="params[options][<?=$key;?>]"   value="1" <?=(isset($options[$key]) && $options[$key] == 1) ? "checked" : "";?> >
-                <input class="text"            type="text"              name="params[labels][<?=$key;?>]"    value="<?=isset($labels[$key]) ? $labels[$key] : "";?>" >
+                <input class="option_hidden"   type="hidden"            name="params[options][<?php echo $key;?>]"   value="0" >
+                <input class="option"          type="<?php echo $input_type;?>" name="params[options][<?php echo $key;?>]"   value="1" <?php echo (isset($options[$key]) && $options[$key] == 1) ? "checked" : "";?> >
+                <input class="text"            type="text"              name="params[labels][<?php echo $key;?>]"    value="<?php echo isset($labels[$key]) ? $labels[$key] : "";?>" >
                 
                 <?php if($action == 'dropdown'){ ?>
-                <input class="optgroup_hidden" type="hidden"            name="params[optgroups][<?=$key;?>]" value="0" >
-                <input class="optgroup"        type="checkbox"          name="params[optgroups][<?=$key;?>]" value="1" <?=(isset($optgroups[$key]) && $optgroups[$key] == 1) ? "checked" : "";?> title="Make this option group">
+                <input class="optgroup_hidden" type="hidden"            name="params[optgroups][<?php echo $key;?>]" value="0" >
+                <input class="optgroup"        type="checkbox"          name="params[optgroups][<?php echo $key;?>]" value="1" <?php echo (isset($optgroups[$key]) && $optgroups[$key] == 1) ? "checked" : "";?> title="Make this option group">
                 <?php } ?>
                 
-                <img src="<?=base_url('img/iconMove.png');?>" class="handle" alt="move" >
+                <img src="<?php echo base_url('img/iconMove.png');?>" class="handle" alt="move" >
                 
-                <a class="styled delete" title="<?=lang('label_delete');?>" >&nbsp;</a>
+                <a class="styled delete" title="<?php echo lang('label_delete');?>" >&nbsp;</a>
             </li>
             <?php } ?>
         </ul>
@@ -36,7 +36,7 @@
 <tr>
     <th></th>
     <td>
-        <a class="styled add" ><?=lang('label_add');?></a>
+        <a class="styled add" ><?php echo lang('label_add');?></a>
         <script type="text/javascript" >
     
             $('a.delete').die('click');

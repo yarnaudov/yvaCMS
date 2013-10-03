@@ -1,11 +1,11 @@
 <div class="article" >
     
     <?php if($article['show_title'] == 'yes'){ ?>
-    <h4 class="article_title" ><?=$article['title'];?></h4>
+    <h4 class="article_title" ><?php echo $article['title'];?></h4>
     <?php } ?>
     
     <div class="article_content" >
-        <?=$article['text'];?>
+        <?php echo $article['text'];?>
     </div>
    
     <?php if(isset($article['params']['show_comments']) && $article['params']['show_comments'] == 'yes'){

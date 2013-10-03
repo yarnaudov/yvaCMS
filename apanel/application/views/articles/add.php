@@ -1,13 +1,13 @@
 
-<form name="add" action="<?=current_url();?>" method="post" >
+<form name="add" action="<?php echo current_url();?>" method="post" >
 	
     
     <!-- start page header -->
     <div id="page_header" >
 	
         <div class="text" >
-	    <img src="<?=base_url('img/iconArticles_25.png');?>" >
-            <span><?=lang('label_articles');?></span>
+	    <img src="<?php echo base_url('img/iconArticles_25.png');?>" >
+            <span><?php echo lang('label_articles');?></span>
             <span>&nbsp;»&nbsp;</span>
             <span>
               <?php if(isset($article_id)){
@@ -21,16 +21,16 @@
 	
 	<div class="actions" >
                         
-	    <button type="submit" name="save"     class="styled save"   ><?=lang('label_save');?></button>
-	    <button type="submit" name="apply"    class="styled apply"  ><?=lang('label_apply');?></button>
-	    <a href="<?=site_url('articles/');?>" class="styled cancel" ><?=lang('label_cancel');?></a>
+	    <button type="submit" name="save"     class="styled save"   ><?php echo lang('label_save');?></button>
+	    <button type="submit" name="apply"    class="styled apply"  ><?php echo lang('label_apply');?></button>
+	    <a href="<?php echo site_url('articles/');?>" class="styled cancel" ><?php echo lang('label_cancel');?></a>
 		
 	</div>
 	
     </div>
     <!-- end page header -->
 
-    <?=$this->load->view('messages');?>    
+    <?php echo $this->load->view('messages');?>    
     
     <!-- start page content -->
     <div id="page_content" >
@@ -44,21 +44,21 @@
 	            
                     <!-- mandatory information  -->
 	            <div class="box" >
-	      	      <span class="header" ><?=lang('label_main_information');?></span>
+	      	      <span class="header" ><?php echo lang('label_main_information');?></span>
 	      	      
                       <div class="box_content" >
                         <table class="box_table" cellpadding="0" cellspacing="0" >
 
                             <tr>
-                                <th><label class="multilang" ><?=lang('label_title');?>:</label></th>
-                                <td><input class="required" type="text" name="title" value="<?=set_value('title', isset($title) ? $title : "");?>" ></td>
+                                <th><label class="multilang" ><?php echo lang('label_title');?>:</label></th>
+                                <td><input class="required" type="text" name="title" value="<?php echo set_value('title', isset($title) ? $title : "");?>" ></td>
                             </tr>
 
                             <tr><td colspan="2" class="empty_line" ></td></tr>
 
                             <tr>
-                                <th><label><?=lang('label_alias');?>:</label></th>
-                                <td><input class="required" type="text" name="alias" value="<?=set_value('alias', isset($alias) ? $alias : "");?>" ></td>
+                                <th><label><?php echo lang('label_alias');?>:</label></th>
+                                <td><input class="required" type="text" name="alias" value="<?php echo set_value('alias', isset($alias) ? $alias : "");?>" ></td>
                             </tr>
 
                         </table>
@@ -69,44 +69,44 @@
                     
 	            
                     <div class="box" >
-	      	        <span class="header multilang" ><?=lang('label_text');?></span>
+	      	        <span class="header multilang" ><?php echo lang('label_text');?></span>
                         <div class="editor_div" >
-                            <textarea name="text" class="editor"  ><?=set_value('text', isset($text) ? $text : "");?></textarea>
+                            <textarea name="text" class="editor"  ><?php echo set_value('text', isset($text) ? $text : "");?></textarea>
                           
                             <div class="editor_options" >
 
-                                <a href  = "<?=site_url('articles/index/simple_ajax');?>"
+                                <a href  = "<?php echo site_url('articles/index/simple_ajax');?>"
                                    class = "load_jquery_ui_iframe"
-                                   title = "<?=lang('label_select').' '.lang('label_article');?>"
+                                   title = "<?php echo lang('label_select').' '.lang('label_article');?>"
                                    lang  = "dialog-select-article" >
-                                    <img src="<?=base_url('img/article.png');?>" >
-                                    <span><?=lang('label_article');?></span>
+                                    <img src="<?php echo base_url('img/article.png');?>" >
+                                    <span><?php echo lang('label_article');?></span>
                                 </a>
 
-                                <a href = "<?=site_url('media/browse');?>"
+                                <a href = "<?php echo site_url('media/browse');?>"
                                    class = "load_jquery_ui_iframe"
-                                   title = "<?=lang('label_browse').' '.lang('label_media');?>"
+                                   title = "<?php echo lang('label_browse').' '.lang('label_media');?>"
                                    lang = "dialog-media-browser" >
-                                    <img src="<?=base_url('img/image.png');?>" >
-                                    <span><?=lang('label_image');?> / <?=lang('label_video');?></span>
+                                    <img src="<?php echo base_url('img/image.png');?>" >
+                                    <span><?php echo lang('label_image');?> / <?php echo lang('label_video');?></span>
                                 </a>
                                 
-                                <a href = "<?=site_url('modules/article_list');?>"
+                                <a href = "<?php echo site_url('modules/article_list');?>"
                                    class = "load_jquery_ui_iframe"
-                                   title = "<?=lang('label_select');?> <?=lang('label_module');?>"
+                                   title = "<?php echo lang('label_select');?> <?php echo lang('label_module');?>"
                                    lang = "dialog-select-module" >
-                                    <img src="<?=base_url('img/module.png');?>" >
-                                    <span><?=lang('label_module');?></span>
+                                    <img src="<?php echo base_url('img/module.png');?>" >
+                                    <span><?php echo lang('label_module');?></span>
                                 </a>                               
                                 
                                 <a href="#" onclick="tinyMCE.execCommand('mceInsertContent', false, '<hr class=pagebreak />');return false;" >
-                                    <img src="<?=base_url('img/page_break.png');?>" >
-                                    <span><?=lang('label_page_break');?></span>
+                                    <img src="<?php echo base_url('img/page_break.png');?>" >
+                                    <span><?php echo lang('label_page_break');?></span>
                                 </a>
 
                                 <a href="#" onclick="tinyMCE.execCommand('mceInsertContent', false, '<hr class=readmore />');return false;" >
-                                    <img src="<?=base_url('img/read_more.png');?>" >
-                                    <span><?=lang('label_read_more');?></span>
+                                    <img src="<?php echo base_url('img/read_more.png');?>" >
+                                    <span><?php echo lang('label_read_more');?></span>
                                 </a>
                                 
                             </div>
@@ -117,24 +117,24 @@
 	            </div>
 		    
 		    <div class="box" >
-	      	        <span class="header" ><?=lang('label_metadata');?></span>
+	      	        <span class="header" ><?php echo lang('label_metadata');?></span>
 	                
                         <div class="box_content" >
                             <table class="box_table" cellpadding="0" cellspacing="0" >
 
                                 <tr>	      			
-                                    <th><label class="multilang" ><?=lang('label_keywords');?>:</label></th>
+                                    <th><label class="multilang" ><?php echo lang('label_keywords');?>:</label></th>
                                     <td>
-                                        <textarea name="meta_keywords" ><?=set_value('meta_keywords', isset($meta_keywords) ? $meta_keywords : "");?></textarea> 
+                                        <textarea name="meta_keywords" ><?php echo set_value('meta_keywords', isset($meta_keywords) ? $meta_keywords : "");?></textarea> 
                                     </td>
                                 </tr>
 
                                 <tr><td colspan="2" class="empty_line" ></td></tr>
                                 
                                 <tr>	      			
-                                    <th><label class="multilang" ><?=lang('label_description');?>:</label></th>
+                                    <th><label class="multilang" ><?php echo lang('label_description');?>:</label></th>
                                     <td>
-                                        <textarea name="meta_description" ><?=set_value('meta_description', isset($meta_description) ? $meta_description : "");?></textarea>                                            
+                                        <textarea name="meta_description" ><?php echo set_value('meta_description', isset($meta_description) ? $meta_description : "");?></textarea>                                            
                                     </td>
                                 </tr>
                                 
@@ -153,7 +153,7 @@
                     <?php $this->load->view('translation'); ?>                    
 	      
 	            <div class="box" >
-	      	        <span class="header" ><?=lang('label_options');?></span>
+	      	        <span class="header" ><?php echo lang('label_options');?></span>
 	                
                         <div class="box_content" >
                             <table class="box_table" cellpadding="0" cellspacing="0" >
@@ -163,10 +163,10 @@
                                 <tr><td colspan="2" class="empty_line" ></td></tr>
 
                                 <tr>	      			
-                                    <th><label><?=lang('label_status');?>:</label></th>
+                                    <th><label><?php echo lang('label_status');?>:</label></th>
                                     <td>
                                         <select name="status" >
-                                            <?=create_options_array($this->config->item('statuses'), set_value('status', isset($status) ? $status : ""));?>
+                                            <?php echo create_options_array($this->config->item('statuses'), set_value('status', isset($status) ? $status : ""));?>
                                         </select>
                                     </td>
                                 </tr>
@@ -174,11 +174,11 @@
                                 <tr><td colspan="2" class="empty_line" ></td></tr>
 
                                 <tr>	      			
-                                    <th><label><?=lang('label_language');?>:</label></th>
+                                    <th><label><?php echo lang('label_language');?>:</label></th>
                                     <td>
                                         <select name="show_in_language" >
-                                            <option value="all" ><?=lang('label_all');?></option>
-                                            <?=create_options('languages', 'id', 'title', set_value('language', isset($show_in_language) ? $show_in_language : ""), array('status' => 'yes') );?>
+                                            <option value="all" ><?php echo lang('label_all');?></option>
+                                            <?php echo create_options('languages', 'id', 'title', set_value('language', isset($show_in_language) ? $show_in_language : ""), array('status' => 'yes') );?>
                                         </select>
                                     </td>
                                 </tr>
@@ -188,10 +188,10 @@
                                 <tr><td colspan="2" class="empty_line" ></td></tr>
                                 
                                 <tr>	      			
-                                    <th><label><?=lang('label_show_title');?>:</label></th>
+                                    <th><label><?php echo lang('label_show_title');?>:</label></th>
                                     <td>
                                         <select name="show_title" >
-                                            <?=create_options_array($this->config->item('yes_no'), set_value('show_title', isset($show_title) ? $show_title : ""));?>
+                                            <?php echo create_options_array($this->config->item('yes_no'), set_value('show_title', isset($show_title) ? $show_title : ""));?>
                                         </select>
                                     </td>
                                 </tr>
@@ -199,10 +199,10 @@
 				<tr><td colspan="2" class="empty_line" ></td></tr>
                                 
                                 <tr>	      			
-                                    <th><label><?=lang('label_show_comments');?>:</label></th>
+                                    <th><label><?php echo lang('label_show_comments');?>:</label></th>
                                     <td>
                                         <select name="params[show_comments]" >
-                                            <?=create_options_array($this->config->item('yes_no'), set_value('params[show_comments]', isset($params['show_comments']) ? $params['show_comments'] : ""));?>
+                                            <?php echo create_options_array($this->config->item('yes_no'), set_value('params[show_comments]', isset($params['show_comments']) ? $params['show_comments'] : ""));?>
                                         </select>
                                     </td>
                                 </tr>
@@ -219,7 +219,7 @@
                     </div>
                     
                     <div class="box" >
-	      	        <span class="header" ><?=lang('label_images');?></span>
+	      	        <span class="header" ><?php echo lang('label_images');?></span>
                         
                         <div class="box_content" >
                             
@@ -228,24 +228,24 @@
                                 <?php $images = set_value('params[images]', isset($params['images']) ? $params['images'] : array());
                                       foreach($images as $image){ ?>
                                 <li>
-                                    <input type="hidden" value="<?=(is_array($image) ? $image['id'] : $image);?>" name="params[images][]">
+                                    <input type="hidden" value="<?php echo (is_array($image) ? $image['id'] : $image);?>" name="params[images][]">
                                     
                                     <table>
                                         <tr>
                                             <td class="img" >
 						<?php if(is_array($image)){ ?>
-						<img src="<?=base_url('../'.$this->config->item('images_dir').'/'.$image['id'].'.'.$image['ext']);?>" >
+						<img src="<?php echo base_url('../'.$this->config->item('images_dir').'/'.$image['id'].'.'.$image['ext']);?>" >
                                                 <?php }elseif(is_dir('../'.$image)){ ?>
-                                                <img class="directory" src="<?=base_url('img/media/iconFolder.png');?>" >                                                
+                                                <img class="directory" src="<?php echo base_url('img/media/iconFolder.png');?>" >                                                
 						<?php }else{ ?>
-                                                <img src="<?=base_url('../'.$image);?>" >
+                                                <img src="<?php echo base_url('../'.$image);?>" >
                                                 <?php } ?>
                                             </td>
                                             
-                                            <td><?=(is_array($image) ? $image['title'] : $image);?></td>
+                                            <td><?php echo (is_array($image) ? $image['title'] : $image);?></td>
                                             
                                             <td class="actions" >
-                                                <img class="handle" src="<?=base_url('img/iconMove.png');?>" >
+                                                <img class="handle" src="<?php echo base_url('img/iconMove.png');?>" >
                                                 <a class="styled delete" >&nbsp;</a>
                                             </td>
                                             
@@ -257,37 +257,37 @@
                                 
                             </ol>
                             
-                            <a href="<?=site_url('media/browse/article');?>"
+                            <a href="<?php echo site_url('media/browse/article');?>"
                                class = "load_jquery_ui_iframe styled add"
-                               title="<?=lang('label_article');?> <?=lang('label_images');?>"
-                               lang="dialog-article-images" ><?=lang('label_media');?></a>
+                               title="<?php echo lang('label_article');?> <?php echo lang('label_images');?>"
+                               lang="dialog-article-images" ><?php echo lang('label_media');?></a>
                             
-			    <a href="<?=site_url('components/gallery/images/index/simple_ajax');?>"
+			    <a href="<?php echo site_url('components/gallery/images/index/simple_ajax');?>"
                                class = "load_jquery_ui_iframe styled add"
-                               title="<?=lang('label_article');?> <?=lang('label_images');?>"
-                               lang="dialog-article-images" ><?=lang('label_gallery');?></a>
+                               title="<?php echo lang('label_article');?> <?php echo lang('label_images');?>"
+                               lang="dialog-article-images" ><?php echo lang('label_gallery');?></a>
 			   			    
                         </div>
                     </div>
                     
                     <?php if(isset($created_by)){ ?>
                     <div class="box" >
-	      	        <span class="header" ><?=lang('label_information');?></span>
+	      	        <span class="header" ><?php echo lang('label_information');?></span>
                         
                         <div class="box_content" >
                             <table class="box_table" cellpadding="0" cellspacing="0" >
 
                                 <tr>	      			
-                                    <th><label><?=lang('label_created_by');?>:</label></th>
+                                    <th><label><?php echo lang('label_created_by');?>:</label></th>
                                     <td>
-                                        <strong><?=User::getDetails($created_by, 'user');?></strong>
+                                        <strong><?php echo User::getDetails($created_by, 'user');?></strong>
                                     </td>
                                 </tr>                                                       
 
                                 <tr>	      			
-                                    <th><label><?=lang('label_created_on');?>:</label></th>
+                                    <th><label><?php echo lang('label_created_on');?>:</label></th>
                                     <td>
-                                        <strong><?=$created_on;?></strong>
+                                        <strong><?php echo $created_on;?></strong>
                                     </td>
                                 </tr>
                                 
@@ -295,16 +295,16 @@
                                 <tr><td colspan="2" class="empty_line" ></td></tr>
 
                                 <tr>	      			
-                                    <th><label><?=lang('label_updated_by');?>:</label></th>
+                                    <th><label><?php echo lang('label_updated_by');?>:</label></th>
                                     <td>
-                                        <strong><?=isset($updated_by) ? User::getDetails($updated_by, 'user') : "";?></strong>
+                                        <strong><?php echo isset($updated_by) ? User::getDetails($updated_by, 'user') : "";?></strong>
                                     </td>
                                 </tr>
 
                                 <tr>	      			
-                                    <th><label><?=lang('label_updated_on');?>:</label></th>
+                                    <th><label><?php echo lang('label_updated_on');?>:</label></th>
                                     <td>
-                                        <strong><?=isset($updated_on) ? $updated_on : "";?></strong>
+                                        <strong><?php echo isset($updated_on) ? $updated_on : "";?></strong>
                                     </td>
                                 </tr>
                                 <?php } ?>
@@ -314,13 +314,13 @@
                                     <td style="text-align: right;">
 					
 					<?php if($this->uri->segment(4) == 'history'){ ?>
-					<a href="<?=site_url('articles/edit/'.$id);?>" >Текуща версия</a> | 
+					<a href="<?php echo site_url('articles/edit/'.$id);?>" >Текуща версия</a> | 
 					<?php } ?>
 					
-                                        <a href = "<?=site_url('/articles/history/'.$id);?>"
+                                        <a href = "<?php echo site_url('/articles/history/'.$id);?>"
                                            class = "load_jquery_ui_iframe"
-                                           title = "<?=lang('label_article');?> <?=lang('label_history');?>"
-                                           lang = "dialog-article-history" ><?=lang('show_full_history');?></a>
+                                           title = "<?php echo lang('label_article');?> <?php echo lang('label_history');?>"
+                                           lang = "dialog-article-history" ><?php echo lang('show_full_history');?></a>
                                     </td>
                                 </tr>
                                 

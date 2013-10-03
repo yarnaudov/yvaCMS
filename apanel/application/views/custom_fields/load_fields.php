@@ -3,7 +3,7 @@
 <tr>
     <td colspan="2" class="empty_line" >
         <fieldset style="border:none;border-top: 1px solid #aaa;padding-left: 10px;">
-            <legend style="font-weight: bold;padding: 0 5px;" ><?=lang('label_custom_fields');?></legend>
+            <legend style="font-weight: bold;padding: 0 5px;" ><?php echo lang('label_custom_fields');?></legend>
         </fieldset>
     </td>
 </tr>

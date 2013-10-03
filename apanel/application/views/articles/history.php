@@ -5,27 +5,27 @@
 
         <tr>
             <th style="width:3%;" >#</th>
-            <th><?=lang('label_date');?></th>
-            <th><?=lang('label_language');?></th>
-            <th><?=lang('label_user');?></th>
+            <th><?php echo lang('label_date');?></th>
+            <th><?php echo lang('label_language');?></th>
+            <th><?php echo lang('label_user');?></th>
         </tr>
 
         <?php foreach($history as $key => $value){ ?>
         <tr>
-            <td><?=($key+1);?></td>
+            <td><?php echo ($key+1);?></td>
             <td>
-                <a href="<?=site_url('articles/edit/'.$value['article_id'].'/history/'.$value['updated_on']);?>" >
-                    <?=$value['updated_on'];?>
+                <a href="<?php echo site_url('articles/edit/'.$value['article_id'].'/history/'.$value['updated_on']);?>" >
+                    <?php echo $value['updated_on'];?>
                 </a>
             </td>
-            <td><?=$this->Language->getDetails($value['language_id'], 'title');?></td>
-            <td><?=$this->User->getDetails($value['updated_by'], 'user');?></td>
+            <td><?php echo $this->Language->getDetails($value['language_id'], 'title');?></td>
+            <td><?php echo $this->User->getDetails($value['updated_by'], 'user');?></td>
         </tr>
         <?php } ?>
 
         <?php if(count($history) == 0){ ?>
         <tr>
-            <td colspan="9" ><?=lang('msg_no_results_found');?></td>
+            <td colspan="9" ><?php echo lang('msg_no_results_found');?></td>
         </tr>
         <?php } ?>
             

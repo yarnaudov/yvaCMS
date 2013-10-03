@@ -1,13 +1,13 @@
 
-<form name="add" action="<?=current_url();?>" method="post" >
+<form name="add" action="<?php echo current_url();?>" method="post" >
 	
     
     <!-- start page header -->
     <div id="page_header" >
 	
         <div class="text" >
-	    <img src="<?=base_url('img/iconMenus_25.png');?>" >
-            <span><?=lang('label_menus');?></span>
+	    <img src="<?php echo base_url('img/iconMenus_25.png');?>" >
+            <span><?php echo lang('label_menus');?></span>
             <span>&nbsp;»&nbsp;</span>
             <span>
               <?php if(isset($menu_id)){
@@ -21,16 +21,16 @@
 	
 	<div class="actions" >
 		
-	    <button type="submit" name="save"  class="styled save"   ><?=lang('label_save');?></button>
-	    <button type="submit" name="apply" class="styled apply"  ><?=lang('label_apply');?></button>
-	    <a href="<?=site_url('menus/');?>" class="styled cancel" ><?=lang('label_cancel');?></a>
+	    <button type="submit" name="save"  class="styled save"   ><?php echo lang('label_save');?></button>
+	    <button type="submit" name="apply" class="styled apply"  ><?php echo lang('label_apply');?></button>
+	    <a href="<?php echo site_url('menus/');?>" class="styled cancel" ><?php echo lang('label_cancel');?></a>
 		
 	</div>
 	
     </div>
     <!-- end page header -->
     
-    <?=$this->load->view('messages');?>
+    <?php echo $this->load->view('messages');?>
     
     <!-- start page content -->
     <div id="page_content" >
@@ -44,21 +44,21 @@
 	            
                     <!-- mandatory information  -->
 	            <div class="box" >
-	      	      <span class="header" ><?=lang('label_main_information');?></span>
+	      	      <span class="header" ><?php echo lang('label_main_information');?></span>
 	      	      
                       <div class="box_content" >
                         <table class="box_table" cellpadding="0" cellspacing="0" >
 
                             <tr>
-                                <th><label class="multilang" ><?=lang('label_title');?>:</label></th>
-                                <td><input class="required" type="text" name="title" value="<?=set_value('title', isset($title) ? $title : "");?>" ></td>
+                                <th><label class="multilang" ><?php echo lang('label_title');?>:</label></th>
+                                <td><input class="required" type="text" name="title" value="<?php echo set_value('title', isset($title) ? $title : "");?>" ></td>
                             </tr>
 
                             <tr><td colspan="2" class="empty_line" ></td></tr>
 
                             <tr>
-                                <th><label><?=lang('label_alias');?>:</label></th>
-                                <td><input class="required" type="text" name="alias" value="<?=set_value('alias', isset($alias) ? $alias : "");?>" ></td>
+                                <th><label><?php echo lang('label_alias');?>:</label></th>
+                                <td><input class="required" type="text" name="alias" value="<?php echo set_value('alias', isset($alias) ? $alias : "");?>" ></td>
                             </tr>
 
                         </table>
@@ -68,13 +68,13 @@
 	            <!-- mandatory information  -->
                     
 	            <div class="box" >
-	      	        <span class="header" ><?=lang('label_advanced');?>&nbsp;<?=lang('label_options');?></span>
+	      	        <span class="header" ><?php echo lang('label_advanced');?>&nbsp;<?php echo lang('label_options');?></span>
 	                
                         <div class="box_content" >
                             <table class="box_table" cellpadding="0" cellspacing="0" >
 
                                 <tr>	      			
-                                    <th><label><?=lang('label_type');?>:</label></th>
+                                    <th><label><?php echo lang('label_type');?>:</label></th>
                                     <td>
                                         
                                         <?php 
@@ -103,17 +103,17 @@
 
                                         <span id="type_label" >
                                         <?php if(isset($type_label)){ ?>
-                                        <strong><?=$type_label;?></strong> -
+                                        <strong><?php echo $type_label;?></strong> -
                                         <?php } ?>
                                         </span>
                                         
-                                        <input type="hidden" class="type" name="type" value="<?=$type;?>" >
+                                        <input type="hidden" class="type" name="type" value="<?php echo $type;?>" >
                                                    
-                                        <a href  = "<?=site_url('menus/types');?>"
+                                        <a href  = "<?php echo site_url('menus/types');?>"
                                            class = "load_jquery_ui_iframe"
-                                           title = "<?=lang('label_select')." ".lang('label_menu')." ".lang('label_type');?>"
+                                           title = "<?php echo lang('label_select')." ".lang('label_menu')." ".lang('label_type');?>"
                                            lang  = "dialog-select-menu-type" >
-                                            <?=lang('label_select');?>
+                                            <?php echo lang('label_select');?>
                                         </a>
                                     </td>
                                 </tr>
@@ -130,38 +130,38 @@
                     </div>
                     
                     <div class="box" >
-	      	        <span class="header multilang" ><?=lang('label_description');?></span>
+	      	        <span class="header multilang" ><?php echo lang('label_description');?></span>
                         <div class="editor_div" >
-                          <textarea name="description" class="editor" ><?=set_value('description', isset($description) ? $description : "");?></textarea>
+                          <textarea name="description" class="editor" ><?php echo set_value('description', isset($description) ? $description : "");?></textarea>
                         </div>
                         
                         <div id="menu_description_as_page_title" >
                             <?php $description_as_page_title = set_value('description_as_page_title', isset($description_as_page_title) ? $description_as_page_title : ""); ?>
-                            <input type="checkbox" value="yes" name="description_as_page_title" id="description_as_page_title" <?=$description_as_page_title == 'yes' ? 'checked' : ''; ?> >
-                            <label for="description_as_page_title" ><?=lang('label_description_as_page_title');?></label>    
+                            <input type="checkbox" value="yes" name="description_as_page_title" id="description_as_page_title" <?php echo $description_as_page_title == 'yes' ? 'checked' : ''; ?> >
+                            <label for="description_as_page_title" ><?php echo lang('label_description_as_page_title');?></label>    
                         </div>
                                                 
 	            </div>
                     
                     <div class="box" >
-	      	        <span class="header" ><?=lang('label_metadata');?></span>
+	      	        <span class="header" ><?php echo lang('label_metadata');?></span>
 	                
                         <div class="box_content" >
                             <table class="box_table" cellpadding="0" cellspacing="0" >
 
                                 <tr>	      			
-                                    <th><label class="multilang" ><?=lang('label_keywords');?>:</label></th>
+                                    <th><label class="multilang" ><?php echo lang('label_keywords');?>:</label></th>
                                     <td>
-                                        <textarea name="meta_keywords" ><?=set_value('meta_keywords', isset($meta_keywords) ? $meta_keywords : "");?></textarea> 
+                                        <textarea name="meta_keywords" ><?php echo set_value('meta_keywords', isset($meta_keywords) ? $meta_keywords : "");?></textarea> 
                                     </td>
                                 </tr>
 
                                 <tr><td colspan="2" class="empty_line" ></td></tr>
                                 
                                 <tr>	      			
-                                    <th><label class="multilang" ><?=lang('label_description');?>:</label></th>
+                                    <th><label class="multilang" ><?php echo lang('label_description');?>:</label></th>
                                     <td>
-                                        <textarea name="meta_description" ><?=set_value('meta_description', isset($meta_description) ? $meta_description : "");?></textarea>                                            
+                                        <textarea name="meta_description" ><?php echo set_value('meta_description', isset($meta_description) ? $meta_description : "");?></textarea>                                            
                                     </td>
                                 </tr>
                                 
@@ -180,7 +180,7 @@
                     <?php $this->load->view('translation'); ?>                    
 	      
 	            <div class="box" >
-	      	        <span class="header" ><?=lang('label_options');?></span>
+	      	        <span class="header" ><?php echo lang('label_options');?></span>
 	                
                         <div class="box_content" >
                             <table class="box_table" cellpadding="0" cellspacing="0" >
@@ -190,10 +190,10 @@
                                 <tr><td colspan="2" class="empty_line" ></td></tr>
 
                                 <tr>	      			
-                                    <th><label><?=lang('label_status');?>:</label></th>
+                                    <th><label><?php echo lang('label_status');?>:</label></th>
                                     <td>
                                         <select name="status" >
-                                            <?=create_options_array($this->config->item('statuses'), set_value('status', isset($status) ? $status : ""));?>
+                                            <?php echo create_options_array($this->config->item('statuses'), set_value('status', isset($status) ? $status : ""));?>
                                         </select>
                                     </td>
                                 </tr>
@@ -201,11 +201,11 @@
                                 <tr><td colspan="2" class="empty_line" ></td></tr>
                                 
                                 <tr>	      			
-                                    <th><label><?=lang('label_default');?>:</label></th>
+                                    <th><label><?php echo lang('label_default');?>:</label></th>
                                     <td>
                                         <?php if(!isset($default)){$default = 'no';} ?>
-                                        <select name="default" <?=$default == 'yes' ? 'disabled' : '';?> >
-                                            <?=create_options_array($this->config->item('yes_no'), set_value('default', isset($default) ? $default : ""));?>
+                                        <select name="default" <?php echo $default == 'yes' ? 'disabled' : '';?> >
+                                            <?php echo create_options_array($this->config->item('yes_no'), set_value('default', isset($default) ? $default : ""));?>
                                         </select>
                                     </td>
                                 </tr>
@@ -213,11 +213,11 @@
                                 <tr><td colspan="2" class="empty_line" ></td></tr>
 
                                 <tr>	      			
-                                    <th><label><?=lang('label_language');?>:</label></th>
+                                    <th><label><?php echo lang('label_language');?>:</label></th>
                                     <td>
                                         <select name="show_in_language" >
-                                            <option value="all" ><?=lang('label_all');?></option>
-                                            <?=create_options('languages', 'id', 'title', set_value('show_in_language', isset($show_in_language) ? $show_in_language : ""), array('status' => 'yes') );?>
+                                            <option value="all" ><?php echo lang('label_all');?></option>
+                                            <?php echo create_options('languages', 'id', 'title', set_value('show_in_language', isset($show_in_language) ? $show_in_language : ""), array('status' => 'yes') );?>
                                         </select>
                                     </td>
                                 </tr>
@@ -225,10 +225,10 @@
                                 <tr><td colspan="2" class="empty_line" ></td></tr>
                                 
                                 <tr>	      			
-                                    <th><label><?=lang('label_access');?>:</label></th>
+                                    <th><label><?php echo lang('label_access');?>:</label></th>
                                     <td>
                                         <select name="access" >
-                                            <?=create_options_array($this->config->item('accesses'), set_value('access', isset($access) ? $access : "") );?>
+                                            <?php echo create_options_array($this->config->item('accesses'), set_value('access', isset($access) ? $access : "") );?>
                                         </select>
                                     </td>
                                 </tr>
@@ -236,10 +236,10 @@
                                 <tr><td colspan="2" class="empty_line" ></td></tr>
                                 
                                 <tr>	      			
-                                    <th><label><?=lang('label_open_in');?>:</label></th>
+                                    <th><label><?php echo lang('label_open_in');?>:</label></th>
                                     <td>
                                         <select name="target" >
-                                            <?=create_options_array($this->config->item('menu_targets'), set_value('target', isset($target) ? $target : "") );?>
+                                            <?php echo create_options_array($this->config->item('menu_targets'), set_value('target', isset($target) ? $target : "") );?>
                                         </select>
                                     </td>
                                 </tr>
@@ -247,11 +247,11 @@
                                 <tr><td colspan="2" class="empty_line" ></td></tr>
 
                                 <tr>	      			
-                                    <th><label><?=lang('label_parent');?>:</label></th>
+                                    <th><label><?php echo lang('label_parent');?>:</label></th>
                                     <td>                                      
                                         <select name="parent" class="combobox" >
                                             <option value="none" >- - -</option>
-                                            <?=create_options_array($menus, set_value('parent', isset($parent_id) ? $parent_id : "") );?>
+                                            <?php echo create_options_array($menus, set_value('parent', isset($parent_id) ? $parent_id : "") );?>
                                         </select>
                                     </td>
                                 </tr>
@@ -259,17 +259,17 @@
                                 <tr><td colspan="2" class="empty_line" ></td></tr>                               
                                 
                                 <tr>	      			
-                                    <th><label><?=lang('label_image');?>:</label></th>
+                                    <th><label><?php echo lang('label_image');?>:</label></th>
                                     <td>
-                                        <input class="image" type="text" readonly name="image" id="menu_image" value="<?=set_value('image', isset($image) ? $image : "");?>" style="width: 58%">
+                                        <input class="image" type="text" readonly name="image" id="menu_image" value="<?php echo set_value('image', isset($image) ? $image : "");?>" style="width: 58%">
                                        
-                                        <a href="<?=site_url('media/browse');?>" 
+                                        <a href="<?php echo site_url('media/browse');?>" 
                                            class = "load_jquery_ui_iframe"
-                                           title="<?=lang('label_browse').' '.lang('label_media');?>"
+                                           title="<?php echo lang('label_browse').' '.lang('label_media');?>"
                                            lang  = "dialog-media-browser"
-					   target = "menu_image" ><?=lang('label_select');?></a>&nbsp;|&nbsp;<a href  = "#"
+					   target = "menu_image" ><?php echo lang('label_select');?></a>&nbsp;|&nbsp;<a href  = "#"
                                                                                                                 class = "clear_jquery_ui_inputs"
-                                                                                                                lang  = "image" ><?=lang('label_clear');?></a>
+                                                                                                                lang  = "image" ><?php echo lang('label_clear');?></a>
                                                                                 
                                     </td>
                                 </tr>
@@ -277,10 +277,10 @@
 				<tr><td colspan="2" class="empty_line" ></td></tr>
                                 
                                 <tr>	      			
-                                    <th><label><?=lang('label_show_title');?>:</label></th>
+                                    <th><label><?php echo lang('label_show_title');?>:</label></th>
                                     <td>
                                         <select name="show_title" >
-                                            <?=create_options_array($this->config->item('yes_no'), set_value('show_title', isset($show_title) ? $show_title : ""));?>
+                                            <?php echo create_options_array($this->config->item('yes_no'), set_value('show_title', isset($show_title) ? $show_title : ""));?>
                                         </select>
                                     </td>
                                 </tr>
@@ -290,11 +290,11 @@
                                 <tr><td colspan="2" class="empty_line" ></td></tr>
                                 
                                 <tr>	      			
-                                    <th><label><?=lang('label_content_template');?>:</label></th>
+                                    <th><label><?php echo lang('label_content_template');?>:</label></th>
                                     <td>
 
                                         <select name="content_template" >
-                                            <option value="default" ><?=lang('label_default');?></option>                                            
+                                            <option value="default" ><?php echo lang('label_default');?></option>                                            
                                             <?php foreach($this->content_templates as $template_file ){
                                                       echo '<option '.($template_file == set_value('content_template', isset($content_template) ? $content_template : "") ? "selected" : "").' value="'.$template_file.'" >'.$template_file.'</option>';
                                                   } ?>
@@ -315,22 +315,22 @@
                     
                     <?php if(isset($created_by)){ ?>
                     <div class="box" >
-	      	        <span class="header" ><?=lang('label_information');?></span>
+	      	        <span class="header" ><?php echo lang('label_information');?></span>
                         
                         <div class="box_content" >
                             <table class="box_table" cellpadding="0" cellspacing="0" >
 
                                 <tr>	      			
-                                    <th><label><?=lang('label_created_by');?>:</label></th>
+                                    <th><label><?php echo lang('label_created_by');?>:</label></th>
                                     <td>
-                                        <strong><?=User::getDetails($created_by, 'user');?></strong>
+                                        <strong><?php echo User::getDetails($created_by, 'user');?></strong>
                                     </td>
                                 </tr>                                                       
 
                                 <tr>	      			
-                                    <th><label><?=lang('label_created_on');?>:</label></th>
+                                    <th><label><?php echo lang('label_created_on');?>:</label></th>
                                     <td>
-                                        <strong><?=$created_on;?></strong>
+                                        <strong><?php echo $created_on;?></strong>
                                     </td>
                                 </tr>
                                 
@@ -338,16 +338,16 @@
                                 <tr><td colspan="2" class="empty_line" ></td></tr>
 
                                 <tr>	      			
-                                    <th><label><?=lang('label_updated_by');?>:</label></th>
+                                    <th><label><?php echo lang('label_updated_by');?>:</label></th>
                                     <td>
-                                        <strong><?=isset($updated_by) ? User::getDetails($updated_by, 'user') : "";?></strong>
+                                        <strong><?php echo isset($updated_by) ? User::getDetails($updated_by, 'user') : "";?></strong>
                                     </td>
                                 </tr>
 
                                 <tr>	      			
-                                    <th><label><?=lang('label_updated_on');?>:</label></th>
+                                    <th><label><?php echo lang('label_updated_on');?>:</label></th>
                                     <td>
-                                        <strong><?=isset($updated_on) ? $updated_on : "";?></strong>
+                                        <strong><?php echo isset($updated_on) ? $updated_on : "";?></strong>
                                     </td>
                                 </tr>
                                 <?php } ?>

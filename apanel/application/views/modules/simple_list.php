@@ -5,8 +5,8 @@
           
         <tr>
             <th style="width: 7px;" ></th>
-            <th style="width: 212px;"><?=lang('label_title');?></th>
-            <th><?=lang('label_type');?></th>
+            <th style="width: 212px;"><?php echo lang('label_title');?></th>
+            <th><?php echo lang('label_type');?></th>
         </tr>
             
     </table>
@@ -18,12 +18,12 @@
             <?php foreach($modules as $numb => $module){ ?>
             <tr>
                 <td style="width: 1%;">
-                    <input id="module<?=$module['id'];?>" type="radio" value="<?=$module['id'];?>" name="modules" >
+                    <input id="module<?php echo $module['id'];?>" type="radio" value="<?php echo $module['id'];?>" name="modules" >
                 </td>
                 <td>
-                    <label for="module<?=$module['id'];?>" >
-                      <span class="title" ><?=$module['title'];?></span>
-                      <span class="type"  ><?=lang('label_'.$module['type']);?></span>
+                    <label for="module<?php echo $module['id'];?>" >
+                      <span class="title" ><?php echo $module['title'];?></span>
+                      <span class="type"  ><?php echo lang('label_'.$module['type']);?></span>
                     </label>
                 </td>
             </tr>    
@@ -38,7 +38,7 @@
         <div class="modules_params_form" >
             
             <div>
-                <label><?=lang('label_type');?>:</label>
+                <label><?php echo lang('label_type');?>:</label>
                 <select name="type" >
                     <option value="normal"       >Normal</option>
                     <option value="popup"        >Popup</option>
@@ -47,19 +47,19 @@
             </div>
             
             <div>            
-                <label><?=lang('label_label');?>:</label>
+                <label><?php echo lang('label_label');?>:</label>
                 <input type="text" name="label" class="popup" >
             </div>
             
             <div>            
-                <label><?=lang('label_button');?> <?=lang('label_cancel');?>:</label>
+                <label><?php echo lang('label_button');?> <?php echo lang('label_cancel');?>:</label>
                 <input type="checkbox" name="close_button" class="popup" >
             </div>
             
         </div>
         
-        <button class="styled save" ><?=lang('label_save');?></button>
-        <button class="styled cancel" ><?=lang('label_cancel');?></button>
+        <button class="styled save" ><?php echo lang('label_save');?></button>
+        <button class="styled cancel" ><?php echo lang('label_cancel');?></button>
         
     </div>
     
@@ -118,7 +118,7 @@ $('.save').click(function(){
     
     }
     
-    parent.tinyMCE.execCommand('mceInsertContent', false, '<img src=\"<?=APANEL_DIR;?>/img/module.png\" alt=\"'+params+'\" class=\"module\" title=\"'+title+'\" >');
+    parent.tinyMCE.execCommand('mceInsertContent', false, '<img src=\"<?php echo APANEL_DIR;?>/img/module.png\" alt=\"'+params+'\" class=\"module\" title=\"'+title+'\" >');
     parent.$('#jquery_ui').dialog('close');
 
     return false;

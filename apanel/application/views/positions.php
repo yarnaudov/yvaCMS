@@ -1,12 +1,12 @@
 <tr>	      			
-    <th><label><?=lang('label_position');?>:</label></th>
+    <th><label><?php echo lang('label_position');?>:</label></th>
     <td>
 
         <input type="text" name="position" disabled style="display: none;" >
 
         <select name="position" >
-            <?=create_options_array($positions, set_value('position', isset($position) ? $position : ""));?>
-            <option value="value" >(<?=lang('label_value');?>)</option>
+            <?php echo create_options_array($positions, set_value('position', isset($position) ? $position : ""));?>
+            <option value="value" >(<?php echo lang('label_value');?>)</option>
         </select>
 
         <script type="text/javascript" >
@@ -29,12 +29,12 @@
                     else if($('#custom_fields').length == 1){
 
                         var posts = new Object();
-			posts.extension      = '<?=$this->extension;?>';
-			posts.model          = '<?=$this->model;?>';
-			posts.element_id     = '<?=$this->element_id;?>';
+			posts.extension      = '<?php echo $this->extension;?>';
+			posts.model          = '<?php echo $this->model;?>';
+			posts.element_id     = '<?php echo $this->element_id;?>';
 			posts.extension_key  = $(this).val();
 			
-                        $.post('<?=site_url('home/ajax/load_custom_fields');?>', posts, function(data){
+                        $.post('<?php echo site_url('home/ajax/load_custom_fields');?>', posts, function(data){
 			    						    
                             $('#custom_fields').css('display', 'none');
 			    document.getElementById('custom_fields').innerHTML = data;

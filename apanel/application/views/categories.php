@@ -1,5 +1,5 @@
 <tr>	      			
-    <th><label><?=lang('label_category');?>:</label></th>
+    <th><label><?php echo lang('label_category');?>:</label></th>
     <td>
 	
 	<div class="menu_list" >
@@ -14,10 +14,10 @@
 
 		<tr>
 		    <td style="width: 1%;" >
-			<input class="required categories" type="checkbox" <?=$checked;?> name="categories[]" id="category<?=$category_id;?>" value="<?=$category_id;?>" >
+			<input class="required categories" type="checkbox" <?php echo $checked;?> name="categories[]" id="category<?php echo $category_id;?>" value="<?php echo $category_id;?>" >
 		    </td>
 		    <td>
-			<label for="category<?=$category_id;?>" ><?=$category;?></label>
+			<label for="category<?php echo $category_id;?>" ><?php echo $category;?></label>
 		    </td>
 		</tr>
 
@@ -35,16 +35,16 @@
                     $('input.categories').click(function(){
 		
 			var posts = new Object();
-			posts.extension      = '<?=$this->extension;?>';
-			posts.model          = '<?=$this->model;?>';
-			posts.element_id     = '<?=$this->element_id;?>';
+			posts.extension      = '<?php echo $this->extension;?>';
+			posts.model          = '<?php echo $this->model;?>';
+			posts.element_id     = '<?php echo $this->element_id;?>';
 			posts.extension_keys = new Array('default');
 			
 			$('input.categories:checked').each(function(){
 			    posts.extension_keys.push($(this).val());
 			});
 			
-                        $.post('<?=site_url('home/ajax/load_custom_fields');?>', posts, function(data){
+                        $.post('<?php echo site_url('home/ajax/load_custom_fields');?>', posts, function(data){
 			    						    
                             $('#custom_fields').css('display', 'none');
 			    document.getElementById('custom_fields').innerHTML = data;

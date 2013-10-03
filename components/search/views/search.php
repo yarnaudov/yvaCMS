@@ -1,11 +1,11 @@
 
 <?php !isset($articles) ? $articles = array() : ""; ?>
 
-<div><?=lang('label_search_for');?> "<?=isset($query) ? $query : ""; ?>"</div>
+<div><?php echo lang('label_search_for');?> "<?php echo isset($query) ? $query : ""; ?>"</div>
 
 <?php if(count($articles) == 0){ ?>
 
-<div><br/><?=lang('search_msg_no_results_found');?></div>
+<div><br/><?php echo lang('search_msg_no_results_found');?></div>
 
 <?php }else{ ?>
 
@@ -17,13 +17,13 @@
 
     <li>
         <?php if($menu){ ?>
-        <a href="<?=site_url($menu['alias']);?>" >
+        <a href="<?php echo site_url($menu['alias']);?>" >
         <?php }else{ ?>
-        <a href="<?=site_url('article:'.$article['alias']);?>" >
+        <a href="<?php echo site_url('article:'.$article['alias']);?>" >
         <?php } ?>
-            <?=$article['title'];?>
+            <?php echo $article['title'];?>
         </a>
-        <div><?=word_limiter(strip_tags($article['text']), 10);?></div>
+        <div><?php echo word_limiter(strip_tags($article['text']), 10);?></div>
     </li>
 
     <?php } ?>

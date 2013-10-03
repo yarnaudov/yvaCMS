@@ -3,7 +3,7 @@
 <select>
     
     <?php foreach($languages as $language){ ?>
-    <option <?=$language['abbreviation'] == get_lang() ? 'selected' : ''; ?> value="<?=base_url($language['abbreviation'].'/'.$this->uri->uri_string);?>" ><?=$language['title'];?></option>
+    <option <?php echo $language['abbreviation'] == get_lang() ? 'selected' : ''; ?> value="<?php echo base_url($language['abbreviation'].'/'.$this->uri->uri_string);?>" ><?php echo $language['title'];?></option>
     <?php } ?>
     
 </select>
@@ -28,8 +28,8 @@
                   $class = 'current '.$class;
               } ?>
     
-    <li <?=$class != '' ? 'class="'.$class.'"' : '';?> >
-        <a href="<?=base_url($language['abbreviation'].'/'.$this->uri->uri_string);?>" >
+    <li <?php echo $class != '' ? 'class="'.$class.'"' : '';?> >
+        <a href="<?php echo base_url($language['abbreviation'].'/'.$this->uri->uri_string);?>" >
              
             <?php if($module['params']['images'] == 'yes'){
                       if(!empty($language['image'])){
@@ -38,11 +38,11 @@
                           $image = 'modules/mod_language_switch/images/flag_'.$language['abbreviation'].'.png';
                       } ?>
             
-            <img src="<?=base_url($image);?>" alt="<?=$language['title'];?>" >
+            <img src="<?php echo base_url($image);?>" alt="<?php echo $language['title'];?>" >
             
             <?php } ?>
             
-            <span><?=$language['title'];?></span>
+            <span><?php echo $language['title'];?></span>
         </a>
     </li>
     

@@ -1,13 +1,13 @@
 <tr><td colspan="2" class="empty_line" ></td></tr>
                                 
 <tr>	      			
-    <th><label><?=lang('label_template');?>:</label></th>
+    <th><label><?php echo lang('label_template');?>:</label></th>
     <td>
                 
-        <select name="<?=$name;?>" >
+        <select name="<?php echo $name;?>" >
             
             <?php if(isset($default) && $default == true){ ?>
-            <option value="default" ><?=lang('label_default');?></option>
+            <option value="default" ><?php echo lang('label_default');?></option>
             <?php } ?>
 
             <?php foreach($this->templates as $template_dir => $template_files ){

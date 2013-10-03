@@ -1,13 +1,13 @@
 
-<form name="add" action="<?=current_url();?>" method="post" >
+<form name="add" action="<?php echo current_url();?>" method="post" >
 	
     
     <!-- start page header -->
     <div id="page_header" >
 	
         <div class="text" >
-            <img src="<?=base_url('img/iconBanners_25.png');?>" >
-            <span><?=lang('label_banners');?></span>
+            <img src="<?php echo base_url('img/iconBanners_25.png');?>" >
+            <span><?php echo lang('label_banners');?></span>
             <span>&nbsp;»&nbsp;</span>
             <span>
               <?php if(isset($banner_id)){
@@ -21,16 +21,16 @@
 	
 	<div class="actions" >
 		
-	    <button type="submit" name="save"   class="styled save"   ><?=lang('label_save');?></button>
-	    <button type="submit" name="apply"  class="styled apply"  ><?=lang('label_apply');?></button>
-	    <a href="<?=site_url('banners');?>" class="styled cancel" ><?=lang('label_cancel');?></a>
+	    <button type="submit" name="save"   class="styled save"   ><?php echo lang('label_save');?></button>
+	    <button type="submit" name="apply"  class="styled apply"  ><?php echo lang('label_apply');?></button>
+	    <a href="<?php echo site_url('banners');?>" class="styled cancel" ><?php echo lang('label_cancel');?></a>
 		
 	</div>
 	
     </div>
     <!-- end page header -->
         
-    <?=$this->load->view('messages');?>   
+    <?php echo $this->load->view('messages');?>   
     
     <!-- start page content -->
     <div id="page_content" >
@@ -44,14 +44,14 @@
 	            
                     <!-- mandatory information  -->
 	            <div class="box" >
-	      	      <span class="header" ><?=lang('label_main_information');?></span>
+	      	      <span class="header" ><?php echo lang('label_main_information');?></span>
 	      	      
                       <div class="box_content" >
                         <table class="box_table" cellpadding="0" cellspacing="0" >
 
                             <tr>
-                                <th><label><?=lang('label_title');?>:</label></th>
-                                <td><input class="required" type="text" name="title" value="<?=set_value('title', isset($title) ? $title : "");?>" ></td>
+                                <th><label><?php echo lang('label_title');?>:</label></th>
+                                <td><input class="required" type="text" name="title" value="<?php echo set_value('title', isset($title) ? $title : "");?>" ></td>
                             </tr>
                             
                         </table>
@@ -61,26 +61,26 @@
 	            <!-- mandatory information  -->
                     
                     <div class="box" >
-	      	        <span class="header" ><?=lang('label_advanced');?> <?=lang('label_options');?></span>
+	      	        <span class="header" ><?php echo lang('label_advanced');?> <?php echo lang('label_options');?></span>
 	                
                         <div class="box_content" >
                             <table class="box_table" cellpadding="0" cellspacing="0" >
 
                                 <tr>	      			
-                                    <th><label><?=lang('label_type');?>:</label></th>
+                                    <th><label><?php echo lang('label_type');?>:</label></th>
                                     <td>
                                         
                                         <?php $type = set_value('type', isset($type) ? $type : ""); ?>
-                                        <input type="hidden" class="type" name="type" value="<?=$type;?>" >
+                                        <input type="hidden" class="type" name="type" value="<?php echo $type;?>" >
                                         
                                         <?php if(!empty($type)){ ?>
-                                        <strong><?=lang('label_'.$type);?></strong> - 
+                                        <strong><?php echo lang('label_'.$type);?></strong> - 
                                         <?php } ?>
                                         
-                                        <a href="<?=site_url('banners/types');?>"
+                                        <a href="<?php echo site_url('banners/types');?>"
                                            class = "load_jquery_ui_iframe"
-                                           title = "<?=lang('label_select').' '.lang('label_type');?>"
-                                           lang  = "dialog-select-module-type" ><?=lang('label_select');?></a>
+                                           title = "<?php echo lang('label_select').' '.lang('label_type');?>"
+                                           lang  = "dialog-select-module-type" ><?php echo lang('label_select');?></a>
                   
                                     </td>
                                 </tr>
@@ -95,14 +95,14 @@
                     </div>
 	            
                     <div class="box" >
-	      	        <span class="header multilang" ><?=lang('label_description');?></span>
+	      	        <span class="header multilang" ><?php echo lang('label_description');?></span>
                         <div class="editor_div" >
-                          <textarea name="description" class="editor" ><?=set_value('description', isset($description) ? $description : "");?></textarea>
+                          <textarea name="description" class="editor" ><?php echo set_value('description', isset($description) ? $description : "");?></textarea>
                         </div>
 	            </div>
 	            
                     <div class="box" >
-	      	      <span class="header" ><?=lang('label_display_banner_in');?></span>
+	      	      <span class="header" ><?php echo lang('label_display_banner_in');?></span>
 	      	      
                       <div class="box_content" >
                         
@@ -120,7 +120,7 @@
 	        <td class="right" >
 	      
                     <div class="box" >
-                        <span class="header" ><?=lang('label_options');?></span>
+                        <span class="header" ><?php echo lang('label_options');?></span>
                         
                         <div class="box_content" >
                             <table class="box_table" cellpadding="0" cellspacing="0" >
@@ -130,10 +130,10 @@
                                 <tr><td colspan="2" class="empty_line" ></td></tr>
                                 
                                 <tr>	      			
-                                    <th><label><?=lang('label_status');?>:</label></th>
+                                    <th><label><?php echo lang('label_status');?>:</label></th>
                                     <td>
                                         <select name="status" >
-                                            <?=create_options_array($this->config->item('statuses'), set_value('status', isset($status) ? $status : ""));?>
+                                            <?php echo create_options_array($this->config->item('statuses'), set_value('status', isset($status) ? $status : ""));?>
                                         </select>
                                     </td>
                                 </tr>
@@ -141,11 +141,11 @@
                                 <tr><td colspan="2" class="empty_line" ></td></tr>
                                                             
                                 <tr>	      			
-                                    <th><label><?=lang('label_language');?>:</label></th>
+                                    <th><label><?php echo lang('label_language');?>:</label></th>
                                     <td>
                                         <select name="show_in_language" >
-                                            <option value="all" ><?=lang('label_all');?></option>
-                                            <?=create_options('languages', 'id', 'title', set_value('show_in_language', isset($show_in_language) ? $show_in_language : ""), array('status' => 'yes') );?>
+                                            <option value="all" ><?php echo lang('label_all');?></option>
+                                            <?php echo create_options('languages', 'id', 'title', set_value('show_in_language', isset($show_in_language) ? $show_in_language : ""), array('status' => 'yes') );?>
                                         </select>
                                     </td>
                                 </tr>
@@ -155,10 +155,10 @@
                                 <tr><td colspan="2" class="empty_line" ></td></tr>
                                 
                                 <tr>	      			
-                                    <th><label><?=lang('label_show_title');?>:</label></th>
+                                    <th><label><?php echo lang('label_show_title');?>:</label></th>
                                     <td>
                                         <select name="show_title" >
-                                            <?=create_options_array($this->config->item('yes_no'), set_value('show_title', isset($show_title) ? $show_title : ""));?>
+                                            <?php echo create_options_array($this->config->item('yes_no'), set_value('show_title', isset($show_title) ? $show_title : ""));?>
                                         </select>
                                     </td>
                                 </tr>
@@ -166,9 +166,9 @@
                                 <tr><td colspan="2" class="empty_line" ></td></tr>
                                 
                                 <tr>	      			
-                                    <th><label><?=lang('label_css_class_suffix');?>:</label></th>
+                                    <th><label><?php echo lang('label_css_class_suffix');?>:</label></th>
                                     <td>
-                                        <input type="text" name="css_class_sufix" value="<?=set_value('css_class_sufix', isset($css_class_sufix) ? $css_class_sufix : "");?>"  >
+                                        <input type="text" name="css_class_sufix" value="<?php echo set_value('css_class_sufix', isset($css_class_sufix) ? $css_class_sufix : "");?>"  >
                                     </td>
                                 </tr>
                                 
@@ -187,22 +187,22 @@
                     
                     <?php if(isset($created_by)){ ?>
                     <div class="box" >
-	      	        <span class="header" ><?=lang('label_information');?></span>
+	      	        <span class="header" ><?php echo lang('label_information');?></span>
                         
                         <div class="box_content" >
                             <table class="box_table" cellpadding="0" cellspacing="0" >
 
                                 <tr>	      			
-                                    <th><label><?=lang('label_created_by');?>:</label></th>
+                                    <th><label><?php echo lang('label_created_by');?>:</label></th>
                                     <td>
-                                        <strong><?=User::getDetails($created_by, 'user');?></strong>
+                                        <strong><?php echo User::getDetails($created_by, 'user');?></strong>
                                     </td>
                                 </tr>                                                       
 
                                 <tr>	      			
-                                    <th><label><?=lang('label_created_on');?>:</label></th>
+                                    <th><label><?php echo lang('label_created_on');?>:</label></th>
                                     <td>
-                                        <strong><?=$created_on;?></strong>
+                                        <strong><?php echo $created_on;?></strong>
                                     </td>
                                 </tr>
                                 
@@ -210,16 +210,16 @@
                                 <tr><td colspan="2" class="empty_line" ></td></tr>
 
                                 <tr>	      			
-                                    <th><label><?=lang('label_updated_by');?>:</label></th>
+                                    <th><label><?php echo lang('label_updated_by');?>:</label></th>
                                     <td>
-                                        <strong><?=isset($updated_by) ? User::getDetails($updated_by, 'user') : "";?></strong>
+                                        <strong><?php echo isset($updated_by) ? User::getDetails($updated_by, 'user') : "";?></strong>
                                     </td>
                                 </tr>
 
                                 <tr>	      			
-                                    <th><label><?=lang('label_updated_on');?>:</label></th>
+                                    <th><label><?php echo lang('label_updated_on');?>:</label></th>
                                     <td>
-                                        <strong><?=isset($updated_on) ? $updated_on : "";?></strong>
+                                        <strong><?php echo isset($updated_on) ? $updated_on : "";?></strong>
                                     </td>
                                 </tr>
                                 <?php } ?>

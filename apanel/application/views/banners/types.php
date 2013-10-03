@@ -1,7 +1,7 @@
 
 <?php if(!empty($error)){ ?>      
     <div class="error_msg" >
-        <?=$error;?>
+        <?php echo $error;?>
     </div>
 <?php } ?>
 
@@ -12,8 +12,8 @@
     <?php foreach($banner_types as $type => $label){ ?> 
         
         <li>
-            <a href="<?=$type;?>" class="type" >
-            	<?=lang($label);?>
+            <a href="<?php echo $type;?>" class="type" >
+            	<?php echo lang($label);?>
             </a>
         </li>
         

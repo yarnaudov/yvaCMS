@@ -1,12 +1,12 @@
 <div class="article" >
     
     <?php if($article['show_title'] == 'yes'){ ?>
-    <div class="title" ><?=$article['title'];?></div>
+    <div class="title" ><?php echo $article['title'];?></div>
     <?php } ?>
     
     <div class="content" >
 	
-        <?=$article['text'];?>
+        <?php echo $article['text'];?>
 		
 	
 	<?php if(isset($article['params']['images'])){ ?>
@@ -14,12 +14,12 @@
 	<ul id="images_canvas">
 	    <?php foreach(@$article['params']['images'] as $image){ ?>
 	    <li>
-		<a href="<?=base_url($image);?>" rel="lightbox[profile]" ><img src="<?=base_url($image);?>" ></a>
+		<a href="<?php echo base_url($image);?>" rel="lightbox[profile]" ><img src="<?php echo base_url($image);?>" ></a>
 	    </li>
 	    <?php } ?>
 	</ul>
-	<script src="<?=base_url(TEMPLATES_DIR.'/dynamic/lightbox/js/lightbox.js');?>"></script>
-	<link href="<?=base_url(TEMPLATES_DIR.'/dynamic/lightbox/css/lightbox.css');?>" rel="stylesheet" />
+	<script src="<?php echo base_url(TEMPLATES_DIR.'/dynamic/lightbox/js/lightbox.js');?>"></script>
+	<link href="<?php echo base_url(TEMPLATES_DIR.'/dynamic/lightbox/css/lightbox.css');?>" rel="stylesheet" />
 	<?php } ?>
 	
 	
@@ -31,18 +31,18 @@
 	    $(function(){    
 	  
 		var mapOptions = {
-		    zoom: parseInt(<?=$article['field4']->zoom;?>),
-		    center: new google.maps.LatLng(<?=$article['field4']->lat;?>, <?=$article['field4']->lng;?>),
+		    zoom: parseInt(<?php echo $article['field4']->zoom;?>),
+		    center: new google.maps.LatLng(<?php echo $article['field4']->lat;?>, <?php echo $article['field4']->lng;?>),
 		    mapTypeId: google.maps.MapTypeId.ROADMAP
 		};
 
 		var map = new google.maps.Map(document.getElementById('map_canvas'), mapOptions);
 		
 		var marker = new google.maps.Marker({
-		    position: new google.maps.LatLng(<?=$article['field4']->lat;?>, <?=$article['field4']->lng;?>),
+		    position: new google.maps.LatLng(<?php echo $article['field4']->lat;?>, <?php echo $article['field4']->lng;?>),
 		    map: map,
 		    //icon: 'marker.png',
-		    title: '<?=$article['title'];?>'
+		    title: '<?php echo $article['title'];?>'
 		});
 		
 	    });

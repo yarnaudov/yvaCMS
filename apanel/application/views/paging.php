@@ -6,9 +6,9 @@
 
 <div id="paging" >
 
-    <label><?=lang('label_display');?> #</label>    
+    <label><?php echo lang('label_display');?> #</label>    
     <select name="page_results" >
-        <?=create_options_array($this->config->item('results_limits'), $limit);?>
+        <?php echo create_options_array($this->config->item('results_limits'), $limit);?>
     </select>
 
     <?php if($max_pages > 1){ ?>
@@ -16,11 +16,11 @@
     <ul class="pagination" >
 
         <?php if($this->page == 1){ ?>
-            <li class="previous-off" ><?=lang('label_prev');?></li>
+            <li class="previous-off" ><?php echo lang('label_prev');?></li>
             <li class="current" >1</li>
         <?php }else{ ?>
-            <li class="previous" ><a href="<?=current_url();?>?page=<?=($this->page-1);?>" ><?=lang('label_prev');?></a></li>
-            <li><a class="active" href="<?=current_url();?>?page=1" >1</a></li>
+            <li class="previous" ><a href="<?php echo current_url();?>?page=<?php echo ($this->page-1);?>" ><?php echo lang('label_prev');?></a></li>
+            <li><a class="active" href="<?php echo current_url();?>?page=1" >1</a></li>
         <?php } ?>
 
         <?php for($i=2; $i < $max_pages; $i++){
@@ -50,17 +50,17 @@
         } ?>
 
         <?php if($this->page == $max_pages){ ?>                    
-            <li class="current" ><?=$max_pages;?></li>
-            <li class="previous-off" ><?=lang('label_next');?></li>
+            <li class="current" ><?php echo $max_pages;?></li>
+            <li class="previous-off" ><?php echo lang('label_next');?></li>
         <?php }else{ ?>
-            <li><a class="active" href="<?=current_url();?>?page=<?=$max_pages;?>" ><?=$max_pages;?></a></li>
-            <li class="previous" ><a href="<?=current_url();?>?page=<?=($this->page+1);?>" ><?=lang('label_next');?></a></li>
+            <li><a class="active" href="<?php echo current_url();?>?page=<?php echo $max_pages;?>" ><?php echo $max_pages;?></a></li>
+            <li class="previous" ><a href="<?php echo current_url();?>?page=<?php echo ($this->page+1);?>" ><?php echo lang('label_next');?></a></li>
         <?php } ?>
 
     </ul>
     
     <span>
-        <?=lang('label_page')." ".$this->page." ".lang('label_of')." ".$max_pages;?>
+        <?php echo lang('label_page')." ".$this->page." ".lang('label_of')." ".$max_pages;?>
     </span>
     
     <?php } ?>

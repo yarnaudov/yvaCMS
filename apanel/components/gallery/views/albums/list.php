@@ -1,22 +1,22 @@
 
-<form name="list" action="<?=current_url(true);?>" method="post" >
+<form name="list" action="<?php echo current_url(true);?>" method="post" >
 
     <!-- start page header -->
     <div id="page_header" >
 	
         <div class="text" >
-            <img src="<?=base_url('components/gallery/img/iconAlbums_25.png');?>" >
-            <span><?=lang('com_gallery_label_gallery');?></span>
+            <img src="<?php echo base_url('components/gallery/img/iconAlbums_25.png');?>" >
+            <span><?php echo lang('com_gallery_label_gallery');?></span>
             <span>&nbsp;»&nbsp;</span>
-            <span><?=lang('com_gallery_label_albums');?></span>
+            <span><?php echo lang('com_gallery_label_albums');?></span>
         </div>
 	
 	<div class="actions" >
 		
-            <a href="<?=site_url('components/gallery/albums/add');?>"  class="styled add"    ><?=lang('label_add');?></a>
-            <a href="<?=site_url('components/gallery/albums/edit');?>" class="styled edit"   ><?=lang('label_edit');?></a>
-            <a href="<?=site_url('components/gallery/albums');?>"      class="styled delete" ><?=lang('label_delete');?></a>
-            <a href="<?=site_url();?>"                                 class="styled cancel" ><?=lang('label_cancel');?></a>
+            <a href="<?php echo site_url('components/gallery/albums/add');?>"  class="styled add"    ><?php echo lang('label_add');?></a>
+            <a href="<?php echo site_url('components/gallery/albums/edit');?>" class="styled edit"   ><?php echo lang('label_edit');?></a>
+            <a href="<?php echo site_url('components/gallery/albums');?>"      class="styled delete" ><?php echo lang('label_delete');?></a>
+            <a href="<?php echo site_url();?>"                                 class="styled cancel" ><?php echo lang('label_cancel');?></a>
 		
 	</div>
 	
@@ -34,7 +34,7 @@
           $this->session->unset_userdata('good_msg');
           if(!empty($good_msg)){ ?>
           <div class="good_msg" >
-              <?=$good_msg;?>            
+              <?php echo $good_msg;?>            
           </div>
     <?php } ?>
 
@@ -42,7 +42,7 @@
           $this->session->unset_userdata('error_msg');
           if(!empty($error_msg)){ ?>
           <div class="error_msg" >
-              <?=$error_msg;?>            
+              <?php echo $error_msg;?>            
           </div>
     <?php } ?>
     <!-- end messages -->
@@ -54,16 +54,16 @@
 	<div id="filter_content" >
 		
             <div class="search" >
-                <input type="text" name="filters[search_v]" value="<?=isset($filters['search_v']) ? $filters['search_v'] : "";?>" >
-                <button class="styled" type="submit" name="search" ><?=lang('label_search');?></button>
-                <button class="styled" type="submit" name="clear"  ><?=lang('label_clear');?></button>
+                <input type="text" name="filters[search_v]" value="<?php echo isset($filters['search_v']) ? $filters['search_v'] : "";?>" >
+                <button class="styled" type="submit" name="search" ><?php echo lang('label_search');?></button>
+                <button class="styled" type="submit" name="clear"  ><?php echo lang('label_clear');?></button>
             </div>
 		
             <div class="filter" >
 
                 <select name="filters[status]" >
-                    <option value="none" > - <?=lang('label_select');?> <?=lang('label_status');?> - </option>
-                    <?=create_options_array($this->config->item('statuses'), isset($filters['status']) ? $filters['status'] : "");?>
+                    <option value="none" > - <?php echo lang('label_select');?> <?php echo lang('label_status');?> - </option>
+                    <?php echo create_options_array($this->config->item('statuses'), isset($filters['status']) ? $filters['status'] : "");?>
                 </select>
 
             </div>
@@ -75,50 +75,50 @@
             <tr>
                 <th style="width:3%;"  >#</th>
                 <th style="width:3%;"  >&nbsp;</th>
-                <th style="width:41%;" class="sortable" id="title"      ><?=lang('label_title');?></th>
-                <th style="width:6%;"  class="sortable" id="status"     ><?=lang('label_images');?></th>
-                <th style="width:6%;"  class="sortable" id="status"     ><?=lang('label_status');?></th>
-                <th style="width:8%;"  class="sortable" id="order"      ><?=lang('label_order');?></th>
-                <th style="width:8%;"  class="sortable" id="created_by" ><?=lang('label_author');?></th>
-                <th style="width:12%;" class="sortable" id="created_on" ><?=lang('label_date');?></th>
+                <th style="width:41%;" class="sortable" id="title"      ><?php echo lang('label_title');?></th>
+                <th style="width:6%;"  class="sortable" id="status"     ><?php echo lang('label_images');?></th>
+                <th style="width:6%;"  class="sortable" id="status"     ><?php echo lang('label_status');?></th>
+                <th style="width:8%;"  class="sortable" id="order"      ><?php echo lang('label_order');?></th>
+                <th style="width:8%;"  class="sortable" id="created_by" ><?php echo lang('label_author');?></th>
+                <th style="width:12%;" class="sortable" id="created_on" ><?php echo lang('label_date');?></th>
                 <th style="width:5%;"  >ID</th>
             </tr>
 		
             <?php foreach($albums as $numb => $album){ 
                     $row_class = $numb&1 ? "odd" : "even"; ?>
 		
-            <tr class="row <?=$row_class;?>" >
-                <td><?=(($numb+1)+($limit*($this->page-1)));?></td>	
+            <tr class="row <?php echo $row_class;?>" >
+                <td><?php echo (($numb+1)+($limit*($this->page-1)));?></td>	
                 <td>
-                    <input type="checkbox" class="checkbox" name="albums[]" value="<?=$album['album_id'];?>" />
+                    <input type="checkbox" class="checkbox" name="albums[]" value="<?php echo $album['album_id'];?>" />
                 </td>
                 <td style="text-align: left;" >
-                    <a href="<?=site_url('components/gallery/albums/edit/'.$album['album_id']);?>" >
-                        <?=$album['title'];?>
+                    <a href="<?php echo site_url('components/gallery/albums/edit/'.$album['album_id']);?>" >
+                        <?php echo $album['title'];?>
                     </a>
                     <?php if(!empty($album['description'])){ ?>
-                    <div class="description" >(<span class="head" ><?=lang('label_description');?>:</span> <span class="content" ><?=strip_tags($album['description']);?></span>)</div>
+                    <div class="description" >(<span class="head" ><?php echo lang('label_description');?>:</span> <span class="content" ><?php echo strip_tags($album['description']);?></span>)</div>
                     <?php } ?>
                 </td>
                 <td>
-                    <a href="<?=site_url('components/gallery/images?album='.$album['album_id']);?>" >
-                        <?=count(image::getImages(array('album_id' => $album['album_id'])));?>
+                    <a href="<?php echo site_url('components/gallery/images?album='.$album['album_id']);?>" >
+                        <?php echo count(image::getImages(array('album_id' => $album['album_id'])));?>
                     </a>                    
                 </td>
                 <td>
                     <?php if($album['status'] == 'yes'){ ?>
-                    <img class="status_img" alt="no"  src="<?=base_url('img/iconActive.png');?>" >
+                    <img class="status_img" alt="no"  src="<?php echo base_url('img/iconActive.png');?>" >
                     <?php }elseif($album['status'] == 'no'){ ?>
-                    <img class="status_img" alt="yes" src="<?=base_url('img/iconBlock.png');?>" >
+                    <img class="status_img" alt="yes" src="<?php echo base_url('img/iconBlock.png');?>" >
                     <?php }elseif($album['status'] == 'trash'){ ?>
-                    <img class="status_img" alt="yes" src="<?=base_url('img/iconRecover.png');?>" >
+                    <img class="status_img" alt="yes" src="<?php echo base_url('img/iconRecover.png');?>" >
                     <?php } ?>
                 </td>
                 <td>
                     <?php if($order == 'order'){ ?>
                     <span class="order_span" >
                         <?php if($album['order'] > 1){ ?>
-                        <img class="order_img" alt="up" src="<?=base_url('img/iconArrowUp.png');?>" >
+                        <img class="order_img" alt="up" src="<?php echo base_url('img/iconArrowUp.png');?>" >
                         <?php }else{ ?>
                         &nbsp;
                         <?php } ?>
@@ -127,7 +127,7 @@
                     <span class="order_span" >
                         <?php $max_order = $this->Album->count();
                             if($album['order'] < $max_order){ ?>
-                        <img class="order_img" alt="down" src="<?=base_url('img/iconArrowDown.png');?>" >
+                        <img class="order_img" alt="down" src="<?php echo base_url('img/iconArrowDown.png');?>" >
                         <?php }else{ ?>
                         &nbsp;
                         <?php } ?>
@@ -135,19 +135,19 @@
                     <?php } ?>
                     
                     <span class="order_span" >
-                    <?=$album['order'];?>
+                    <?php echo $album['order'];?>
                     </span>
                 </td>
-                <td><?=User::getDetails($album['created_by'], 'user');?></td>
-                <td><?=($album['created_on']);?></td>
-                <td><?=$album['album_id'];?></td>
+                <td><?php echo User::getDetails($album['created_by'], 'user');?></td>
+                <td><?php echo ($album['created_on']);?></td>
+                <td><?php echo $album['album_id'];?></td>
             </tr>
 		
             <?php } ?>
 	    
             <?php if(count($albums) == 0){ ?>
             <tr>
-                <td colspan="9" ><?=lang('msg_no_results_found');?></td>
+                <td colspan="9" ><?php echo lang('msg_no_results_found');?></td>
             </tr>
             <?php } ?>
             
@@ -161,15 +161,15 @@
 </form>
 
 <!-- start jquery UI -->
-<div id="dialog-edit1" title="<?=lang('label_error');?>" >
-	<p><?=lang('msg_select_item');?></p>
+<div id="dialog-edit1" title="<?php echo lang('label_error');?>" >
+	<p><?php echo lang('msg_select_item');?></p>
 </div>
 
-<div id="dialog-edit2" title="<?=lang('label_error');?>" >
-	<p><?=lang('msg_select_one_item');?></p>
+<div id="dialog-edit2" title="<?php echo lang('label_error');?>" >
+	<p><?php echo lang('msg_select_one_item');?></p>
 </div>
 
-<div id="dialog-delete" title="<?=lang('label_confirm');?>" >
-	<p><?=lang('msg_delete_confirm');?></p>
+<div id="dialog-delete" title="<?php echo lang('label_confirm');?>" >
+	<p><?php echo lang('msg_delete_confirm');?></p>
 </div>
 <!-- end jquery UI -->

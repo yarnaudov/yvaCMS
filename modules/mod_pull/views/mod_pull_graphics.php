@@ -1,33 +1,33 @@
 
-<script type="text/javascript" src="<?=base_url('modules/mod_poll/js/mod_poll.js');?>" ></script>
+<script type="text/javascript" src="<?php echo base_url('modules/mod_poll/js/mod_poll.js');?>" ></script>
 
-<ul class="poll<?=$poll['id'];?>" >
+<ul class="poll<?php echo $poll['id'];?>" >
 	
-    <li><?=$poll['title'];?></li>
+    <li><?php echo $poll['title'];?></li>
 
     <?php foreach($poll['answers'] as $key => $answer){ ?>
     <li>
-        <span class="number" ><?=$key+1;?>.</span>
-        <?=$answer['title'];?> - 
-        <?=$votes == 0 ? 0 : round(($answer['votes']*100)/$votes, 1);?>%
+        <span class="number" ><?php echo $key+1;?>.</span>
+        <?php echo $answer['title'];?> - 
+        <?php echo $votes == 0 ? 0 : round(($answer['votes']*100)/$votes, 1);?>%
     </li>
     <?php } ?>
 	  
-    <li><?=lang('label_mod_poll_total_votes');?>: <?=$votes;?></li>
+    <li><?php echo lang('label_mod_poll_total_votes');?>: <?php echo $votes;?></li>
 
     <?php if($answer_id != false){ ?>
     <li>         
-        <?=lang('label_mod_poll_you_already_voted_for');?>:
-        <span class="poll_answer" ><?=poll::getAnswer($answer_id, 'title');?></span>
+        <?php echo lang('label_mod_poll_you_already_voted_for');?>:
+        <span class="poll_answer" ><?php echo poll::getAnswer($answer_id, 'title');?></span>
     </li>
     <?php }else{ ?>
     <li>	      
         <div class="actions" >
-            <a href="<?=current_url();?>" class="hide_votes" ><?=lang('label_mod_poll_back_to_poll');?></a>
+            <a href="<?php echo current_url();?>" class="hide_votes" ><?php echo lang('label_mod_poll_back_to_poll');?></a>
         </div>
         <div class="loading" style="display: none;" >
-            <span><?=lang('label_mod_poll_please_wait');?></span>
-            <img src="<?=base_url('modules/mod_poll/images/loading.gif');?>" alt="loading..." >
+            <span><?php echo lang('label_mod_poll_please_wait');?></span>
+            <img src="<?php echo base_url('modules/mod_poll/images/loading.gif');?>" alt="loading..." >
         </div>
     </li>
     <?php } ?>

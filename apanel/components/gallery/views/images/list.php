@@ -1,27 +1,27 @@
 
-<form name="list" action="<?=current_url(true);?>" method="post" >
+<form name="list" action="<?php echo current_url(true);?>" method="post" >
 
     <!-- start page header -->
     <div id="page_header" >
 	
         <div class="text" >
-            <img src="<?=base_url('components/gallery/img/iconImages_25.png');?>" >
-            <span><?=lang('com_gallery_label_gallery');?></span>
+            <img src="<?php echo base_url('components/gallery/img/iconImages_25.png');?>" >
+            <span><?php echo lang('com_gallery_label_gallery');?></span>
             <span>&nbsp;»&nbsp;</span>
-            <span><?=lang('com_gallery_label_images');?></span>
+            <span><?php echo lang('com_gallery_label_images');?></span>
         </div>
 	
 	<div class="actions" >
 		
 	     <?php if($this->layout != 'simple_ajax'){ ?>  
-            <a href="<?=site_url('components/gallery/images/add');?>"  class="styled add"    ><?=lang('label_add');?></a>
-            <a href="<?=site_url('components/gallery/images/edit');?>" class="styled edit"   ><?=lang('label_edit');?></a>
-            <a href="<?=site_url('components/gallery/images');?>"      class="styled delete" ><?=lang('label_delete');?></a>
-            <a href="<?=site_url();?>"                                 class="styled cancel" ><?=lang('label_cancel');?></a>
+            <a href="<?php echo site_url('components/gallery/images/add');?>"  class="styled add"    ><?php echo lang('label_add');?></a>
+            <a href="<?php echo site_url('components/gallery/images/edit');?>" class="styled edit"   ><?php echo lang('label_edit');?></a>
+            <a href="<?php echo site_url('components/gallery/images');?>"      class="styled delete" ><?php echo lang('label_delete');?></a>
+            <a href="<?php echo site_url();?>"                                 class="styled cancel" ><?php echo lang('label_cancel');?></a>
 	    <?php }else{ ?>	    
-	    <button class="styled refresh" type="submit" ><?=lang('label_refresh');?></button>
+	    <button class="styled refresh" type="submit" ><?php echo lang('label_refresh');?></button>
 	    &nbsp;&nbsp;&nbsp;&nbsp;
-	    <a href="#" class="styled select" ><?=lang('label_select');?></a>
+	    <a href="#" class="styled select" ><?php echo lang('label_select');?></a>
 	    <?php } ?>
 		
 	</div>
@@ -42,7 +42,7 @@
           $this->session->unset_userdata('good_msg');
           if(!empty($good_msg)){ ?>
           <div class="good_msg" >
-              <?=$good_msg;?>            
+              <?php echo $good_msg;?>            
           </div>
     <?php } ?>
 
@@ -50,7 +50,7 @@
           $this->session->unset_userdata('error_msg');
           if(!empty($error_msg)){ ?>
           <div class="error_msg" >
-              <?=$error_msg;?>            
+              <?php echo $error_msg;?>            
           </div>
     <?php } ?>
     <!-- end messages -->
@@ -62,21 +62,21 @@
 	<div id="filter_content" >
 		
             <div class="search" >
-                <input type="text" name="filters[search_v]" value="<?=isset($filters['search_v']) ? $filters['search_v'] : "";?>" >
-                <button class="styled" type="submit" name="search" ><?=lang('label_search');?></button>
-                <button class="styled" type="submit" name="clear"  ><?=lang('label_clear');?></button>
+                <input type="text" name="filters[search_v]" value="<?php echo isset($filters['search_v']) ? $filters['search_v'] : "";?>" >
+                <button class="styled" type="submit" name="search" ><?php echo lang('label_search');?></button>
+                <button class="styled" type="submit" name="clear"  ><?php echo lang('label_clear');?></button>
             </div>
 		
             <div class="filter" >
 			
                 <select name="filters[album]" >
-                    <option value="none" > - <?=lang('label_select');?> <?=lang('com_gallery_label_album');?> - </option>
-                    <?=create_options_array($albums, isset($filters['album']) ? $filters['album'] : "");?>
+                    <option value="none" > - <?php echo lang('label_select');?> <?php echo lang('com_gallery_label_album');?> - </option>
+                    <?php echo create_options_array($albums, isset($filters['album']) ? $filters['album'] : "");?>
                 </select>
 
                 <select name="filters[status]" >
-                    <option value="none" > - <?=lang('label_select');?> <?=lang('label_status');?> - </option>
-                    <?=create_options_array($this->config->item('statuses'), isset($filters['status']) ? $filters['status'] : "");?>
+                    <option value="none" > - <?php echo lang('label_select');?> <?php echo lang('label_status');?> - </option>
+                    <?php echo create_options_array($this->config->item('statuses'), isset($filters['status']) ? $filters['status'] : "");?>
                 </select>
 
             </div>
@@ -89,52 +89,52 @@
                 <th style="width:3%;"  >#</th>	
                 <th style="width:3%;"  >&nbsp;</th>
                 <th style="width:3%;"  >&nbsp;</th>
-                <th style="width:41%;" class="sortable" id="title_<?=Language::getDefault();?>" ><?=lang('label_title');?></th>
-                <th style="width:12%;" class="sortable" id="album_id"   ><?=lang('com_gallery_label_album');?></th>
-                <th style="width:6%;"  class="sortable" id="status"     ><?=lang('label_status');?></th>
-                <th style="width:8%;"  class="sortable" id="order"      ><?=lang('label_order');?></th>
-                <th style="width:8%;"  class="sortable" id="created_by" ><?=lang('label_author');?></th>
-                <th style="width:12%;" class="sortable" id="created_on" ><?=lang('label_date');?></th>
+                <th style="width:41%;" class="sortable" id="title_<?php echo Language::getDefault();?>" ><?php echo lang('label_title');?></th>
+                <th style="width:12%;" class="sortable" id="album_id"   ><?php echo lang('com_gallery_label_album');?></th>
+                <th style="width:6%;"  class="sortable" id="status"     ><?php echo lang('label_status');?></th>
+                <th style="width:8%;"  class="sortable" id="order"      ><?php echo lang('label_order');?></th>
+                <th style="width:8%;"  class="sortable" id="created_by" ><?php echo lang('label_author');?></th>
+                <th style="width:12%;" class="sortable" id="created_on" ><?php echo lang('label_date');?></th>
                 <th style="width:5%;"  >ID</th>
             </tr>
 		
             <?php foreach($images as $numb => $image){ 
                     $row_class = $numb&1 ? "odd" : "even"; ?>
 		
-            <tr class="row <?=$row_class;?>" >
-                <td><?=(($numb+1)+($limit*($this->page-1)));?></td>	
+            <tr class="row <?php echo $row_class;?>" >
+                <td><?php echo (($numb+1)+($limit*($this->page-1)));?></td>	
                 <td>
-                    <input type="checkbox" class="checkbox" name="images[]" value="<?=$image['id'];?>" />
+                    <input type="checkbox" class="checkbox" name="images[]" value="<?php echo $image['id'];?>" />
                 </td>
                 <td>
-                    <a href="<?=site_url('components/gallery/images/edit/'.$image['id']);?>" >
+                    <a href="<?php echo site_url('components/gallery/images/edit/'.$image['id']);?>" >
                         <?php $image_src = base_url('../'.$this->config->item('images_dir').'/'.$image['id'].'.'.$image['ext']); ?>
-                        <img class="image" src="<?=$image_src.'?'.time();?>" > 
+                        <img class="image" src="<?php echo $image_src.'?'.time();?>" > 
                     </a>
                 </td>
                 <td style="text-align: left;" >
-                    <a href="<?=site_url('components/gallery/images/edit/'.$image['id']);?>" >
-                        <?=$image['title'];?>
+                    <a href="<?php echo site_url('components/gallery/images/edit/'.$image['id']);?>" >
+                        <?php echo $image['title'];?>
                     </a>
                     <?php if(!empty($image['description'])){ ?>
-                    <div class="description" >(<span class="head" ><?=lang('label_description');?>:</span> <span class="content" ><?=strip_tags($image['description']);?></span>)</div>
+                    <div class="description" >(<span class="head" ><?php echo lang('label_description');?>:</span> <span class="content" ><?php echo strip_tags($image['description']);?></span>)</div>
                     <?php } ?>
                 </td>
-                <td><?=$this->Album->getDetails($image['album_id'], 'title');?></td>
+                <td><?php echo $this->Album->getDetails($image['album_id'], 'title');?></td>
                 <td>
                     <?php if($image['status'] == 'yes'){ ?>
-                    <img class="status_img" alt="no"  src="<?=base_url('img/iconActive.png');?>" >
+                    <img class="status_img" alt="no"  src="<?php echo base_url('img/iconActive.png');?>" >
                     <?php }elseif($image['status'] == 'no'){ ?>
-                    <img class="status_img" alt="yes" src="<?=base_url('img/iconBlock.png');?>" >
+                    <img class="status_img" alt="yes" src="<?php echo base_url('img/iconBlock.png');?>" >
                     <?php }elseif($image['status'] == 'trash'){ ?>
-                    <img class="status_img" alt="yes" src="<?=base_url('img/iconRecover.png');?>" >
+                    <img class="status_img" alt="yes" src="<?php echo base_url('img/iconRecover.png');?>" >
                     <?php } ?>
                 </td>
                 <td>
                     <?php if($order == 'order'){ ?>
                     <span class="order_span" >
                         <?php if($image['order'] > 1){ ?>
-                        <img class="order_img" alt="up" src="<?=base_url('img/iconArrowUp.png');?>" >
+                        <img class="order_img" alt="up" src="<?php echo base_url('img/iconArrowUp.png');?>" >
                         <?php }else{ ?>
                         &nbsp;
                         <?php } ?>
@@ -143,7 +143,7 @@
                     <span class="order_span" >
                         <?php $max_order = $this->Image->count($image['album_id']);
                             if($image['order'] < $max_order){ ?>
-                        <img class="order_img" alt="down" src="<?=base_url('img/iconArrowDown.png');?>" >
+                        <img class="order_img" alt="down" src="<?php echo base_url('img/iconArrowDown.png');?>" >
                         <?php }else{ ?>
                         &nbsp;
                         <?php } ?>
@@ -151,19 +151,19 @@
                     <?php } ?>
                     
                     <span class="order_span" >
-                    <?=$image['order'];?>
+                    <?php echo $image['order'];?>
                     </span>
                 </td>
-                <td><?=User::getDetails($image['created_by'], 'user');?></td>
-                <td><?=($image['created_on']);?></td>
-                <td><?=$image['id'];?></td>
+                <td><?php echo User::getDetails($image['created_by'], 'user');?></td>
+                <td><?php echo ($image['created_on']);?></td>
+                <td><?php echo $image['id'];?></td>
             </tr>
 		
             <?php } ?>
 	    
             <?php if(count($images) == 0){ ?>
             <tr>
-                <td colspan="10" ><?=lang('msg_no_results_found');?></td>
+                <td colspan="10" ><?php echo lang('msg_no_results_found');?></td>
             </tr>
             <?php } ?>
             
@@ -177,15 +177,15 @@
 </form>
 
 <!-- start jquery UI -->
-<div id="dialog-edit1" title="<?=lang('label_error');?>" >
-	<p><?=lang('msg_select_item');?></p>
+<div id="dialog-edit1" title="<?php echo lang('label_error');?>" >
+	<p><?php echo lang('msg_select_item');?></p>
 </div>
 
-<div id="dialog-edit2" title="<?=lang('label_error');?>" >
-	<p><?=lang('msg_select_one_item');?></p>
+<div id="dialog-edit2" title="<?php echo lang('label_error');?>" >
+	<p><?php echo lang('msg_select_one_item');?></p>
 </div>
 
-<div id="dialog-delete" title="<?=lang('label_confirm');?>" >
-	<p><?=lang('msg_delete_confirm');?></p>
+<div id="dialog-delete" title="<?php echo lang('label_confirm');?>" >
+	<p><?php echo lang('msg_delete_confirm');?></p>
 </div>
 <!-- end jquery UI -->

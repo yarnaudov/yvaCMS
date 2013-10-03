@@ -2,9 +2,9 @@
 <?php $contact_form_msg = $this->session->flashdata('contact_form_msg'.$contact_form['id']);
       if(!empty($contact_form_msg)){ ?>
 
-          <?=$contact_form_msg;?>
+          <?php echo $contact_form_msg;?>
           &nbsp;
-          <a href="<?= current_url();?>" ><?=lang('label_cf_back_to_form');?></a>
+          <a href="<?php echo  current_url();?>" ><?php echo lang('label_cf_back_to_form');?></a>
 
 <?php }else{ 
         $captcha = $contact_form['fields']['captcha'];
@@ -12,11 +12,11 @@
 
 	<?php if(!empty($contact_form['text_above'])){ ?>
 	<div class="text_above" >
-	    <?=$this->Article->parceText($contact_form['text_above']);?>
+	    <?php echo $this->Article->parceText($contact_form['text_above']);?>
 	</div>
 	<?php } ?>
 	  
-	<form method="post" action="<?=site_url('contact_forms/' . $contact_form['id']);?>" class="contactForm" id="contactForm_<?=$contact_form['id'];?>" >
+	<form method="post" action="<?php echo site_url('contact_forms/' . $contact_form['id']);?>" class="contactForm" id="contactForm_<?php echo $contact_form['id'];?>" >
 
 
 	    <?php foreach($contact_form['fields'] as $number => $field){ 
@@ -39,9 +39,9 @@
 		  ?>    
 
 	    <div class="row" >
-		<label for="field<?=$number;?>" >
-		    <?=$field['label'];?>: 
-		    <?=$field['mandatory'] != 'no' ? '*' : '';?>
+		<label for="field<?php echo $number;?>" >
+		    <?php echo $field['label'];?>: 
+		    <?php echo $field['mandatory'] != 'no' ? '*' : '';?>
 		</label>
 		<?php switch($field['type']){ 
 
@@ -131,13 +131,13 @@
 	    <br/>
 	    <div class="row captcha" >
 		<label>&nbsp;</label>
-		<img id="siimage" style="margin-right: 15px;width: 200px;height: 70px;" src="<?=base_url();?>/plugins/securimage/securimage_show.php?sid=<?php echo md5(uniqid()) ?>" alt="CAPTCHA Image" />	
-		<object type="application/x-shockwave-flash" data="<?=base_url();?>/plugins/securimage/securimage_play.swf?bgcol=#ffffff&amp;icon_file=./images/audio_icon.gif&amp;audio_file=<?=base_url();?>/plugins/securimage/securimage_play.php" width="19" height="19" >
-		    <param name="movie" value="<?=base_url();?>/plugins/securimage/securimage_play.swf?bgcol=#ffffff&amp;icon_file=./images/audio_icon.gif&amp;audio_file=<?=base_url();?>/plugins/securimage/securimage_play.php" />
+		<img id="siimage" style="margin-right: 15px;width: 200px;height: 70px;" src="<?php echo base_url();?>/plugins/securimage/securimage_show.php?sid=<?php echo md5(uniqid()) ?>" alt="CAPTCHA Image" />	
+		<object type="application/x-shockwave-flash" data="<?php echo base_url();?>/plugins/securimage/securimage_play.swf?bgcol=#ffffff&amp;icon_file=./images/audio_icon.gif&amp;audio_file=<?php echo base_url();?>/plugins/securimage/securimage_play.php" width="19" height="19" >
+		    <param name="movie" value="<?php echo base_url();?>/plugins/securimage/securimage_play.swf?bgcol=#ffffff&amp;icon_file=./images/audio_icon.gif&amp;audio_file=<?php echo base_url();?>/plugins/securimage/securimage_play.php" />
 		</object>		
 		&nbsp;
-		<a tabindex="-1" style="border-style: none;" href="#" id="refresh_image" title="Refresh Image" onclick="document.getElementById('siimage').src = '<?=base_url();?>/plugins/securimage/securimage_show.php?sid=' + Math.random(); this.blur(); return false">
-		    <img src="<?=base_url();?>plugins/securimage/images/refresh.gif" alt="Reload Image" onclick="this.blur()" align="bottom" border="0" />
+		<a tabindex="-1" style="border-style: none;" href="#" id="refresh_image" title="Refresh Image" onclick="document.getElementById('siimage').src = '<?php echo base_url();?>/plugins/securimage/securimage_show.php?sid=' + Math.random(); this.blur(); return false">
+		    <img src="<?php echo base_url();?>plugins/securimage/images/refresh.gif" alt="Reload Image" onclick="this.blur()" align="bottom" border="0" />
 		</a>
 		<br />
 
@@ -145,7 +145,7 @@
 
 	    <div class="row" >
 
-		<label><?=lang('label_cf_enter_code');?>: *</label>
+		<label><?php echo lang('label_cf_enter_code');?>: *</label>
 		<input type="text" name="ct_captcha" class="required captcha_input" />
 
 	    </div>
@@ -153,15 +153,15 @@
 	    <?php } ?>
 
 	    <div class="buttons">
-		<button class="primary" type="submit" name="send" ><?=lang('label_cf_send');?></button>
-		<button type="reset" ><?=lang('label_cf_clear');?></button>
+		<button class="primary" type="submit" name="send" ><?php echo lang('label_cf_send');?></button>
+		<button type="reset" ><?php echo lang('label_cf_clear');?></button>
 	    </div>
 
 	</form>
 	  
 	<?php if(!empty($contact_form['text_under'])){ ?>
 	<div class="text_under" >
-	    <?=$this->Article->parceText($contact_form['text_under']);?>
+	    <?php echo $this->Article->parceText($contact_form['text_under']);?>
 	</div>
 	<?php } ?>
 

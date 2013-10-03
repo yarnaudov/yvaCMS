@@ -1,13 +1,13 @@
 
-<form name="add" action="<?=current_url();?>" method="post" >
+<form name="add" action="<?php echo current_url();?>" method="post" >
 	
     
     <!-- start page header -->
     <div id="page_header" >
 	
         <div class="text" >
-            <img src="<?=base_url('components/polls/img/iconPolls_25.png');?>" >
-            <span><?=lang('label_polls');?></span>
+            <img src="<?php echo base_url('components/polls/img/iconPolls_25.png');?>" >
+            <span><?php echo lang('label_polls');?></span>
             <span>&nbsp;»&nbsp;</span>
             <span>
               <?php if(isset($poll_id)){
@@ -21,9 +21,9 @@
 	
 	<div class="actions" >
 		
-	    <button type="submit" name="save"            class="styled save"   ><?=lang('label_save');?></button>
-	    <button type="submit" name="apply"           class="styled apply"  ><?=lang('label_apply');?></button>
-	    <a href="<?=site_url('components/polls');?>" class="styled cancel" ><?=lang('label_cancel');?></a>
+	    <button type="submit" name="save"            class="styled save"   ><?php echo lang('label_save');?></button>
+	    <button type="submit" name="apply"           class="styled apply"  ><?php echo lang('label_apply');?></button>
+	    <a href="<?php echo site_url('components/polls');?>" class="styled cancel" ><?php echo lang('label_cancel');?></a>
 		
 	</div>
 	
@@ -36,7 +36,7 @@
         if(!empty($errors)){ ?>      
         <div class="error_msg" >
             <ul>
-              <?=validation_errors('<li>', '</li>');?>
+              <?php echo validation_errors('<li>', '</li>');?>
             </ul>
         </div>
     <?php } ?>
@@ -45,7 +45,7 @@
           $this->session->unset_userdata('good_msg');
           if(!empty($good_msg)){ ?>
           <div class="good_msg" >
-              <?=$good_msg;?>            
+              <?php echo $good_msg;?>            
           </div>
     <?php } ?>
 
@@ -53,7 +53,7 @@
           $this->session->unset_userdata('error_msg');
           if(!empty($error_msg)){ ?>
           <div class="error_msg" >
-              <?=$error_msg;?>            
+              <?php echo $error_msg;?>            
           </div>
     <?php } ?>
     <!-- end messages -->
@@ -71,14 +71,14 @@
 	            
                     <!-- mandatory information  -->
 	            <div class="box" >
-	      	      <span class="header" ><?=lang('label_mandatory');?> <?=lang('label_information');?></span>
+	      	      <span class="header" ><?php echo lang('label_mandatory');?> <?php echo lang('label_information');?></span>
 	      	      
                       <div class="box_content" >
                         <table class="box_table" cellpadding="0" cellspacing="0" >
 
                             <tr>
-                                <th><label><?=lang('label_title');?>:</label></th>
-                                <td><input type="text" name="title" value="<?=set_value('title', isset($title) ? $title : "");?>" ></td>
+                                <th><label><?php echo lang('label_title');?>:</label></th>
+                                <td><input type="text" name="title" value="<?php echo set_value('title', isset($title) ? $title : "");?>" ></td>
                             </tr>
 
                         </table>
@@ -89,9 +89,9 @@
                     
 	            
                     <div class="box" >
-	      	        <span class="header" ><?=lang('label_description');?></span>
+	      	        <span class="header" ><?php echo lang('label_description');?></span>
                         <div class="editor_div" >
-                          <textarea name="description" class="editor"  ><?=set_value('description', isset($description) ? $description : "");?></textarea>
+                          <textarea name="description" class="editor"  ><?php echo set_value('description', isset($description) ? $description : "");?></textarea>
                         </div>
                         
 	            </div>
@@ -104,16 +104,16 @@
 	        <td class="right" >                    
 	      
 	            <div class="box" >
-	      	        <span class="header" ><?=lang('label_options');?></span>
+	      	        <span class="header" ><?php echo lang('label_options');?></span>
 	                
                         <div class="box_content" >
                             <table class="box_table" cellpadding="0" cellspacing="0" >
                                  
                                 <tr>	      			
-                                    <th><label><?=lang('label_status');?>:</label></th>
+                                    <th><label><?php echo lang('label_status');?>:</label></th>
                                     <td>
                                         <select name="status" >
-                                            <?=create_options_array($this->config->item('statuses'), set_value('status', isset($status) ? $status : ""));?>
+                                            <?php echo create_options_array($this->config->item('statuses'), set_value('status', isset($status) ? $status : ""));?>
                                         </select>
                                     </td>
                                 </tr>
@@ -121,18 +121,18 @@
                                 <tr><td colspan="2" class="empty_line" ></td></tr>
                                 
                                 <tr>	      			
-                                    <th><label><?=lang('label_start_date');?>:</label></th>
+                                    <th><label><?php echo lang('label_start_date');?>:</label></th>
                                     <td>
-                                        <input type="text" class="datepicker" name="start_publishing" value="<?=set_value('start_publishing', isset($start_publishing) ? $start_publishing : "");?>" >
+                                        <input type="text" class="datepicker" name="start_publishing" value="<?php echo set_value('start_publishing', isset($start_publishing) ? $start_publishing : "");?>" >
                                     </td>
                                 </tr>
 
                                 <tr><td colspan="2" class="empty_line" ></td></tr>
 
                                 <tr>	      			
-                                    <th><label><?=lang('label_end_date');?>:</label></th>
+                                    <th><label><?php echo lang('label_end_date');?>:</label></th>
                                     <td>
-                                        <input type="text" class="datepicker" name="end_publishing" value="<?=set_value('end_publishing', isset($end_publishing) ? $end_publishing : "");?>" >
+                                        <input type="text" class="datepicker" name="end_publishing" value="<?php echo set_value('end_publishing', isset($end_publishing) ? $end_publishing : "");?>" >
                                     </td>
                                 </tr>
                                 
@@ -143,7 +143,7 @@
                     
                     
                     <div class="box" >
-	      	        <span class="header" ><?=lang('label_answers');?></span>
+	      	        <span class="header" ><?php echo lang('label_answers');?></span>
 	                
                         <div class="box_content" >
                             <table class="box_table fields form_fields" cellpadding="0" cellspacing="0" >
@@ -154,37 +154,37 @@
                                       ksort($answers);
                                       foreach($answers as $number => $answer){ ?>
                                 
-                                <tbody id="field<?=$number;?>" <?=$number == 0 ? 'style="display: none;"' : '';?> >
+                                <tbody id="field<?php echo $number;?>" <?php echo $number == 0 ? 'style="display: none;"' : '';?> >
                                              
                                     <tr>
                                         <td colspan="2" >
                                             <fieldset>
                                                 <legend>
-                                                    <?=lang('label_answer');?> 
-                                                    <span><?=$number;?></span>
+                                                    <?php echo lang('label_answer');?> 
+                                                    <span><?php echo $number;?></span>
                                                 </legend>
                                                 <div class="button" >
-                                                    <a class="styled delete" lang="field<?=$number;?>" title="<?=lang('label_delete');?>" >&nbsp;</a>    
+                                                    <a class="styled delete" lang="field<?php echo $number;?>" title="<?php echo lang('label_delete');?>" >&nbsp;</a>    
                                                 </div>                                                
                                             </fieldset>
                                         </td>     
                                     </tr>
 
                                     <tr>	      			
-                                        <th><label><?=lang('label_text');?>:</label></th>
+                                        <th><label><?php echo lang('label_text');?>:</label></th>
                                         <td>
-                                            <input type="hidden" name="answers[<?=$number;?>][answer_id]" value="<?=isset($answer['answer_id']) ? $answer['answer_id'] : "";?>" >
-                                            <input type="text" name="answers[<?=$number;?>][title]" value="<?=set_value('answers['.$number.'][title]', isset($answer['title']) ? $answer['title'] : "");?>" >
+                                            <input type="hidden" name="answers[<?php echo $number;?>][answer_id]" value="<?php echo isset($answer['answer_id']) ? $answer['answer_id'] : "";?>" >
+                                            <input type="text" name="answers[<?php echo $number;?>][title]" value="<?php echo set_value('answers['.$number.'][title]', isset($answer['title']) ? $answer['title'] : "");?>" >
                                         </td>
                                     </tr>
                                     
                                     <tr><td colspan="2" class="empty_line" >&nbsp;</td></tr>
                                     
                                     <tr>	      			
-                                        <th><label><?=lang('label_status');?>:</label></th>
+                                        <th><label><?php echo lang('label_status');?>:</label></th>
                                         <td>
-                                            <select name="answers[<?=$number;?>][status]" >
-                                                <?=create_options_array($this->config->item('statuses'), set_value('answers['.$number.'][status]', isset($answer['status']) ? $answer['status'] : ""));?>
+                                            <select name="answers[<?php echo $number;?>][status]" >
+                                                <?php echo create_options_array($this->config->item('statuses'), set_value('answers['.$number.'][status]', isset($answer['status']) ? $answer['status'] : ""));?>
                                             </select>
                                         </td>
                                     </tr>
@@ -200,7 +200,7 @@
                                     
                                 <tr>
                                     <td colspan="2" >
-                                        <a class="styled add" ><?=lang('label_add');?></a>
+                                        <a class="styled add" ><?php echo lang('label_add');?></a>
                                     </td>
                                 </tr>
                                 
@@ -215,7 +215,7 @@
                     
                     <!-- start graphics -->
                     <div class="box" >
-	      	        <span class="header" ><?=lang('label_votes');?></span>
+	      	        <span class="header" ><?php echo lang('label_votes');?></span>
                         
                         <div class="box_content" >
                             
@@ -225,18 +225,18 @@
                                       foreach($answers as $key => $answer){
                                           $percent = $votes == 0 ? 0 : round(($answer['votes']*100)/$votes, 1); ?>
                                 <li>
-                                    <span class="number" ><?=$key;?>.</span>
-                                    <span class="title" ><?=$answer['title'];?></span>
+                                    <span class="number" ><?php echo $key;?>.</span>
+                                    <span class="title" ><?php echo $answer['title'];?></span>
                                     <div class="percent" >
-                                        <div style="width: <?=($percent*3);?>px;" ></div>
-                                        <span><?=$percent;?></span>% (<?=$answer['votes'];?>)
+                                        <div style="width: <?php echo ($percent*3);?>px;" ></div>
+                                        <span><?php echo $percent;?></span>% (<?php echo $answer['votes'];?>)
                                     </div>
                                 </li>
                                 <?php } ?>
                                                             
                             </ul>
                             
-                            <?=lang('label_total_votes');?>: <strong><?=$votes;?></strong>
+                            <?php echo lang('label_total_votes');?>: <strong><?php echo $votes;?></strong>
                             
                         </div>
                         
@@ -244,22 +244,22 @@
                     <!-- end graphics -->
                     
                     <div class="box" >
-	      	        <span class="header" ><?=lang('label_information');?></span>
+	      	        <span class="header" ><?php echo lang('label_information');?></span>
                         
                         <div class="box_content" >
                             <table class="box_table" cellpadding="0" cellspacing="0" >
 
                                 <tr>	      			
-                                    <th><label><?=lang('label_created_by');?>:</label></th>
+                                    <th><label><?php echo lang('label_created_by');?>:</label></th>
                                     <td>
-                                        <strong><?=User::getDetails($created_by, 'user');?></strong>
+                                        <strong><?php echo User::getDetails($created_by, 'user');?></strong>
                                     </td>
                                 </tr>                                                       
 
                                 <tr>	      			
-                                    <th><label><?=lang('label_created_on');?>:</label></th>
+                                    <th><label><?php echo lang('label_created_on');?>:</label></th>
                                     <td>
-                                        <strong><?=$created_on;?></strong>
+                                        <strong><?php echo $created_on;?></strong>
                                     </td>
                                 </tr>
                                 
@@ -267,16 +267,16 @@
                                 <tr><td colspan="2" class="empty_line" ></td></tr>
 
                                 <tr>	      			
-                                    <th><label><?=lang('label_updated_by');?>:</label></th>
+                                    <th><label><?php echo lang('label_updated_by');?>:</label></th>
                                     <td>
-                                        <strong><?=isset($updated_by) ? User::getDetails($updated_by, 'user') : "";?></strong>
+                                        <strong><?php echo isset($updated_by) ? User::getDetails($updated_by, 'user') : "";?></strong>
                                     </td>
                                 </tr>
 
                                 <tr>	      			
-                                    <th><label><?=lang('label_updated_on');?>:</label></th>
+                                    <th><label><?php echo lang('label_updated_on');?>:</label></th>
                                     <td>
-                                        <strong><?=isset($updated_on) ? $updated_on : "";?></strong>
+                                        <strong><?php echo isset($updated_on) ? $updated_on : "";?></strong>
                                     </td>
                                 </tr>
                                 <?php } ?>

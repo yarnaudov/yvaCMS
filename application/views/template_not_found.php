@@ -70,7 +70,7 @@
 	<h1>Template not found!</h1>
 
 	<div id="body">
-		<p>Template "<?=$this->template;?>" was not found in templates directory</p>
+		<p>Template "<?php echo $this->template;?>" was not found in templates directory</p>
 	</div>
 
 	<p class="footer">Page rendered in <strong>{elapsed_time}</strong> seconds</p>

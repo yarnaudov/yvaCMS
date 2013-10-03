@@ -4,14 +4,14 @@
 <tr><td colspan="2" class="empty_line" ></td></tr>
                                 
 <tr>	      			
-    <th><label><?=lang('label_menus');?>:</label></th>
+    <th><label><?php echo lang('label_menus');?>:</label></th>
     <td>
         <div class="menu_list" >
             <table class="menu_list" cellpadding="0" cellspacing="0" >    
             <?php foreach($menus_by_category as $category => $menus_arr){ ?>
 
                 <tr>
-                    <th colspan="2" ><?=$category;?></th>
+                    <th colspan="2" ><?php echo $category;?></th>
                 </tr>
                                                       
                 <?php $custom_menus = set_value('params[custom_menus]', isset($params['custom_menus']) ? $params['custom_menus'] : "");
@@ -23,10 +23,10 @@
 
                 <tr>
                     <td style="width: 1%;" >
-                        <input type="checkbox" <?=$checked;?> name="params[custom_menus][]" id="custom_menu<?=$menu_id;?>" value="<?=$menu_id;?>" >
+                        <input type="checkbox" <?php echo $checked;?> name="params[custom_menus][]" id="custom_menu<?php echo $menu_id;?>" value="<?php echo $menu_id;?>" >
                     </td>
                     <td>
-                        <label for="custom_menu<?=$menu_id;?>" ><?=$menu;?></label>
+                        <label for="custom_menu<?php echo $menu_id;?>" ><?php echo $menu;?></label>
                     </td>
                 </tr>
 

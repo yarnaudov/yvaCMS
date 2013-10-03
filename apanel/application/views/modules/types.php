@@ -10,9 +10,9 @@ $modules = array_chunk($modules, ceil($size));
     
     <!--
     <tr>
-        <th><?=lang('label_general');?></th>
+        <th><?php echo lang('label_general');?></th>
         <td></td>
-        <th><?=lang('label_components');?></th>
+        <th><?php echo lang('label_components');?></th>
     </tr>
     -->
     
@@ -23,8 +23,8 @@ $modules = array_chunk($modules, ceil($size));
             <?php foreach($modules[0] as $module){ ?> 
 
                 <li>
-                    <a href="<?=$module;?>" class="type" >
-                        <?=lang('label_'.$module);?>
+                    <a href="<?php echo $module;?>" class="type" >
+                        <?php echo lang('label_'.$module);?>
                     </a>
                 </li>
 
@@ -39,8 +39,8 @@ $modules = array_chunk($modules, ceil($size));
             <?php foreach($modules[1] as $module){ ?> 
 
                 <li>
-                    <a href="<?=$module;?>" class="type" >
-                        <?=lang('label_'.$module);?>
+                    <a href="<?php echo $module;?>" class="type" >
+                        <?php echo lang('label_'.$module);?>
                     </a>
                 </li>
 

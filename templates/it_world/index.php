@@ -6,10 +6,10 @@
         
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
-        <link rel="stylesheet" type="text/css" href="<?=base_url(TEMPLATES_DIR.'/it_world/css/style.css');?>" />
-        <link rel="stylesheet" type="text/css" href="<?=base_url(TEMPLATES_DIR.'/it_world/css/layout.css');?>" />
+        <link rel="stylesheet" type="text/css" href="<?php echo base_url(TEMPLATES_DIR.'/it_world/css/style.css');?>" />
+        <link rel="stylesheet" type="text/css" href="<?php echo base_url(TEMPLATES_DIR.'/it_world/css/layout.css');?>" />
         <!--[if lt IE 7]>
-        <link rel="stylesheet" type="text/css" href="<?=base_url(TEMPLATES_DIR.'/it_world/css/style_ie.css');?>" />
+        <link rel="stylesheet" type="text/css" href="<?php echo base_url(TEMPLATES_DIR.'/it_world/css/style_ie.css');?>" />
         <![endif]-->
                 
     </head>
@@ -34,12 +34,12 @@
 
                         <div class="logo">
                             <!--
-                            <a href="<?=site_url();?>"><img src="<?=base_url(TEMPLATES_DIR.'/it_world/images/logo.gif');?>" alt="" /></a>
+                            <a href="<?php echo site_url();?>"><img src="<?php echo base_url(TEMPLATES_DIR.'/it_world/images/logo.gif');?>" alt="" /></a>
                             -->
                         </div>
 
                         <div class="slogan">
-                            <img src="<?=base_url('');?>" alt="" />
+                            <img src="<?php echo base_url('');?>" alt="" />
                         </div>  
                         
                         <div class="breadcrumb">
@@ -69,10 +69,10 @@
                     <div id="footer">
                         <div class="indent">
                             <div class="fleft">
-                                <?=$this->Module->load('footer-left');?>
+                                <?php echo $this->Module->load('footer-left');?>
                             </div>
                             <div class="fright">
-                                <?=$this->Module->load('footer-right');?>
+                                <?php echo $this->Module->load('footer-right');?>
                             </div>
                         </div>
                     </div>

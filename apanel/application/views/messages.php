@@ -4,7 +4,7 @@
         if(!empty($errors)){ ?>      
         <div class="error_msg" >
             <ul>
-                <?=validation_errors('<li>', '</li>');?>
+                <?php echo validation_errors('<li>', '</li>');?>
             </ul>
         </div>
 <?php } } ?>
@@ -13,7 +13,7 @@
       $this->session->unset_userdata('good_msg');
       if(!empty($good_msg)){ ?>
       <div class="good_msg" >
-          <?=$good_msg;?>            
+          <?php echo $good_msg;?>            
       </div>
 <?php } ?>
 
@@ -21,7 +21,7 @@
       $this->session->unset_userdata('error_msg');
       if(!empty($error_msg)){ ?>
       <div class="error_msg" >
-          <?=$error_msg;?>            
+          <?php echo $error_msg;?>            
       </div>
 <?php } ?>
 <!-- end messages -->

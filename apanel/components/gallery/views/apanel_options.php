@@ -18,7 +18,7 @@ foreach($albums_arr as $album){
 <tr><td colspan="2" class="empty_line" ></td></tr>
                                 
 <tr>	      			
-    <th><label><?=lang('com_gallery_label_albums');?>:</label></th>
+    <th><label><?php echo lang('com_gallery_label_albums');?>:</label></th>
     <td>
         
         <?php if($param == 'albums'){ ?>
@@ -30,17 +30,17 @@ foreach($albums_arr as $album){
                         <input id="all" type="checkbox" value="*" name="params[albums][]" <?php echo @$albums[0] == '*' ? 'checked' : ''; ?> >
                     </td>
                     <td>
-                        <label for="all" ><?=lang('label_all');?></label>
+                        <label for="all" ><?php echo lang('label_all');?></label>
                     </td>
                 </tr>
                 
                 <?php foreach($albums_arr as $album){ ?>
                 <tr>
                     <td style="width: 1%;">
-                        <input id="album<?=$album['id'];?>" type="checkbox" value="<?=$album['id'];?>" name="params[albums][]" <?php echo in_array($album['id'], $albums) ? 'checked' : ''; ?> >
+                        <input id="album<?php echo $album['id'];?>" type="checkbox" value="<?php echo $album['id'];?>" name="params[albums][]" <?php echo in_array($album['id'], $albums) ? 'checked' : ''; ?> >
                     </td>
                     <td>
-                        <label for="album<?=$album['id'];?>" ><?=$album['title'];?></label>
+                        <label for="album<?php echo $album['id'];?>" ><?php echo $album['title'];?></label>
                     </td>
                 </tr>
                 <?php } ?>
@@ -68,7 +68,7 @@ foreach($albums_arr as $album){
         
         <select name="params[album_id]" >
             <option value="none" >- - -</option>
-            <?=create_options_array($albums_dropdown, set_value('params[album_id]', isset($params['album_id']) ? $params['album_id'] : ""));?>
+            <?php echo create_options_array($albums_dropdown, set_value('params[album_id]', isset($params['album_id']) ? $params['album_id'] : ""));?>
         </select>
         
         <?php } ?>
