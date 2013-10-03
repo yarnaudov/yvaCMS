@@ -8,7 +8,7 @@
               } ?>
     
     <li <?=$class != '' ? 'class="'.$class.'"' : '';?> >
-        <a href="<?=$this->menu_link.'article:'.$article['alias'];?>" ><?=$article['title'];?></a>
+        <a href="<?=$this->menu_link.'/article:'.$article['alias'];?>" ><?=$article['title'];?></a>
     </li>
 
     <?php } ?>
