@@ -79,6 +79,7 @@ $lang['label_link']          = 'Link';
 $lang['label_popup']         = 'Popup';
 $lang['label_browse']        = 'Browse';
 $lang['label_media']         = 'Media';
+$lang['label_gallery']       = 'Gallery';
 
 $lang['label_directory']     = 'Directory';
 

@@ -228,19 +228,21 @@
                                 <?php $images = set_value('params[images]', isset($params['images']) ? $params['images'] : array());
                                       foreach($images as $image){ ?>
                                 <li>
-                                    <input type="hidden" value="<?=$image;?>" name="params[images][]">
+                                    <input type="hidden" value="<?=(is_array($image) ? $image['id'] : $image);?>" name="params[images][]">
                                     
                                     <table>
                                         <tr>
                                             <td class="img" >
-                                                <?php if(is_dir('../'.$image)){ ?>
-                                                <img class="directory" src="<?=base_url('img/media/iconFolder.png');?>" >
-                                                <?php }else{ ?>
+						<?php if(is_array($image)){ ?>
+						<img src="<?=base_url('../'.$this->config->item('images_dir').'/'.$image['id'].'.'.$image['ext']);?>" >
+                                                <?php }elseif(is_dir('../'.$image)){ ?>
+                                                <img class="directory" src="<?=base_url('img/media/iconFolder.png');?>" >                                                
+						<?php }else{ ?>
                                                 <img src="<?=base_url('../'.$image);?>" >
                                                 <?php } ?>
                                             </td>
                                             
-                                            <td><?=$image;?></td>
+                                            <td><?=(is_array($image) ? $image['title'] : $image);?></td>
                                             
                                             <td class="actions" >
                                                 <img class="handle" src="<?=base_url('img/iconMove.png');?>" >
@@ -258,8 +260,13 @@
                             <a href="<?=site_url('media/browse/article');?>"
                                class = "load_jquery_ui_iframe styled add"
                                title="<?=lang('label_article');?> <?=lang('label_images');?>"
-                               lang="dialog-article-images" ><?=lang('label_add');?></a>
+                               lang="dialog-article-images" ><?=lang('label_media');?></a>
                             
+			    <a href="<?=site_url('components/gallery/images/index/simple_ajax');?>"
+                               class = "load_jquery_ui_iframe styled add"
+                               title="<?=lang('label_article');?> <?=lang('label_images');?>"
+                               lang="dialog-article-images" ><?=lang('label_gallery');?></a>
+			   			    
                         </div>
                     </div>
                     

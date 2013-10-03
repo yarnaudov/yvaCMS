@@ -13,10 +13,16 @@
 	
 	<div class="actions" >
 		
+	     <?php if($this->layout != 'simple_ajax'){ ?>  
             <a href="<?=site_url('components/gallery/images/add');?>"  class="styled add"    ><?=lang('label_add');?></a>
             <a href="<?=site_url('components/gallery/images/edit');?>" class="styled edit"   ><?=lang('label_edit');?></a>
             <a href="<?=site_url('components/gallery/images');?>"      class="styled delete" ><?=lang('label_delete');?></a>
             <a href="<?=site_url();?>"                                 class="styled cancel" ><?=lang('label_cancel');?></a>
+	    <?php }else{ ?>	    
+	    <button class="styled refresh" type="submit" ><?=lang('label_refresh');?></button>
+	    &nbsp;&nbsp;&nbsp;&nbsp;
+	    <a href="#" class="styled select" ><?=lang('label_select');?></a>
+	    <?php } ?>
 		
 	</div>
 	
@@ -24,11 +30,11 @@
     <!-- end page header -->
     
 
-    <!-- start page content -->
+    <?php if($this->layout != 'simple_ajax'){ ?>
     <div id="sub_actions" >
 	<?php echo $this->menu_lib->create_menu($sub_menu); ?>
     </div>
-    <!-- start page content -->
+    <?php } ?>
 
 
     <!-- start messages -->

@@ -132,12 +132,73 @@ class Images extends MY_Controller {
     public function index()
     {
         
+	$this->layout = 'default';
+        $redirect     = 'components/gallery/images';
+	
+	if($this->uri->segment(5) != ''){
+	    
+	    $this->jquery_ext->add_plugin('iframe_auto_height');
+            $script = "autoHeightIframe('jquery_ui_iframe');";
+	    
+	    $script .= "$('a.select').unbind('click');
+                       $('a.select').click(function(event){
+                
+                           event.preventDefault();
+
+                           if($('.checkbox:checked').length == 0){                               
+                               $( '#dialog-edit1' ).dialog( 'open' );
+                               $( '.ui-widget-overlay' ).css('opacity', '0');
+                               return false;
+                           }
+                           
+                           var html = new Array();
+                           $('.checkbox:checked').each(function(){
+                           
+                               var value = $(this).val();
+			       var img = $(this).parent().parent().find('img').attr('src');
+			       var title = $(this).parent().parent().find('a:eq(1)').html();
+       
+                               if(parent.$('#article_images input[value=\"'+value+'\"]').length == 0){
+
+                                   html.push('<li>');
+                                   html.push('<input type=\"hidden\" name=\"params[images][]\" value=\"'+value+'\" >');
+                                   
+                                   html.push('<table><tr>');
+                                   
+                                   html.push('<td class=\"img\" >');
+				   html.push('<img src=\"'+img+'\" >');
+                                   html.push('<\/td>');
+                                   
+                                   html.push('<td>'+title+'<\/td>');
+                                   
+                                   html.push('<td class=\"actions\" >');
+                                   html.push('<img class=\"handle\" src=\"'+DOCUMENT_BASE_URL+'".APANEL_DIR."/img/iconMove.png\" >');
+                                   html.push('<a class=\"styled delete\" >&nbsp;<\/a>');
+                                   html.push('<\/td>');
+                                   
+                                   html.push('<\/tr><\/table><\/li>');
+                               
+                               }
+                               
+                           });
+                           
+                           parent.$('#article_images').append(html.join(''));
+                           parent.$( '#jquery_ui' ).dialog( 'close' ); 
+
+                       });";	    
+	    $this->jquery_ext->add_script($script);
+	    
+	    $this->layout = $this->uri->segment(5);
+            $redirect     = 'components/gallery/images/index/'.$this->layout;
+	    
+	}
+	
         /*
          *  parent index method handels: 
          *  delete, change status, change order, set order by, set filters, 
          *  clear filter, set limit, get sub menus, set class on sorted element
          */
-        $data = parent::index($this->Image, 'gallery_images', 'components/gallery/images');
+        $data = parent::index($this->Image, 'gallery_images'.$this->layout, $redirect);
 	
 	if($this->input->get('album')){
 	    $data['filters']['album'] = $this->input->get('album');
@@ -165,7 +226,7 @@ class Images extends MY_Controller {
         $this->jquery_ext->add_library("check_actions.js");      
 
         $content["content"] = $this->load->view('gallery/images/list', $data, true);		
-        $this->load->view('layouts/default', $content);
+        $this->load->view('layouts/'.$this->layout, $content);
         
     }
 	

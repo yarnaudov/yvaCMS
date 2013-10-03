@@ -79,6 +79,7 @@ $lang['label_link']          = 'Препратка';
 $lang['label_popup']         = 'Прозорец';
 $lang['label_browse']        = 'Разглеждане';
 $lang['label_media']         = 'Медия';
+$lang['label_gallery']       = 'Галерия';
 
 $lang['label_directory']     = 'Директория';
 

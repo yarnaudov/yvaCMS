@@ -34,6 +34,34 @@ class Article extends CI_Model {
         $article['params'] = json_decode($article['params'], true); 
         $article           = array_merge($article, $this->Custom_field->getValues('articles', $id));
 	
+	if(isset($article['params']['images'])){
+	    
+	    foreach($article['params']['images'] as $key => $image){
+		
+		if(!preg_match('/^media/', $image)){
+		    $this->load->model('gallery/Image');
+		    $article['params']['images'][$key] = $this->Image->getDetails($image);
+		}
+		elseif(is_dir($image)){
+		    
+		    unset($article['params']['images'][$key]);
+		    
+		    $this->load->helper('file');
+		    $dir_images = get_dir_file_info($image);
+		    foreach($dir_images as $dir_image){
+			
+			if(!preg_match('/gif|jpg|png|gif/i', $dir_image['name'])){
+			    continue;
+			}
+			
+			$article['params']['images'][] = $dir_image['relative_path'].'/'.$dir_image['name'];
+		    }
+		}
+		
+	    }
+	
+	}
+	
 	$article['comments'] = $this->db->order_by('created_on', 'DESC')->get_where('articles_comments', array('article_id' => $id))->result_array();
         
         if($field == null){

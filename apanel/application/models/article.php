@@ -32,6 +32,17 @@ class Article extends MY_Model {
         $article['params']     = json_decode($article['params'], true); 
         $article               = array_merge($article, json_decode(json_encode($this->Custom_field->getFieldsValues($id)), true));
    
+	
+	foreach($article['params']['images'] as $key => $image){
+	    
+	    if(!preg_match('/^media/', $image)){
+		$this->load->config('gallery/gallery');
+		$this->load->model('gallery/Image');
+		$article['params']['images'][$key] = $this->Image->getDetails($image);
+	    }
+	    
+	}
+	
         if($field == null){
             return $article;
         }
