@@ -11,7 +11,9 @@ class Image extends CI_Model {
                       com_gallery_images cgi
                       LEFT JOIN com_gallery_images_data cgid ON (cgi.id = cgid.image_id AND cgid.language_id = '".$this->language_id."')
                     WHERE
-                      cgi.id = '".$id."' ";
+                      cgi.id = '".$id."'
+		     AND
+		      cgi.status = 'yes'";
         
         $image = $this->db->query($query);  	
         $image = $image->result_array();
