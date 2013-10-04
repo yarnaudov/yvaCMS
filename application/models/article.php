@@ -43,6 +43,9 @@ class Article extends CI_Model {
 		    if(is_array($gallery_image)){
 			$article['params']['images'][$key] = $gallery_image;
 		    }
+		    else{
+			unset($article['params']['images'][$key]);
+		    }
 		}
 		elseif(is_dir($image)){
 		    
