@@ -22,6 +22,8 @@ class Gallery extends MY_Controller {
 	
         if($this->uri->segment(2) == 'get_image'){
             $params[0] = $this->uri->segment(3);
+            $params[1] = $this->uri->segment(4);
+            $params[2] = $this->uri->segment(5);
             $this->get_image($params);
         }
         elseif(!method_exists($this, $method)){
