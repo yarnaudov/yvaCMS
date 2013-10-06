@@ -64,6 +64,8 @@ class Image extends CI_Model {
                         LEFT JOIN com_gallery_images_data cgid ON (cgi.id = cgid.image_id AND cgid.language_id = '".$this->language_id."')
                     WHERE
                         cgi.id IS NOT NULL
+                       AND
+                        cgi.status = 'yes'
                         ".$filter."
                     ".($order_by != "" ? "ORDER BY ".$order_by : "")."
                     ".($limit    != "" ? "LIMIT ".$limit : "")."";

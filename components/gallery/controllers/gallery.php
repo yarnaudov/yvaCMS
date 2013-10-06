@@ -20,7 +20,11 @@ class Gallery extends MY_Controller {
     public function _remap($method,  $params = array())
     {        	
 	
-        if(!method_exists($this, $method)){
+        if($this->uri->segment(2) == 'get_image'){
+            $params[0] = $this->uri->segment(3);
+            $this->get_image($params);
+        }
+        elseif(!method_exists($this, $method)){
             $this->index($method);
         }
         else{  
@@ -112,7 +116,7 @@ class Gallery extends MY_Controller {
 	
     }
     
-    public function image($params)
+    public function get_image($params)
     {
 
 	$image_id = $params[0];

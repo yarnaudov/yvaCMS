@@ -40,6 +40,6 @@ if($url2[0] == 'album'){
         
     </div>
     
-    <img src="<?php echo site_url('gallery/image/'.$image['id'].'/600/600');/*$this->Image->getImageUrl($image['id'], 600, 600);base_url('images/'.$image['id'].'.'.$image['ext']);?>" alt="<?php echo $image['title'];*/?>" id="big_image" style="display: none;" >
+    <img src="<?php echo site_url('gallery/get_image/'.$image['id'].'/600/600');?>" id="big_image" style="display: none;" >
 
 </div>
