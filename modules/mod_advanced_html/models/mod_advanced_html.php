@@ -26,6 +26,11 @@ class mod_advanced_html extends CI_Model{
 		case "ini":
 		    $data['data'] = parse_ini_file(FCPATH . $module['params']['source_file'], true);
 		break;
+            
+                case "xml":
+                    $xml = file_get_contents(FCPATH . $module['params']['source_file']);
+		    $data['data'] = new SimpleXMLElement($xml);
+		break;
 
 	    }
 	    
