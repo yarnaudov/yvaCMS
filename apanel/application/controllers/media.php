@@ -28,7 +28,7 @@ class Media extends MY_Controller {
         
             $config['upload_path']   = realpath(FCPATH.'../').'/'.$data['folder'];
             $config['allowed_types'] = 'gif|jpg|png|gif|doc|docx|xls|xlsx|pdf|txt|csv|ttf';
-            $config['max_size']	     = '1000';
+            $config['max_size']	     = '10000';
             $config['max_width']     = '1024';
             $config['max_height']    = '768';              
             
