@@ -17,6 +17,7 @@
             <option value="php"  <?php echo $source_format == 'php'  ? 'selected' : '';?> >php</option>
             <option value="json" <?php echo $source_format == 'json' ? 'selected' : '';?> >json</option>
 	    <option value="ini"  <?php echo $source_format == 'ini'  ? 'selected' : '';?> >ini</option>
+            <option value="xml"  <?php echo $source_format == 'xml'  ? 'selected' : '';?> >xml</option>
         </select>
     </td>
 </tr>
