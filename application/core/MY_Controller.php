@@ -100,7 +100,8 @@ class MY_Controller extends CI_Controller {
 	$this->load->add_package_path(TEMPLATES_DIR.'/'.$this->template_main.'/');
 	
 	# load template language if exists
-	if(file_exists(TEMPLATES_DIR . '/' . $this->template_main . '/language/' . get_lang() . '/template_lang.php')){
+	if(file_exists(TEMPLATES_DIR . '/' . $this->template_main . '/language/' . get_lang() . '/template_lang.php') ||
+	   file_exists(TEMPLATES_DIR . '/' . $this->template_main . '/language/en/template_lang.php') ){
 	    $this->load->language('template');
 	}
 	
