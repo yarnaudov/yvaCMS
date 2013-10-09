@@ -68,11 +68,6 @@ class MY_Controller extends CI_Controller {
 	# load system language
 	$this->load->language('system');
 	
-	# load template language if exists
-	if(file_exists(TEMPLATES_DIR . '/' . $this->template_main . '/language/' . get_lang() . '/template_lang.php')){
-	    $this->load->language('template');
-	}
-
 	self::_getActiveContent();
 	
 	# set menu link
@@ -98,8 +93,17 @@ class MY_Controller extends CI_Controller {
         // If tamplate is assignt to menu load it insted of default one
         if(isset($menu['main_template']) && $menu['main_template'] != 'default'){
             $this->template = $menu['main_template'];
+	    $template = explode("/", $menu['main_template']);
+	    $this->template_main = current($template);
         }
         
+	$this->load->add_package_path(TEMPLATES_DIR.'/'.$this->template_main.'/');
+	
+	# load template language if exists
+	if(file_exists(TEMPLATES_DIR . '/' . $this->template_main . '/language/' . get_lang() . '/template_lang.php')){
+	    $this->load->language('template');
+	}
+	
         # Set settings for template
         $this->data['SiteName']        = $this->Setting->getSiteName();
         $this->data['MetaDescription'] = $this->Setting->getMetaDescription();
