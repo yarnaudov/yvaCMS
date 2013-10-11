@@ -8,7 +8,7 @@ $lang['upload_no_temp_directory'] = 'Папка tmp/ липсва.';
 $lang['upload_unable_to_write_file'] = 'Файла не може да бъде записан на диска.';
 $lang['upload_stopped_by_extension'] = 'Качване на файлове е спряно поради удължаване на срока на качване.';
 $lang['upload_no_file_selected'] = 'Не сте избрали файл за качване.';
-$lang['upload_invalid_filetype'] = 'Файла който се опитвате да качите е забранен за качване.';
+$lang['upload_invalid_filetype'] = 'Файла който се опитвате да качите е забранен за качване. Разрешените файлове са: %s';
 $lang['upload_invalid_filesize'] = 'Файлът, който се опитвате да качите е по-голям от разрешения размер.';
 $lang['upload_invalid_dimensions'] = 'Снимката, която се опитвате да качите надвишава максималната височина или ширина.
 ';

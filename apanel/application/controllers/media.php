@@ -2,6 +2,20 @@
 
 class Media extends MY_Controller {
     
+    private $allowed_types = array(
+	
+	# images
+	'gif','jpg','jpeg','jpe','png','tiff','tif', 
+	
+	# videos
+	'swf','wav','mp3','mp2','mpeg','mpg','mpe','qt','mov','avi', 'movie', 
+	
+	# documents
+	'doc','docx','xls','xlsx','word','xl','pdf','csv','txt',
+	
+	# other formats
+	'eml', 'json', 'xml', 'rtx', 'zip', 'psd');
+    
     public function browse($param = '')
     {
                
@@ -27,7 +41,7 @@ class Media extends MY_Controller {
         if(isset($_POST['upload'])){
         
             $config['upload_path']   = realpath(FCPATH.'../').'/'.$data['folder'];
-            $config['allowed_types'] = 'gif|jpg|jpeg|jpe|png|gif|doc|docx|xls|xlsx|pdf|txt|csv|ttf';
+            $config['allowed_types'] = implode('|', $this->allowed_types);
             $config['max_size']	     = '10000';             
             
             $this->load->library('upload', $config);
@@ -37,7 +51,7 @@ class Media extends MY_Controller {
             
             if ( ! @$this->upload->do_multi_upload('file'))
             {
-                $data['error'] = $this->upload->display_errors();
+                $data['error'] = sprintf($this->upload->display_errors(), implode(', ', $this->allowed_types));
             }
             else
             {
@@ -73,8 +87,16 @@ class Media extends MY_Controller {
         if(isset($_POST['rename'])){
             
             $item = $_POST['item'][0];
-            $folder = realpath(FCPATH.'../').'/'.$data['folder'];
-            rename($folder.$item, $folder.$_POST['new_name']);
+	    
+	    $ext = current(explode('.', $item));
+	    
+	    if(!in_array($ext, $this->allowed_types)){
+		$data['error'] = sprintf(lang('msg_rename_file_allowed_ext'), implode(', ', $this->allowed_types));
+	    }
+	    else{
+		$folder = realpath(FCPATH.'../').'/'.$data['folder'];
+		rename($folder.$item, $folder.$_POST['new_name']);
+	    }
             
         }
         
