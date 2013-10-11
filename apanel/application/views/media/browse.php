@@ -17,6 +17,7 @@
             
             <a href="#" class="styled rename" ><?php echo lang('label_rename');?></a>
 	    <a href="#" class="styled delete" ><?php echo lang('label_delete');?></a>
+	    <a href="#" class="styled download" ><?php echo lang('label_download');?>Сваляне</a>
             &nbsp;&nbsp;&nbsp;&nbsp;
             <a href="#" class="styled select <?php echo $param;?>" ><?php echo lang('label_select');?></a>
 		
@@ -43,28 +44,24 @@
             </div>
             <?php } ?>
             
-            <?php
-            $media_dir = realpath(FCPATH.'../').'/'.$folder;
-            $handle = opendir($media_dir); 
-            ?>
+            <?php $media_dir = realpath(FCPATH.'../').'/'.$folder; ?>
 
-            <?php while (false !== ($entry = readdir($handle))) { 
-                    $entry = iconv("Windows-1251", "UTF-8", $entry);
-                    if (substr($entry, 0, 1) == "." || $entry == "index.html"){
-                        continue;
-                    } ?>
+            <?php foreach ($entries as $entry){ ?>
 
                 <div class="media_item" >  
                                         
                     <?php if(is_dir($media_dir.$entry)){ ?>
                     <a href="#" class="folder" lang="<?php echo $entry;?>/" >
                         <div><img src="<?php echo base_url('img/media/iconFolder.png');?>" ></div>
-                        <span><?php echo $entry;?></span>
+                        <span>
+			    <?php echo $entry;?>
+			    (<?php echo count(directory_map($media_dir.$entry)); ?>)
+			</span>
                     </a>
                     <?php }else{ 
                             $ext = strtolower(end(explode('.', $entry))); 
 
-                            if(in_array($ext, array('jpg', 'png', 'gif'))){ ?>
+                            if(in_array($ext, array('gif','jpg','jpeg','jpe','png','tiff','tif'))){ ?>
                             <a href="#" >
                                 <div><img src="<?php echo base_url('../'.$folder.$entry);?>" ></div>
                                 <span><?php echo $entry;?></span>

@@ -102,7 +102,6 @@ class Media extends MY_Controller {
 		$data['error'] = sprintf(lang('msg_rename_file_allowed_ext'), implode(', ', $this->allowed_types));
 	    }
 	    else{
-		$folder = realpath(FCPATH.'../').'/'.$data['folder'];
 		rename($folder.$item, $folder.$new_name);
 	    }
             
@@ -110,7 +109,6 @@ class Media extends MY_Controller {
         
         if(isset($_POST['delete'])){
             
-            $folder = realpath(FCPATH.'../').'/'.$data['folder'];
             foreach($_POST['item'] as $item){
                 
                 if(is_dir($folder.$item)){
@@ -125,6 +123,25 @@ class Media extends MY_Controller {
             
         }
         
+	if(isset($_POST['download'])){
+	    
+	    $this->load->helper('download');
+	    
+	    if(count($_POST['item']) == 1){
+		$item = $_POST['item'][0];
+		$data = file_get_contents($folder.$item);
+		force_download($item, $data); 
+	    }
+	    else{
+		
+		foreach($_POST['item'] as $item){
+		
+		}
+		
+	    }
+	    
+	}
+	
         $this->jquery_ext->add_plugin('iframe_auto_height');        
         $script = "autoHeightIframe('jquery_ui_iframe');";        
         $this->jquery_ext->add_script($script);
@@ -185,6 +202,9 @@ class Media extends MY_Controller {
             
         }
         
+	$this->load->helper('directory');
+	$data['entries'] = directory_map(realpath(FCPATH.'../').'/'.$data['folder'], true);
+	
         $content["content"] = $this->load->view('media/browse', $data, true);		
         $this->load->view('layouts/simple', $content);
         

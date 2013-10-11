@@ -105,6 +105,22 @@ $(document).ready(function() {
         return false;
     });
     
+    $('a.download').bind('click', function(){
+        
+        if($('.checkbox:checked').length == 0){
+
+            $( '#dialog-edit1' ).dialog( 'open' );
+            $( '.ui-widget-overlay' ).css('opacity', '0');
+            return false;
+
+        }
+
+        $('form').append('<input type="hidden" name="download" >');
+	$('form').submit();       
+        return false;
+
+    });
+    
     $('a.select').bind('click', function(){
 
         if($('.checkbox:checked').length == 0){
