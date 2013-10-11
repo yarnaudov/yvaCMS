@@ -304,6 +304,10 @@ button.copy,
 a.copy{
     background-image: url('../img/iconCopy.png');
 }
+button.download,
+a.download{
+    background-image: url('../img/iconDownload.png');
+}
 
 
 #sub_actions{
