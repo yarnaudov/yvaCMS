@@ -129,8 +129,8 @@ class Media extends MY_Controller {
 	    
 	    if(count($_POST['item']) == 1){
 		$item = $_POST['item'][0];
-		$data = file_get_contents($folder.$item);
-		force_download($item, $data); 
+		$file_data = file_get_contents($folder.$item);
+		force_download($item, $file_data); 
 	    }
 	    else{
 		
