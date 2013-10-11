@@ -17,7 +17,7 @@
             
             <a href="#" class="styled rename" ><?php echo lang('label_rename');?></a>
 	    <a href="#" class="styled delete" ><?php echo lang('label_delete');?></a>
-	    <a href="#" class="styled download" ><?php echo lang('label_download');?>Сваляне</a>
+	    <a href="#" class="styled download" ><?php echo lang('label_download');?></a>
             &nbsp;&nbsp;&nbsp;&nbsp;
             <a href="#" class="styled select <?php echo $param;?>" ><?php echo lang('label_select');?></a>
 		

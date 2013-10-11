@@ -27,6 +27,7 @@ $lang['label_save']          = 'save';
 $lang['label_apply']         = 'apply';
 $lang['label_refresh']       = 'refresh';
 $lang['label_rename']        = 'Rename';
+$lang['label_download']      = 'Download';
 
 $lang['label_search']        = 'Search';
 $lang['label_clear']         = 'Clear';

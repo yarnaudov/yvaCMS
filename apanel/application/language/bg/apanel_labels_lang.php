@@ -27,6 +27,7 @@ $lang['label_save']          = 'запазване';
 $lang['label_apply']         = 'прилагане';
 $lang['label_refresh']       = 'пезареждане';
 $lang['label_rename']        = 'Преименуване';
+$lang['label_download']      = 'Сваляне';
 
 $lang['label_search']        = 'Търсене';
 $lang['label_clear']         = 'Изчисти';
