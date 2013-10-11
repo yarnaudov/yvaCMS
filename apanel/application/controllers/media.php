@@ -26,6 +26,7 @@ class Media extends MY_Controller {
 	$folder = realpath(FCPATH.'../').'/'.$data['folder'];
 	if(!file_exists($folder)){
 	    mkdir($folder, 0777);
+	    copy(BASEPATH."/index.html", $folder."/index.html");
 	}
 	
         $data['param']  = $param;
@@ -85,17 +86,24 @@ class Media extends MY_Controller {
         }
                 
         if(isset($_POST['rename'])){
-            
+
             $item = $_POST['item'][0];
+	    $new_name = trim($_POST['new_name']);
 	    
-	    $ext = current(explode('.', $item));
+	    if(preg_match('/\./', $new_name)){
+		$file = explode('.', $new_name);
+		$ext = end($file);
+	    }
 	    
-	    if(!in_array($ext, $this->allowed_types)){
+	    if(!preg_match('/^[a-zA-Z0-9_'.(isset($ext) ? '\.' : '').']+$/', $new_name)){
+               $data['error'] = lang('msg_folder_allowed_chars');
+            }
+	    elseif(isset($ext) && !in_array($ext, $this->allowed_types)){
 		$data['error'] = sprintf(lang('msg_rename_file_allowed_ext'), implode(', ', $this->allowed_types));
 	    }
 	    else{
 		$folder = realpath(FCPATH.'../').'/'.$data['folder'];
-		rename($folder.$item, $folder.$_POST['new_name']);
+		rename($folder.$item, $folder.$new_name);
 	    }
             
         }

@@ -57,7 +57,7 @@ $lang['msg_image_allowed_ext']       = 'Форматът на файлът не 
 $lang['msg_empty_folder']            = 'Моля попълнете име на папката';
 $lang['msg_folder_allowed_chars']    = 'Има не позволени символи в името на папката. Можете да използвате само букви, цифри и долна черта';
 $lang['msg_folder_exists']           = 'Вече съществува папка с това име';
-$lang['msg_rename_file_allowed_ext'] = 'Разширението на файла не е разрешено';
+$lang['msg_rename_file_allowed_ext'] = 'Разширението на файла не е разрешено. Разрешени файлове: %s';
 
 $lang['msg_multilang_info']          = 'Това поле има различна стойност за всички езици';
 
