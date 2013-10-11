@@ -7,7 +7,11 @@ $(document).ready(function() {
         $('form').submit();
     });
     
-    $('#up').bind('click', function(){
+    $('button.refresh').bind('click', function(){
+        $('input[name=download]').remove();
+    })
+    
+    $('#up').bind('click', function(){        
         $('form').append('<input type="hidden" name="up" >');
         $('form').submit();
     });

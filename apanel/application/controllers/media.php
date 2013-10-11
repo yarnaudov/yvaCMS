@@ -38,30 +38,23 @@ class Media extends MY_Controller {
                 $data['folder'] = implode('/', $folders);
             }
         }
-        
-        if(isset($_POST['upload'])){
+        elseif(isset($_POST['upload'])){
         
             $config['upload_path']   = realpath(FCPATH.'../').'/'.$data['folder'];
             $config['allowed_types'] = implode('|', $this->allowed_types);
             $config['max_size']	     = '10000';             
             
             $this->load->library('upload', $config);
-
-            //print_r($_FILES);
-            //exit;
             
-            if ( ! @$this->upload->do_multi_upload('file'))
-            {
+            if ( ! @$this->upload->do_multi_upload('file')){
                 $data['error'] = sprintf($this->upload->display_errors(), implode(', ', $this->allowed_types));
             }
-            else
-            {
+            else{
                 $data_u = array('upload_data' => $this->upload->get_multi_upload_data());
             }
             
-        }
-        
-        if(isset($_POST['create_folder'])){
+        }        
+        elseif(isset($_POST['create_folder'])){
             
             $folder = trim($_POST['folder_name']);
             
@@ -84,8 +77,7 @@ class Media extends MY_Controller {
             }
             
         }
-                
-        if(isset($_POST['rename'])){
+        elseif(isset($_POST['rename'])){
 
             $item = $_POST['item'][0];
 	    $new_name = trim($_POST['new_name']);
@@ -106,8 +98,7 @@ class Media extends MY_Controller {
 	    }
             
         }
-        
-        if(isset($_POST['delete'])){
+        elseif(isset($_POST['delete'])){
             
             foreach($_POST['item'] as $item){
                 
@@ -122,9 +113,8 @@ class Media extends MY_Controller {
             }
             
         }
-        
-	if(isset($_POST['download'])){
-	    
+        elseif(isset($_POST['download'])){
+            
 	    $this->load->helper('download');
 	    
 	    if(count($_POST['item']) == 1){
@@ -134,10 +124,15 @@ class Media extends MY_Controller {
 	    }
 	    else{
 		
-		foreach($_POST['item'] as $item){
-		
+                $this->load->library('zip');
+                
+		foreach($_POST['item'] as $item){                    
+                    $file_data = file_get_contents($folder.$item);
+                    $this->zip->add_data($item, $file_data);                    
 		}
 		
+                $this->zip->download('media-files-'.date('YmdHis').'.zip'); 
+                
 	    }
 	    
 	}
