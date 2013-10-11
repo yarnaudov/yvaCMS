@@ -164,9 +164,8 @@ pip-log.txt
 # Mac crap
 .DS_Store
 /nbproject/private/
-!/templates/dynamic/
-!/templates/it_world/
-/templates/
-!/images/tmp/
+/templates/*
+!/templates/dynamic
+!/templates/it_world
 /media/
 /images/
