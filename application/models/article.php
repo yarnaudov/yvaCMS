@@ -328,23 +328,6 @@ class Article extends CI_Model {
     
     public function search($search_v, $type = 'article')
     {
-	/*
-        $query = "SELECT *
-                    FROM
-                      articles a
-                      LEFT JOIN articles_data ad ON (a.id = ad.article_id AND ad.language_id = '".$this->language_id."') 
-		      LEFT JOIN articles_categories ac ON (a.id = ac.article_id)
-                    WHERE
-                      a.status = 'yes'
-                     AND
-                      (ad.title like '%".$search_v."%' OR ad.text like '%".$search_v."%')
-                    ORDER BY `order`";
-        
-        $articles = $this->db->query($query);  
-        $articles = $articles->result_array();        
-        
-        return $articles;
-	*/
 	
 	$this->db->select('DISTINCT(a.id) as id');
 	$this->db->from('articles a');

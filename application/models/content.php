@@ -50,8 +50,10 @@ class Content extends CI_Model {
             
         }
         elseif($this->menu_id == 'search'){ // stupid fix for search component to work with no menu assigned to it
-	    $controllerInstance = & get_instance();
-            $data['content'] = $controllerInstance->getContent();
+	    //$controllerInstance = & get_instance();
+            //$data['content'] = $controllerInstance->getContent();
+	    $this->load->model('Component');
+	    $data['content'] = $this->Component->run('search');
         }
         else{
             
@@ -220,6 +222,7 @@ class Content extends CI_Model {
 	    
         }
         elseif($this->menu_id == 'search'){ // stupid fix for search component to work with no menu assigned to it
+	    $this->load->language('components/search');
             $title = lang('label_search');
         }
         else{

@@ -1,28 +1,31 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Search extends CI_Model {
-
-    public $data;
     
-    function __construct()
+    public function run($data = array())
     {
-        
-        parent::__construct();
-                
-        if(isset($_POST['search'])){
-           self::_search();           
-        }
-        
-    }
-    
-    function _search()
-    {
-        $this->data['search_v'] = $this->input->post('search_v');
-                
-        $this->data['articles'] = $this->Article->search($this->input->post('search_v'));
-
-        //print_r($articles);
-        
+	
+	$this->load->language('components/search');
+	
+	$templates = isset($this->Content->templates['search']) ? $this->Content->templates['search'] : array();
+	
+	$query = $this->input->get('query', TRUE);
+	$type = 'article';
+	
+	if($this->input->get('tag', TRUE)){
+	    $query = $this->input->get('tag', TRUE);
+	    $type  = 'tag';
+	}
+	
+	$articles = $this->Article->search($query, $type);
+		
+	$view = 'search';
+	if(isset($templates['search'])){
+	    $view = $templates['search'];
+	}
+	
+        return $this->load->view($view, compact('query', 'articles'), true);
+	
     }
     
 }
