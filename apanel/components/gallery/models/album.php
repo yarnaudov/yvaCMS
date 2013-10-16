@@ -220,10 +220,24 @@ class Album extends MY_Model {
                    
         $this->session->set_userdata('good_msg', lang('msg_save_album'));
         $this->db->query('COMMIT');
+	
+	self::_deleteResizedImages($id);
+	
         return $id;
 
     }
 
+    private function _deleteResizedImages($album_id)
+    {
+	$images = $this->Image->getImages(array('album' => $album_id));
+	
+	foreach($images as $image){
+	    $file = $image['id'].'.'.$image['ext'];
+	    $this->Image->removeResized($file);
+	}
+	
+    }
+    
     public function changeStatus($id, $status)
     {   
 

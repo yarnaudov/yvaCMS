@@ -66,7 +66,9 @@ class Content extends CI_Model {
             }
             
             if(preg_match('/^components{1}/', $menu['type'])){
+		$type = explode('/', $menu['type']);
                 $menu['type'] = "component";
+		$component = $type[1];
             }
 	    
 	    $menu['link']  = module::menu_link($menu);
@@ -150,9 +152,9 @@ class Content extends CI_Model {
 		    $data['content'] = self::_sitemap();
 		break;
 		
-                case "component":	
-		    $controllerInstance = & get_instance();
-                    $data['content'] = $controllerInstance->getContent();//$this->data['content'];                                        
+                case "component":
+		    $this->load->model('Component');
+                    $data['content'] = $this->Component->run($component, $menu['params']);                                      
                 break;
                 
             }
@@ -269,7 +271,7 @@ class Content extends CI_Model {
             $header .= "<meta name=\"robots\" content=\"".$this->Setting->getRobots()."\" />\n";
         }
 	
-	$header .= "<script type=\"text/javascript\" >var base_url = '".base_url()."';var site_url = '".site_url()."';</script>\n";
+	$header .= "<script type=\"text/javascript\" >var base_url = '".base_url()."';var site_url = '".rtrim(site_url(), '/')."';</script>\n";
                                
         return $header;
         

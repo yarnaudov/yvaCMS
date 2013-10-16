@@ -1,6 +1,67 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Contact_form extends CI_Model {
+class Contact_forms extends CI_Model {
+    
+    public function run($data = array())
+    {
+	
+	if($this->input->get('contact_form_id')){
+	    $contact_form_id = $this->input->get('contact_form_id');
+	}
+	else{
+	    $contact_form_id = $data['contact_form_id'];
+	}
+	
+	$this->load->language('components/com_cf');
+        
+        
+        $this->jquery_ext->add_plugin('validation');
+	$this->jquery_ext->add_library('check_captcha.js');
+        $this->jquery_ext->add_library('../components/contact_forms/js/contacts.js');
+        //$this->jquery_ext->add_css('../components/contact_forms/css/contacts.css');
+        
+        
+        /*
+         * load validation library language file
+         */
+        $file = 'validation/localization/messages_'.get_lang().'.js';
+        if(file_exists('js/'.$file)){
+            $this->jquery_ext->add_library($file);
+        }
+        
+        
+        /*
+         * Load jquery_ui and search for .datepicker
+         */
+        $this->jquery_ext->add_plugin('jquery_ui');
+        $script = "$('.datepicker').datepicker({
+                        showOn: 'button',
+                        dateFormat: 'yy-mm-dd',
+                        buttonImage: '".base_url('components/contact_forms/img/iconCalendar.png')."',
+                        buttonImageOnly: true,              
+                        buttonText: '".lang('label_cf_select_date')."'
+                    });";
+        $this->jquery_ext->add_script($script);
+	
+	
+	if(isset($_POST['send'])){
+            $this->send($contact_form_id);
+        }
+        
+        $this->contact_form_id = $contact_form_id;
+	
+	$templates = isset($this->Content->templates['contact_forms']) ? $this->Content->templates['contact_forms'] : array();
+	
+	$contact_form = $this->getDetails($this->contact_form_id);
+	
+	$view = 'contact_form';
+	if(isset($templates['contact_form'])){
+	    $view = $templates['contact_form'];
+	}
+		
+	return $this->load->view($view, compact('contact_form'), true);
+	
+    }
     
     public function getDetails($id, $field = null)
     {

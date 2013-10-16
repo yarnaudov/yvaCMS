@@ -347,9 +347,11 @@ class Images extends MY_Controller {
         $image['width']  = $image_data[0];
         $image['height'] = $image_data[1];
         $image['src']    = $tmp_file;
+	$image['ext']    = $ext;
 
         echo "<span>".json_encode($image)."</span>";
-
+	exit;
+	
     }
 
     public function crop()

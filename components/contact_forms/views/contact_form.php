@@ -16,7 +16,7 @@
 	</div>
 	<?php } ?>
 	  
-	<form method="post" action="<?php echo site_url('contact_forms/' . $contact_form['id']);?>" class="contactForm" id="contactForm_<?php echo $contact_form['id'];?>" >
+	<form method="post" action="<?php echo  current_url().'?contact_form_id='.$contact_form['id'];?>" class="contactForm" id="contactForm_<?php echo $contact_form['id'];?>" >
 
 
 	    <?php foreach($contact_form['fields'] as $number => $field){ 
@@ -131,12 +131,12 @@
 	    <br/>
 	    <div class="row captcha" >
 		<label>&nbsp;</label>
-		<img id="siimage" style="margin-right: 15px;width: 200px;height: 70px;" src="<?php echo base_url();?>/plugins/securimage/securimage_show.php?sid=<?php echo md5(uniqid()) ?>" alt="CAPTCHA Image" />	
-		<object type="application/x-shockwave-flash" data="<?php echo base_url();?>/plugins/securimage/securimage_play.swf?bgcol=#ffffff&amp;icon_file=./images/audio_icon.gif&amp;audio_file=<?php echo base_url();?>/plugins/securimage/securimage_play.php" width="19" height="19" >
-		    <param name="movie" value="<?php echo base_url();?>/plugins/securimage/securimage_play.swf?bgcol=#ffffff&amp;icon_file=./images/audio_icon.gif&amp;audio_file=<?php echo base_url();?>/plugins/securimage/securimage_play.php" />
+		<img id="siimage" style="margin-right: 15px;width: 200px;height: 70px;" src="<?php echo base_url();?>plugins/securimage/securimage_show.php?sid=<?php echo md5(uniqid()) ?>" alt="CAPTCHA Image" />	
+		<object type="application/x-shockwave-flash" data="<?php echo base_url();?>plugins/securimage/securimage_play.swf?bgcol=#ffffff&amp;icon_file=./images/audio_icon.gif&amp;audio_file=<?php echo base_url();?>/plugins/securimage/securimage_play.php" width="19" height="19" >
+		    <param name="movie" value="<?php echo base_url();?>plugins/securimage/securimage_play.swf?bgcol=#ffffff&amp;icon_file=./images/audio_icon.gif&amp;audio_file=<?php echo base_url();?>/plugins/securimage/securimage_play.php" />
 		</object>		
 		&nbsp;
-		<a tabindex="-1" style="border-style: none;" href="#" id="refresh_image" title="Refresh Image" onclick="document.getElementById('siimage').src = '<?php echo base_url();?>/plugins/securimage/securimage_show.php?sid=' + Math.random(); this.blur(); return false">
+		<a tabindex="-1" style="border-style: none;" href="#" id="refresh_image" title="Refresh Image" onclick="document.getElementById('siimage').src = '<?php echo base_url();?>plugins/securimage/securimage_show.php?sid=' + Math.random(); this.blur(); return false">
 		    <img src="<?php echo base_url();?>plugins/securimage/images/refresh.gif" alt="Reload Image" onclick="this.blur()" align="bottom" border="0" />
 		</a>
 		<br />

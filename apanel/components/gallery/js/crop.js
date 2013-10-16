@@ -143,7 +143,8 @@ $(function(){
             return false;
         }
 
-        $('body').append('<iframe id="iframe_change_image"><iframe>');
+        $('body').append('<iframe id="iframe_change_image" name="iframe_change_image" ><iframe>');
+	
         $('#iframe_change_image').load(function(){
             //alert('done uploading image');
             var data = $(this).contents().find('span').html();
@@ -152,10 +153,11 @@ $(function(){
             $('form[name=add]').attr('action', form_origin_action);
             var image = JSON.parse(data);
             refreshImage(image, 0, 100, 2);
+	    $('form[name=add]').append('<input type="hidden" name="tmp_file_ext" value="'+image['ext']+'" >');
             $('button.change').trigger('click');           
 
         });
-
+	
         $('form[name=add]').attr('target', 'iframe_change_image');
         $('form[name=add]').attr('action', form_action);
         $('form[name=add]').submit();

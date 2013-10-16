@@ -78,18 +78,28 @@ class Image extends CI_Model {
 
     }
     
-    public function getImageUrl($id, $width = null, $height = null)
+    public function getImageUrl($id, $width = null, $height = null, $server_path = false)
     {
         
         $ext = self::getDetails($id, 'ext');
         $image_dir = 'images/'.$width.'x'.$height.'/';
     
 	if($width == null || $height == null){
-	    return base_url('images/'.$id . '.' . $ext);
+	    
+	    if($server_path == false){
+		return base_url('images/'.$id . '.' . $ext);
+	    }
+	    
+	     return FCPATH . 'images/'.$id . '.' . $ext;
+	     
 	}
         elseif(file_exists(FCPATH . $image_dir . $id . '.' . $ext)){
             
-            return base_url($image_dir .  $id . '.' . $ext);
+	    if($server_path == false){
+		return base_url($image_dir .  $id . '.' . $ext);
+	    }
+	    
+	    return FCPATH . $image_dir . $id . '.' . $ext;
             
         }
         else{
@@ -106,13 +116,16 @@ class Image extends CI_Model {
             $config['maintain_ratio'] = TRUE;
             $config['width']	      = $width;
             $config['height']	      = $height;
-
             
             $this->load->library('image_lib');
 	    $this->image_lib->initialize($config);
             $this->image_lib->resize();
             
-            return base_url($image_dir .  $id . '.' . $ext);
+	    if($server_path == false){
+		return base_url($image_dir .  $id . '.' . $ext);
+	    }
+	    
+	    return FCPATH . $image_dir .  $id . '.' . $ext;
             
         }
         

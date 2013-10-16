@@ -7,7 +7,7 @@
     <?php foreach($albums[0]['images'] as $image){ ?>
     
     <li>
-        <a href="<?php echo site_url('gallery/image/'.$image['id'].'/600/600');?>">
+        <a href="<?php echo site_url('gallery/get_image/'.$image['id'].'/600/600');?>">
             <img src="<?php echo $this->Image->getImageUrl($image['id'], 80, 80);?>" alt="<?php echo $image['title'];?>" >
         </a>
         <div class="description" ><?php echo $image['title'];?></div>

@@ -198,46 +198,10 @@ class MY_Controller extends CI_Controller {
                 $menu = $this->Menu->getDetails($menu['params']['menu_id']);
                 $menu['alias'] = $alias;
                 
-            }            
-            
-            # If menu type is 'component' set route to component and redirect the page 
-            if(preg_match('/^components{1}/', $menu['type'])){                     
-                $this->setRoute($menu);                
             }
             
         }
 	
-    }
-    
-    function setRoute($menu)
-    {
-        
-        $component = explode('/', $menu['type']);
-        $menu['params']['component'] = $component[1];
-        
-        include APPPATH . "cache/routes.php";
-                        
-        include_once "components/" . $menu['params']['component'] . "/controllers/" . $menu['params']['component'] . ".php";
-        
-        $link = $this->Module->menu_link($menu, false);
-        $com_route_key   = '(\w{2})?(/)?' . preg_replace('/^\//', '', $link) . '(.*)';
-        $com_route_value = $menu['params']['component']::getRoute($menu);
-        
-        if(!isset($route[$com_route_key]) || $route[$com_route_key] != $com_route_value){
-
-            $data  = "<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');\n\n";
-            $data .= '$route["' . $com_route_key . '"] = "' . $com_route_value . '";';
-
-            $this->load->helper('file');
-            write_file(APPPATH . "cache/routes.php", $data);
-            redirect($link);
-            
-        }
-	
-        if($this->uri->segment(1) == ''){
-            redirect($link);
-        }
-        
     }
     
     function _parseTemplateFile()

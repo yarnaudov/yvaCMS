@@ -39,7 +39,7 @@ if($url2[0] == 'album'){
         </div>
         
     </div>
-    
-    <img src="<?php echo site_url('gallery/get_image/'.$image['id'].'/600/600');?>" id="big_image" style="display: none;" >
+  
+    <img src="<?php echo $this->gallery->get_image($image['id'], 600, 600); ?><?php /* echo $menu_link.'/get_image/'.$image['id'].'/600/600';*/ ?>" id="big_image" style="display: none;" >
 
 </div>

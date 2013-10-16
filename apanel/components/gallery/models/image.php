@@ -219,10 +219,21 @@ class Image extends MY_Model {
         $this->session->set_userdata('good_msg', lang('msg_save_image'));
         $this->db->query('COMMIT');
 
-        // if tmp is 1 move image from tmp folder to images folder
-        $file = $id.'.'.self::getDetails($id, 'ext');
+        // if tmp is 1 move image from tmp folder to images folder        
         if($this->input->post('tmp') == 1 || $this->input->post('tmp') == 2){
             
+	    $file = $id.'.'.self::getDetails($id, 'ext');
+	    
+	    $ext = $this->input->post('tmp_file_ext');
+	    if($ext){
+		$where = "id = ".$id;
+		$this->db->update('com_gallery_images', array('ext' => $ext), $where);
+		unlink(FCPATH.'../'.$this->config->item('images_origin_dir').'/'.$file);
+		unlink(FCPATH.'../'.$this->config->item('images_dir').'/'.$file);
+		self::removeResized($file);
+		$file = $id.'.'.$ext;		
+	    }
+	    	    
             $tmp_file = FCPATH.'../'.$this->config->item('images_tmp_dir').'/'.$file;
             $img_file = FCPATH.'../'.$this->config->item('images_dir').'/'.$file;
             

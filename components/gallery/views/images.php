@@ -3,7 +3,7 @@
 
 <div class="gallery">
 
-    <?php if($url1[0] == 'albums'){ ?>
+    <?php if(key($url1) == 'albums'){ ?>
     <div class="navigation">
         <a href="<?php echo $menu_link;?>" ><?php echo lang('com_gallery_all_albums');?></a>
     </div>

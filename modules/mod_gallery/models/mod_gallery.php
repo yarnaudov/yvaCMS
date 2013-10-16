@@ -5,8 +5,10 @@ class mod_gallery extends CI_Model{
     function run($module)
     {
 	
-	$this->load->model('gallery/Album');
-        $this->load->model('gallery/Image');
+	$this->load->add_package_path(COMPONENTS_DIR.'/gallery/');
+	
+	$this->load->model('Album');
+        $this->load->model('Image');
 
 	if($module['params']['albums'][0] == '*'){	    
 	    $albums = $this->Album->getAlbums();	    
