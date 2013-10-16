@@ -169,7 +169,7 @@ class Poll extends CI_Model {
         $result = $this->db->query($query);
 
         if($result == true){
-        	  $this->saveAnswers($id, $answers);
+	    $this->saveAnswers($id, $answers);
             $this->session->set_userdata('good_msg', lang('msg_save_article'));
         }
         else{
@@ -264,8 +264,8 @@ class Poll extends CI_Model {
     function saveAnswers($id, $answers)
     {
     	  
-        //$this->db->query("DELETE FROM com_poll_answers WHERE id = '".$id."'");
-    	    	
+    	$answers_ids = array();
+	
         foreach($answers as $answer){
     	  	
             if(empty($answer)){
@@ -291,7 +291,9 @@ class Poll extends CI_Model {
             
         }
         
-        $this->db->query("DELETE FROM com_poll_answers WHERE poll_id = '".$id."' AND id NOT IN (".implode(',', $answers_ids).")");
+	if(count($answers_ids) > 0){
+	    $this->db->query("DELETE FROM com_poll_answers WHERE poll_id = '".$id."' AND id NOT IN (".implode(',', $answers_ids).")");
+	}
 
     }
     

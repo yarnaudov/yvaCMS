@@ -1,7 +1,5 @@
 
-<script type="text/javascript" src="<?php echo base_url('modules/mod_poll/js/mod_poll.js');?>" ></script>
-
-<form action="<?php echo site_url('polls/vote');?>" method="post" >
+<form action="<?php echo current_url();?>" method="post" >
 
 <ul class="poll<?php echo $poll['id'];?>" >
 

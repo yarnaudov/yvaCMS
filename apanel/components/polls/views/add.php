@@ -173,7 +173,7 @@
                                     <tr>	      			
                                         <th><label><?php echo lang('label_text');?>:</label></th>
                                         <td>
-                                            <input type="hidden" name="answers[<?php echo $number;?>][answer_id]" value="<?php echo isset($answer['answer_id']) ? $answer['answer_id'] : "";?>" >
+                                            <input type="hidden" name="answers[<?php echo $number;?>][id]" value="<?php echo isset($answer['id']) ? $answer['id'] : "";?>" >
                                             <input type="text" name="answers[<?php echo $number;?>][title]" value="<?php echo set_value('answers['.$number.'][title]', isset($answer['title']) ? $answer['title'] : "");?>" >
                                         </td>
                                     </tr>

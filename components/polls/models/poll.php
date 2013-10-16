@@ -64,10 +64,7 @@ class Poll extends CI_Model {
     function vote($answer_id)
     {
     	  
-    	  $votes = self::getAnswer($answer_id, 'votes');    	  
-    	  $votes++;
-    	  
-    	  $this->db->query("UPDATE com_poll_answers SET votes = ".$votes." WHERE id = '".$answer_id."'");
+	$this->db->query("UPDATE com_poll_answers SET votes = votes+1 WHERE id = '".$answer_id."'");
     	
     }
     
