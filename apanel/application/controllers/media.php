@@ -47,7 +47,7 @@ class Media extends MY_Controller {
             $this->load->library('upload', $config);
             
             if ( ! @$this->upload->do_multi_upload('file')){
-                $data['error'] = sprintf($this->upload->display_errors(), implode(', ', $this->allowed_types));
+                $data['error'] = sprintf($this->upload->display_errors(), implode(', ', $this->allowed_types).' - '.$this->upload->file_type);
             }
             else{
                 $data_u = array('upload_data' => $this->upload->get_multi_upload_data());
