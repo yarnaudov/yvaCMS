@@ -105,12 +105,6 @@ class CI_Lang {
 				}
 			}
 
-			# TODO remove this from here because is stupid to change code files!!!!!
-			if ($found !== TRUE && $idiom != 'en')
-			{
-			    return self::load($langfile, 'en', $return, FALSE, $alt_path);
-			}
-			
 			if ($found !== TRUE)
 			{
 				show_error('Unable to load the requested language file: language/'.$idiom.'/'.$langfile);

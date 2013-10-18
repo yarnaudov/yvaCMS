@@ -38,7 +38,8 @@ class Article extends CI_Model {
 	    foreach($article['params']['images'] as $key => $image){
 		
 		if(!preg_match('/^media/', $image)){
-		    $this->load->model('gallery/Image');
+		    $this->load->add_package_path(COMPONENTS_DIR.'/gallery/');
+		    $this->load->model('Image');
 		    $gallery_image = $this->Image->getDetails($image);
 		    if(is_array($gallery_image)){
 			$article['params']['images'][$key] = $gallery_image;
