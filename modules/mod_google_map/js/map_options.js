@@ -46,10 +46,7 @@ function initialize(module_id) {
     });
    
 
-}
-
-google.maps.event.addDomListener(window, 'load', initialize);
-   
+}   
    
 function createMarker(marker_info, numb, module_id, markers_image){
     
