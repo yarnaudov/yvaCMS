@@ -605,13 +605,6 @@ class Article extends MY_Model {
 	$custom_fields = $this->Custom_field->getFieldsValues($id);
 	$categories = $this->db->get_where('articles_categories', array('article_id' => $id))->result_array();
 	
-        if(DB_TYPE == 'mysqli'){
-            $custom_fields_data = mysqli_real_escape_string(json_encode($custom_fields));
-        }
-        else{
-            $custom_fields_data = mysql_real_escape_string(json_encode($custom_fields));
-        }
-        
         $result = $this->db->query("INSERT 
                                       INTO 
                                         articles_history 
@@ -633,7 +626,7 @@ class Article extends MY_Model {
                                          ad.text,
                                          a.status,
 					 '".json_encode($categories)."' AS categories,
-					 '".$custom_fields_data."' AS custom_fields
+					 '".$this->db->escape_str(json_encode($custom_fields))."' AS custom_fields
                                        FROM
                                          articles a
                                          JOIN articles_data ad ON (a.id = ad.article_id AND ad.language_id = ".$this->language_id.")
