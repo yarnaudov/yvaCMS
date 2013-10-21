@@ -393,7 +393,8 @@ class Content extends CI_Model {
 		$sitemap .= "<url>\n";	    
 		$sitemap .= "<loc>".$sitemap_item['link']."</loc>\n";	    
 		if(isset($sitemap_item['updated_on'])){
-		    $sitemap .= "<lastmod>".$sitemap_item['updated_on']."</lastmod>\n";
+		    $objDateTime = new DateTime($sitemap_item['updated_on']);
+		    $sitemap .= "<lastmod>".$objDateTime->format('c')."</lastmod>\n";
 		}	    
 		$sitemap .= "<changefreq>weekly</changefreq>\n";	    
 		$sitemap .= "</url>\n";
