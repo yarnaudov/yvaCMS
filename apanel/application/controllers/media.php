@@ -174,8 +174,8 @@ class Media extends MY_Controller {
             
         }
         
-	$this->load->helper('directory');
-	$data['entries'] = directory_map(realpath(FCPATH.'../').'/'.$data['folder'], true);
+		$this->load->helper('directory');
+		$data['entries'] = directory_map(realpath(FCPATH.'../').'/'.$data['folder'], true);
 	
         $content["content"] = $this->load->view('media/browse', $data, true);		
         $this->load->view('layouts/simple', $content);
