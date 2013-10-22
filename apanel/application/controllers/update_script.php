@@ -218,7 +218,7 @@ class Update_script extends CI_Controller {
 	
     }
     
-     function remove_articles_meta_data()
+    function remove_articles_meta_data()
     {
 		
 	$this->db->query("ALTER TABLE `articles_data` DROP `meta_keywords`,
@@ -227,5 +227,32 @@ class Update_script extends CI_Controller {
 	echo "done!";
 	
     }
+    
+    function add_media_menu()
+    {
+	
+	$this->db->query("INSERT INTO `ap_menus` (`title_bg`, `title_en`, `alias`, `parent_id`, `type`, `component`, `check_access`, `order`)
+					                  VALUES ('Медия', 'Media', 'media', NULL , 'general', 'no', 'yes', '6');");
+	
+	$id = $this->db->insert_id();
+	
+	$this->db->query("INSERT INTO `ap_menus` (`title_bg`, `title_en`, `alias`, `parent_id`, `type`, `component`, `check_access`, `order`)
+									  VALUES ('Разглеждане', 'Browse', 'media/index', '".$id."', 'sub_action', 'no', 'yes', '1'),
+											 ('Настройки', 'Settings', 'media/settings', '".$id."', 'sub_action', 'no', 'yes', '2');");
+		
+	echo "done!";
+	
+    }
+    
+    function remove_media_menu()
+    {
+	
+	$this->db->query("DELETE FROM `ap_menus` WHERE `alias` LIKE 'media%';");
+		
+	echo "done!";
+	
+    }
+    
+    
     
 }
