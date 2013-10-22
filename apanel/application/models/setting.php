@@ -28,6 +28,8 @@ class Setting extends CI_Model {
     public function getSettings()
     {
         
+	$this->load->helper('isjson');
+	
         $this->db->select('*');
         $this->db->where('language_id', $this->language_id);
         $this->db->or_where('language_id', NULL);
@@ -36,6 +38,9 @@ class Setting extends CI_Model {
                 
         $settings_arr = array();
         foreach($settings as $setting){
+	    if(isJson($setting['value'])){
+		$setting['value'] = json_decode($setting['value'], true);
+	    }
             $settings_arr[$setting['name']] = $setting['value'];
         }
         
@@ -88,7 +93,7 @@ class Setting extends CI_Model {
             }
             
             $data['name']  = $name;
-            $data['value'] = $setting;
+            $data['value'] = is_array($setting) ? json_encode($setting) : $setting;
             
             if($id = self::check($data)){
                 $where  = "id = '".$id."'";

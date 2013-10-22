@@ -240,4 +240,8 @@ $lang['updated_on_desc'] = 'Last updated first';
 $lang['show_full_history'] = 'Show full history';
 $lang['current_version']   = 'Current version';
 
+// media menu
+$lang['label_media_max_file_size']      = 'Max file size';
+$lang['label_media_allowed_extensions'] = 'Allowed_extensions';
+
 ?>

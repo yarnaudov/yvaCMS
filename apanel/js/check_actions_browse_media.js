@@ -2,8 +2,8 @@
 $(document).ready(function() {
 
     $('.folder').bind('click', function(){
-        $('input[name=previous]').val($('input[name=folder]').val());
         $('input[name=folder]').val($('input[name=folder]').val()+$(this).attr('lang'));
+	$('form').attr('method', 'get');
         $('form').submit();
     });
     
@@ -12,7 +12,7 @@ $(document).ready(function() {
     })
     
     $('#up').bind('click', function(){        
-        $('form').append('<input type="hidden" name="up" >');
+        $('form').append('<input type="hidden" name="up" value="1" >');
         $('form').submit();
     });
                    
@@ -48,7 +48,7 @@ $(document).ready(function() {
         position: ['top', 100],
         buttons: {
             'Ok': function() {
-                $('form').append('<input type="hidden" name="delete" >');
+                $('form').append('<input type="hidden" name="delete" value="1" >');
                 $('form').submit();
                 $( this ).dialog( 'close' );
             },
@@ -65,7 +65,7 @@ $(document).ready(function() {
         position: ['top', 100],
         buttons: {
             'Ok': function() {
-                $('form').append('<input type="hidden" name="rename" >');
+                $('form').append('<input type="hidden" name="rename" value="1">');
                 $('form').append('<input type="hidden" name="new_name" value="'+$('#new_name').val()+'">');
                 $('form').submit();
                 $( this ).dialog( 'close' );                                
@@ -119,7 +119,7 @@ $(document).ready(function() {
 
         }
 
-        $('form').append('<input type="hidden" name="download" >');
+        $('form').append('<input type="hidden" name="download" value="1" >');
 	$('form').submit();       
         return false;
 
@@ -186,6 +186,14 @@ $(document).ready(function() {
         
         $('input.text').val(files.join(','));
         
+    });
+    
+    $('form').on('submit', function(){
+	$('input').each(function(){
+	   if($(this).val() == ""){
+	       $(this).attr('disabled', true);
+	   }
+	});
     });
     
 });

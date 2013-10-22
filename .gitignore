@@ -170,3 +170,5 @@ pip-log.txt
 /media/
 /images/
 /application/cache/
+/application/logs/
+/apanel/application/logs/

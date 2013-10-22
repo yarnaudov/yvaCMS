@@ -7,6 +7,8 @@
         <div class="text" >
             <img src="<?php echo base_url('img/iconSettings_25.png');?>" >
             <span><?php echo lang('label_settings');?></span>
+	    <span>&nbsp;»&nbsp;</span>
+            <span><?php echo lang('label_mail');?></span>
         </div>
 	
 	<div class="actions" >

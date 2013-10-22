@@ -16,126 +16,82 @@ class Media extends MY_Controller {
 	# other formats
 	'eml', 'json', 'xml', 'rtx', 'zip', 'psd');
     
+    private $max_size = '10240';
+    
+    public function __construct() {
+	parent::__construct();
+	
+	$this->load->model('Setting');
+	
+	$settings = $this->Setting->getSettings();
+	
+	if(isset($settings['media_file_size'])){
+	    $this->max_size = $settings['media_file_size'];
+	}	
+	if(isset($settings['media_file_ext'])){
+	    $this->allowed_types = $settings['media_file_ext'];
+	}
+	
+    }
+    
+    public function index()
+    {
+	
+	$data = self::_actions(true);	
+	
+	$this->jquery_ext->add_library('check_actions_browse_media.js');
+	
+	$this->load->helper('directory');
+	$data['entries'] = directory_map(realpath(FCPATH.'../').'/'.$data['folder'], true);
+
+	// create sub actions menu
+        $data['sub_menu'] = $this->Ap_menu->getSubActions($this->current_menu);
+	
+	$content["content"] = $this->load->view('media/list', $data, true);		
+        $this->load->view('layouts/default', $content);
+	
+    }
+    
+    public function settings()
+    {
+	
+	if(isset($_POST['save']) || isset($_POST['apply'])){
+	    $this->Setting->save();
+	    if(isset($_POST['save'])){
+		redirect('media');
+	    }
+	    else{
+		redirect('media/settings');
+	    }
+	}
+	
+	$data['settings']['media_file_size'] = $this->max_size;
+	$data['settings']['media_file_ext']  = $this->allowed_types;
+	
+	$this->load->helper('form');
+	
+	$this->load->library('upload');
+	$this->upload->mimes_types('jpg');
+	
+	$data['mimes'] = $this->upload->mimes;
+	
+	// create sub actions menu
+	$parent_id = $this->Ap_menu->getDetails($this->current_menu, 'parent_id');
+        $data['sub_menu'] = $this->Ap_menu->getSubActions($parent_id);
+	
+	$content["content"] = $this->load->view('media/settings', $data, true);		
+        $this->load->view('layouts/default', $content);
+	
+    }
+    
     public function browse($param = '')
     {
-               
-        $this->jquery_ext->add_library('check_actions_browse_media.js');
-        
-        $data['folder'] = isset($_POST['folder']) ? $_POST['folder'] : $this->config->item('media_dir').'/';
 	
-	$folder = realpath(FCPATH.'../').'/'.$data['folder'];
-	if(!file_exists($folder)){
-	    mkdir($folder, 0777);
-	    copy(BASEPATH."/index.html", $folder."/index.html");
-	}
+        $data = self::_actions();
+	
+        $this->jquery_ext->add_library('check_actions_browse_media.js');
 	
         $data['param']  = $param;
-
-        if(isset($_POST['up'])){
-            $folders = explode('/', $data['folder']);
-            if(count($folders) > 2){          
-                unset($folders[count($folders)-2], $folders[count($folders)-1]);
-                $data['folder'] = implode('/', $folders);
-            }
-        }
-        elseif(isset($_POST['upload'])){
-        
-            $config['upload_path']   = realpath(FCPATH.'../').'/'.$data['folder'];
-            $config['allowed_types'] = implode('|', $this->allowed_types);
-            $config['max_size']	     = '10000';             
-            
-            $this->load->library('upload', $config);
-            
-            if ( ! @$this->upload->do_multi_upload('file')){
-                $data['error'] = sprintf($this->upload->display_errors(), implode(', ', $this->allowed_types).' - '.$this->upload->file_type);
-            }
-            else{
-                $data_u = array('upload_data' => $this->upload->get_multi_upload_data());
-            }
-            
-        }        
-        elseif(isset($_POST['create_folder'])){
-            
-            $folder = trim($_POST['folder_name']);
-            
-            if(empty($folder)){
-                $data['error'] = lang('msg_empty_folder');
-            }
-            elseif(!preg_match('/^[a-zA-Z0-9_]+$/', $folder)){
-               $data['error'] = lang('msg_folder_allowed_chars');
-            }
-            else{ 
-                $folder = realpath(FCPATH.'../').'/'.$data['folder'].$_POST['folder_name'];
-                if(file_exists($folder)){
-                    $data['error'] = lang('msg_folder_exists');
-                }
-                else{
-                    mkdir($folder, 0777);
-		    copy(BASEPATH."/index.html", $folder."/index.html");
-                    unset($_POST['folder_name']);
-                }
-            }
-            
-        }
-        elseif(isset($_POST['rename'])){
-
-            $item = $_POST['item'][0];
-	    $new_name = trim($_POST['new_name']);
-	    
-	    if(preg_match('/\./', $new_name)){
-		$file = explode('.', $new_name);
-		$ext = end($file);
-	    }
-	    
-	    if(!preg_match('/^[a-zA-Z0-9_'.(isset($ext) ? '\.' : '').']+$/', $new_name)){
-               $data['error'] = lang('msg_folder_allowed_chars');
-            }
-	    elseif(isset($ext) && !in_array($ext, $this->allowed_types)){
-		$data['error'] = sprintf(lang('msg_rename_file_allowed_ext'), implode(', ', $this->allowed_types));
-	    }
-	    else{
-		rename($folder.$item, $folder.$new_name);
-	    }
-            
-        }
-        elseif(isset($_POST['delete'])){
-            
-            foreach($_POST['item'] as $item){
-                
-                if(is_dir($folder.$item)){
-                    $this->load->helper('delete_directory');
-                    delete_directory($folder.$item);                
-                }
-                else{
-                    unlink($folder.$item);                
-                }
-                
-            }
-            
-        }
-        elseif(isset($_POST['download'])){
-            
-	    $this->load->helper('download');
-	    
-	    if(count($_POST['item']) == 1){
-		$item = $_POST['item'][0];
-		$file_data = file_get_contents($folder.$item);
-		force_download($item, $file_data); 
-	    }
-	    else{
-		
-                $this->load->library('zip');
-                
-		foreach($_POST['item'] as $item){                    
-                    $file_data = file_get_contents($folder.$item);
-                    $this->zip->add_data($item, $file_data);                    
-		}
-		
-                $this->zip->download('media-files-'.date('YmdHis').'.zip'); 
-                
-	    }
-	    
-	}
 	
         $this->jquery_ext->add_plugin('iframe_auto_height');        
         $script = "autoHeightIframe('jquery_ui_iframe');";        
@@ -203,6 +159,147 @@ class Media extends MY_Controller {
         $content["content"] = $this->load->view('media/browse', $data, true);		
         $this->load->view('layouts/simple', $content);
         
+    }
+    
+    private function _actions($redirect = false)
+    {
+
+	$data['folder'] = $this->input->get_post('folder') ? $this->input->get_post('folder') : $this->config->item('media_dir').'/';
+	
+	$folder = realpath(FCPATH.'../').'/'.$data['folder'];
+	if(!file_exists($folder)){
+	    mkdir($folder, 0777);
+	    copy(BASEPATH."/index.html", $folder."/index.html");
+	}
+	
+	if($this->input->get_post('up')){
+            $folders = explode('/', $data['folder']);
+            if(count($folders) > 2){          
+                unset($folders[count($folders)-2], $folders[count($folders)-1]);
+                $data['folder'] = implode('/', $folders);
+            }
+	    
+	    if($redirect == true){
+		redirect('media?folder='.urlencode($data['folder']));
+	    }
+	    
+        }
+        elseif($this->input->get_post('upload')){
+        
+            $config['upload_path']   = realpath(FCPATH.'../').'/'.$data['folder'];
+            $config['allowed_types'] = implode('|', $this->allowed_types);
+            $config['max_size']	     = $this->max_size;
+            
+            $this->load->library('upload', $config);
+            
+            if ( ! $this->upload->do_multi_upload('file')){
+                $data['error'] = sprintf($this->upload->display_errors(), implode(', ', $this->allowed_types).' - '.$this->upload->file_type);
+            }
+	    
+	    if(!isset($data['error']) && $redirect == true){
+		redirect('media?folder='.urlencode($data['folder']));
+	    }
+            
+        }        
+        elseif($this->input->get_post('create_folder')){
+            
+            $folder = trim($this->input->get_post('folder_name'));
+            
+            if(empty($folder)){
+                $data['error'] = lang('msg_empty_folder');
+            }
+            elseif(!preg_match('/^[a-zA-Z0-9_]+$/', $folder)){
+               $data['error'] = lang('msg_folder_allowed_chars');
+            }
+            else{ 
+                $folder = realpath(FCPATH.'../').'/'.$data['folder'].$this->input->get_post('folder_name');
+                if(file_exists($folder)){
+                    $data['error'] = lang('msg_folder_exists');
+                }
+                else{
+                    mkdir($folder, 0777);
+		    copy(BASEPATH."/index.html", $folder."/index.html");
+                    unset($_POST['folder_name']);
+                }
+            }
+	    
+	    if($redirect == true){
+		redirect('media?folder='.urlencode($data['folder']));
+	    }
+            
+        }
+        elseif($this->input->get_post('rename')){
+
+            $item = $this->input->get_post('item');
+	    $item = $item[0];
+	    $new_name = trim($this->input->get_post('new_name'));
+	    
+	    if(preg_match('/\./', $new_name)){
+		$file = explode('.', $new_name);
+		$ext = end($file);
+	    }
+	    
+	    if(!preg_match('/^[a-zA-Z0-9_'.(isset($ext) ? '\.' : '').']+$/', $new_name)){
+               $data['error'] = lang('msg_folder_allowed_chars');
+            }
+	    elseif(isset($ext) && !in_array($ext, $this->allowed_types)){
+		$data['error'] = sprintf(lang('msg_rename_file_allowed_ext'), implode(', ', $this->allowed_types));
+	    }
+	    else{
+		rename($folder.$item, $folder.$new_name);
+	    }
+	    
+	    if($redirect == true){
+		redirect('media?folder='.urlencode($data['folder']));
+	    }
+            
+        }
+        elseif($this->input->get_post('delete')){
+            
+            foreach($this->input->get_post('item') as $item){
+                
+                if(is_dir($folder.$item)){
+                    $this->load->helper('delete_directory');
+                    delete_directory($folder.$item);                
+                }
+                else{
+                    unlink($folder.$item);                
+                }
+                
+            }
+	    
+	    if($redirect == true){
+		redirect('media?folder='.urlencode($data['folder']));
+	    }
+            
+        }
+        elseif($this->input->get_post('download')){
+            
+	    $this->load->helper('download');
+	    
+	    if(count($this->input->get_post('item')) == 1){
+		$item = $this->input->get_post('item');
+		$item = $item[0];
+		$file_data = file_get_contents($folder.$item);
+		force_download($item, $file_data); 
+	    }
+	    else{
+		
+                $this->load->library('zip');
+                
+		foreach($this->input->get_post('item') as $item){                    
+                    $file_data = file_get_contents($folder.$item);
+                    $this->zip->add_data($item, $file_data);                    
+		}
+		
+                $this->zip->download('media-files-'.date('YmdHis').'.zip'); 
+                
+	    }
+	    
+	}
+	
+	return $data;
+	
     }
     
 }

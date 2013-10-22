@@ -127,3 +127,13 @@
        padding: 1px 5px !important;  
     }
 }
+
+#media_conteiner{
+    border: 1px solid #BBBBBB;
+    padding: 10px;
+    overflow: auto;
+    border-radius: 3px;
+}
+#media_entries_conteiner{
+    overflow: auto;
+}

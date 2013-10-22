@@ -241,4 +241,8 @@ $lang['updated_on_desc'] = 'Последно променените първи';
 $lang['show_full_history'] = 'Покажи историята';
 $lang['current_version']   = 'Текуща версия';
 
+// media menu
+$lang['label_media_max_file_size']      = 'Макс. размер на файл';
+$lang['label_media_allowed_extensions'] = 'Позволени разширения';
+
 ?>
