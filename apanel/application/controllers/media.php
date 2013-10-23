@@ -34,7 +34,7 @@ class Media extends MY_Controller {
 	
     }
 	
-	public function _remap($method)
+	public function _remap($method, $params)
     {
         
         if ($method == 'index')
@@ -52,7 +52,7 @@ class Media extends MY_Controller {
         $current_key = key($this->sub_menu);
         unset($this->sub_menu[$current_key]);
         
-        $this->$method();
+        $this->$method($params);
         
     }
     
@@ -105,20 +105,20 @@ class Media extends MY_Controller {
 	
     }
     
-    public function browse($param = '')
+    public function browse($params = '')
     {
-	
+
         $data = self::_actions();
 	
         $this->jquery_ext->add_library('check_actions_browse_media.js');
 	
-        $data['param']  = $param;
+        $data['param']  = isset($params[0]) ? $params[0] : '';
 	
         $this->jquery_ext->add_plugin('iframe_auto_height');        
         $script = "autoHeightIframe('jquery_ui_iframe');";        
         $this->jquery_ext->add_script($script);
         
-        if($param == 'article'){
+        if($data['param'] == 'article'){
             
             $script = "$('a.select').unbind('click');
                        $('a.select').click(function(event){
