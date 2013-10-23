@@ -323,7 +323,7 @@ class Content extends CI_Model {
 				foreach($articles as $article){
 
 				if($menu['parent_id'] != NULL){
-					$sitemap_items[$category['id']]['children'][$menu['parent_id']]['children'][$menu['id']]['children'][$article['id']] = array('title' => $article['title'], 'link' => $menu_link.'/article:'.$article['alias'], 'updated_on' => $article['updated_on']);
+					$sitemap_items[$category['id']]['children'][$menu['parent_id']]['children'][$menu['id']]['children'][$article['id']] = array('title' => $article['title'], 'link' => $menu_link.'/article/'.$article['alias'], 'updated_on' => $article['updated_on']);
 				}
 				else{
 					$sitemap_items[$category['id']]['children'][$menu['id']]['children'][$article['id']] = array('title' => $article['title'], 'link' => $menu_link.'/article:'.$article['alias'], 'updated_on' => $article['updated_on']);
