@@ -2,11 +2,11 @@
 
 class Content extends CI_Model {
     
-    public $templates = array('main'          => 'content/main',
-                              'article'       => 'content/article',
-                              'articles_list' => 'content/articles_list',
-			      'custom_articles_list' => 'content/articles_list',
-			      'category_articles_list' => 'content/category_articles_list');
+    public $templates = array('main'                   => 'content/main',
+                              'article'                => 'content/article',
+                              'articles_list'		   => 'content/articles_list',
+							  'custom_articles_list'   => 'content/articles_list',
+							  'category_articles_list' => 'content/category_articles_list');
         
     public function load($templates = array())
     {
@@ -25,57 +25,56 @@ class Content extends CI_Model {
             else{
 
                 $article['text'] = $this->Article->parceText($article['text']);
-		$data['content'] = $this->load->view($this->templates['article'], compact('article'), true);
+				$data['content'] = $this->load->view($this->templates['article'], compact('article'), true);
 
                 $this->Article->statistic($article['id']);
                 
             }
             
         }
-	elseif($this->category_id){
+		elseif($this->category_id){
             
-	    $category = $this->Category->getDetails($this->category_id);
-	    
-	    //$category = array('id' => 1, 'title' => 'Test');
-	    if(empty($category)){
-		$data['content'] = lang('msg_category_not_found');
-	    }
-	    else{
-		
-		$articles = $this->Article->getByCategory(array($category['id']));    
+			$category = $this->Category->getDetails($this->category_id);
 
-		$data['content'] = $this->load->view($this->templates['category_articles_list'], compact('category', 'articles'), true);
-		
-	    }
+			if(empty($category)){
+				$data['content'] = lang('msg_category_not_found');
+			}
+			else{
+
+			$articles = $this->Article->getByCategory(array($category['id']));    
+
+			$data['content'] = $this->load->view($this->templates['category_articles_list'], compact('category', 'articles'), true);
+
+			}
             
         }
         elseif($this->menu_id == 'search'){ // stupid fix for search component to work with no menu assigned to it
-	    //$controllerInstance = & get_instance();
+			//$controllerInstance = & get_instance();
             //$data['content'] = $controllerInstance->getContent();
-	    $this->load->model('Component');
-	    $data['content'] = $this->Component->run('search');
+			$this->load->model('Component');
+			$data['content'] = $this->Component->run('search');
         }
         else{
             
             $menu = $this->Menu->getDetails($this->menu_id);
 	    
-	    # If menu type is 'menu' rewrite variable $menu with new menu
-            if($menu['type'] == 'menu' && !empty($menu['params']['menu_id'])){
-		$org_menu = $menu;
-                $menu = $this->Menu->getDetails($menu['params']['menu_id']);
-		$menu['id']    = $org_menu['id'];
-		$menu['alias'] = $org_menu['alias'];
+			# If menu type is 'menu' rewrite variable $menu with new menu
+			if($menu['type'] == 'menu' && !empty($menu['params']['menu_id'])){
+				$org_menu = $menu;
+				$menu = $this->Menu->getDetails($menu['params']['menu_id']);
+				$menu['id']    = $org_menu['id'];
+				$menu['alias'] = $org_menu['alias'];
             }
             
             if(preg_match('/^components{1}/', $menu['type'])){
-		$type = explode('/', $menu['type']);
+				$type = explode('/', $menu['type']);
                 $menu['type'] = "component";
-		$component = $type[1];
+				$component = $type[1];
             }
 	    
-	    $menu['link']  = module::menu_link($menu);
+			$menu['link']  = module::menu_link($menu);
 	    
-	    $data['menu'] = $menu;
+			$data['menu'] = $menu;
                         
             if(isset($templates[$menu['alias']])){
                 $menu['template'] = $templates[$menu['alias']];
@@ -133,29 +132,29 @@ class Content extends CI_Model {
                     if(isset($menu['params']['categories'])){ 
 			
                         $articles = self::_get_articles($menu);						
-			$data['content'] = $this->load->view($content_template, compact('menu', 'articles'), true);
+						$data['content'] = $this->load->view($content_template, compact('menu', 'articles'), true);
                     
                     }
                     else{
-		       $data['content'] = lang('msg_category_not_selected');
+						$data['content'] = lang('msg_category_not_selected');
                     }
 		    
                 break;
 		
-		case "custom_articles_list":
+				case "custom_articles_list":
                     		
-			$articles = $this->Article->getByIds(isset($menu['params']['custom_articles']) ? $menu['params']['custom_articles'] : array());
+					$articles = $this->Article->getByIds(isset($menu['params']['custom_articles']) ? $menu['params']['custom_articles'] : array());
 						
-			$data['content'] = $this->load->view($content_template, compact('menu', 'articles'), true);
+					$data['content'] = $this->load->view($content_template, compact('menu', 'articles'), true);
 		    
                 break;
             
-		case "sitemap":
-		    $data['content'] = self::_sitemap();
-		break;
+				case "sitemap":
+					$data['content'] = self::_sitemap();
+				break;
 		
                 case "component":
-		    $this->load->model('Component');
+					$this->load->model('Component');
                     $data['content'] = $this->Component->run($component, $menu['params']);                                      
                 break;
                 
@@ -192,7 +191,7 @@ class Content extends CI_Model {
     public function header()
     {
 	
-	$header = "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8;\" />\n";	
+		$header = "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8;\" />\n";	
         
         if($this->Setting->getEnvironment() != 'production'){
             $header .= "<meta http-equiv=\"cache-control\" content=\"no-cache\" />\n";
@@ -204,23 +203,29 @@ class Content extends CI_Model {
             $article = $this->Article->getByAlias($this->article_alias);
             $title   = $article['title'];
 	    
-	    $meta_description = $article['meta_description'];
+			$meta_description = $article['meta_description'];
             $meta_keywords    = $article['meta_keywords'];
 	    
-	    if($this->menu_id != '' && (empty($meta_description) || empty($meta_keywords)) ){
-		$menu = $this->Menu->getDetails($this->menu_id);
-		
-		if(empty($meta_description)){
-		    $meta_description = $menu['meta_description'];
-		}
-		
-		if(empty($meta_keywords)){
-		    $meta_keywords = $menu['meta_keywords'];
-		}
-		
-	    }
+			if($this->menu_id != '' && (empty($meta_description) || empty($meta_keywords)) ){
+				$menu = $this->Menu->getDetails($this->menu_id);
+
+				if(empty($meta_description)){
+					$meta_description = $menu['meta_description'];
+				}
+
+				if(empty($meta_keywords)){
+					$meta_keywords = $menu['meta_keywords'];
+				}
+
+			}
 	    
         }
+		elseif($this->category_id){
+			
+			$category = $this->Category->getDetails($this->category_id);			
+			$title = $category['title'];
+			
+		}
         elseif($this->menu_id == 'search'){ // stupid fix for search component to work with no menu assigned to it
 	    $this->load->language('components/search');
             $title = lang('label_search');
@@ -263,9 +268,9 @@ class Content extends CI_Model {
             $header .= "<meta name=\"keywords\" content=\"".$meta_keywords."\" >\n";
         }
         
-	# change controller properties
-	get_instance()->meta_description = isset($meta_description) ? $meta_description : '';
-	get_instance()->meta_keywords    = isset($meta_keywords) ? $meta_keywords : '';
+		# change controller properties
+		get_instance()->meta_description = isset($meta_description) ? $meta_description : '';
+		get_instance()->meta_keywords    = isset($meta_keywords) ? $meta_keywords : '';
 	
         /*
          * robots
@@ -274,7 +279,7 @@ class Content extends CI_Model {
             $header .= "<meta name=\"robots\" content=\"".$this->Setting->getRobots()."\" />\n";
         }
 	
-	$header .= "<script type=\"text/javascript\" >var base_url = '".base_url()."';var site_url = '".rtrim(site_url(), '/')."';</script>\n";
+		$header .= "<script type=\"text/javascript\" >var base_url = '".base_url()."';var site_url = '".rtrim(site_url(), '/')."';</script>\n";
                                
         return $header;
         
@@ -282,135 +287,135 @@ class Content extends CI_Model {
     
     private function _sitemap()
     {
-	$sitemap_items = array();
-	
-	$categories = $this->Category->getCategories('menus');
-	
-	foreach($categories as $category){
-	    
-	    # get menus list
-	    $menus = $this->Menu->getByCategory($category['id']);
-	    if(count($menus) == 0){
-		continue;
-	    }
-	    	    
-	    $sitemap_items[$category['id']] = array('title' => $category['title']);
-	    
-	    foreach($menus as $menu){
-		
-		$menu_link = $this->Module->menu_link($menu);
-		
-		if($menu['parent_id'] != NULL){
-		    $sitemap_items[$category['id']]['children'][$menu['parent_id']]['children'][$menu['id']] = array('title' => $menu['title'], 'link' => $menu_link, 'updated_on' => $menu['updated_on']);
-		}
-		else{
-		    $sitemap_items[$category['id']]['children'][$menu['id']] = array('title' => $menu['title'], 'link' => $menu_link, 'updated_on' => $menu['updated_on']);
-		}
-		
-		# get articles list
-		if($menu['type'] == 'articles_list'){
-		    
-		    $articles = self::_get_articles($menu);
-		    if(count($articles) == 0){
+		$sitemap_items = array();
+
+		$categories = $this->Category->getCategories('menus');
+
+		foreach($categories as $category){
+
+			# get menus list
+			$menus = $this->Menu->getByCategory($category['id']);
+			if(count($menus) == 0){
 			continue;
-		    }
-		    
-		    foreach($articles as $article){
-			
+			}
+
+			$sitemap_items[$category['id']] = array('title' => $category['title']);
+
+			foreach($menus as $menu){
+
+			$menu_link = $this->Module->menu_link($menu);
+
 			if($menu['parent_id'] != NULL){
-			    $sitemap_items[$category['id']]['children'][$menu['parent_id']]['children'][$menu['id']]['children'][$article['id']] = array('title' => $article['title'], 'link' => $menu_link.'/article:'.$article['alias'], 'updated_on' => $article['updated_on']);
+				$sitemap_items[$category['id']]['children'][$menu['parent_id']]['children'][$menu['id']] = array('title' => $menu['title'], 'link' => $menu_link, 'updated_on' => $menu['updated_on']);
 			}
 			else{
-			    $sitemap_items[$category['id']]['children'][$menu['id']]['children'][$article['id']] = array('title' => $article['title'], 'link' => $menu_link.'/article:'.$article['alias'], 'updated_on' => $article['updated_on']);
+				$sitemap_items[$category['id']]['children'][$menu['id']] = array('title' => $menu['title'], 'link' => $menu_link, 'updated_on' => $menu['updated_on']);
 			}
-		    }
 
+			# get articles list
+			if($menu['type'] == 'articles_list'){
+
+				$articles = self::_get_articles($menu);
+				if(count($articles) == 0){
+				continue;
+				}
+
+				foreach($articles as $article){
+
+				if($menu['parent_id'] != NULL){
+					$sitemap_items[$category['id']]['children'][$menu['parent_id']]['children'][$menu['id']]['children'][$article['id']] = array('title' => $article['title'], 'link' => $menu_link.'/article:'.$article['alias'], 'updated_on' => $article['updated_on']);
+				}
+				else{
+					$sitemap_items[$category['id']]['children'][$menu['id']]['children'][$article['id']] = array('title' => $article['title'], 'link' => $menu_link.'/article:'.$article['alias'], 'updated_on' => $article['updated_on']);
+				}
+				}
+
+			}
+
+			}
+
+
+		}	
+
+		if($this->input->get('type') == 'xml'){
+			header('Content-type: text/xml');	
+			echo self::_sitemap_xml($sitemap_items);
+			exit;
 		}
-
-	    }
-
-	    
-	}	
-	
-	if($this->input->get('type') == 'xml'){
-	    header('Content-type: text/xml');	
-	    echo self::_sitemap_xml($sitemap_items);
-	    exit;
-	}
-	else{
-	    return self::_sitemap_html($sitemap_items);
-	}
+		else{
+			return self::_sitemap_html($sitemap_items);
+		}
 	
     }
     
     private function _sitemap_html($sitemap_items)
     {
 	
-	$sitemap = "<ul>";
+		$sitemap = "<ul>";
+
+		foreach($sitemap_items as $sitemap_item){
+
+			$sitemap .= "  <li>\n";
+
+			if(isset($sitemap_item['link'])){
+			$sitemap .= "<a href=\"".$sitemap_item['link']."\" >\n";
+			}
+
+			$sitemap .= "<span>".$sitemap_item['title']."</span>\n";
+
+			if(isset($sitemap_item['link'])){
+			$sitemap .= "</a>\n";   
+			}
+
+			if(isset($sitemap_item['children'])){
+				$sitemap .= self::_sitemap_html($sitemap_item['children']);
+			}
+
+			$sitemap .= "   </li>\n";
+	    
+		}
 	
-	foreach($sitemap_items as $sitemap_item){
-	    
-	    $sitemap .= "  <li>\n";
-	    
-	    if(isset($sitemap_item['link'])){
-		$sitemap .= "<a href=\"".$sitemap_item['link']."\" >\n";
-	    }
-	    
-	    $sitemap .= "<span>".$sitemap_item['title']."</span>\n";
-		
-	    if(isset($sitemap_item['link'])){
-		$sitemap .= "</a>\n";   
-	    }
-	    
-	    if(isset($sitemap_item['children'])){
-		$sitemap .= self::_sitemap_html($sitemap_item['children']);
-	    }
-	    
-	    $sitemap .= "   </li>\n";
-	    
-	}
+		$sitemap .= "</ul>";
 	
-	$sitemap .= "</ul>";
-	
-	return $sitemap;
+		return $sitemap;
 	
     }
     
     private function _sitemap_xml($sitemap_items, $children = false)
     {
 	
-	$sitemap = '';
+		$sitemap = '';
+
+		if($children == false){
+			$sitemap .= "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n";
+			$sitemap .= "<urlset xmlns=\"".current_url()."?type=xml\">\n";
+		}
+
+		foreach($sitemap_items as $sitemap_item){
+
+			if(isset($sitemap_item['link'])){
+
+			$sitemap .= "<url>\n";	    
+			$sitemap .= "<loc>".$sitemap_item['link']."</loc>\n";	    
+			if(isset($sitemap_item['updated_on'])){
+				$objDateTime = new DateTime($sitemap_item['updated_on']);
+				$sitemap .= "<lastmod>".$objDateTime->format('c')."</lastmod>\n";
+			}	    
+			$sitemap .= "<changefreq>weekly</changefreq>\n";	    
+			$sitemap .= "</url>\n";
+
+			}
+
+			if(isset($sitemap_item['children'])){
+			$sitemap .= self::_sitemap_xml($sitemap_item['children'], true);
+			}
+
+		}
+		if($children == false){
+			$sitemap .= "</urlset>\n";	    
+		}
 	
-	if($children == false){
-	    $sitemap .= "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n";
-	    $sitemap .= "<urlset xmlns=\"".current_url()."?type=xml\">\n";
-	}
-	
-	foreach($sitemap_items as $sitemap_item){
-	    	    
-	    if(isset($sitemap_item['link'])){
-	    
-		$sitemap .= "<url>\n";	    
-		$sitemap .= "<loc>".$sitemap_item['link']."</loc>\n";	    
-		if(isset($sitemap_item['updated_on'])){
-		    $objDateTime = new DateTime($sitemap_item['updated_on']);
-		    $sitemap .= "<lastmod>".$objDateTime->format('c')."</lastmod>\n";
-		}	    
-		$sitemap .= "<changefreq>weekly</changefreq>\n";	    
-		$sitemap .= "</url>\n";
-	    
-	    }
-	    
-	    if(isset($sitemap_item['children'])){
-		$sitemap .= self::_sitemap_xml($sitemap_item['children'], true);
-	    }
-	    
-	}
-	if($children == false){
-	    $sitemap .= "</urlset>\n";	    
-	}
-	
-	return $sitemap;
+		return $sitemap;
 	
     }
     

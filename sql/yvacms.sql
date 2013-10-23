@@ -220,13 +220,6 @@ CREATE TABLE IF NOT EXISTS `articles_history` (
   KEY `language_id_2` (`language_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Dumping data for table `articles_history`
---
-
-INSERT INTO `articles_history` (`article_id`, `language_id`, `alias`, `show_in_language`, `start_publishing`, `end_publishing`, `show_title`, `params`, `created_by`, `created_on`, `updated_by`, `updated_on`, `title`, `text`, `status`, `categories`, `custom_fields`) VALUES
-(1, 1, 'home', NULL, NULL, NULL, 'yes', '{"show_comments":"yes"}', 1, '2013-08-29 16:38:48', 1, '2013-08-29 16:39:09', 'Начало', '<p>Това е примерна статия!</p>', 'yes', '[{"article_id":"1","category_id":"1","order":"1"}]', '[]');
-
 -- --------------------------------------------------------
 
 --

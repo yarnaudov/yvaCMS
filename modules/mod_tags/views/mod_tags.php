@@ -19,7 +19,7 @@ foreach($meta_keywords as $meta_keyword){
 	$font_size = 24;
     }
     
-    echo "<a style=\"font-size: ".$font_size."pt;\" title=\"".$count." topics\" href=\"".site_url('search/?query='.$meta_keyword.'&type=tag')."\" >".$meta_keyword."</a>\n";
+    echo "<a style=\"font-size: ".$font_size."pt;\" title=\"".$count." topics\" href=\"".site_url('search/?tag='.$meta_keyword)."\" >".$meta_keyword."</a>\n";
     
 }
 

@@ -19,7 +19,7 @@
         <?php if($menu){ ?>
         <a href="<?php echo site_url($menu['alias']);?>" >
         <?php }else{ ?>
-        <a href="<?php echo site_url('article:'.$article['alias']);?>" >
+        <a href="<?php echo site_url('article/'.$article['alias']);?>" >
         <?php } ?>
             <?php echo $article['title'];?>
         </a>
