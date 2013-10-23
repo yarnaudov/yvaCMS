@@ -303,34 +303,35 @@ class Content extends CI_Model {
 
 			foreach($menus as $menu){
 
-			$menu_link = $this->Module->menu_link($menu);
-
-			if($menu['parent_id'] != NULL){
-				$sitemap_items[$category['id']]['children'][$menu['parent_id']]['children'][$menu['id']] = array('title' => $menu['title'], 'link' => $menu_link, 'updated_on' => $menu['updated_on']);
-			}
-			else{
-				$sitemap_items[$category['id']]['children'][$menu['id']] = array('title' => $menu['title'], 'link' => $menu_link, 'updated_on' => $menu['updated_on']);
-			}
-
-			# get articles list
-			if($menu['type'] == 'articles_list'){
-
-				$articles = self::_get_articles($menu);
-				if(count($articles) == 0){
-				continue;
-				}
-
-				foreach($articles as $article){
+				$menu_link = $this->Module->menu_link($menu);
 
 				if($menu['parent_id'] != NULL){
-					$sitemap_items[$category['id']]['children'][$menu['parent_id']]['children'][$menu['id']]['children'][$article['id']] = array('title' => $article['title'], 'link' => $menu_link.'/article/'.$article['alias'], 'updated_on' => $article['updated_on']);
+					$sitemap_items[$category['id']]['children'][$menu['parent_id']]['children'][$menu['id']] = array('title' => $menu['title'], 'link' => $menu_link, 'updated_on' => $menu['updated_on']);
 				}
 				else{
-					$sitemap_items[$category['id']]['children'][$menu['id']]['children'][$article['id']] = array('title' => $article['title'], 'link' => $menu_link.'/article:'.$article['alias'], 'updated_on' => $article['updated_on']);
-				}
+					$sitemap_items[$category['id']]['children'][$menu['id']] = array('title' => $menu['title'], 'link' => $menu_link, 'updated_on' => $menu['updated_on']);
 				}
 
-			}
+				# get articles list
+				if($menu['type'] == 'articles_list'){
+
+					$articles = self::_get_articles($menu);
+					if(count($articles) == 0){
+						continue;
+					}
+
+					foreach($articles as $article){
+
+						if($menu['parent_id'] != NULL){
+							$sitemap_items[$category['id']]['children'][$menu['parent_id']]['children'][$menu['id']]['children'][$article['id']] = array('title' => $article['title'], 'link' => $menu_link.'/article/'.$article['alias'], 'updated_on' => $article['updated_on']);
+						}
+						else{
+							$sitemap_items[$category['id']]['children'][$menu['id']]['children'][$article['id']] = array('title' => $article['title'], 'link' => $menu_link.'/article:'.$article['alias'], 'updated_on' => $article['updated_on']);
+						}
+						
+					}
+
+				}
 
 			}
 

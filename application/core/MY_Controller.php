@@ -141,8 +141,11 @@ class MY_Controller extends CI_Controller {
     
     private function _getActiveContent()
     {
-	
-		$uri = explode('/', $this->uri->uri_string());		
+		
+		# keep compatibility with old templates
+		$uri_string = preg_replace('/:/', '/', $this->uri->uri_string());
+		
+		$uri = explode('/', $uri_string);		
         $uri = array_reverse($uri);
 	
 		# check if article is selected
