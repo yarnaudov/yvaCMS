@@ -73,7 +73,14 @@ class Home extends MY_Controller {
             case "load":
                 
                 $this->load->helper('form');
-                $this->load->view($this->input->get('view'));
+				
+				if($this->input->get('lang')){
+					$this->load->language($this->input->get('lang'));
+				}
+				
+				if($this->input->get('view')){
+					$this->load->view($this->input->get('view'));
+				}
                 
             break;
         

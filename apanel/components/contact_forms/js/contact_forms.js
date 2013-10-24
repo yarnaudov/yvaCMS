@@ -6,7 +6,7 @@ $(document).ready(function() {
         var params = $(this).parents('li').find('.params');
         var key = $(this).parents('li').find('fieldset legend span').html();
         //alert(key);
-        $.get(site_url+'/home/ajax/load?view=contact_forms/'+$(this).val(), {key: key}, function(data){
+        $.get(site_url+'/home/ajax/load?view=contact_forms/'+$(this).val()+'&lang=components/com_cf_labels', {key: key}, function(data){
             $(params).css('display', 'none');
             $(params).html(data);
             $(params).toggle('slow');
