@@ -34,7 +34,7 @@ $(document).ready(function() {
 	
 	jQuery.validator.addMethod("maxfilesize", function(value, element) {
 		try{
-			if(element.files[0].size > $(element).rules('get').maxfilesize){
+			if($(element).rules('get').maxfilesize > 0 && element.files[0].size > $(element).rules('get').maxfilesize){
 				return false;
 			}
 			return true;

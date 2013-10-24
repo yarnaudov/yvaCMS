@@ -175,10 +175,16 @@ class Contact_forms extends CI_Model {
 			if($field['type'] == 'file'){
 				
 				$field_mimes = self::_get_file_mimes($field);
-
-				if($_FILES['field'.$number]['size'] < $field['max_size'] && in_array($_FILES['field'.$number]['type'], $field_mimes) ){
-					$attachments[] = array($_FILES['field'.$number]['tmp_name'], $_FILES['field'.$number]['name']);
+				
+				if($field['max_size'] != '' && $_FILES['field'.$number]['size'] > $field['max_size']){
+					continue;
 				}
+				
+				if(count($field_mimes) > 0 && !in_array($_FILES['field'.$number]['type'], $field_mimes)){
+					continue;
+				}
+
+				$attachments[] = array($_FILES['field'.$number]['tmp_name'], $_FILES['field'.$number]['name']);
 				
 				continue;
 				
