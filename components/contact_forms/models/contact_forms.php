@@ -5,34 +5,19 @@ class Contact_forms extends CI_Model {
     public function run($data = array())
     {
 	
-	if($this->input->get('contact_form_id')){
-	    $contact_form_id = $this->input->get('contact_form_id');
-	}
-	else{
-	    $contact_form_id = $data['contact_form_id'];
-	}
-	
-	$this->load->language('components/com_cf');
-        
+		$this->load->language('components/com_cf');
         
         $this->jquery_ext->add_plugin('validation');
-	$this->jquery_ext->add_library('check_captcha.js');
+		$this->jquery_ext->add_library('check_captcha.js');
         $this->jquery_ext->add_library('../components/contact_forms/js/contacts.js');
-        //$this->jquery_ext->add_css('../components/contact_forms/css/contacts.css');
         
-        
-        /*
-         * load validation library language file
-         */
+        # load validation library language file
         $file = 'validation/localization/messages_'.get_lang().'.js';
         if(file_exists('js/'.$file)){
             $this->jquery_ext->add_library($file);
         }
-        
-        
-        /*
-         * Load jquery_ui and search for .datepicker
-         */
+		
+        # Load jquery_ui and search for .datepicker
         $this->jquery_ext->add_plugin('jquery_ui');
         $script = "$('.datepicker').datepicker({
                         showOn: 'button',
@@ -42,24 +27,73 @@ class Contact_forms extends CI_Model {
                         buttonText: '".lang('label_cf_select_date')."'
                     });";
         $this->jquery_ext->add_script($script);
-	
-	
-	if(isset($_POST['send'])){
-            $this->send($contact_form_id);
-        }
-        
-        $this->contact_form_id = $contact_form_id;
-	
-	$templates = isset($this->Content->templates['contact_forms']) ? $this->Content->templates['contact_forms'] : array();
-	
-	$contact_form = $this->getDetails($this->contact_form_id);
-	
-	$view = 'contact_form';
-	if(isset($templates['contact_form'])){
-	    $view = $templates['contact_form'];
-	}
 		
-	return $this->load->view($view, compact('contact_form'), true);
+		if($this->input->get('contact_form_id')){
+			$contact_form_id = $this->input->get('contact_form_id');
+		}
+		else{
+			$contact_form_id = $data['contact_form_id'];
+		}
+			
+		$contact_form = $this->getDetails($contact_form_id);
+		
+		# check end send email if data ok
+		if($this->input->post('send')){
+            $this->send($contact_form);
+        }
+
+		foreach($contact_form['fields'] as $number => $field){
+			
+			if($number == 'captcha') continue;
+			
+			switch($field['mandatory']){
+				case "yes": 
+					$contact_form['fields'][$number]['class'] = "required";
+				break;
+				case "email":
+					$contact_form['fields'][$number]['class'] = "required email";
+				break;
+				case "date":
+					$contact_form['fields'][$number]['class'] = "required date";
+				break;
+			}
+			
+			if($field['type'] == 'file'){
+				
+				$field_mimes = array();
+				  
+				if(!isset($mimes)){
+					$this->load->library('upload');
+					$this->upload->mimes_types('jpg');
+					$mimes = $this->upload->mimes;
+				}
+				  
+				$exts = explode('|', $field['allowed_ext']);
+				foreach($exts as $ext){					
+					if(isset($mimes[$ext])){						
+						if(is_array($mimes[$ext])){
+							$field_mimes = array_merge($field_mimes, $mimes[$ext]);
+						}
+						else{
+							$field_mimes[] = $mimes[$ext];
+						}
+					}
+				}
+				
+				$contact_form['fields'][$number]['mimes'] = implode(',', $field_mimes);
+				
+			}
+			
+		}
+		
+		$templates = isset($this->Content->templates['contact_forms']) ? $this->Content->templates['contact_forms'] : array();
+
+		$view = 'contact_form';
+		if(isset($templates['contact_form'])){
+			$view = $templates['contact_form'];
+		}
+		
+		return $this->load->view($view, compact('contact_form'), true);
 	
     }
     
@@ -92,12 +126,11 @@ class Contact_forms extends CI_Model {
 
     }
     
-    public function send($contact_form_id)
+    public function send($contact_form)
     {
 	
+		$contact_form_id = $contact_form['id'];
         $message_data = array();
-	
-        $contact_form = self::getDetails($contact_form_id);
         
         $to  = explode(',', $contact_form['to']);
         if(!empty($contact_form['cc'])){
@@ -107,18 +140,18 @@ class Contact_forms extends CI_Model {
             $bcc = explode(',', $contact_form['bcc']);
         }
         
-	# check if there are to/cc comming from form
-	if(isset($_POST['to'])){
-	    $bcc = isset($bcc) ? $bcc . ',' . $to : $to;
-	    $to = $this->input->post('to', true);
-	}
-	if(isset($_POST['cc'])){
-	    $bcc = isset($bcc) ? $bcc . ',' . $cc : $cc;
-	    $cc = $this->input->post('cc', true);
-	}
-	if(isset($_POST['bcc'])){
-	    $bcc = isset($bcc) ? $bcc . ',' . $this->input->post('bcc', true) : $this->input->post('bcc', true);
-	}
+		# check if there are to/cc comming from form
+		if(isset($_POST['to'])){
+			$bcc = isset($bcc) ? $bcc . ',' . $to : $to;
+			$to = $this->input->post('to', true);
+		}
+		if(isset($_POST['cc'])){
+			$bcc = isset($bcc) ? $bcc . ',' . $cc : $cc;
+			$cc = $this->input->post('cc', true);
+		}
+		if(isset($_POST['bcc'])){
+			$bcc = isset($bcc) ? $bcc . ',' . $this->input->post('bcc', true) : $this->input->post('bcc', true);
+		}
 	
         $subject = lang('msg_cf_mail_subject');
         $subject = str_replace('{site_name}', $this->Setting->getSiteName(), $subject);
@@ -157,7 +190,7 @@ class Contact_forms extends CI_Model {
             }
             
             $message_body .= '<strong>'.$field['label'].'</strong>: '.$value.'<br/>';
-	    $message_data[$field['label']] = $value;
+			$message_data[$field['label']] = $value;
             
         }
 
@@ -227,20 +260,20 @@ class Contact_forms extends CI_Model {
         
         if($result == 1){
 	    $msg = !empty($contact_form['msg_success']) ? $contact_form['msg_success'] : lang('msg_cf_send');
-            $this->session->set_flashdata('contact_form_msg'.$contact_form_id, $msg);
-	    self::_save_in_db($contact_form_id, $message_data);
+            $this->session->set_flashdata('contact_form_msg'.$contact_form['id'], $msg);
+	    self::_save_in_db($contact_form['id'], $message_data);
         }
         else{
 	    $msg = !empty($contact_form['msg_error']) ? $contact_form['msg_error'] : lang('msg_cf_error');
-            $this->session->set_flashdata('contact_form_msg'.$contact_form_id, $msg);
+            $this->session->set_flashdata('contact_form_msg'.$contact_form['id'], $msg);
         }
         
-	if(!empty($_SERVER['HTTP_REFERER'])){
-	    redirect($_SERVER['HTTP_REFERER']);
-	}
-	else{
-	    redirect(current_url());
-	}
+		if(!empty($_SERVER['HTTP_REFERER'])){
+			redirect($_SERVER['HTTP_REFERER']);
+		}
+		else{
+			redirect(current_url());
+		}
         exit;
         
     }

@@ -25,4 +25,8 @@ $lang['label_msg_error']     = 'Съобщение при грешка';
 $lang['label_show_fields']   = 'Покажи полетата';
 $lang['label_hide_fields']   = 'Скрии полетата';
 
+$lang['label_file'] = 'Файл';
+$lang['label_max_size'] = 'Макс. размер';
+$lang['label_allowed_ext'] = 'Разрешени файлове';
+
 ?>

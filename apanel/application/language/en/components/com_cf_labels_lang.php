@@ -23,4 +23,8 @@ $lang['label_msg_error']     = 'Message on error';
 $lang['label_show_fields']   = 'Show fields';
 $lang['label_hide_fields']   = 'Hide fields';
 
+$lang['label_file'] = 'File';
+$lang['label_max_size'] = 'Max size';
+$lang['label_allowed_ext'] = 'Allowed ext';
+
 ?>

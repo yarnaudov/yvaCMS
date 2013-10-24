@@ -74,7 +74,8 @@ $config['jquery_ext']['libraries']['lightbox']           = array("path"  => 'lig
                                                                  );
 
 $config['jquery_ext']['libraries']['validation']         = array("path"  => 'validation/',
-                                                                 "files" => array('jquery.validate.js')
+                                                                 "files" => array('dist/jquery.validate.min.js',
+																				  'dist/additional-methods.js')
                                                                  );
 /*
 |------------------------------------------------------------------------------

@@ -5,12 +5,12 @@ class Main extends MY_Controller {
     public function index()
     {        
         
-	# add comment to article
-	if(isset($_POST['add_comment'])){
-	    $this->Article->addComment();
-	    redirect(current_url());
-	    exit;
-	}
+		# add comment to article
+		if(isset($_POST['add_comment'])){
+			$this->Article->addComment();
+			redirect(current_url());
+			exit;
+		}
 	
         echo parent::_parseTemplateFile();
         
@@ -53,9 +53,9 @@ class Main extends MY_Controller {
     public function banners($id)
     {
 
-	$this->Banner->statistic($id, 2);
-	
-	redirect($this->input->get('url'));
+		$this->Banner->statistic($id, 2);
+
+		redirect($this->input->get('url'));
 	
     }
     

@@ -242,6 +242,6 @@ $lang['current_version']   = 'Current version';
 
 // media menu
 $lang['label_media_max_file_size']      = 'Max file size';
-$lang['label_media_allowed_extensions'] = 'Allowed_extensions';
+$lang['label_media_allowed_extensions'] = 'Allowed extensions';
 
 ?>
