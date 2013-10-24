@@ -59,29 +59,8 @@ class Contact_forms extends CI_Model {
 			}
 			
 			if($field['type'] == 'file'){
-				
-				$field_mimes = array();
-				  
-				if(!isset($mimes)){
-					$this->load->library('upload');
-					$this->upload->mimes_types('jpg');
-					$mimes = $this->upload->mimes;
-				}
-				  
-				$exts = explode('|', $field['allowed_ext']);
-				foreach($exts as $ext){					
-					if(isset($mimes[$ext])){						
-						if(is_array($mimes[$ext])){
-							$field_mimes = array_merge($field_mimes, $mimes[$ext]);
-						}
-						else{
-							$field_mimes[] = $mimes[$ext];
-						}
-					}
-				}
-				
-				$contact_form['fields'][$number]['mimes'] = implode(',', $field_mimes);
-				
+				$field_mimes = self::_get_file_mimes($field);
+				$contact_form['fields'][$number]['mimes'] = implode(',', $field_mimes);				
 			}
 			
 		}
@@ -126,11 +105,39 @@ class Contact_forms extends CI_Model {
 
     }
     
+	private function _get_file_mimes($field)
+	{
+		
+		$field_mimes = array();
+				  
+		if(!isset($this->mimes)){
+			$this->load->library('upload');
+			$this->upload->mimes_types('jpg');
+			$this->mimes = $this->upload->mimes;
+		}
+
+		$exts = explode('|', $field['allowed_ext']);
+		foreach($exts as $ext){					
+			if(isset($this->mimes[$ext])){						
+				if(is_array($this->mimes[$ext])){
+					$field_mimes = array_merge($field_mimes, $this->mimes[$ext]);
+				}
+				else{
+					$field_mimes[] = $this->mimes[$ext];
+				}
+			}
+		}
+		
+		return $field_mimes;
+		
+	}
+	
     public function send($contact_form)
     {
 	
 		$contact_form_id = $contact_form['id'];
         $message_data = array();
+		$attachments = array();
         
         $to  = explode(',', $contact_form['to']);
         if(!empty($contact_form['cc'])){
@@ -160,10 +167,22 @@ class Contact_forms extends CI_Model {
         $message_body = lang('msg_cf_mail_body_top');
         $message_body = str_replace('{contact_form}', $contact_form['title'], $message_body);
         foreach($contact_form['fields'] as $number => $field){
-            
+       
             if($number == 'captcha'){
                 continue;
             }
+			
+			if($field['type'] == 'file'){
+				
+				$field_mimes = self::_get_file_mimes($field);
+
+				if($_FILES['field'.$number]['size'] < $field['max_size'] && in_array($_FILES['field'.$number]['type'], $field_mimes) ){
+					$attachments[] = array($_FILES['field'.$number]['tmp_name'], $_FILES['field'.$number]['name']);
+				}
+				
+				continue;
+				
+			}
             
             switch($field['type']){
                 
@@ -239,21 +258,27 @@ class Contact_forms extends CI_Model {
                 
         // Set the Cc addresses with an associative array
         if(isset($cc)){
-        $message->setCc($cc);
+			$message->setCc($cc);
         }
                 
         // Set the Bcc addresses with an associative array
         if(isset($bcc)){
-        $message->setBcc($bcc);
+			$message->setBcc($bcc);
         }
 
         // Give it a body
         $message->setBody($message_body, 'text/html');
         
-
+		// attach file if available
+		foreach($attachments as $attachment){
+			$message->attach(
+				Swift_Attachment::fromPath($attachment[0])->setFilename($attachment[1])
+			);
+		}
+		
         // And optionally an alternative body
         //->addPart('<q>Here is the message itself</q>', 'text/html');
-        
+		
         $result = $mailer->send($message);
         
         //echo "--->".$result."<---------<br/>";

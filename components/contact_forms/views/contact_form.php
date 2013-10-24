@@ -16,7 +16,7 @@
 	</div>
 	<?php } ?>
 	  
-	<form method="post" action="<?php echo  current_url().'?contact_form_id='.$contact_form['id'];?>" class="contactForm" id="contactForm_<?php echo $contact_form['id'];?>" >
+	<form method="post" action="<?php echo  current_url().'?contact_form_id='.$contact_form['id'];?>" class="contactForm" id="contactForm_<?php echo $contact_form['id'];?>" enctype="multipart/form-data" >
 
 
 	    <?php foreach($contact_form['fields'] as $number => $field){ ?>    
@@ -99,7 +99,10 @@
 				break;
 		  
 				case "file":				  
-				  echo '<input type="file" class="'.(isset($field['class']) ? $field['class'].' ' : '').'file" name="field'.$number.'" data-mimes="'.$field['mimes'].'" >';                    
+					echo '<input type="file" class="'.(isset($field['class']) ? $field['class'].' ' : '').'file" name="field'.$number.'" data-mimes="'.$field['mimes'].'" data-size="'.$field['max_size'].'" >';                    
+					if(!empty($field['allowed_ext'])){
+						echo '<span>'.str_replace('|', ', ', $field['allowed_ext']).'</span>';
+					}
 				break;
 		      } ?>
 

@@ -3,7 +3,7 @@ $(document).ready(function() {
     $(".contactForm").each(function(){
 	
 		$(this).validate({
-			
+			debug: true,
 			submitHandler: function(form) {
 
 				var submit_form = true;
@@ -28,13 +28,26 @@ $(document).ready(function() {
 			remote: site_url+'/check_captcha'
 		});
 		*/
-		$('.file').each(function(){
-			$(this).rules('add', {
-				accept: $(this).data('mimes')
-			});
-			$(this).removeAttr('data-mimes')
-		});
+		
     
     });
+	
+	jQuery.validator.addMethod("maxfilesize", function(value, element) {
+		try{
+			if(element.files[0].size > $(element).rules('get').maxfilesize){
+				return false;
+			}
+			return true;
+		}catch(err){return true;}
+	});
+	
+	$('.file').each(function(){
+		$(this).rules('add', {
+			accept: $(this).data('mimes'),
+			maxfilesize: $(this).data('size')
+		});
+		$(this).removeAttr('data-mimes').removeAttr('data-size');
+	});
+	
     
 });
