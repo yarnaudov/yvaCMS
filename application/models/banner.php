@@ -188,34 +188,39 @@ class Banner extends CI_Model {
     function statistic($id, $type = 1)
     {
 	
-	$this->load->library('user_agent');
-	
-	# get user agent
-	if ($this->agent->is_browser()){
-	    $data['user_agent'] = $this->agent->browser().' '.$this->agent->version();
-	}
-	elseif ($this->agent->is_robot()){
-	    $data['user_agent'] = $this->agent->robot();
-	}
-	elseif ($this->agent->is_mobile()){
-	    $data['user_agent'] = $this->agent->mobile();
-	}
-	else{
-	    $data['user_agent'] = 'Unidentified User Agent';
-	}
-	
-	if($this->agent->is_referral()){
-	    $data['user_referrer'] = $this->agent->referrer();
-	}
-	
-	$data['page_url'] = $_SERVER['QUERY_STRING'] ? current_url().'?'.$_SERVER['QUERY_STRING'] : current_url();
-	
-	$data['banner_id'] = $id;
-	$data['ip'] = $this->input->ip_address();
-	$data['created_on'] = date('Y-m-d H:i:s');
-	$data['type'] = $type;
-	
-	$this->db->insert('banners_statistics', $data);
+		$this->load->library('user_agent');
+
+		# get user agent
+		if ($this->agent->is_browser()){
+			$data['user_agent'] = $this->agent->browser().' '.$this->agent->version();
+		}
+		elseif ($this->agent->is_robot()){
+			$data['user_agent'] = $this->agent->robot();
+		}
+		elseif ($this->agent->is_mobile()){
+			$data['user_agent'] = $this->agent->mobile();
+		}
+		else{
+			$data['user_agent'] = 'Unidentified User Agent';
+		}
+
+		if($this->agent->is_referral()){
+			$data['user_referrer'] = $this->agent->referrer();
+		}
+
+		if($type == 2){
+			$data['page_url'] = '';
+		}
+		else{
+			$data['page_url'] = $_SERVER['QUERY_STRING'] ? current_url().'?'.$_SERVER['QUERY_STRING'] : current_url();
+		}
+
+		$data['banner_id'] = $id;
+		$data['ip'] = $this->input->ip_address();
+		$data['created_on'] = date('Y-m-d H:i:s');
+		$data['type'] = $type;
+
+		$this->db->insert('banners_statistics', $data);
 	
     }
     
