@@ -61,7 +61,9 @@ class Main extends MY_Controller {
     
     public function check_captcha($code = false)
     {
-        
+		
+        $this->output->enable_profiler(FALSE);
+		
         require_once BASEPATH . '../plugins/securimage/securimage.php';
 
         $image = new Securimage();

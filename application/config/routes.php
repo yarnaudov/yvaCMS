@@ -44,8 +44,8 @@ $route['404_override'] = '';
 $route['(\w{2})/load/(.*)'] = $route['default_controller'].'/load/$2';
 $route['load/(.*)'] = $route['default_controller'].'/load/$1';
 
-$route['(\w{2})/check_captcha'] = $route['default_controller'].'/check_captcha';
-$route['check_captcha'] = $route['default_controller'].'/check_captcha';
+$route['(\w{2})/check_captcha(.*)'] = $route['default_controller'].'/check_captcha$2';
+$route['check_captcha(.*)'] = $route['default_controller'].'/check_captcha$1';
 
 $route['(\w{2})/banners/(.*)'] = $route['default_controller'].'/banners/$2';
 $route['banners/(.*)'] = $route['default_controller'].'/banners/$1';

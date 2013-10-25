@@ -1,12 +1,3 @@
-<?php
- 
- /*
-  *  set default content templates
-  */
-  //$this->Content->templates['article'] = '../../'.TEMPLATES_DIR.'/'.$this->Setting->getTemplate('main').'/views/content/article';
-               
-?>
-
 <!DOCTYPE html>
 <html>
     
