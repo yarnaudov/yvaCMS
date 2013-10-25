@@ -572,22 +572,38 @@ class Article extends CI_Model {
     
     function addComment()
     {
+		
+		$this->load->library('form_validation');
+		$this->load->helper(array('form', 'url'));
+		
+		$this->form_validation->set_error_delimiters('<label class="error" >', '</label>');
+		$this->form_validation->set_rules('name', ' ', 'required');
+		$this->form_validation->set_rules('comment', ' ', 'required');
+		$this->form_validation->set_rules('ct_captcha', ' ', 'required|callback_check_captcha');
+		$this->form_validation->set_message('check_captcha', lang('msg_captcha_code_err'));
 	
-	$data['article_id'] = $this->input->post('article_id', true);
-	
-	if(empty($data['article_id'])){
-	    return FALSE;	    
-	}
-	
-	//if(isset($_SESSION['user_id'])){
-	//    $data['created_by'] = '';
-	//}
-	
-	$data['created_on'] = date('Y-m-d H:i:s');
-	$data['name']       = $this->input->post('name', true);
-	$data['comment']    = $this->input->post('comment', true);
-	
-	$this->db->insert('articles_comments', $data);
+		if ($this->form_validation->run() == TRUE){
+		
+			$data['article_id'] = $this->input->post('article_id', true);
+
+			if(empty($data['article_id'])){
+				return FALSE;	    
+			}
+
+			//if(isset($_SESSION['user_id'])){
+			//    $data['created_by'] = '';
+			//}
+
+			$data['created_on'] = date('Y-m-d H:i:s');
+			$data['name']       = $this->input->post('name', true);
+			$data['comment']    = $this->input->post('comment', true);
+
+			$this->db->insert('articles_comments', $data);
+			
+			redirect(current_url());
+			exit;
+		
+		}
 	
     }
     

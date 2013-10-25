@@ -7,9 +7,7 @@ class Main extends MY_Controller {
         
 		# add comment to article
 		if(isset($_POST['add_comment'])){
-			$this->Article->addComment();
-			redirect(current_url());
-			exit;
+			$this->Article->addComment();			
 		}
 	
         echo parent::_parseTemplateFile();

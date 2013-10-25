@@ -32,11 +32,13 @@
 		<div>
 		    <label><?php echo lang('label_name');?>: *</label>
 		    <input type="text" name="name" class="required" >
+			<?php echo function_exists('form_error') ? form_error('name') : ''; ?>
 		</div>
 
 		<div>
 		    <label><?php echo lang('label_comment');?>: *</label>
 		    <textarea name="comment" class="required" ></textarea>
+			<?php echo function_exists('form_error') ? form_error('comment') : ''; ?>
 		</div>
 
 		<div>
@@ -55,6 +57,7 @@
 		<div>
 		    <label><?php echo lang('label_enter_code');?>: *</label>
 		    <input type="text" name="ct_captcha" class="required captcha_input" />
+			<?php echo function_exists('form_error') ? form_error('ct_captcha') : ''; ?>
 		</div>
 
 		<div class="buttons" >
