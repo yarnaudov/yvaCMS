@@ -11,4 +11,7 @@ $lang['msg_cf_error']          = 'Message could not be sent at the moment. Pleas
 $lang['msg_cf_mail_subject']   = '{site_name} - this email is send from "{contact_form}" form';
 $lang['msg_cf_mail_body_top']  = 'This email is send from "{contact_form}" form <br/><br/>';
 
+$lang['msg_cf_required']     = 'This field is required.';
+$lang['msg_cf_valid_email']  = 'Please enter a valid email address.';
+
 ?>

@@ -250,7 +250,7 @@
                                 <tr>	      			
                                     <th><label><?php echo lang('label_email_to');?>:</label></th>
                                     <td>
-                                        <textarea class="required email" name="to" ><?php echo set_value('to', isset($to) ? $to : "");?></textarea>
+                                        <textarea class="required" name="to" ><?php echo set_value('to', isset($to) ? $to : "");?></textarea>
                                     </td>
                                 </tr>
                                 

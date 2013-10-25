@@ -6,6 +6,8 @@ class Contact_forms extends CI_Model {
     {
 	
 		$this->load->language('components/com_cf');
+		$this->load->library('form_validation');
+		$this->load->helper(array('form', 'url'));
         
         $this->jquery_ext->add_plugin('validation');
 		$this->jquery_ext->add_library('check_captcha.js');
@@ -19,17 +21,25 @@ class Contact_forms extends CI_Model {
 		
         # Load jquery_ui and search for .datepicker
         $this->jquery_ext->add_plugin('jquery_ui');
+		
+		 # load validation library language file
+        $file = 'jquery_ui/localization/jquery.ui.datepicker-'.get_lang().'.js';
+        if(file_exists('js/'.$file)){
+            $this->jquery_ext->add_library($file);
+        }
+		
         $script = "$('.datepicker').datepicker({
                         showOn: 'button',
                         dateFormat: 'yy-mm-dd',
                         buttonImage: '".base_url('components/contact_forms/img/iconCalendar.png')."',
                         buttonImageOnly: true,              
                         buttonText: '".lang('label_cf_select_date')."'
-                    });";
+                    });
+					$('.datepicker').datepicker( $.datepicker.regional[ '".get_lang()."' ] );";
         $this->jquery_ext->add_script($script);
 		
-		if($this->input->get('contact_form_id')){
-			$contact_form_id = $this->input->get('contact_form_id');
+		if($this->input->get_post('contact_form_id')){
+			$contact_form_id = $this->input->get_post('contact_form_id');
 		}
 		else{
 			$contact_form_id = $data['contact_form_id'];
@@ -39,7 +49,12 @@ class Contact_forms extends CI_Model {
 		
 		# check end send email if data ok
 		if($this->input->post('send')){
-            $this->send($contact_form);
+			
+			self::_set_form_rules($contact_form);
+
+			if ($this->form_validation->run() == TRUE){
+				$this->send($contact_form);
+			}
         }
 
 		foreach($contact_form['fields'] as $number => $field){
@@ -129,6 +144,44 @@ class Contact_forms extends CI_Model {
 		}
 		
 		return $field_mimes;
+		
+	}
+	
+	private function _set_form_rules($contact_form)
+	{
+		
+		foreach($contact_form['fields'] as $number => $field){
+			
+			if($number == 'captcha'){
+				$this->form_validation->set_rules('ct_captcha', '', 'required|callback_check_captcha');
+				continue;
+			}
+			
+			if($field['type'] == 'checkbox'){
+				$this->form_validation->set_rules('field'.$number.'[]', '', 'trim');
+			}
+			else{
+				$this->form_validation->set_rules('field'.$number, '', 'trim');
+			}
+			
+			switch($field['mandatory']){
+				case "yes": 
+					$this->form_validation->set_rules('field'.$number, '', 'required');
+				break;
+				case "email":
+					$this->form_validation->set_rules('field'.$number, '', 'required|valid_email');
+				break;
+				case "date":
+					$this->form_validation->set_rules('field'.$number, '', 'required');
+				break;
+			}
+			
+		}
+		
+		$this->form_validation->set_error_delimiters('<label class="error" >', '</label>');
+		$this->form_validation->set_message('required', lang('msg_cf_required'));
+		$this->form_validation->set_message('valid_email', lang('msg_cf_valid_email'));
+		$this->form_validation->set_message('check_captcha', lang('msg_captcha_code_err'));
 		
 	}
 	
@@ -312,34 +365,34 @@ class Contact_forms extends CI_Model {
     private function _save_in_db($contact_form_id, $message_data)
     {
 	
-	$this->load->library('user_agent');
-	
-	$data['contact_form_id'] = $contact_form_id;
-	$data['created_on'] = date('Y-m-d H:i:s');
-	
-	# get user agent
-	if ($this->agent->is_browser()){
-	    $data['user_agent'] = $this->agent->browser().' '.$this->agent->version();
-	}
-	elseif ($this->agent->is_robot()){
-	    $data['user_agent'] = $this->agent->robot();
-	}
-	elseif ($this->agent->is_mobile()){
-	    $data['user_agent'] = $this->agent->mobile();
-	}
-	else{
-	    $data['user_agent'] = 'Unidentified User Agent';
-	}
-	
-	if($this->agent->is_referral()){
-	    $data['page_url'] = $this->agent->referrer();
-	}
-	
-	$data['ip'] = $this->input->ip_address();
-	
-	$data['message'] = json_encode($message_data);
+		$this->load->library('user_agent');
 
-	$this->db->insert('com_contacts_forms_messages', $data);
+		$data['contact_form_id'] = $contact_form_id;
+		$data['created_on'] = date('Y-m-d H:i:s');
+
+		# get user agent
+		if ($this->agent->is_browser()){
+			$data['user_agent'] = $this->agent->browser().' '.$this->agent->version();
+		}
+		elseif ($this->agent->is_robot()){
+			$data['user_agent'] = $this->agent->robot();
+		}
+		elseif ($this->agent->is_mobile()){
+			$data['user_agent'] = $this->agent->mobile();
+		}
+		else{
+			$data['user_agent'] = 'Unidentified User Agent';
+		}
+
+		if($this->agent->is_referral()){
+			$data['page_url'] = $this->agent->referrer();
+		}
+
+		$data['ip'] = $this->input->ip_address();
+
+		$data['message'] = json_encode($message_data);
+
+		$this->db->insert('com_contacts_forms_messages', $data);
 	
     }
     

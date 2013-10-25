@@ -59,12 +59,23 @@ class Main extends MY_Controller {
 	
     }
     
-    public function check_captcha()
+    public function check_captcha($code = false)
     {
         
         require_once BASEPATH . '../plugins/securimage/securimage.php';
 
         $image = new Securimage();
+		
+		if($code != false ){
+			
+			if ($image->check($code) == true) {
+				return true;
+			} else {
+				return false;
+			}
+			
+		}
+		
         if ($image->check($_POST['code']) == true) {
             echo 1;
         } else {

@@ -22,14 +22,7 @@ $(document).ready(function() {
 			}
 			
 		});
-		/* add this later !!!
-		$('.captcha_input').rules('add', {
-			required: true,
-			remote: site_url+'/check_captcha'
-		});
-		*/
-		
-    
+		    
     });
 	
 	jQuery.validator.addMethod("maxfilesize", function(value, element) {
@@ -49,5 +42,11 @@ $(document).ready(function() {
 		$(this).removeAttr('data-mimes').removeAttr('data-size');
 	});
 	
+	/* add this later !!!
+	$('.captcha_input').rules('add', {
+		required: true,
+		remote: site_url+'/check_captcha'
+	});
+	*/
     
 });

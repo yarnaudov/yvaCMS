@@ -11,4 +11,7 @@ $lang['msg_cf_error']          = 'Съобщението не може да бъ
 $lang['msg_cf_mail_subject']   = '{site_name} - това съобщение е генерирано от формата "{contact_form}" ';
 $lang['msg_cf_mail_body_top']  = 'Това съобщение е генерирано от формата "{contact_form}" <br/><br/>';
 
+$lang['msg_cf_required']     = 'Полето е задължително.';
+$lang['msg_cf_valid_email']  = 'Моля, въведете валиден email.';
+
 ?>

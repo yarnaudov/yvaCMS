@@ -16,9 +16,10 @@
 	</div>
 	<?php } ?>
 	  
-	<form method="post" action="<?php echo  current_url().'?contact_form_id='.$contact_form['id'];?>" class="contactForm" id="contactForm_<?php echo $contact_form['id'];?>" enctype="multipart/form-data" >
+	<form method="post" action="<?php echo  current_url(); ?>" class="contactForm" id="contactForm_<?php echo $contact_form['id'];?>" enctype="multipart/form-data" >
 
-
+		<input type="hidden" name="contact_form_id" value="<?php echo $contact_form['id']; ?>" >
+		
 	    <?php foreach($contact_form['fields'] as $number => $field){ ?>    
 
 	    <div class="row" >
@@ -29,7 +30,7 @@
 		<?php switch($field['type']){ 
 
 				case "text":                
-					echo '<input '.(isset($field['class']) ? 'class="'.$field['class'].'"' : '').' type="'.$field['type'].'" name="field'.$number.'" value="'.$field['value'].'" >'; 
+					echo '<input '.(isset($field['class']) ? 'class="'.$field['class'].'"' : '').' type="'.$field['type'].'" name="field'.$number.'" value="'.set_value('field'.$number, $field['value']).'" >';
 				break;
 
 				case "checkbox":
@@ -40,16 +41,20 @@
 					echo '<ul>';
 					foreach($field['options'] as $key => $option){
 
-						$checked = '';
-						if($option == 1){
-							$checked = 'checked';
+						$option = $option == 1 ? TRUE : FALSE;
+						
+						if($field['type'] == 'checkbox'){
+							$checked = set_checkbox('field'.$number.$name_sufix, $key, $option);
+						}
+						else{
+							$checked = set_radio('field'.$number, $key, $option);
 						}
 
 						echo '<li>';
 						echo '<input type="'.$field['type'].'" 
 								 name="field'.$number.$name_sufix.'" 
 								 id="option'.$number.$key.'" 
-								 value="'.$key.'" 
+								 value="'.$key.'"
 								 '.$checked.'
 								 '.(isset($field['class']) ? 'class="'.$field['class'].'"' : '').' >';
 						echo '<label for="option'.$number.$key.'" >'.$field['labels'][$key].'</label>';
@@ -61,7 +66,7 @@
 				  break;
 
 				case "textarea":
-					echo '<textarea '.(isset($field['class']) ? 'class="'.$field['class'].'"' : '').' name="field'.$number.'" >'.$field['value'].'</textarea>'; 
+					echo '<textarea '.(isset($field['class']) ? 'class="'.$field['class'].'"' : '').' name="field'.$number.'" >'.set_value('field'.$number, $field['value']).'</textarea>'; 
 				break;
 
 				case "dropdown":
@@ -70,9 +75,7 @@
 					foreach($field['options'] as $key => $option){
 
 						$selected = '';
-						if($option == 1){
-							$selected = 'selected';
-						}
+						$option = $option == 1 ? TRUE : FALSE;
 
 						if($field['optgroups'][$key] == 1){
 							if($optgroup == true){
@@ -82,7 +85,7 @@
 							echo '<optgroup label="'.$field['labels'][$key].'" >';
 						}
 						else{
-							echo '<option '.$selected.' value="'.$key.'" >'.$field['labels'][$key].'</option>';   
+							echo '<option '.set_select('field'.$number, $key, $option).' value="'.$key.'" >'.$field['labels'][$key].'</option>';   
 						}
 
 						if($key+1 == count($field['options']) && $optgroup == true){
@@ -95,7 +98,7 @@
 				  break;
 
 				case "date":
-				  echo '<input type="text" class="'.(isset($field['class']) ? $field['class'].' ' : '').' datepicker" name="field'.$number.'" value="'.$field['value'].'" >';                    
+				  echo '<input type="text" class="'.(isset($field['class']) ? $field['class'].' ' : '').'datepicker" name="field'.$number.'" value="'.set_value('field'.$number, $field['value']).'" readonly >';
 				break;
 		  
 				case "file":				  
@@ -105,7 +108,8 @@
 					}
 				break;
 		      } ?>
-
+			
+			<?php echo form_error('field'.$number); ?>
 
 	    </div>
 
@@ -127,16 +131,15 @@
 	    </div>
 
 	    <div class="row" >
-
 			<label><?php echo lang('label_cf_enter_code');?>: *</label>
 			<input type="text" name="ct_captcha" class="required captcha_input" />
-
+			<?php echo form_error('ct_captcha'); ?>
 	    </div>
 	    <br/>
 	    <?php } ?>
 
 	    <div class="buttons">
-			<button class="primary" type="submit" name="send" ><?php echo lang('label_cf_send');?></button>
+			<button class="primary" type="submit" name="send" value="1" ><?php echo lang('label_cf_send');?></button>
 			<button type="reset" ><?php echo lang('label_cf_clear');?></button>
 	    </div>
 
