@@ -1,8 +1,8 @@
 <?php
 
-$lang['label_search']     = 'Търсене';
-$lang['label_search_for'] = 'Търсене за';
+$lang['label_search']     = 'Поиск';
+$lang['label_search_for'] = 'Поиск по';
 
-$lang['search_msg_no_results_found'] = 'Няма намерени резултати';
+$lang['search_msg_no_results_found'] = 'Ничего не найдено';
 
 ?>
