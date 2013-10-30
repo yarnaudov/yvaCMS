@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class mod_menu extends CI_Model{
+class mod_menu extends MY_Model{
 	
     function run($module)
     {
@@ -9,17 +9,13 @@ class mod_menu extends CI_Model{
         
         $menus_arr = array();
         foreach($menus as $key => $menu){
-            
-            /* --- check language for menu display --- */
-            if($menu['show_in_language'] != NULL && $menu['show_in_language'] != $this->language_id){
-                continue;
-            }
-                          
-            $menu['link']  = module::menu_link($menu);
-            $menu['class'] = module::menu_class($menu);
-            
-            $menus_arr[] = $menu;
-            
+                  
+			if(parent::check_item_display($menu)){
+				$menu['link']  = module::menu_link($menu);
+				$menu['class'] = module::menu_class($menu);            
+				$menus_arr[] = $menu;
+			}
+			
         }
                 
         $data['menus'] = $menus_arr;

@@ -14,15 +14,11 @@ class mod_custom_menu extends CI_Model{
             
             $menu = $this->Menu->getDetails($menu);
             
-            /* --- check language for menu display --- */
-            if($menu['show_in_language'] != NULL && $menu['show_in_language'] != $this->language_id){
-                continue;
-            }
-            
-            $menu['link']   = module::menu_link($menu);
-            $menu['class']  = module::menu_class($menu);
-            
-            $menus_arr[] = $menu;
+            if(parent::check_item_display($menu)){
+				$menu['link']  = module::menu_link($menu);
+				$menu['class'] = module::menu_class($menu);            
+				$menus_arr[] = $menu;
+			}
             
         }
                 

@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Module extends CI_Model {
+class Module extends MY_Model {
     
     public $templates = array('main' => 'modules/main');
     
@@ -37,10 +37,10 @@ class Module extends CI_Model {
     public function load($position, $type = 1)
     {
 	
-	$templates = $this->templates;
-	if(isset($this->templates[$position])){
-	    $templates = array_merge($this->templates, $this->templates[$position]);
-	}
+		$templates = $this->templates;
+		if(isset($this->templates[$position])){
+			$templates = array_merge($this->templates, $this->templates[$position]);
+		}
                 
         $modules = self::_getModules($position, $type);
 
@@ -86,40 +86,9 @@ class Module extends CI_Model {
                        
             $module = $this->Module->getDetails($module['id']);            
             
-            /* --- check menus for module display --- */          
-            if($module['params']['display_in'] == 'on_selected' && !in_array($this->menu_id, $module['params']['display_menus'])){
-                continue;
-            }
-            elseif($module['params']['display_in'] == 'all_except_selected' && in_array($this->menu_id, $module['params']['display_menus'])){
-                continue;
-            }            
-            
-            /* --- check language for module display --- */
-            if($module['show_in_language'] != NULL && $module['show_in_language'] != $this->Language->getDetailsByAbbr(get_lang(), 'id')){
-                continue;
-            }
-                        
-            /* --- check start end date for module display --- */
-            if($module['start_publishing'] != NULL && $module['start_publishing'] > date('Y-m-d')){
-                continue;
-            }
-            elseif($module['end_publishing'] != NULL && $module['end_publishing'] < date('Y-m-d')){
-                continue;
-            }
-            
-            /* --- check display rules for module --- */
-            $display_rules = isset($module['params']['display_rules']) ? $module['params']['display_rules'] : array();
-            $continue = true;
-            foreach($display_rules as $display_rule){
-                if(@preg_match('/'.$display_rule.'/', current_url())){
-                    $continue = false; 
-                }
-            }
-            if($continue == true && count($display_rules) > 0){
-                continue;
-            }
-            
-            $modules_arr[] = $module; 
+            if(parent::check_item_display($module)){
+				$modules_arr[] = $module; 
+			}
             
         }
 
@@ -138,39 +107,39 @@ class Module extends CI_Model {
         switch($menu['type']){
             case "article":
             case "articles_list":           
-	    case "custom_articles_list":
+			case "custom_articles_list":
             case "menu":
             case "component":
-	    case "sitemap":
+			case "sitemap":
                 
-                $link = '';
+				$link = '';
+
+				$menus = $this->Menu->getParents($menu['id']);
+				$menus = array_reverse($menus);
+				foreach($menus as $menu_id){
+					$menu = $this->Menu->getDetails($menu_id);
+					$link .= '/'.$menu['alias'];
+				}
+
+				if($full == true){
+					return site_url($link);
+				}
+				else{
+					return $link;
+				}
                 
-                $menus = $this->Menu->getParents($menu['id']);
-                $menus = array_reverse($menus);
-                foreach($menus as $menu_id){
-                    $menu = $this->Menu->getDetails($menu_id);
-                    $link .= '/'.$menu['alias'];
-                }
-        
-                if($full == true){
-                    return site_url($link);
-                }
-                else{
-                    return $link;
-                }
-                
-            break;
-            case "external_url":
+			break;
+			case "external_url":
 		
-		if(!preg_match('/^http:\/\//', $menu['params']['url']) &&
-		   !preg_match('/^https:\/\//', $menu['params']['url']) &&
-		   !preg_match('/^mailto:/', $menu['params']['url'])){
-		    $menu['params']['url'] = site_url($menu['params']['url']);
-		}
+				if(!preg_match('/^http:\/\//', $menu['params']['url']) &&
+				   !preg_match('/^https:\/\//', $menu['params']['url']) &&
+				   !preg_match('/^mailto:/', $menu['params']['url'])){
+					$menu['params']['url'] = site_url($menu['params']['url']);
+				}
                 
-                return $menu['params']['url'];
+				return $menu['params']['url'];
                 
-            break;
+			break;
         }
         
     }

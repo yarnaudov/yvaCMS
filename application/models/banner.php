@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Banner extends CI_Model {
+class Banner extends MY_Model {
 
 	public $templates = array('main' => 'banners/main');
 	
@@ -13,8 +13,10 @@ class Banner extends CI_Model {
         $banner = $this->db->get('banners');  	
         $banner = $banner->result_array();
 
-        if($field == null){
-            $banner[0]['custom_fields'] = $this->Custom_field->getValues('banners', $banner[0]['banner_id']);
+		$banner[0]['params'] = json_decode($banner[0]['params'], true);
+		$banner[0]           = array_merge($banner[0], $this->Custom_field->getValues('banners', $banner[0]['id']));
+		
+        if($field == null){           
             return $banner[0];
         }
         else{  	
@@ -79,34 +81,13 @@ class Banner extends CI_Model {
 
         $banners_arr = array();
         foreach($banners as $banner){
+
+			$banner['params'] = json_decode($banner['params'], true);
+			$banner           = array_merge($banner, $this->Custom_field->getValues('banners', $banner['id']));
             
-            $banner['custom_fields'] = $this->Custom_field->getValues('banners', $banner['id']);
-            
-            /* --- check menus for module display --- */
-            $banner['params'] = json_decode($banner['params'], true);            
-            if($banner['params']['display_in'] == 'on_selected' && !in_array($this->menu_id, $banner['params']['display_menus'])){
-                continue;
-            }
-            elseif($banner['params']['display_in'] == 'all_except_selected' && in_array($this->menu_id, $banner['params']['display_menus'])){
-                continue;
-            }
-            
-            
-            /* --- check language for banner display --- */
-            if($banner['show_in_language'] != NULL && $banner['show_in_language'] != $this->Language->getDetailsByAbbr(get_lang(), 'id')){
-                continue;
-            }
-            
-            
-            /* --- check start end date for banner display --- */
-            if($banner['start_publishing'] != NULL && $banner['start_publishing'] > date('Y-m-d')){
-                continue;
-            }
-            elseif($banner['end_publishing'] != NULL && $banner['end_publishing'] < date('Y-m-d')){
-                continue;
-            }
-            
-            $banners_arr[] = $banner; 
+            if(parent::check_item_display($banner)){
+				$banners_arr[] = $banner; 
+			}
             
         }
         
