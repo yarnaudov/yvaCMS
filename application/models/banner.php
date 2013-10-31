@@ -8,7 +8,7 @@ class Banner extends MY_Model {
     {
 
         $this->db->select('*');
-        $this->db->where('banner_id', $banner_id);
+        $this->db->where('id', $banner_id);
 
         $banner = $this->db->get('banners');  	
         $banner = $banner->result_array();
@@ -101,7 +101,7 @@ class Banner extends MY_Model {
         $banner_html = '';
 	
 		if(!empty($banner['params']['link'])){
-			$banner_html  .= '<a href="'.site_url($this->router->routes['default_controller'].'/banners/'.$banner['id']).'?url='.$banner['params']['link'].'" target="_blank" >';
+			$banner_html  .= '<a href="'.site_url('banners/'.$banner['id']).'" target="_blank" >';
 		}
 	
         $banner_html .= '    <img src="'.base_url($banner['params']['image']).'" >';
@@ -138,7 +138,7 @@ class Banner extends MY_Model {
 		$html = str_get_html($banner['params']['html']);
 		foreach($html->find('a') as $key => $a){
 
-			$a->href = site_url($this->router->routes['default_controller'].'/banners/'.$banner['id']).'?url='.$a->href;
+			$a->href = site_url('banners/'.$banner['id']).'?url='.$a->href;
 			$html->find('a', $key)->href = $a->href;
 			$html->find('a', $key)->target = 'blank';
                         
@@ -154,7 +154,7 @@ class Banner extends MY_Model {
         $banner_html = '';
 	
 		if(!empty($banner['params']['link'])){
-			$banner_html  .= '<a href="'.site_url($this->router->routes['default_controller'].'/banners/'.$banner['id']).'?url='.$banner['params']['link'].'" target="_blank" >';
+			$banner_html  .= '<a href="'.site_url('banners/'.$banner['id']).'" target="_blank" >';
 		}
 	
         $banner_html .=     $banner['params']['text'];

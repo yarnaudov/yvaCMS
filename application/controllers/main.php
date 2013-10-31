@@ -52,8 +52,15 @@ class Main extends MY_Controller {
     {
 
 		$this->Banner->statistic($id, 2);
-
-		redirect($this->input->get('url'));
+		
+		
+		if($this->input->get('url')){
+			redirect($this->input->get('url'));
+		}
+		else{
+			$banner = $this->Banner->getDetails($id, 'params');		
+			redirect($banner['link']);
+		}
 	
     }
     
