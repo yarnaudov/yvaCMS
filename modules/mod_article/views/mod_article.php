@@ -2,9 +2,7 @@
 <div>
 
     <?php if($article['show_title'] == 'yes'){ ?>
-    <div class="article_title" >
-        <?php echo $article['title'];?>
-    </div>
+    <h4 class="article_title" ><?php echo $article['title'];?></h4>
     <?php } ?>
     
     <div class="article_content" >
