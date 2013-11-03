@@ -15,14 +15,14 @@ class Module extends MY_Model {
         
         $module = $this->db->query($query);  	
         $module = $module->result_array();
-
-        $module[0]['params'] = json_decode($module[0]['params'], true); 
-        $module[0]           = array_merge($module[0], $this->Custom_field->getFieldsValues($id));
         
         if(empty($module)){
             return;
         }
-
+        
+        $module[0]['params'] = json_decode($module[0]['params'], true); 
+        $module[0]           = array_merge($module[0], $this->Custom_field->getFieldsValues($id));
+        
         if($field == null){
             return $module[0];
         }
