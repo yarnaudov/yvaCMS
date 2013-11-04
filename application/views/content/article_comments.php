@@ -1,5 +1,5 @@
     
-    <div class="comments" >
+<div class="comments" >
 	
 	<div class="comments_list" >
 	    
@@ -29,19 +29,19 @@
 
 		<input type="hidden" name="article_id" value="<?php echo $article['id'];?>" >
 
-		<div>
+		<div class="row" >
 		    <label><?php echo lang('label_name');?>: *</label>
 		    <input type="text" name="name" class="required" >
 			<?php echo function_exists('form_error') ? form_error('name') : ''; ?>
 		</div>
 
-		<div>
+		<div class="row" >
 		    <label><?php echo lang('label_comment');?>: *</label>
 		    <textarea name="comment" class="required" ></textarea>
 			<?php echo function_exists('form_error') ? form_error('comment') : ''; ?>
 		</div>
 
-		<div>
+		<div class="row" >
 		    <label>&nbsp;</label>
 		    <img id="siimage" src="<?php echo base_url();?>/plugins/securimage/securimage_show.php?sid=<?php echo md5(uniqid()) ?>" alt="CAPTCHA Image" />
 		    <object type="application/x-shockwave-flash" data="<?php echo base_url();?>/plugins/securimage/securimage_play.swf?bgcol=#ffffff&amp;icon_file=./images/audio_icon.gif&amp;audio_file=<?php echo base_url();?>/plugins/securimage/securimage_play.php" width="19" height="19" >
@@ -54,13 +54,13 @@
 		    <br />
 		</div>
 
-		<div>
+		<div class="row" >
 		    <label><?php echo lang('label_enter_code');?>: *</label>
 		    <input type="text" name="ct_captcha" class="required captcha_input" />
 			<?php echo function_exists('form_error') ? form_error('ct_captcha') : ''; ?>
 		</div>
 
-		<div class="buttons" >
+		<div class="row buttons" >
 		    <label>&nbsp;</label>
 		    <button class="add_comment" name="add_comment" ><?php echo lang('label_add_comment');?></button>
 		    <button type="reset" ><?php echo lang('label_clear');?></button>
@@ -91,4 +91,4 @@
 	    
 	</div>
 	
-    </div>
+</div>
