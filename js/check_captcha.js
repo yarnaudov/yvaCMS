@@ -18,7 +18,7 @@ function check_captcha(form){
 			}
 			else{
 				$(form.send).removeAttr('disabled');
-				$('#refresh_image').trigger('click');
+				$(form).find('.refresh_image').trigger('click');
 				$(form.ct_captcha).val('');
 				$(form.ct_captcha).addClass('error');
 				var label = $(form.ct_captcha).parent().find('label.error');
