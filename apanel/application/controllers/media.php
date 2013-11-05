@@ -14,7 +14,7 @@ class Media extends MY_Controller {
 	'doc','docx','xls','xlsx','word','xl','pdf','csv','txt',
 	
 	# other formats
-	'eml', 'json', 'xml', 'rtx', 'zip', 'psd');
+	'eml', 'json', 'xml', 'rtx', 'zip', 'rar', 'psd');
     
     private $max_size = '10240';
     
