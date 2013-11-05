@@ -49,7 +49,12 @@
 
 require_once dirname(__FILE__) . '/securimage.php';
 
-$img = new Securimage();
+$options = array();
+if(isset($_GET['namespace'])){
+    $options['namespace'] = $_GET['namespace'];
+}
+
+$img = new Securimage($options);
 
 // You can customize the image by making changes below, some examples are included - remove the "//" to uncomment
 

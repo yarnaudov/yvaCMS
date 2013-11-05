@@ -119,7 +119,7 @@
 	    <br/>
 	    <div class="row captcha" >
 			<label>&nbsp;</label>
-			<img id="siimage_cf<?php echo $contact_form['id']; ?>" style="margin-right: 15px;width: 200px;height: 70px;" src="<?php echo base_url();?>plugins/securimage/securimage_show.php?sid=<?php echo md5(uniqid()) ?>" alt="CAPTCHA Image" />	
+			<img id="siimage_cf<?php echo $contact_form['id']; ?>" style="margin-right: 15px;width: 200px;height: 70px;" src="<?php echo base_url();?>plugins/securimage/securimage_show.php?sid=<?php echo md5(uniqid()) ?>&namespace=cf<?php echo $contact_form['id']; ?>" alt="CAPTCHA Image" />	
 			<object type="application/x-shockwave-flash" data="<?php echo base_url();?>plugins/securimage/securimage_play.swf?bgcol=#ffffff&amp;icon_file=./images/audio_icon.gif&amp;audio_file=<?php echo base_url();?>/plugins/securimage/securimage_play.php" width="19" height="19" >
 				<param name="movie" value="<?php echo base_url();?>plugins/securimage/securimage_play.swf?bgcol=#ffffff&amp;icon_file=./images/audio_icon.gif&amp;audio_file=<?php echo base_url();?>/plugins/securimage/securimage_play.php" />
 			</object>		
@@ -132,6 +132,7 @@
 
 	    <div class="row" >
 			<label><?php echo lang('label_cf_enter_code');?>: *</label>
+                        <input type="hidden" name="ct_namespace" value="cf<?php echo $contact_form['id']; ?>" >
 			<input type="text" name="ct_captcha" class="required captcha_input" />
 			<?php echo form_error('ct_captcha'); ?>
 	    </div>
