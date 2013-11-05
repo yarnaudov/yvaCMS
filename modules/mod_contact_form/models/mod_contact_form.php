@@ -9,7 +9,7 @@ class mod_contact_form extends CI_Model{
 		$this->load->library('form_validation');
 		$this->load->helper(array('form', 'url'));
 		
-		if($this->input->get('contact_form_id')){
+		if($this->input->get_post('contact_form_id')){
 			$contact_form_id = $this->input->get('contact_form_id');
 		}
 		else{
