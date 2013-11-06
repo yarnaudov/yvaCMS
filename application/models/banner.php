@@ -205,5 +205,14 @@ class Banner extends MY_Model {
 		$this->db->insert('banners_statistics', $data);
 	
     }
+	
+	function count($position)
+    {
+        
+        $banners = self::_getBanners($position);
+        
+        return count($banners);
+        
+    }
     
 }
