@@ -124,7 +124,7 @@
 				<param name="movie" value="<?php echo base_url();?>plugins/securimage/securimage_play.swf?bgcol=#ffffff&amp;icon_file=./images/audio_icon.gif&amp;audio_file=<?php echo base_url();?>/plugins/securimage/securimage_play.php" />
 			</object>		
 			&nbsp;
-			<a tabindex="-1" style="border-style: none;" href="#" class="refresh_image" title="Refresh Image" onclick="document.getElementById('siimage_cf<?php echo $contact_form['id']; ?>').src = '<?php echo base_url();?>plugins/securimage/securimage_show.php?sid=' + Math.random(); this.blur(); return false">
+			<a tabindex="-1" style="border-style: none;" href="#" class="refresh_image" title="Refresh Image" onclick="document.getElementById('siimage_cf<?php echo $contact_form['id']; ?>').src = '<?php echo base_url();?>plugins/securimage/securimage_show.php?sid=' + Math.random()+'&namespace=cf<?php echo $contact_form['id']; ?>'; this.blur(); return false">
 				<img src="<?php echo base_url();?>plugins/securimage/images/refresh.gif" alt="Reload Image" onclick="this.blur()" align="bottom" border="0" />
 			</a>
 			<br />
