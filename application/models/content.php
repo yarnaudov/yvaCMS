@@ -344,15 +344,15 @@ class Content extends CI_Model {
 			exit;
 		}
 		else{
-			return self::_sitemap_html($sitemap_items);
+			return self::_sitemap_html($sitemap_items, true);
 		}
 	
     }
     
-    private function _sitemap_html($sitemap_items)
+    private function _sitemap_html($sitemap_items, $main_level = false)
     {
 	
-		$sitemap = "<ul>";
+		$sitemap = "<ul ".($main_level == true ? 'id="sitemap"' : '')." >\n";
 
 		foreach($sitemap_items as $sitemap_item){
 
