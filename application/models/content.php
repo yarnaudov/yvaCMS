@@ -326,7 +326,7 @@ class Content extends CI_Model {
 							$sitemap_items[$category['id']]['children'][$menu['parent_id']]['children'][$menu['id']]['children'][$article['id']] = array('title' => $article['title'], 'link' => $menu_link.'/article/'.$article['alias'], 'updated_on' => $article['updated_on']);
 						}
 						else{
-							$sitemap_items[$category['id']]['children'][$menu['id']]['children'][$article['id']] = array('title' => $article['title'], 'link' => $menu_link.'/article:'.$article['alias'], 'updated_on' => $article['updated_on']);
+							$sitemap_items[$category['id']]['children'][$menu['id']]['children'][$article['id']] = array('title' => $article['title'], 'link' => $menu_link.'/article/'.$article['alias'], 'updated_on' => $article['updated_on']);
 						}
 						
 					}
