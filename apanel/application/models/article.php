@@ -535,7 +535,6 @@ class Article extends MY_Model {
 	    $article = $this->db->get_where('articles', array('id' => $article_id))->row_array();
 	    
 	    $article['alias'] = $article['alias']."_copy";
-	    $article['order'] = self::getMaxOrder($article['category_id'])+1;
 	    $article['created_by'] = $_SESSION['user_id'];
             $article['created_on'] = now();
 	    unset($article['id'], $article['order'], $article['updated_by'], $article['updated_on']);
@@ -563,6 +562,7 @@ class Article extends MY_Model {
 	    $article_categories = $this->db->get_where('articles_categories', array('article_id' => $article_id))->result_array();
 	    foreach($article_categories as $data){
 		$data['article_id'] = $id;
+                $data['order']       = self::getMaxOrder($data['category_id'])+1;
 		$result = $this->db->insert('articles_categories', $data);                        
 		if($result != true){
 		    $this->session->set_userdata('error_msg', lang('msg_copy_article_error'));
