@@ -2,6 +2,11 @@
 
 class Image extends CI_Model {
 
+    function __construct() {
+        parent::__construct();
+        $this->load->library('image_lib');
+    }
+    
     public function getDetails($id, $field = null)
     {
 
@@ -117,7 +122,7 @@ class Image extends CI_Model {
             $config['width']	      = $width;
             $config['height']	      = $height;
             
-            $this->load->library('image_lib');
+            $this->image_lib->clear();
 	    $this->image_lib->initialize($config);
             $this->image_lib->resize();
             

@@ -130,7 +130,7 @@ class Image extends MY_Model {
         }
 
         if($action == 'insert'){
-            $data['com_gallery_images']['order']      =  self::getMaxOrder()+1;
+            $data['com_gallery_images']['order']      =  self::getMaxOrder($data['com_gallery_images']['album_id'])+1;
             $data['com_gallery_images']['created_by'] =  $_SESSION['user_id'];
             $data['com_gallery_images']['created_on'] =  now();        
         }

@@ -65,7 +65,10 @@ INSERT INTO `ap_menus` (`id`, `title_bg`, `title_en`, `alias`, `parent_id`, `typ
 (24, 'Снимки', 'Images', 'components/gallery/images', 21, 'sub_action', 'no', 'no', 2),
 (25, 'Бързо добавяне', 'Quick add', 'components/gallery/images/quickadd', 21, 'sub_action', 'no', 'yes', 3),
 (26, 'Статистики', 'Statistics', 'statistics/articles', 1, 'sub_action', 'no', 'yes', 4),
-(27, 'Статистики', 'Statistics', 'statistics/banners', 7, 'sub_action', 'no', 'yes', 4);
+(27, 'Статистики', 'Statistics', 'statistics/banners', 7, 'sub_action', 'no', 'yes', 4),
+(28, 'Медия', 'Media', 'media', NULL, 'general', 'no', 'yes', 6),
+(29, 'Разглеждане', 'Browse', 'media/index', 28, 'sub_action', 'no', 'yes', 1),
+(30, 'Настройки', 'Settings', 'media/settings', 28, 'sub_action', 'no', 'yes', 2);
 
 -- --------------------------------------------------------
 

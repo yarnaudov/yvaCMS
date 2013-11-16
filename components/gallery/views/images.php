@@ -13,7 +13,7 @@
     
     <div class="image_small">
         <a href="<?php echo current_url();?>/image/<?php echo $image['id'];?>">
-            <img src="<?php echo $this->Image->getImageUrl($image['id'], 150, 100);/*base_url('images/'.$image['id'].'.'.$image['ext']);*/?>" alt="<?php echo $image['title'];?>" >
+            <img src="<?php echo $this->Image->getImageUrl($image['id'], 150, 100); ?>" alt="<?php echo $image['title'];?>" >
         </a>
         <div class="description" ><?php echo $image['title'];?></div>
     </div>
