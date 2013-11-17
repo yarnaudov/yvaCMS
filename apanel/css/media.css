@@ -137,3 +137,20 @@
 #media_entries_conteiner{
     overflow: auto;
 }
+
+/* ----------- image settings ------------------------ */
+#image-settings{
+    padding: 10px;
+    margin: 0 -10px;
+    overflow: auto;
+}
+#image{
+    float: left;
+    width: 80%;
+}
+#settings{
+    width: 20%;
+    float: left;
+}
+
+

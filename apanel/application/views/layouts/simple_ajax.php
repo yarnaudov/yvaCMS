@@ -12,7 +12,7 @@
       
     <?php }else{ ?>
                  
-    <div id="content" >
+    <div id="content-simple" >
         <?php echo $content; ?>
     </div>
       

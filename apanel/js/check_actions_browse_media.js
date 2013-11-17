@@ -15,8 +15,7 @@ $(document).ready(function() {
         $('form').append('<input type="hidden" name="up" value="1" >');
         $('form').submit();
     });
-                   
-        
+                      
     $( '#dialog-edit1' ).dialog({
         autoOpen: false,
         resizable: false,

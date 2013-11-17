@@ -27,7 +27,10 @@
 		    $ext = strtolower(end(explode('.', $entry))); 
 
 		    if(in_array($ext, array('gif','jpg','jpeg','jpe','png','tiff','tif'))){ ?>
-		    <a href="#" >
+		    <a href  = "<?php echo site_url('media/image_settings/');?>?image=<?php echo $folder.$entry; ?>"
+                       class = "load_jquery_ui_iframe"
+                       title = "<?php echo lang('label_change_image');?>Промяна на снимка"
+                       lang  = "dialog-select-article" >
 			<div><img src="<?php echo base_url('../'.$folder.$entry);?>" ></div>
 			<span><?php echo $entry;?></span>
 		    </a>                              

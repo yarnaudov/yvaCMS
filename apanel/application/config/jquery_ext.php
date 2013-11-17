@@ -101,6 +101,11 @@ $config['jquery_ext']['libraries']['jqplot']             = array("path"  => 'jqp
                                                                                   'jquery.jqplot.min.css')
                                                                  );
 
+$config['jquery_ext']['libraries']['jcrop']              = array("path"  => 'jcrop/',
+                                                                 "files" => array('jquery.Jcrop.min.js',
+                                                                                  'jquery.Jcrop.min.css')
+                                                                 );
+
 /*
 |------------------------------------------------------------------------------
 | Autoload libraries

@@ -13,7 +13,7 @@
 	
 	<div class="actions" >
 		
-	     <?php if($this->layout != 'simple_ajax'){ ?>  
+            <?php if($this->layout != 'simple_ajax'){ ?>  
             <a href="<?php echo site_url('components/gallery/images/add');?>"  class="styled add"    ><?php echo lang('label_add');?></a>
             <a href="<?php echo site_url('components/gallery/images/edit');?>" class="styled edit"   ><?php echo lang('label_edit');?></a>
             <a href="<?php echo site_url('components/gallery/images');?>"      class="styled delete" ><?php echo lang('label_delete');?></a>
@@ -107,15 +107,23 @@
                     <input type="checkbox" class="checkbox" name="images[]" value="<?php echo $image['id'];?>" />
                 </td>
                 <td>
+                    <?php if($this->layout != 'simple_ajax'){ ?>  
                     <a href="<?php echo site_url('components/gallery/images/edit/'.$image['id']);?>" >
+                    <?php }?>
                         <?php $image_src = base_url('../'.$this->config->item('images_dir').'/'.$image['id'].'.'.$image['ext']); ?>
                         <img class="image" src="<?php echo $image_src.'?'.time();?>" > 
+                    <?php if($this->layout != 'simple_ajax'){ ?>  
                     </a>
+                    <?php } ?>
                 </td>
                 <td style="text-align: left;" >
+                    <?php if($this->layout != 'simple_ajax'){ ?>  
                     <a href="<?php echo site_url('components/gallery/images/edit/'.$image['id']);?>" >
+                    <?php } ?>
                         <?php echo $image['title'];?>
+                    <?php if($this->layout != 'simple_ajax'){ ?>  
                     </a>
+                    <?php } ?>
                     <?php if(!empty($image['description'])){ ?>
                     <div class="description" >(<span class="head" ><?php echo lang('label_description');?>:</span> <span class="content" ><?php echo strip_tags($image['description']);?></span>)</div>
                     <?php } ?>

@@ -175,6 +175,9 @@ body{
 #content{
     padding: 0 20px;
 }
+#content-simple{
+    padding: 0 10px;
+}
 
 #page_header{
     border-bottom: 4px solid #BBBBBB;

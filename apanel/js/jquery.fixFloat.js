@@ -1,5 +1,9 @@
 function fixFloat(elem, id) {
   
+  if(elem.length == 0){
+      return;
+  }
+  
   var msie6 = $.browser == 'msie' && $.browser.version < 7;
   
   if (!msie6) {

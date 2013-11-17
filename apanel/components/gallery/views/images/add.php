@@ -79,70 +79,10 @@
                         <table class="box_table" cellpadding="0" cellspacing="0" border="0">
                                                         
                             <tr>
-                                <!--
-                                <th rowspan="5" >
-                                    <?php if(isset($id)){ ?>
-                                    <a href="<?php echo base_url('../'.$this->config->item('images_dir').'/'.$id.'.'.$ext);?>" rel="lightbox" title="<?php echo $title;?>" >
-                                        <img class="image" src="<?php echo base_url('../'.$this->config->item('thumbs_dir').'/'.$id.'.'.$ext);?>" > 
-                                    </a>
-                                    <?php }else{ ?>
-                                    <img src="<?php echo base_url('img/no_photo.jpg');?>" >
-                                    <?php } ?>
-                                </th>
-                                -->
                                 <th><label class="multilang" ><?php echo lang('label_title');?>:</label></th>
                                 <td><input type="text" name="title" value="<?php echo set_value('title', isset($title) ? $title : "");?>" ></td>
                             </tr>
-
-                            <!--
-                            <tr><td colspan="2" class="empty_line" ></td></tr>
-
-                            <tr>
-                                <th><label><?php echo lang('label_file');?>:&nbsp;*</label></th>
-                                <td>
-                                    <div class="input_file" >
-                                        <input type="file" name="file" size="30" class="file">
-                                        <button type="button" class="styled" >Browse</button>
-                                        <input type="text" class="text">
-                                    </div>
-                                    
-                                </td>
-                            </tr>
-                            
-                            <tr>
-                                <th><label><?php echo lang('label_size');?>:</label></th>
-                                <td>
-                                     <?php $image_width = set_value('image_width', isset($image_width) ? $image_width : "");
-                                           $image_width = $image_width == "" ? $this->config->item('default_image_width') : $image_width; ?>
-                                    <select name="image_width" style="width: 55px;" >
-                                        <?php echo create_options_array($this->config->item('image_width'), $image_width);?>
-                                    </select>&nbsp;x
-
-                                    <?php $image_height = set_value('image_height', isset($image_height) ? $image_height : "");
-                                        $image_height = $image_height == "" ? $this->config->item('default_image_height') : $image_height; ?>
-                                    <select name="image_height" style="width: 55px;" >
-                                        <?php echo create_options_array($this->config->item('image_height'), $image_height);?>
-                                    </select> px&nbsp;&nbsp;&nbsp;
-
-                                    <?php $thumb_width = set_value('thumb_width', isset($thumb_width) ? $thumb_width : "");
-                                        $thumb_width = $thumb_width == "" ? $this->config->item('default_thumb_width') : $thumb_width; ?>
-                                    <select name="thumb_width" style="width: 55px;" >
-                                        <?php echo create_options_array($this->config->item('thumb_width'), $thumb_width);?>
-                                    </select>&nbsp;x
-
-                                    <?php $thumb_height = set_value('thumb_height', isset($thumb_height) ? $thumb_height : "");
-                                        $thumb_height = $thumb_height == "" ? $this->config->item('default_thumb_height') : $thumb_height; ?>
-                                    <select name="thumb_height" style="width: 55px;" >
-                                        <?php echo create_options_array($this->config->item('thumb_height'), $thumb_height);?>
-                                    </select> px
-                                </td>
-                            </tr>
-                            
-                            <tr>
-                                <th></th>
-                                <td>* <?php echo lang('msg_image_info');?></td>
-                            </tr>
-                            -->                     
+                    
                         </table>
                       </div>
 	      	              
@@ -170,11 +110,6 @@
                                             <input type="hidden" name="x2" id="x2" >
                                             <input type="hidden" name="y2" id="y2" >
 
-                                            <link rel="stylesheet" href="http://jcrop-cdn.tapmodo.com/v0.9.12/css/jquery.Jcrop.min.css" type="text/css" />
-                                            <script src="http://jcrop-cdn.tapmodo.com/v0.9.12/js/jquery.Jcrop.min.js"></script>
-                                            <script src="<?php echo base_url('components/gallery/js/crop.js');?>"></script>
-
-                                            <!-- <? //=$this->load->view('gallery/images/upload');?> -->
                                         </td>
 
                                     </tr>

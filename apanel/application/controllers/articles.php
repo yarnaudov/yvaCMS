@@ -89,6 +89,8 @@ class Articles extends MY_Controller {
         
         if($this->uri->segment(3) != ''){
             
+            $this->output->enable_profiler(FALSE);
+            
             $this->jquery_ext->add_plugin('dialog-select-article');
             $this->jquery_ext->add_plugin('iframe_auto_height');
             $script = "autoHeightIframe('jquery_ui_iframe');";
