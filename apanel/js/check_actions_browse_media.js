@@ -1,7 +1,8 @@
 
 $(document).ready(function() {
 
-    $('.folder').bind('click', function(){
+    $('.folder').bind('click', function(event){
+        event.preventDefault();
         $('input[name=folder]').val($('input[name=folder]').val()+$(this).attr('lang'));
 	$('form').attr('method', 'get');
         $('form').submit();
@@ -11,7 +12,8 @@ $(document).ready(function() {
         $('input[name=download]').remove();
     })
     
-    $('#up').bind('click', function(){        
+    $('#up').bind('click', function(event){
+        event.preventDefault();
         $('form').append('<input type="hidden" name="up" value="1" >');
         $('form').submit();
     });
