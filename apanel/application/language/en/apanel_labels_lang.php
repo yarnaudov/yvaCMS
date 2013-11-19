@@ -243,5 +243,10 @@ $lang['current_version']   = 'Current version';
 // media menu
 $lang['label_media_max_file_size']      = 'Max file size';
 $lang['label_media_allowed_extensions'] = 'Allowed extensions';
+$lang['label_resize']                   = 'Risize';
+$lang['label_crop']                     = 'Crop';
+$lang['label_change_image']             = 'Change image';
+$lang['label_keep_original']            = 'Keep original';
+$lang['label_maintain_ratio']           = 'Maintain ratio';
 
 ?>

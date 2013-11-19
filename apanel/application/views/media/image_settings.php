@@ -1,20 +1,22 @@
 
-    <!-- start page header -->
-    <div id="page_header" >
-	
-        <div class="text" >
-	    <img src="<?php echo base_url('img/iconMedia_25.png');?>" >
-            <span><?php echo lang('label_media');?></span>
-            <span>&nbsp;»&nbsp;</span>
-            <span><?php echo lang('label_change_image'); ?>промяна на снимка</span>
-	</div>
-	
-	<div class="actions" >
-             
-	</div>
-	
+<!-- start page header -->
+<div id="page_header" >
+
+    <div class="text" >
+        <img src="<?php echo base_url('img/iconMedia_25.png');?>" >
+        <span><?php echo lang('label_media');?></span>
+        <span>&nbsp;»&nbsp;</span>
+        <span><?php echo lang('label_change_image'); ?></span>
     </div>
-    <!-- end page header -->
+
+    <div class="actions" >
+
+    </div>
+
+</div>
+<!-- end page header -->
+
+<?php echo $this->load->view('messages');?>    
 
 <div id="image-settings">
 
@@ -22,40 +24,62 @@
 
         <img style="width: 100%;" data-width="<?php echo $image_data[0];?>" data-height="<?php echo $image_data[1];?>" class="image_" id="jcrop_target" src="<?php echo base_url('../'.$image).'?'.time();?>" >
 
-        <input type="hidden" name="x" id="x" >
-        <input type="hidden" name="y" id="y" >
-        <input type="hidden" name="x2" id="x2" >
-        <input type="hidden" name="y2" id="y2" >
-
     </div>
 
     <div id="settings" >
 
-        <?php /*
-        <span><?php echo lang('com_gallery_label_aspect_ratio');?>:</span>
-        <select id="aspectRatio" name="params[aspect_ratio]" style="width: 50px;" >
-            <?php echo create_options_array($this->config->item('aspect_ratio'), set_value('params[aspect_ratio]', isset($album_params['aspect_ratio']) ? $album_params['aspect_ratio'] : ""));?>
-        </select>
-        */ ?>
         
-        <span><?php echo lang('com_gallery_label_width');?>: </span><input type="text" readonly name="w" id="w" style="width: 30px;" >
-        <span><?php echo lang('com_gallery_label_height');?>: </span><input type="text" readonly name="h" id="h" style="width: 30px;" >
-        <button class="styled styled_small crop" type="button" lang="<?php echo site_url('components/gallery/images/crop');?>" ><?php echo lang('com_gallery_label_crop');?></button>
-
-        <?php /*
-        &nbsp;&nbsp;|&nbsp;&nbsp;
-
-        <select id="degrees" style="width: 50px;" >
-            <?php echo create_options_array($this->config->item('rotate_degrees'), isset($params['rotate_degree']) ? $params['rotate_degree'] : '');?>
-        </select>
-        <button class="styled styled_small rotate" type="button" data-url="<?php echo site_url('components/gallery/images/rotate');?>" ><?php echo lang('com_gallery_label_rotate');?></button>
-
-        &nbsp;&nbsp;|&nbsp;&nbsp;
-
-        <?php $image_data = getimagesize(FCPATH.'../'.$this->config->item('images_origin_dir').'/'.$id.'.'.$ext); ?>
-        <button class="styled styled_small origin" type="button" size="<?php echo $image_data[0];?>" desc="<?php echo $id;?>" lang="<?php echo site_url('components/gallery/images/origin/');?>" ><?php echo lang('com_gallery_label_load_original');?></button>
-        <button class="styled styled_small change" type="button" ><?php echo lang('com_gallery_label_change');?></button>
-        */ ?>
+        <h4><?php echo lang('label_resize'); ?></h4>
+        
+        <form method="post" action="<?php echo current_url(true); ?>" >
+            <div class="row" >
+                <label><?php echo lang('label_width');?>: </label>
+                <input type="text" name="width" value="<?php echo $image_data[0]; ?>" > px
+            </div>
+            <div class="row" >
+                <label><?php echo lang('label_height');?>: </label>
+                <input type="text" name="height" value="<?php echo $image_data[1]; ?>" > px
+            </div>
+            <div class="row" >  
+                <label><?php echo lang('label_maintain_ratio'); ?>:</label>
+                <input type="checkbox" name="maintain_ratio" value="1" checked >
+            </div>
+            <div class="row" >  
+                <label><?php echo lang('label_keep_original'); ?>:</label>
+                <input type="checkbox" name="keep_original" value="1" checked >
+            </div>
+            <div class="row" >&nbsp;</div>
+            <div class="row" >
+                <button class="styled styled_small resize" type="submit" name="resize" value="1" ><?php echo lang('label_resize');?></button>
+            </div>
+        </form>
+        
+        <div class="row" >&nbsp;</div>
+        
+        <h4><?php echo lang('label_crop'); ?></h4>
+        
+        <form method="post" action="<?php echo current_url(true); ?>" >
+            
+            <input type="hidden" name="x" id="x" >
+            <input type="hidden" name="y" id="y" >
+                                            
+            <div class="row" >
+                <label><?php echo lang('label_width');?>: </label>
+                <input type="text" readonly name="width" id="w" > px
+            </div>
+            <div class="row" >
+                <label><?php echo lang('label_height');?>: </label>
+                <input type="text" readonly name="height" id="h" > px
+            </div>
+            <div class="row" >  
+                <label><?php echo lang('label_keep_original'); ?>:</label>
+                <input type="checkbox" name="keep_original" value="1" checked >
+            </div>
+            <div class="row" >&nbsp;</div>
+            <div class="row" >
+                <button class="styled styled_small crop" type="submit" name="crop" value="1" ><?php echo lang('label_crop');?></button>
+            </div>
+        </form>
 
     </div>
     

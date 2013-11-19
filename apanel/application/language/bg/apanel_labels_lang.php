@@ -244,5 +244,10 @@ $lang['current_version']   = 'Текуща версия';
 // media menu
 $lang['label_media_max_file_size']      = 'Макс. размер на файл';
 $lang['label_media_allowed_extensions'] = 'Позволени разширения';
+$lang['label_resize']                   = 'Оразмери';
+$lang['label_crop']                     = 'Изрежи';
+$lang['label_change_image']             = 'Промяна на снимка';
+$lang['label_keep_original']            = 'Запази оригинала';
+$lang['label_maintain_ratio']           = 'Запази пропорциите';
 
 ?>

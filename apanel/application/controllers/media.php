@@ -329,18 +329,62 @@ class Media extends MY_Controller {
     
     public function image_settings($image)
     {
+  
+        $image = $this->input->get('image');
+        $image_data = getimagesize(FCPATH.'../'.$image);
+            
+        if($this->input->post('resize') || $this->input->post('crop')){
+            
+            $this->load->library('image_lib');
+            
+            $width  = $this->input->post('width');
+            $height = $this->input->post('height');
+        
+            $config['source_image']   = FCPATH.'/../'.$image;
+            $config['create_thumb']   = $this->input->post('keep_original') == 1 ? TRUE : FALSE;;
+            $config['thumb_marker']   = '_'.$width.'x'.$height;            
+            $config['maintain_ratio'] = $this->input->post('maintain_ratio') == 1 ? TRUE : FALSE;
+            $config['width']	      = $width;
+            $config['height']	      = $height;
+            
+            if($this->input->post('crop')){
+                $config['x_axis'] = $this->input->post('x');
+                $config['y_axis'] = $this->input->post('y');
+            }
+            
+            $this->image_lib->initialize($config);
+            
+            if($this->input->post('resize')){                
+                if(!$this->image_lib->resize()){
+                    $this->session->set_userdata('error_msg', $this->image_lib->display_errors());
+                }                
+                $this->session->set_userdata('good_msg', lang('msg_image_resized'));                
+            }
+            elseif($this->input->post('crop')){                
+                if (!$this->image_lib->crop()){
+                    $this->session->set_userdata('error_msg', $this->image_lib->display_errors());
+                }                
+                $this->session->set_userdata('good_msg', lang('msg_image_croped'));                
+            }
+            
+            if($this->input->post('keep_original') == 1){
+                $image_array = $this->image_lib->explode_name($image);
+                $image = $image_array['name'].$config['thumb_marker'].$image_array['ext'];
+            }
+                
+            redirect(current_url().'?image='.$image);
+        
+        }
         
         $this->output->enable_profiler(FALSE);
         
         $this->jquery_ext->add_plugin('jcrop');
-        $this->jquery_ext->add_library('../components/gallery/js/crop.js');
+        //$this->jquery_ext->add_library('../components/gallery/js/crop.js');
+        $this->jquery_ext->add_library('check_actions_browse_media.js');
         
         $this->jquery_ext->add_plugin('iframe_auto_height');
         $script = "autoHeightIframe('jquery_ui_iframe');";        
         $this->jquery_ext->add_script($script);
-        
-        $image = $this->input->get('image');
-        $image_data = getimagesize(FCPATH.'../'.$image);
         
         $content["content"] = $this->load->view('media/image_settings', compact('image', 'image_data'), true);
         $this->load->view('layouts/simple_ajax', $content);

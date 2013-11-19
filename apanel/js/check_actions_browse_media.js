@@ -195,4 +195,41 @@ $(document).ready(function() {
 	});
     });
     
+    var trueWidth  = parseInt($('#jcrop_target').attr('data-width'));
+    var trueHeight = parseInt($('#jcrop_target').attr('data-height'));
+       
+    var jcrop_api; 
+       
+    function initJcrop(){
+        jcrop_api = $.Jcrop('#jcrop_target');
+        jcrop_api.setOptions({
+            onChange: saveCoordinates,
+            onSelect: saveCoordinates,
+            trueSize: [trueWidth, trueHeight]
+        });
+    }
+    setTimeout(initJcrop, 500);
+    
+    function saveCoordinates(coords){
+        
+        $('#x').val(coords.x);
+        $('#y').val(coords.y);
+        $('#w').val(Math.round(coords.w));
+        $('#h').val(Math.round(coords.h));
+
+    }
+    
+    function setImageWidth(){
+
+        var width_100  = $('#jcrop_target').width();
+        //alert(width_100);
+        var width_real = $('#jcrop_target').attr('data-width');
+        if(width_real < width_100){
+            $('#jcrop_target').css('width', 'auto');
+        }
+
+    }
+    setImageWidth();
+    
+    
 });
