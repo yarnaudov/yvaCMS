@@ -14,9 +14,9 @@
         </div>
 	
 	<div class="actions" >	
-            <!--
-            <button class="styled refresh" type="submit" ><?php echo lang('label_refresh');?></button>
-            -->
+            
+            <a class="styled refresh" href="<?php echo current_url(true); ?>" ><?php echo lang('label_refresh');?></a>
+            
             <a href="#" class="styled rename"   ><?php echo lang('label_rename');?></a>
             <a href="#" class="styled delete"   ><?php echo lang('label_delete');?></a>
 	    <a href="#" class="styled download" ><?php echo lang('label_download');?></a>
