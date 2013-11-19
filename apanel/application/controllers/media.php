@@ -69,6 +69,8 @@ class Media extends MY_Controller {
 
         // create sub actions menu
         $data['sub_menu'] = $this->sub_menu;
+        
+        $data['image_settings'] = TRUE;
 
         $content["content"] = $this->load->view('media/list', $data, true);		
         $this->load->view('layouts/default', $content);
@@ -379,11 +381,16 @@ class Media extends MY_Controller {
         $this->output->enable_profiler(FALSE);
         
         $this->jquery_ext->add_plugin('jcrop');
-        //$this->jquery_ext->add_library('../components/gallery/js/crop.js');
         $this->jquery_ext->add_library('check_actions_browse_media.js');
         
         $this->jquery_ext->add_plugin('iframe_auto_height');
         $script = "autoHeightIframe('jquery_ui_iframe');";        
+        
+        if($this->session->userdata('good_msg') || $this->session->userdata('error_msg')){
+            $script .= "parent.$('#jquery_ui').on('dialogbeforeclose', function(event, ui){
+                            parent.window.location.reload();              
+                        });";
+        }
         $this->jquery_ext->add_script($script);
         
         $content["content"] = $this->load->view('media/image_settings', compact('image', 'image_data'), true);

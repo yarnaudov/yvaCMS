@@ -210,7 +210,9 @@ $(document).ready(function() {
             trueSize: [trueWidth, trueHeight]
         });
     }
-    setTimeout(initJcrop, 500);
+    if($('#jcrop_target').length > 0){
+        setTimeout(initJcrop, 500);
+    }
     
     function saveCoordinates(coords){
         
