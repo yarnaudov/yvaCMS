@@ -229,6 +229,7 @@ $lang['label_stat_type_1']   = 'Импресия';
 $lang['label_stat_type_2']   = 'Клик';
 
 $lang['label_number'] = 'Брой';
+$lang['label_number_per_page'] = 'Брой на страница';
 
 // order options
 $lang['order_asc']       = 'Възходящ ред';

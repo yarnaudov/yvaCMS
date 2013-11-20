@@ -62,3 +62,17 @@
         </select>
     </td>
 </tr>
+
+<tr><td colspan="2" class="empty_line" ></td></tr>
+                                
+<tr>	      			
+    <th><label><?php echo lang('label_number_per_page');?>:</label></th>
+    <td>
+	<?php $numbers = array(5, 10, 15, 20, 25, 30, 40, 50);
+	      $numbers = array_combine($numbers, $numbers); ?>
+        <select name="params[number_per_page]" >
+	    <option value="all" ><?php echo lang('label_all');?></option>
+            <?php echo create_options_array($numbers, set_value('params[number_per_page]', isset($params['number_per_page']) ? $params['number_per_page'] : ""));?>            
+        </select>
+    </td>
+</tr>

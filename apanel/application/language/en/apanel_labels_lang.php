@@ -228,6 +228,7 @@ $lang['label_stat_type_1']   = 'Impression';
 $lang['label_stat_type_2']   = 'Click';
 
 $lang['label_number'] = 'Number';
+$lang['label_number_per_page'] = 'Number per page';
 
 // order options
 $lang['order_asc']       = 'Order Ascending';
