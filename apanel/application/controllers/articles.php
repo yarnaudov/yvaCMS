@@ -95,7 +95,9 @@ class Articles extends MY_Controller {
             $this->jquery_ext->add_plugin('iframe_auto_height');
             $script = "autoHeightIframe('jquery_ui_iframe');";
             
-            $script .= "$('table.list tr.row td a').bind('click', function(){
+            $script .= "$('a.article-edit-link').live('click', function(event){
+                
+                           event.preventDefault();
                 
                            var article_id = $(this).attr('href').split('/');
                            article_id     = article_id[article_id.length-1];
@@ -106,15 +108,13 @@ class Articles extends MY_Controller {
                            
                            if(parent.$('#article_name').attr('type')){
                                parent.$('#article').val(article_id);
-                               parent.$('#article_name').val(article_name);     
+                               parent.$('#article_name').val(article_name);
                            }
                            else{
-                               parent.tinyMCE.execCommand('mceInsertContent', false, '<a href=\"article:'+article_alias+'\" >'+article_name+'</a>');
+                               parent.tinyMCE.execCommand('mceInsertContent', false, '<a href=\"article/'+article_alias+'\" >'+article_name+'</a>');
                            }
 
                            parent.$( '#jquery_ui' ).dialog( 'close' );
-                           
-                           return false;
                            
                        });";
             $this->jquery_ext->add_script($script);

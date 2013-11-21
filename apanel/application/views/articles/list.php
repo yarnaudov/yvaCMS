@@ -101,7 +101,7 @@
                 <?php } ?>
                 
                 <td style="text-align: left;" >
-                    <a href="<?php echo site_url('articles/edit/'.$article['id']);?>" lang="<?php echo $article['alias'];?>" >
+                    <a class="article-edit-link" href="<?php echo site_url('articles/edit/'.$article['id']);?>" lang="<?php echo $article['alias'];?>" >
                         <?php echo $article['title'];?>
                     </a>
                     <div class="description" >(<span class="head" ><?php echo lang('label_alias');?>:</span> <span class="content" ><?php echo $article['alias'];?></span>)</div>

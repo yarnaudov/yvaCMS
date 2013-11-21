@@ -12,6 +12,7 @@ $lang['label_banners']       = 'Banners';
 $lang['label_languages']     = 'Languages';
 $lang['label_users']         = 'Users';
 $lang['label_modules_c']     = 'Modules';
+$lang['label_modules']       = 'Modules';
 $lang['label_components']    = 'Components';
 $lang['label_categories']    = 'Categories';
 $lang['label_custom_fields'] = 'Custom fields';

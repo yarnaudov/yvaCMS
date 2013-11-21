@@ -12,6 +12,7 @@ $lang['label_banners']       = 'Банери';
 $lang['label_languages']     = 'Езици';
 $lang['label_users']         = 'Потребители';
 $lang['label_modules_c']     = 'Модули';
+$lang['label_modules']       = 'Модули';
 $lang['label_components']    = 'Компоненти';
 $lang['label_categories']    = 'Kатегории';
 $lang['label_custom_fields'] = 'Потребителски полета';
