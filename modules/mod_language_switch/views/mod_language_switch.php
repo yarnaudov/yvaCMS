@@ -15,7 +15,7 @@
     <?php $numb = 0;
           foreach($languages as $language){
               $numb++;  
-              $class = '';
+              $class = ' ';
     
               if($numb == 1){
                   $class = 'first';
@@ -26,7 +26,10 @@
 
               if($language['abbreviation'] == get_lang()){
                   $class = 'current '.$class;
-              } ?>
+              } 
+              
+              $class = $language['abbreviation'].' '.$class;
+              $class = trim($class); ?>
     
     <li <?php echo $class != '' ? 'class="'.$class.'"' : '';?> >
         <a href="<?php echo base_url($language['abbreviation'].'/'.$this->uri->uri_string);?>" >
@@ -42,7 +45,10 @@
             
             <?php } ?>
             
+            <?php if(isset($module['params']['text']) && $module['params']['text'] == 'yes'){ ?>
             <span><?php echo $language['title'];?></span>
+            <?php } ?>
+            
         </a>
     </li>
     

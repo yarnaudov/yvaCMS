@@ -12,6 +12,17 @@
 <tr><td colspan="2" class="empty_line" ></td></tr>
                                 
 <tr>	      			
+    <th><label><?php echo lang('label_text');?>:</label></th>
+    <td>
+        <select name="params[text]" >
+            <?php echo create_options_array($this->config->item('yes_no'), set_value('params[text]', isset($params['text']) ? $params['text'] : ""));?>
+        </select>
+    </td>
+</tr>
+
+<tr><td colspan="2" class="empty_line" ></td></tr>
+                                
+<tr>	      			
     <th><label><?php echo lang('label_type');?>:</label></th>
     <td>
         <?php $type = set_value('params[menu_type]', isset($params['menu_type']) ? $params['menu_type'] : ""); ?>
