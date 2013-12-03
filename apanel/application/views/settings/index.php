@@ -138,6 +138,17 @@
                                     </select>				    
 				</td>
                             </tr>
+                            
+                            <tr><td colspan="2" class="empty_line" ></td></tr>
+                            
+                            <tr>
+                                <th><label><?php echo lang('label_profiler');?>:</label></th>
+                                <td>
+				    <select name="settings[profiler]" style="width: auto;" >
+					 <?php echo create_options_array($this->config->item('yes_no'), set_value('settings[profiler]', isset($settings['profiler']) ? $settings['profiler']: ""));?>
+                                    </select>				    
+				</td>
+                            </tr>
 			    
                         </table>
                       </div>

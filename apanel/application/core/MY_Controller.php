@@ -36,7 +36,7 @@ class MY_Controller extends CI_Controller{
 	{
 	    case 'development':
 		error_reporting(E_ALL);
-		$this->output->enable_profiler(TRUE);		
+		//$this->output->enable_profiler(TRUE);		
 	    break;
 
 	    case 'testing':

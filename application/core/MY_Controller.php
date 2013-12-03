@@ -22,7 +22,7 @@ class MY_Controller extends CI_Controller {
         
         parent::__construct();
         
-		$this->load->model('Setting');
+        $this->load->model('Setting');
 	
         $this->load->library('Lang_lib');
         
@@ -39,39 +39,43 @@ class MY_Controller extends CI_Controller {
         
         $this->language_id = $this->Language->getDetailsByAbbr(get_lang(), 'id');
 	
-		# reload settings for correct language
-		$this->Setting->getSettings();
+        # reload settings for correct language
+        $this->Setting->getSettings();
 	
-		# check environment
-		error_reporting(0);
-		switch ($this->Setting->getEnvironment())
-		{
-			case 'development':
-			error_reporting(E_ALL);
-			$this->output->enable_profiler(TRUE);
-			break;
+        # check environment
+        error_reporting(0);
+        switch ($this->Setting->getEnvironment())
+        {
+            case 'development':
+                error_reporting(E_ALL);               
+            break;
 
-			case 'testing':
-			case 'production':
-			error_reporting(0);
-			break;
+            case 'testing':
+            case 'production':
+                error_reporting(0);
+            break;
 
-			default:
-			exit('The application environment is not set correctly.');
-			break;
-		}
+            default:
+                exit('The application environment is not set correctly.');
+            break;
+        }
+        
+        #turn on profiler
+        if($this->Setting->getProfiler() == 'yes'){
+            $this->output->enable_profiler(TRUE);
+        }
 
-		# Set settings
-		$this->template = $this->Setting->getTemplate();
-		$this->template_main = $this->Setting->getTemplate('main');
+        # Set settings
+        $this->template = $this->Setting->getTemplate();
+        $this->template_main = $this->Setting->getTemplate('main');
 
-		# load system language
-		$this->load->language('system');
+        # load system language
+        $this->load->language('system');
 
-		self::_getActiveContent();
+        self::_getActiveContent();
 
-		# set menu link
-		$menu = $this->Menu->getDetails($this->menu_id);
+        # set menu link
+        $menu = $this->Menu->getDetails($this->menu_id);
         $this->menu_link = $this->Module->menu_link($menu);
 	
 		# load validation js if article is loaded

@@ -53,7 +53,12 @@ class Setting extends CI_Model {
        
     public function getEnvironment()
     {                
-        return $this->settings['environment'];
+        return isset($this->settings['environment']) ? $this->settings['environment'] : 'development';
+    }
+    
+    public function getProfiler()
+    {                
+        return isset($this->settings['profiler']) ? $this->settings['profiler'] : 'no';
     }
     
     public function getSiteName()
