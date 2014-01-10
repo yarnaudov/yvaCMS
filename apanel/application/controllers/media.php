@@ -65,7 +65,10 @@ class Media extends MY_Controller {
         $this->jquery_ext->add_library('check_actions_browse_media.js');
 
         $this->load->helper('directory');
-        $data['entries'] = directory_map(realpath(FCPATH.'../').'/'.$data['folder'], true);
+        //$data['entries'] = directory_map(realpath(FCPATH.'../').'/'.$data['folder'], true);
+        
+        $data['entries'] = readdir_sorted_array(realpath(FCPATH.'../').'/'.$data['folder'], DIR_SORT_NAME, SORT_ASC);
+        //print_r($data['entries']);
 
         // create sub actions menu
         $data['sub_menu'] = $this->sub_menu;
