@@ -252,4 +252,12 @@ $lang['label_change_image']             = 'Change image';
 $lang['label_keep_original']            = 'Keep original';
 $lang['label_maintain_ratio']           = 'Maintain ratio';
 
+// media order
+$lang['label_order_by_name_asc']   = 'Order by name ascending';
+$lang['label_order_by_name_desc']  = 'Order by name descending';
+$lang['label_order_by_size_asc']   = 'Order by size ascending';
+$lang['label_order_by_size_desc']  = 'Order by size descending';
+$lang['label_order_by_mtime_asc']  = 'Order by modify time ascending';
+$lang['label_order_by_mtime_desc'] = 'Order by modify time descending';
+
 ?>

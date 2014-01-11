@@ -253,4 +253,12 @@ $lang['label_change_image']             = 'Промяна на снимка';
 $lang['label_keep_original']            = 'Запази оригинала';
 $lang['label_maintain_ratio']           = 'Запази пропорциите';
 
+// media order
+$lang['label_order_by_name_asc']   = 'Подреди по име - възходящ ред';
+$lang['label_order_by_name_desc']  = 'Подреди по име - низходящ ред';
+$lang['label_order_by_size_asc']   = 'Подреди по размер - възходящ ред';
+$lang['label_order_by_size_desc']  = 'Подреди по размер - низходящ ред';
+$lang['label_order_by_mtime_asc']  = 'Подреди по време - възходящ ред';
+$lang['label_order_by_mtime_desc'] = 'Подреди по време - низходящ ред';
+
 ?>

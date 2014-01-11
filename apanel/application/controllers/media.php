@@ -60,16 +60,16 @@ class Media extends MY_Controller {
     public function index()
     {
 	
-        $data = self::_actions(true);	
-
+        $data = self::_actions(true);        
+        $data = array_merge($data, parent::index($this->Media, 'media', current_url(true)));
+        
+        $this->jquery_ext->add_library('check_actions.js');
         $this->jquery_ext->add_library('check_actions_browse_media.js');
 
         $this->load->helper('directory');
-        //$data['entries'] = directory_map(realpath(FCPATH.'../').'/'.$data['folder'], true);
+        //$data['entries'] = directory_map(realpath(FCPATH.'../').'/'.$data['folder'], true);        
+        $data['entries'] = readdir_sorted_array(realpath(FCPATH.'../').'/'.$data['folder'], $data['filters']);
         
-        $data['entries'] = readdir_sorted_array(realpath(FCPATH.'../').'/'.$data['folder'], DIR_SORT_NAME, SORT_ASC);
-        //print_r($data['entries']);
-
         // create sub actions menu
         $data['sub_menu'] = $this->sub_menu;
         
@@ -113,11 +113,13 @@ class Media extends MY_Controller {
     
     public function browse($params = '')
     {
-
+        
         $this->output->enable_profiler(FALSE);
         
-        $data = self::_actions();
+        $data = self::_actions(true);
+        $data = array_merge($data, parent::index($this->Media, 'media_browse', current_url(true)));
 	
+        $this->jquery_ext->add_library('check_actions.js');
         $this->jquery_ext->add_library('check_actions_browse_media.js');
 	
         $data['param']  = isset($params[0]) ? $params[0] : '';
@@ -183,7 +185,8 @@ class Media extends MY_Controller {
         }
         
         $this->load->helper('directory');
-        $data['entries'] = directory_map(realpath(FCPATH.'../').'/'.$data['folder'], true);
+        //$data['entries'] = directory_map(realpath(FCPATH.'../').'/'.$data['folder'], true);
+        $data['entries'] = readdir_sorted_array(realpath(FCPATH.'../').'/'.$data['folder'], $data['filters']);
 	
         $content["content"] = $this->load->view('media/browse', $data, true);		
         $this->load->view('layouts/simple', $content);
@@ -192,7 +195,9 @@ class Media extends MY_Controller {
     
     private function _actions($redirect = false)
     {
-
+        
+        $uri_string = $this->uri->uri_string();
+        
         $data['folder'] = $this->input->get_post('folder') ? $this->input->get_post('folder') : $this->config->item('media_dir').'/';
 
         $folder = realpath(FCPATH.'../').'/'.$data['folder'];
@@ -210,7 +215,7 @@ class Media extends MY_Controller {
             }
 
             if($redirect == true){
-                redirect('media?folder='.urlencode($data['folder']));
+                redirect($uri_string.'?folder='.urlencode($data['folder']));
             }
 
         }
@@ -227,7 +232,7 @@ class Media extends MY_Controller {
             }
 
             if(!isset($data['error']) && $redirect == true){
-                redirect('media?folder='.urlencode($data['folder']));
+                redirect($uri_string.'?folder='.urlencode($data['folder']));
             }
 
         }        
@@ -254,7 +259,7 @@ class Media extends MY_Controller {
             }
 
             if($redirect == true){
-                redirect('media?folder='.urlencode($data['folder']));
+                redirect($uri_string.'?folder='.urlencode($data['folder']));
             }
 
         }
@@ -280,7 +285,7 @@ class Media extends MY_Controller {
             }
 
             if($redirect == true){
-                redirect('media?folder='.urlencode($data['folder']));
+                redirect($uri_string.'?folder='.urlencode($data['folder']));
             }
 
         }
@@ -299,7 +304,7 @@ class Media extends MY_Controller {
             }
 
             if($redirect == true){
-                redirect('media?folder='.urlencode($data['folder']));
+                redirect($uri_string.'?folder='.urlencode($data['folder']));
             }
 
         }

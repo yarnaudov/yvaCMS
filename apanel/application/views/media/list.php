@@ -45,7 +45,6 @@
     <!-- start page content -->
     <div id="page_content" >
 	
-	<!--
 	<div id="filter_content" >
 		
             <div class="search" >		
@@ -56,10 +55,23 @@
 		
             <div class="filter" >
 			
+                <?php 
+                $orders_by[DIR_SORT_NAME.';'.SORT_ASC]   = lang('label_order_by_name_asc');
+                $orders_by[DIR_SORT_NAME.';'.SORT_DESC]  = lang('label_order_by_name_desc');
+                $orders_by[DIR_SORT_SIZE.';'.SORT_ASC]   = lang('label_order_by_size_asc');
+                $orders_by[DIR_SORT_SIZE.';'.SORT_DESC]  = lang('label_order_by_size_desc');
+                $orders_by[DIR_SORT_MTIME.';'.SORT_ASC]  = lang('label_order_by_mtime_asc');
+                $orders_by[DIR_SORT_MTIME.';'.SORT_DESC] = lang('label_order_by_mtime_desc');
+                ?>
+                
+                <select name="filters[order_by]" >
+                    <option value="none" > - <?php echo lang('label_select');?> <?php echo lang('label_order');?> - </option>
+                    <?php echo create_options_array($orders_by, isset($filters['order_by']) ? $filters['order_by'] : "");?>
+                </select>
+                
             </div>
 		
 	</div>
-	-->
 	
 	<div id="media_conteiner" >
 	    
