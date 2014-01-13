@@ -32,7 +32,7 @@
               $class = trim($class); ?>
     
     <li <?php echo $class != '' ? 'class="'.$class.'"' : '';?> >
-        <a href="<?php echo base_url($language['abbreviation'].'/'.$this->uri->uri_string);?>" >
+        <a href="<?php echo base_url($language['abbreviation'].'/'.$this->uri->uri_string);?>" title="<?php echo $language['title'];?>"" >
              
             <?php if($module['params']['images'] == 'yes'){
                       if(!empty($language['image'])){
