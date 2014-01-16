@@ -19,7 +19,7 @@ class MY_Lang extends CI_Lang {
 	function load($langfile = '', $idiom = '', $return = FALSE, $add_suffix = TRUE, $alt_path = '')
 	{
 	    
-		if($idiom == ''){
+		if($idiom == '' && function_exists('get_lang')){
 		    $idiom = get_lang();
 		}
 	
