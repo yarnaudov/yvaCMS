@@ -86,8 +86,6 @@ function readdir_sorted_array ($dir, $filters /*$sortCol = DIR_SORT_NAME, $sortD
 
     // Validate arguments
     $dir = rtrim(str_replace('\\', '/', $dir), '/');
-    $sortCol = (int) ($sortCol >= 1 && $sortCol <= 5) ? $sortCol : 1;
-    $sortDir = ($sortDir == SORT_ASC) ? SORT_ASC : SORT_DESC;
     $name = $size = $aTime = $mTime = $cTime = $table = array();
     
     // Open the directory, return FALSE if we can't
@@ -103,6 +101,10 @@ function readdir_sorted_array ($dir, $filters /*$sortCol = DIR_SORT_NAME, $sortD
         $sortCol  = (int)$order_by[0];
         $sortDir  = (int)$order_by[1];
     }
+    
+    $sortCol = (int) ($sortCol >= 1 && $sortCol <= 5) ? $sortCol : 1;
+    $sortDir = ($sortDir == SORT_ASC) ? SORT_ASC : SORT_DESC;
+    
     
     if(isset($filters['search_v'])){
         $files = glob($dir.'/*'.$filters['search_v'].'*');

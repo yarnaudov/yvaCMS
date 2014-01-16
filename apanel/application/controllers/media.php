@@ -2,6 +2,7 @@
 
 class Media extends MY_Controller {
     
+    public $page = 0;
     private $allowed_types = array(
 	
 	# images
@@ -61,7 +62,7 @@ class Media extends MY_Controller {
     {
 	
         $data = self::_actions(true);        
-        $data = array_merge($data, parent::index($this->Media, 'media', current_url(true)));
+        $data = array_merge($data, parent::index($this, 'media', current_url(true)));
         
         $this->jquery_ext->add_library('check_actions.js');
         $this->jquery_ext->add_library('check_actions_browse_media.js');
