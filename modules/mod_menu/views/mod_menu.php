@@ -13,11 +13,14 @@ foreach($menus as $key => $menu){
     }
     
     echo "<li".($menu['class'] != '' ? ' class="'.$menu['class'].'" ' : '').">\n";
-    echo "  <a href=\"".$menu['link']."\" target=\"".$menu['target']."\" ><span>".$menu['title']."</span></a>\n";
+    echo "  <a href=\"".$menu['link']."\" target=\"".$menu['target']."\" >\n";
     
     if(!empty($menu['image'])){
         echo "<img src=\"".base_url($menu['image'])."\" >\n";
     }
+    
+    echo "  <span>".$menu['title']."</span>\n";
+    echo "</a>\n";
 
     if(@$menus[$key+1]['lavel'] > $menu['lavel']){                
         echo "<ul>\n";
