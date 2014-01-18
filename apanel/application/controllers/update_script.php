@@ -253,6 +253,24 @@ class Update_script extends CI_Controller {
 	
     }
     
+    function add_db_settings_menu()
+    {
+	
+	$this->db->query("INSERT INTO `ap_menus` (`id`, `title_bg`, `title_en`, `alias`, `parent_id`, `type`, `component`, `check_access`, `order`) 
+                          VALUES (NULL, 'База данни', 'Database', 'settings/database', '17', 'sub_action', 'no', 'yes', '3');");
+		
+	echo "done!";
+	
+    }
+    
+    function remove_db_settings_menu()
+    {
+	
+	$this->db->query("DELETE FROM `ap_menus` WHERE `alias` LIKE '%/database';");
+		
+	echo "done!";
+	
+    }
     
     
 }

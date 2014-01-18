@@ -37,6 +37,7 @@ $lang['msg_copy_module_error']       = 'An error occurred while copying these mo
 
 $lang['msg_save_settings']           = 'The settings were saved successfully';
 $lang['msg_save_settings_error']     = 'An error occurred while saving these settings';
+$lang['msg_save_db_settings_error']  = 'Could not connect to database with provided settings';
 
 $lang['msg_status_error']            = 'An error occurred while changing the status';
 

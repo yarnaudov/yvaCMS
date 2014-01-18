@@ -181,6 +181,7 @@ $lang['label_all_except_selected'] = 'On all pages except selected';
 $lang['label_settings_add']              = 'Промяна на настройките';
 $lang['label_general']                   = 'General';
 $lang['label_mail']                      = 'Mail';
+$lang['label_database']                  = 'Database';
 $lang['label_site_name']                 = 'Site&nbsp;name';
 $lang['label_site_name_in_title']        = 'Use site name in page title';
 $lang['label_description_as_page_title'] = 'Use description as page title';
